@@ -5,7 +5,7 @@ const { Server } = require('socket.io');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const PORT = Number(process.env.PORT || 5050);
-const socket = new WebSocket("wss://chatrio-app-2.onrender.com");
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'https://68b0a148ede77819c090b96f--incredible-rabanadas-b8cf9b.netlify.app';
 
 const app = express();
 
