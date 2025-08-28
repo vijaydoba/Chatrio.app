@@ -1,6 +1,12 @@
-echo "node_modules/
-dist/
-build/
-.env
+# Ignore Node dependencies
+client/node_modules/
+
+# Ignore build/output folders
+client/build/
+
+# Ignore environment files
+client/.env
+
+# Ignore OS and log files
 *.log
-.DS_Store" > .gitignore
+.DS_Store
