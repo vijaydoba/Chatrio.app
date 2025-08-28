@@ -1,0 +1,22 @@
+
+
+{
+  "short_name": "Chatrio",
+  "name": "Chatrio - Anonymous Chat",
+  "icons": [
+    {
+      "src": "/branding/chatrio-64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/branding/chatrio-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0d6efd",
+  "background_color": "#ffffff"
+}
