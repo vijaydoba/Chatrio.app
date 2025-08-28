@@ -2,7 +2,6 @@
 client/node_modules/
 
 # Ignore build/output folders
-client/build/
 
 # Ignore environment files
 client/.env
