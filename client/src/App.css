@@ -424,3 +424,40 @@ html,body{background:var(--bg);color: var(--text);}
 
 @media (max-width:380px){ .title{font-size:18px} .bubble{max-width:90%} }
 @media (orientation:landscape) and (max-height:480px){ .chat{min-height:200px} }
+
+/* ---------- FIX: prevent right-edge clipping on phones ---------- */
+
+/* Let the layout shrink; never create horizontal scroll */
+@media (max-width: 600px) {
+  html, body { width: 100%; overflow-x: hidden; }
+
+  /* These containers must not exceed the viewport */
+  .site, .site-wrap, .container { max-width: 100%; }
+
+  /* Flex rows can actually shrink */
+  .row.gap { min-width: 0; flex-wrap: nowrap; }
+  .row.gap > * { min-width: 0; }            /* critical */
+  .row.gap .input { flex: 1 1 auto; min-width: 0; width: auto; }
+
+  /* Header pills shouldn't push the layout wider */
+  .header-right { min-width: 0; flex-wrap: nowrap; gap: 8px; }
+  .header-right > * { min-width: 0; }
+
+  /* Base input min-width is 220px; relax it on small screens */
+  .input { min-width: 0; }
+  .theme-toggle { min-width: auto; }
+}
+
+/* Remove the card-level clipping that hides the right edge */
+@media (max-width: 480px) {
+  .container {
+    /* was: overflow: hidden; */
+    overflow: visible;
+    /* optional: safe-area padding for curved screens */
+    padding-left:  max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+
+  /* Chips won't create horizontal scroll */
+  .topics { overflow-x: hidden; }
+}
