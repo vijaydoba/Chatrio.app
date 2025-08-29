@@ -1,27 +1,77 @@
+// index.js
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const { Server } = require('socket.io');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const PORT = Number(process.env.PORT || 5050);
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'https://68b0a148ede77819c090b96f--incredible-rabanadas-b8cf9b.netlify.app';
+const PORT = process.env.PORT || 5050;
+const RENDER_URL = process.env.RENDER_EXTERNAL_URL || '';
 
+// Comma-separated prod origins (e.g. "https://myapp.netlify.app,https://www.myapp.com")
+const CLIENT_ORIGIN_RAW = process.env.CLIENT_ORIGIN || '';
+const EXTRA_ORIGINS_RAW = process.env.EXTRA_ORIGINS || ''; // optional more origins
+
+// Normalize list -> Set
+function parseOrigins(str) {
+  return new Set(
+    String(str)
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
+  );
+}
+const ALLOWED_SET = new Set([
+  ...parseOrigins(CLIENT_ORIGIN_RAW),
+  ...parseOrigins(EXTRA_ORIGINS_RAW),
+]);
+
+// Regex for Netlify preview/branch URLs: https://<hash-or-branch>--<site>.netlify.app
+const NETLIFY_PREVIEW_RE = /^https:\/\/[a-z0-9-]+--[a-z0-9-]+\.netlify\.app$/i;
+// Localhost (dev)
+const LOCALHOST_RE = /^https?:\/\/localhost(?::\d+)?$/i;
+
+function isAllowedOrigin(origin) {
+  if (!origin) return true; // server-to-server / curl
+  if (NODE_ENV !== 'production') {
+    // In dev, allow localhost and anything (you can tighten if you want)
+    return true;
+  }
+  if (ALLOWED_SET.has(origin)) return true;
+  if (NETLIFY_PREVIEW_RE.test(origin)) return true; // allow all Netlify previews
+  if (LOCALHOST_RE.test(origin)) return true; // useful if you test prod backend from local FE
+  return false;
+}
+
+function corsOriginCb(origin, cb) {
+  if (isAllowedOrigin(origin)) return cb(null, true);
+  return cb(new Error(`CORS: Origin not allowed - ${origin}`), false);
+}
+
+/* =================== App =================== */
 const app = express();
 
-// CORS: locked down in production, open in dev
 app.use(
   cors({
-    origin: NODE_ENV === 'production' ? [CLIENT_ORIGIN] : true,
-    methods: ['GET', 'POST'],
+    origin: corsOriginCb,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    credentials: true,
   })
 );
 
+app.use(express.json());
+
+// Health check for Render
+app.get('/health', (_req, res) => res.status(200).json({ ok: true }));
+
+/* =================== HTTP + Socket.IO =================== */
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: NODE_ENV === 'production' ? [CLIENT_ORIGIN] : '*',
+    origin: corsOriginCb,
     methods: ['GET', 'POST'],
+    credentials: true,
   },
   maxHttpBufferSize: 10 * 1024 * 1024, // 10 MB for images
 });
@@ -44,16 +94,8 @@ const imageWindows = new Map(); // socket.id -> timestamps[] (image only)
 const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
 
 const BAD_WORDS = [
-  'fuck',
-  'shit',
-  'bitch',
-  'asshole',
-  'bastard',
-  'dick',
-  'pussy',
-  'cunt',
-  'nigger',
-  'faggot',
+  'fuck', 'shit', 'bitch', 'asshole', 'bastard',
+  'dick', 'pussy', 'cunt', 'nigger', 'faggot'
 ];
 const badWordsRegex = new RegExp(`\\b(${BAD_WORDS.join('|')})\\b`, 'gi');
 function cleanText(s = '') {
@@ -73,7 +115,6 @@ function broadcastOnline() {
 function broadcastWaitingCount() {
   io.emit('waiting_count', waitingQueue.length);
 }
-
 function overlapScore(a, b) {
   if (!a || !b || a.size === 0 || b.size === 0) return 0;
   let c = 0;
@@ -89,16 +130,12 @@ function tryPair() {
     const a = getSocket(entrant.id);
     if (!a) continue;
     const aTopics = userTopics.get(a.id) || new Set();
-    let bestIdx = -1,
-      bestScore = -1;
+    let bestIdx = -1, bestScore = -1;
     for (let i = 0; i < waitingQueue.length; i++) {
       const candSock = getSocket(waitingQueue[i].id);
       if (!candSock) continue;
       const score = overlapScore(aTopics, userTopics.get(candSock.id) || new Set());
-      if (score > bestScore) {
-        bestIdx = i;
-        bestScore = score;
-      }
+      if (score > bestScore) { bestIdx = i; bestScore = score; }
     }
     const partnerEntry =
       bestIdx >= 0 && bestScore > 0 ? waitingQueue.splice(bestIdx, 1)[0] : waitingQueue.shift();
@@ -124,19 +161,11 @@ function pair(a, b) {
 
 function unpair(leaver) {
   const pid = partners.get(leaver.id);
-  if (!pid) {
-    partners.delete(leaver.id);
-    leaver.partner = null;
-    return;
-  }
+  if (!pid) { partners.delete(leaver.id); leaver.partner = null; return; }
   const partner = getSocket(pid);
   partners.delete(leaver.id);
   leaver.partner = null;
-  if (partner) {
-    partners.delete(partner.id);
-    partner.partner = null;
-    partner.emit('friend_left');
-  }
+  if (partner) { partners.delete(partner.id); partner.partner = null; partner.emit('friend_left'); }
 }
 
 /* ================== Rate limit helpers ================== */
@@ -154,6 +183,7 @@ function allowTextOrImage(socket) {
   return true;
 }
 
+const imageWindows = new Map();
 function allowImage(socket) {
   const now = Date.now();
   const arr = imageWindows.get(socket.id) || [];
@@ -169,38 +199,31 @@ function allowImage(socket) {
 
 /* ================== Socket handlers ================== */
 io.on('connection', (socket) => {
-  console.log('[connect]', socket.id);
+  console.log('[connect]', socket.id, 'origin:', socket.request.headers.origin);
   broadcastOnline();
   broadcastWaitingCount();
 
   usernames.set(socket.id, 'Stranger');
   userTopics.set(socket.id, new Set());
 
-  socket.on('set_username', (name) => {
-    const safe = cleanText((name || '').trim() || 'Stranger');
-    usernames.set(socket.id, safe);
-  });
-
-  socket.on('set_topics', ({ topics }) => {
-    const set = new Set(
-      Array.isArray(topics)
-        ? topics.map((t) => String(t || '').toLowerCase().trim()).filter(Boolean)
-        : []
-    );
-    userTopics.set(socket.id, set);
-  });
+  socket.on('set_username', (name) =>
+    usernames.set(socket.id, cleanText((name || '').trim() || 'Stranger'))
+  );
+  socket.on('set_topics', ({ topics }) =>
+    userTopics.set(
+      socket.id,
+      new Set(
+        (Array.isArray(topics)
+          ? topics.map((t) => String(t || '').toLowerCase().trim())
+          : []
+        ).filter(Boolean)
+      )
+    )
+  );
 
   socket.on('ready_to_chat', () => {
-    console.log(`[ready_to_chat] Socket ${socket.id}, paired: ${partners.has(socket.id)}`);
-    if (partners.has(socket.id)) {
-      console.log(`[ready_to_chat] Clearing stale partner for ${socket.id}`);
-      unpair(socket);
-    }
-    if (!waitingQueue.find((e) => e.id === socket.id)) {
-      console.log(`[ready_to_chat] Adding ${socket.id} to waitingQueue`);
-      waitingQueue.push({ id: socket.id });
-    }
-    console.log(`[ready_to_chat] Emitting waiting to ${socket.id}`);
+    if (partners.has(socket.id)) unpair(socket);
+    if (!waitingQueue.find((e) => e.id === socket.id)) waitingQueue.push({ id: socket.id });
     socket.emit('waiting');
     broadcastWaitingCount();
     tryPair();
@@ -250,32 +273,20 @@ io.on('connection', (socket) => {
 
   socket.on('message', (payload) => {
     if (!allowTextOrImage(socket)) return;
-    const pid = partners.get(socket.id);
-    if (!pid) return;
-    const p = getSocket(pid);
-    if (!p) return;
-
+    const pid = partners.get(socket.id); if (!pid) return;
+    const p = getSocket(pid); if (!p) return;
     const msgId = payload?.msgId || `${socket.id}-${Date.now()}`;
     const text = cleanText(String(payload?.text ?? ''));
     socket.emit('msg_sent', { msgId });
     p.emit('message', {
-      msgId,
-      author: usernames.get(socket.id) || 'Stranger',
-      text,
-      fromId: socket.id,
-      ts: Date.now(),
+      msgId, author: usernames.get(socket.id) || 'Stranger', text, fromId: socket.id, ts: Date.now()
     });
   });
 
   socket.on('image', (payload) => {
-    if (!allowTextOrImage(socket)) return;
-    if (!allowImage(socket)) return;
-
-    const pid = partners.get(socket.id);
-    if (!pid) return;
-    const p = getSocket(pid);
-    if (!p) return;
-
+    if (!allowTextOrImage(socket) || !allowImage(socket)) return;
+    const pid = partners.get(socket.id); if (!pid) return;
+    const p = getSocket(pid); if (!p) return;
     const msgId = payload?.msgId || `${socket.id}-img-${Date.now()}`;
     const data = String(payload?.image || '');
     const approxBytes = Math.ceil((data.length * 3) / 4);
@@ -285,19 +296,13 @@ io.on('connection', (socket) => {
     }
     socket.emit('msg_sent', { msgId });
     p.emit('image', {
-      msgId,
-      author: usernames.get(socket.id) || 'Stranger',
-      image: data,
-      fromId: socket.id,
-      ts: Date.now(),
+      msgId, author: usernames.get(socket.id) || 'Stranger', image: data, fromId: socket.id, ts: Date.now()
     });
   });
 
   socket.on('delivered', ({ msgId }) => {
-    const pid = partners.get(socket.id);
-    if (!pid) return;
-    const s = getSocket(pid);
-    if (!s) return;
+    const pid = partners.get(socket.id); if (!pid) return;
+    const s = getSocket(pid); if (!s) return;
     s.emit('msg_delivered', { msgId });
   });
 
@@ -316,7 +321,15 @@ io.on('connection', (socket) => {
   socket.emit('idle');
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT} (${NODE_ENV})`);
-  console.log(`Allowed client origin: ${NODE_ENV === 'production' ? CLIENT_ORIGIN : 'ANY (dev)'}`);
+/* =================== Start =================== */
+server.listen(PORT, '0.0.0.0', () => {
+  const list = [...ALLOWED_SET];
+  if (NODE_ENV === 'production') {
+    console.log(`Server running on Render URL: ${RENDER_URL || '(unknown)'}`);
+    console.log(`Allowed client origins (exact):`, list);
+    console.log(`Netlify previews allowed by regex: ${NETLIFY_PREVIEW_RE}`);
+  } else {
+    console.log(`Server running on http://localhost:${PORT} (${NODE_ENV})`);
+    console.log('Allowed client origin: ANY (dev)');
+  }
 });
