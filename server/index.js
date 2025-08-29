@@ -33,16 +33,12 @@ const LOCALHOST_RE = /^https?:\/\/localhost(?::\d+)?$/i;
 
 function isAllowedOrigin(origin) {
   if (!origin) return true; // server-to-server / curl
-  if (NODE_ENV !== 'production') {
-    // In dev, allow localhost and anything (you can tighten if you want)
-    return true;
-  }
+  if (NODE_ENV !== 'production') return true;
   if (ALLOWED_SET.has(origin)) return true;
   if (NETLIFY_PREVIEW_RE.test(origin)) return true; // allow all Netlify previews
-  if (LOCALHOST_RE.test(origin)) return true; // useful if you test prod backend from local FE
+  if (LOCALHOST_RE.test(origin)) return true;       // handy for local FE hitting prod BE
   return false;
 }
-
 function corsOriginCb(origin, cb) {
   if (isAllowedOrigin(origin)) return cb(null, true);
   return cb(new Error(`CORS: Origin not allowed - ${origin}`), false);
@@ -50,7 +46,6 @@ function corsOriginCb(origin, cb) {
 
 /* =================== App =================== */
 const app = express();
-
 app.use(
   cors({
     origin: corsOriginCb,
@@ -58,7 +53,6 @@ app.use(
     credentials: true,
   })
 );
-
 app.use(express.json());
 
 // Health check for Render
@@ -66,7 +60,6 @@ app.get('/health', (_req, res) => res.status(200).json({ ok: true }));
 
 /* =================== HTTP + Socket.IO =================== */
 const server = http.createServer(app);
-
 const io = new Server(server, {
   cors: {
     origin: corsOriginCb,
@@ -77,10 +70,10 @@ const io = new Server(server, {
 });
 
 /* =================== Stores =================== */
-const partners = new Map(); // socket.id -> partnerId
-const usernames = new Map(); // socket.id -> username
+const partners = new Map();   // socket.id -> partnerId
+const usernames = new Map();  // socket.id -> username
 const userTopics = new Map(); // socket.id -> Set<string>
-let waitingQueue = []; // [{ id }]
+let waitingQueue = [];        // [{ id }]
 const msgWindows = new Map(); // socket.id -> timestamps[] (text+image)
 
 /* ============ Rate limits & filters ============ */
@@ -103,23 +96,13 @@ function cleanText(s = '') {
 }
 
 /* =================== Helpers =================== */
-function getSocket(id) {
-  return io.sockets.sockets.get(id);
-}
-function removeFromQueue(id) {
-  waitingQueue = waitingQueue.filter((e) => e.id !== id);
-}
-function broadcastOnline() {
-  io.emit('online', io.engine.clientsCount);
-}
-function broadcastWaitingCount() {
-  io.emit('waiting_count', waitingQueue.length);
-}
+function getSocket(id) { return io.sockets.sockets.get(id); }
+function removeFromQueue(id) { waitingQueue = waitingQueue.filter((e) => e.id !== id); }
+function broadcastOnline() { io.emit('online', io.engine.clientsCount); }
+function broadcastWaitingCount() { io.emit('waiting_count', waitingQueue.length); }
 function overlapScore(a, b) {
   if (!a || !b || a.size === 0 || b.size === 0) return 0;
-  let c = 0;
-  for (const t of a) if (b.has(t)) c++;
-  return c;
+  let c = 0; for (const t of a) if (b.has(t)) c++; return c;
 }
 
 /* =================== Pairing =================== */
@@ -137,8 +120,9 @@ function tryPair() {
       const score = overlapScore(aTopics, userTopics.get(candSock.id) || new Set());
       if (score > bestScore) { bestIdx = i; bestScore = score; }
     }
-    const partnerEntry =
-      bestIdx >= 0 && bestScore > 0 ? waitingQueue.splice(bestIdx, 1)[0] : waitingQueue.shift();
+    const partnerEntry = bestIdx >= 0 && bestScore > 0
+      ? waitingQueue.splice(bestIdx, 1)[0]
+      : waitingQueue.shift();
     const b = getSocket(partnerEntry.id);
     if (a?.connected && b?.connected) pair(a, b);
     else {
@@ -152,8 +136,7 @@ function tryPair() {
 function pair(a, b) {
   partners.set(a.id, b.id);
   partners.set(b.id, a.id);
-  a.partner = b.id;
-  b.partner = a.id;
+  a.partner = b.id; b.partner = a.id;
   a.emit('partner_found', { partner: usernames.get(b.id) || 'Stranger' });
   b.emit('partner_found', { partner: usernames.get(a.id) || 'Stranger' });
   console.log(`[pair] ${a.id} <-> ${b.id}`);
@@ -183,7 +166,6 @@ function allowTextOrImage(socket) {
   return true;
 }
 
-const imageWindows = new Map();
 function allowImage(socket) {
   const now = Date.now();
   const arr = imageWindows.get(socket.id) || [];
