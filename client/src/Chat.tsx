@@ -91,6 +91,19 @@ export default function Chat() {
   const soundSent = () => beep(620, 70, 0.06);
   const soundReceived = () => beep(420, 120, 0.06);
 
+  // lock scroll when connected
+  useEffect(() => {
+    const body = document.body;
+    if (mode === "connected") {
+      body.style.overflow = "hidden";
+    } else {
+      body.style.overflow = "";
+    }
+    return () => {
+      body.style.overflow = "";
+    };
+  }, [mode]);
+
   // Prefs to localStorage
   useEffect(() => {
     const root = document.documentElement;
@@ -108,12 +121,11 @@ export default function Chat() {
     modeRef.current = mode;
   }, [mode]);
 
-  // Log mode changes for debugging
+  // Log mode changes
   useEffect(() => {
     console.log("Mode updated to:", mode);
   }, [mode]);
 
-  // Socket
   // Socket
   useEffect(() => {
     const socket = io(
@@ -128,7 +140,6 @@ export default function Chat() {
     socketRef.current = socket;
 
     socket.on("connect", () => {
-      console.log("Socket connected, ID:", socket.id);
       setMyId(socket.id || "");
       if (modeRef.current === "waiting") {
         socket.emit("ready_to_chat");
@@ -143,18 +154,9 @@ export default function Chat() {
       socket.emit("set_topics", { topics: selectedTopics });
     });
 
-    socket.on("connect_error", (err) => {
-      console.error("Socket connection error:", err.message);
-      showNotice("Failed to connect to server. Try again later.", 3000);
-    });
-
     socket.on("idle", () => resetChat("idle"));
-    socket.on("waiting", () => {
-      console.log("Received waiting event");
-      resetChat("waiting");
-    });
+    socket.on("waiting", () => resetChat("waiting"));
     socket.on("partner_found", ({ partner }) => {
-      console.log("Received partner_found, partner:", partner);
       const name = partner || "Stranger";
       setPartnerName(name);
       setMode("connected");
@@ -243,17 +245,12 @@ export default function Chat() {
   };
 
   const startNewChat = () => {
-    if (mode !== "idle") {
-      console.log("Cannot start new chat, current mode:", mode);
-      return;
-    }
+    if (mode !== "idle") return;
     if (!socketRef.current?.connected) {
-      console.log("Cannot start new chat, socket not connected");
       showNotice("Cannot connect to server. Please try again.", 3000);
       return;
     }
-    console.log("Emitting ready_to_chat, socket ID:", socketRef.current.id);
-    setMode("waiting"); // Optimistic update
+    setMode("waiting");
     socketRef.current.emit("ready_to_chat");
   };
 
@@ -308,14 +305,12 @@ export default function Chat() {
     socketRef.current?.emit("typing", { typing: false });
   };
 
-  // Image (compress + 2MB cap)
   const onPickFile = (file?: File | null) => {
     if (!file || mode !== "connected") return;
     if (!file.type.startsWith("image/")) {
       showNotice("Please select an image.");
       return;
     }
-
     const img = new Image();
     const reader = new FileReader();
     reader.onload = () => {
@@ -342,13 +337,11 @@ export default function Chat() {
         }
         ctx.drawImage(img, 0, 0, width, height);
         const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
-
         const approxBytes = Math.ceil((dataUrl.length * 3) / 4);
         if (approxBytes > 2 * 1024 * 1024) {
           showNotice("Image too large (>2MB).");
           return;
         }
-
         const msgId = makeId();
         addMessage({
           msgId,
@@ -369,29 +362,23 @@ export default function Chat() {
 
   const openFilePicker = () => fileInputRef.current?.click();
 
-  const canEditName = mode !== "connected";
+  const canEditName = true; // always editable
 
   const bubble = (m: Message, i: number) => {
     if (m.kind === "system") {
       return (
         <div key={i} className="bubble-row center">
-          <div className="bubble system" role="note" aria-live="polite">
-            {m.text}
-          </div>
+          <div className="bubble system">{m.text}</div>
         </div>
       );
     }
     const isYou = m.fromId === myId;
-    const ticks = isYou
-      ? m.status === "delivered"
-        ? "✓✓"
-        : m.status === "sent"
-        ? "✓"
-        : ""
-      : "";
+    const ticks =
+      isYou &&
+      (m.status === "delivered" ? "✓✓" : m.status === "sent" ? "✓" : "");
     return (
       <div key={i} className={`bubble-row ${isYou ? "right" : "left"}`}>
-        <div className={`bubble ${isYou ? "me" : "other"}`} role="listitem">
+        <div className={`bubble ${isYou ? "me" : "other"}`}>
           <div className="bubble-author">{isYou ? username : m.author}</div>
           {m.image ? (
             <img
@@ -410,14 +397,7 @@ export default function Chat() {
                 minute: "2-digit",
               })}
             </span>
-            {ticks && (
-              <span
-                className="bubble-ticks"
-                aria-label={ticks === "✓✓" ? "Delivered" : "Sent"}
-              >
-                {ticks}
-              </span>
-            )}
+            {ticks && <span className="bubble-ticks">{ticks}</span>}
           </div>
         </div>
       </div>
@@ -437,31 +417,27 @@ export default function Chat() {
   }, [messages, atBottom]);
 
   return (
-    <div className="container">
+    <div className={`container ${mode}`}>
       <div className="header">
         <h1 className="title">Chatrio</h1>
         <div className="header-right">
-          <div className="online-pill" aria-live="polite">
-            {online} online
-          </div>
+          <div className="online-pill">{online} online</div>
           <button
             className="btn theme-toggle"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            aria-label="Toggle theme"
           >
             {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
           </button>
           <button
             className="btn theme-toggle"
             onClick={() => setSoundOn((s) => !s)}
-            aria-label="Toggle sound"
           >
             {soundOn ? "🔊 Sound" : "🔈 Muted"}
           </button>
         </div>
       </div>
 
-      {/* Name + topics */}
+      {/* Name row */}
       <div className="row gap">
         <input
           className="input"
@@ -469,91 +445,64 @@ export default function Chat() {
           value={nameDraft}
           onChange={(e) => setNameDraft(e.target.value)}
           disabled={!canEditName}
-          aria-label="Your display name"
         />
         <button
           className="btn"
           onClick={applyName}
-          disabled={!canEditName || nameDraft.trim() === username}
-          aria-label="Set name"
+          disabled={nameDraft.trim() === username}
         >
           Set Name
         </button>
       </div>
 
-      <div className="topics" role="group" aria-label="Interests">
-        {ALL_TOPICS.map((t) => {
-          const active = selectedTopics.includes(t);
-          return (
-            <button
-              key={t}
-              className={`chip ${active ? "chip-active" : ""}`}
-              onClick={() => toggleTopic(t)}
-              disabled={mode === "connected"}
-              title={
-                mode === "connected"
-                  ? "Finish chat to change topics"
-                  : "Match by interest"
-              }
-              aria-pressed={active}
-            >
-              #{t}
-            </button>
-          );
-        })}
-      </div>
+      {/* Topics hidden when connected */}
+      {mode !== "connected" && (
+        <div className="topics" role="group" aria-label="Interests">
+          {ALL_TOPICS.map((t) => {
+            const active = selectedTopics.includes(t);
+            return (
+              <button
+                key={t}
+                className={`chip ${active ? "chip-active" : ""}`}
+                onClick={() => toggleTopic(t)}
+                aria-pressed={active}
+              >
+                #{t}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* Status */}
       {mode === "idle" && (
         <div className="mb-12">
-          {!socketRef.current?.connected && (
-            <div className="banner warning" aria-live="polite">
-              Unable to connect to chat server. Please try again later.
-            </div>
-          )}
-          {socketRef.current?.connected && (
-            <>
-              <div className="text-muted mb-8">
-                Choose interests (optional) and click <strong>New Chat</strong>.
-              </div>
-              <button
-                className="btn btn-primary"
-                onClick={startNewChat}
-                aria-label="Start new chat"
-              >
-                New Chat
-              </button>
-            </>
-          )}
+          <div className="text-muted mb-8">
+            Choose interests (optional) and click <strong>New Chat</strong>.
+          </div>
+          <button className="btn btn-primary" onClick={startNewChat}>
+            New Chat
+          </button>
         </div>
       )}
       {mode === "waiting" && (
-        <div className="mb-12" aria-live="polite">
-          <div>
-            Looking for a stranger…{" "}
-            {waitingCount > 0 ? `(${waitingCount} waiting)` : ""}
-          </div>
+        <div className="mb-12">
+          Looking for a stranger…{" "}
+          {waitingCount > 0 ? `(${waitingCount} waiting)` : ""}
           <div className="mt-8">
-            <button
-              className="btn btn-danger"
-              onClick={leaveChat}
-              aria-label="Cancel and go idle"
-            >
+            <button className="btn btn-danger" onClick={leaveChat}>
               Cancel &amp; Go Idle
             </button>
           </div>
         </div>
       )}
       {mode === "friend_left" && (
-        <div className="banner warning" aria-live="polite">
-          Your friend left the chat.
-        </div>
+        <div className="banner warning">Your friend left the chat.</div>
       )}
 
       {mode === "connected" && (
         <div className="status">
           Connected with <span className="status-name">{partnerName}</span>!
-          Start chatting.
           <div className="typing-row">
             {partnerTyping && (
               <span className="typing" aria-live="polite">
@@ -565,26 +514,13 @@ export default function Chat() {
             className="mt-8"
             style={{ display: "flex", gap: 8, flexWrap: "wrap" }}
           >
-            <button
-              className="btn btn-primary"
-              onClick={nextChat}
-              aria-label="Next partner"
-            >
+            <button className="btn btn-primary" onClick={nextChat}>
               Next
             </button>
-            <button
-              className="btn btn-danger"
-              onClick={leaveChat}
-              aria-label="Leave chat"
-            >
+            <button className="btn btn-danger" onClick={leaveChat}>
               Leave Chat
             </button>
-            <button
-              className="btn btn-danger"
-              onClick={reportAndNext}
-              title="Report user and skip"
-              aria-label="Report and next"
-            >
+            <button className="btn btn-danger" onClick={reportAndNext}>
               Report &amp; Next
             </button>
           </div>
@@ -603,12 +539,15 @@ export default function Chat() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Notice */}
-      {!!notice && (
-        <div className="banner" role="status">
-          {notice}
+      {/* Typing indicator at the bottom */}
+      {mode === "connected" && partnerTyping && (
+        <div className="typing-row typing-bottom">
+          <span className="typing">Partner is typing…</span>
         </div>
       )}
+
+      {/* Notice */}
+      {!!notice && <div className="banner">{notice}</div>}
 
       {/* Composer */}
       <div className="composer">
@@ -622,14 +561,12 @@ export default function Chat() {
           placeholder={
             mode === "connected" ? "Say hi…" : "Start a chat to type"
           }
-          aria-label="Type a message"
         />
         <button
           className="btn"
           onClick={openFilePicker}
           disabled={mode !== "connected"}
           title="Send photo"
-          aria-label="Send photo"
         >
           📷
         </button>
@@ -644,7 +581,6 @@ export default function Chat() {
           className="btn"
           onClick={sendMessage}
           disabled={mode !== "connected" || !input.trim()}
-          aria-label="Send message"
         >
           Send
         </button>
@@ -652,12 +588,7 @@ export default function Chat() {
 
       {/* Lightbox */}
       {lightbox && (
-        <div
-          className="lightbox"
-          onClick={() => setLightbox(null)}
-          role="dialog"
-          aria-label="Image viewer"
-        >
+        <div className="lightbox" onClick={() => setLightbox(null)}>
           <img src={lightbox} alt="Full size" className="lightbox-img" />
         </div>
       )}

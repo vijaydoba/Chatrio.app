@@ -80,6 +80,9 @@ html,body{background:var(--bg);color: var(--text);}
 .status{margin-bottom:12px;color:var(--status);font-weight:700}
 .status-name{color:var(--status-name)}
 .typing-row{min-height:20px}.typing{font-weight:500;color:var(--status-name);font-size:13px}
+.typing-bottom {
+  margin: 4px 0 6px 6px; /* space above composer */
+}
 
 /* ============== Chat ============== */
 .chat{
@@ -272,6 +275,54 @@ html,body{background:var(--bg);color: var(--text);}
 /* ============== Responsive ============== */
 .input,.btn,.chip{min-height:44px}
 
+/* --- Desktop should mirror mobile header while connected --- */
+
+/* Hide only the # topics when connected (works on desktop too) */
+.container.connected .topics { display: none !important; }
+
+/* Keep the name row visible, compact, and on one line */
+.container.connected .row.gap {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 6px;
+}
+
+/* Allow the input to shrink instead of pushing off-screen */
+.container.connected .row.gap .input {
+  flex: 1 1 auto;
+  min-width: 0;       /* critical: lets it shrink on desktop too */
+  width: auto;
+}
+
+/* Keep the button natural width and unbroken */
+.container.connected .row.gap .btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding: 9px 12px;
+}
+
+/* Slight breathing room between the controls block and the chat box */
+.container.connected .status + .chat,
+.container.connected .row.gap + .chat {
+  margin-top: 8px;
+}
+
+/* Optional: align the header pills compactly on desktop as well */
+.container.connected .header-right {
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+.container.connected .online-pill,
+.container.connected .theme-toggle {
+  height: 28px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+
+
 /* — force correct visibility — */
 @media (max-width:900px){
   .site-header .desktop-only{display:none !important;}
@@ -279,16 +330,97 @@ html,body{background:var(--bg);color: var(--text);}
   .hamburger:focus-visible{outline:2px solid var(--primary-border);outline-offset:2px;}
 }
 
-@media (max-width:640px){
-  .header {
-    flex-direction: row; /* horizontal alignment */
-    align-items: center; /* vertically center logo & hamburger */
-    justify-content: space-between; /* space between logo and menu button */
-    gap: 8px;
+/* --- Phone layout (like your 2nd screenshot) --- */
+*, *::before, *::after { box-sizing: border-box; }
+
+@media (max-width: 480px) {
+  html, body { overflow-x: hidden; }
+
+  /* Card centered, but not full-height */
+  .container {
+    max-width: 420px;
+    width: calc(100% - 32px);   /* 16px gutter on both sides */
+    margin: 16px auto;
+    padding: 12px;
+    min-height: auto;
+    border-radius: 12px;
+    overflow: hidden;           /* guard against tiny overflows */
+  }
+
+  /* Header pills won’t force horizontal scroll */
+  .header-right { gap: 8px; flex-wrap: wrap; }
+
+  /* Name row: keep input + button on one line without overflow */
+  .row.gap { flex-wrap: nowrap; gap: 8px; }
+  .row.gap .input { flex: 1 1 auto; min-width: 0; }    /* allow shrink */
+  .row.gap .btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 9px 12px;
+  }
+
+  /* Chips tidy spacing */
+  .topics { gap: 10px; margin: 12px 0 12px; }
+
+  /* Chat area with margins like the screenshot */
+  .chat {
+    flex: 1 1 auto;
+    min-height: 260px;
+    margin: 10px 0;
+    overflow-y: auto;
+  }
+
+  /* Composer inside the card; no overlap, responsive */
+  .composer {
+    position: static;           /* turn off sticky for card look */
+    gap: 10px;
+    padding: 12px;
+  }
+  .composer .input { flex: 1 1 auto; min-width: 0; }
+  .composer .btn   { min-width: 64px; }
+  .header-right {
+    flex-wrap: nowrap;         /* keep all three on one row */
+    gap: 6px;
+  }
+  .online-pill {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  .theme-toggle {
+    min-width: auto;           /* override 92px */
+    padding: 6px 10px;
+    font-size: 12px;
+    white-space: nowrap;       /* prevent breaking "Dark"/"Sound" */
+  }
+}
+
+/* When connected, freeze the page and let only the chat scroll */
+.container.connected {
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;           /* page doesn't scroll */
+  display: flex;
+  flex-direction: column;
+}
+
+/* The chat log is the scroller */
+.chat {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+/* Mobile: use full-height while connected, but keep your card layout when not connected */
+@media (max-width: 640px) {
+  .container.connected {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    border-radius: 0;         /* app-like on phones while chatting */
   }
 }
 
 
+
+
 @media (max-width:380px){ .title{font-size:18px} .bubble{max-width:90%} }
 @media (orientation:landscape) and (max-height:480px){ .chat{min-height:200px} }
-@media (prefers-reduced-motion:reduce){ .btn,.chip{transition:none} }
