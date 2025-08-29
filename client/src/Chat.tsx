@@ -2,8 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import "./App.css";
 
-const SERVER_URL = "http://localhost:5050";
-
 type MsgStatus = "sending" | "sent" | "delivered";
 type Mode = "idle" | "waiting" | "connected" | "friend_left";
 type Theme = "light" | "dark";
@@ -116,8 +114,17 @@ export default function Chat() {
   }, [mode]);
 
   // Socket
+  // Socket
   useEffect(() => {
-    const socket = io(SERVER_URL, { autoConnect: true });
+    const socket = io(
+      process.env.REACT_APP_API_URL || "https://chatrio-app-2.onrender.com",
+      {
+        autoConnect: true,
+        transports: ["websocket"],
+        withCredentials: true,
+      }
+    );
+
     socketRef.current = socket;
 
     socket.on("connect", () => {
