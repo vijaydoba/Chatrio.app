@@ -6,7 +6,7 @@ export default function Contact() {
       <h1>Contact</h1>
       <p>
         Have a question or need to report an issue? Email us at
-        <a href="mailto:support@example.com"> support@example.com</a>.
+        <a href="mailto:chatrioapp@gmail.com"> chatrioapp@gmail.com</a>.
       </p>
 
       <h2>Safety tips</h2>

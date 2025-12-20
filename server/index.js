@@ -1,317 +1,208 @@
-// index.js
-const express = require('express');
-const http = require('http');
-const cors = require('cors');
-const { Server } = require('socket.io');
+const express = require("express");
+const http = require("http");
+const cors = require("cors");
+const { Server } = require("socket.io");
+require("dotenv").config();
 
-const NODE_ENV = process.env.NODE_ENV || 'development';
 const PORT = process.env.PORT || 5050;
-const RENDER_URL = process.env.RENDER_EXTERNAL_URL || '';
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "https://chatrio.app";
 
-// Comma-separated prod origins (e.g. "https://myapp.netlify.app,https://www.myapp.com")
-const CLIENT_ORIGIN_RAW = process.env.CLIENT_ORIGIN || '';
-const EXTRA_ORIGINS_RAW = process.env.EXTRA_ORIGINS || ''; // optional more origins
-
-// Normalize list -> Set
-function parseOrigins(str) {
-  return new Set(
-    String(str)
-      .split(',')
-      .map(s => s.trim())
-      .filter(Boolean)
-  );
-}
-const ALLOWED_SET = new Set([
-  ...parseOrigins(CLIENT_ORIGIN_RAW),
-  ...parseOrigins(EXTRA_ORIGINS_RAW),
-]);
-
-// Regex for Netlify preview/branch URLs: https://<hash-or-branch>--<site>.netlify.app
-const NETLIFY_PREVIEW_RE = /^https:\/\/[a-z0-9-]+--[a-z0-9-]+\.netlify\.app$/i;
-// Localhost (dev)
-const LOCALHOST_RE = /^https?:\/\/localhost(?::\d+)?$/i;
-
-function isAllowedOrigin(origin) {
-  if (!origin) return true; // server-to-server / curl
-  if (NODE_ENV !== 'production') return true;
-  if (ALLOWED_SET.has(origin)) return true;
-  if (NETLIFY_PREVIEW_RE.test(origin)) return true; // allow all Netlify previews
-  if (LOCALHOST_RE.test(origin)) return true;       // handy for local FE hitting prod BE
-  return false;
-}
-function corsOriginCb(origin, cb) {
-  if (isAllowedOrigin(origin)) return cb(null, true);
-  return cb(new Error(`CORS: Origin not allowed - ${origin}`), false);
-}
-
-/* =================== App =================== */
 const app = express();
 app.use(
   cors({
-    origin: corsOriginCb,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    origin: FRONTEND_ORIGIN,
     credentials: true,
   })
 );
 app.use(express.json());
 
-// Health check for Render
-app.get('/health', (_req, res) => res.status(200).json({ ok: true }));
+app.get("/", (req, res) => res.send("Chatrio API ✅"));
+app.get("/health", (req, res) => res.json({ ok: true }));
 
-/* =================== HTTP + Socket.IO =================== */
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: corsOriginCb,
-    methods: ['GET', 'POST'],
+    origin: FRONTEND_ORIGIN,
     credentials: true,
   },
-  maxHttpBufferSize: 10 * 1024 * 1024, // 10 MB for images
 });
 
-/* =================== Stores =================== */
-const partners = new Map();   // socket.id -> partnerId
-const usernames = new Map();  // socket.id -> username
-const userTopics = new Map(); // socket.id -> Set<string>
-let waitingQueue = [];        // [{ id }]
-const msgWindows = new Map(); // socket.id -> timestamps[] (text+image)
+const state = {
+  online: new Set(),                 // socket ids
+  waiting: new Set(),                // socket ids waiting
+  partner: new Map(),                // socketId -> partnerSocketId
+  username: new Map(),               // socketId -> name
+  topics: new Map(),                 // socketId -> string[]
+  waitingSince: new Map(),           // socketId -> timestamp
+};
 
-/* ============ Rate limits & filters ============ */
-const WINDOW_MS = 10_000;
-const MAX_MSGS = 8;
-
-const IMG_WINDOW_MS = 30_000;
-const MAX_IMAGES = 3;
-const imageWindows = new Map(); // socket.id -> timestamps[] (image only)
-
-const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
-
-const BAD_WORDS = [
-  'fuck', 'shit', 'bitch', 'asshole', 'bastard',
-  'dick', 'pussy', 'cunt', 'nigger', 'faggot'
-];
-const badWordsRegex = new RegExp(`\\b(${BAD_WORDS.join('|')})\\b`, 'gi');
-function cleanText(s = '') {
-  return String(s).replace(badWordsRegex, (m) => '*'.repeat(m.length));
+function emitCounts() {
+  io.emit("online", state.online.size);
+  io.emit("waiting_count", state.waiting.size);
 }
 
-/* =================== Helpers =================== */
-function getSocket(id) { return io.sockets.sockets.get(id); }
-function removeFromQueue(id) { waitingQueue = waitingQueue.filter((e) => e.id !== id); }
-function broadcastOnline() { io.emit('online', io.engine.clientsCount); }
-function broadcastWaitingCount() { io.emit('waiting_count', waitingQueue.length); }
-function overlapScore(a, b) {
-  if (!a || !b || a.size === 0 || b.size === 0) return 0;
-  let c = 0; for (const t of a) if (b.has(t)) c++; return c;
+function clearPair(a, reason = "friend_left") {
+  const b = state.partner.get(a);
+  if (!b) return;
+
+  state.partner.delete(a);
+  state.partner.delete(b);
+
+  // notify both if connected
+  io.to(a).emit(reason);
+  io.to(b).emit(reason);
 }
 
-/* =================== Pairing =================== */
-function tryPair() {
-  waitingQueue = waitingQueue.filter((e) => getSocket(e.id)?.connected);
-  while (waitingQueue.length >= 2) {
-    const entrant = waitingQueue.pop();
-    const a = getSocket(entrant.id);
-    if (!a) continue;
-    const aTopics = userTopics.get(a.id) || new Set();
-    let bestIdx = -1, bestScore = -1;
-    for (let i = 0; i < waitingQueue.length; i++) {
-      const candSock = getSocket(waitingQueue[i].id);
-      if (!candSock) continue;
-      const score = overlapScore(aTopics, userTopics.get(candSock.id) || new Set());
-      if (score > bestScore) { bestIdx = i; bestScore = score; }
-    }
-    const partnerEntry = bestIdx >= 0 && bestScore > 0
-      ? waitingQueue.splice(bestIdx, 1)[0]
-      : waitingQueue.shift();
-    const b = getSocket(partnerEntry.id);
-    if (a?.connected && b?.connected) pair(a, b);
-    else {
-      if (a?.connected) waitingQueue.unshift({ id: a.id });
-      if (b?.connected) waitingQueue.unshift({ id: b.id });
+function canMatch(a, b) {
+  const ta = state.topics.get(a) || [];
+  const tb = state.topics.get(b) || [];
+
+  // If either side has no topics, allow match
+  if (ta.length === 0 || tb.length === 0) return true;
+
+  // Otherwise require at least one overlap
+  const setB = new Set(tb);
+  return ta.some((t) => setB.has(t));
+}
+
+function tryMatch() {
+  const ids = Array.from(state.waiting);
+
+  // Try to match any two compatible users
+  for (let i = 0; i < ids.length; i++) {
+    for (let j = i + 1; j < ids.length; j++) {
+      const a = ids[i];
+      const b = ids[j];
+
+      // skip if already paired
+      if (state.partner.has(a) || state.partner.has(b)) continue;
+      if (!canMatch(a, b)) continue;
+
+      // pair them
+      state.waiting.delete(a);
+      state.waiting.delete(b);
+      state.waitingSince.delete(a);
+      state.waitingSince.delete(b);
+
+      state.partner.set(a, b);
+      state.partner.set(b, a);
+
+      const nameA = state.username.get(a) || "Stranger";
+      const nameB = state.username.get(b) || "Stranger";
+
+      io.to(a).emit("partner_found", { partner: nameB });
+      io.to(b).emit("partner_found", { partner: nameA });
+
+      emitCounts();
+      return; // match one pair at a time
     }
   }
-  broadcastWaitingCount();
+
+  emitCounts();
 }
 
-function pair(a, b) {
-  partners.set(a.id, b.id);
-  partners.set(b.id, a.id);
-  a.partner = b.id; b.partner = a.id;
-  a.emit('partner_found', { partner: usernames.get(b.id) || 'Stranger' });
-  b.emit('partner_found', { partner: usernames.get(a.id) || 'Stranger' });
-  console.log(`[pair] ${a.id} <-> ${b.id}`);
-}
+io.on("connection", (socket) => {
+  state.online.add(socket.id);
+  state.username.set(socket.id, "Stranger");
+  state.topics.set(socket.id, []);
+  emitCounts();
 
-function unpair(leaver) {
-  const pid = partners.get(leaver.id);
-  if (!pid) { partners.delete(leaver.id); leaver.partner = null; return; }
-  const partner = getSocket(pid);
-  partners.delete(leaver.id);
-  leaver.partner = null;
-  if (partner) { partners.delete(partner.id); partner.partner = null; partner.emit('friend_left'); }
-}
+  socket.emit("idle");
 
-/* ================== Rate limit helpers ================== */
-function allowTextOrImage(socket) {
-  const now = Date.now();
-  const arr = msgWindows.get(socket.id) || [];
-  const fresh = arr.filter((t) => now - t <= WINDOW_MS);
-  if (fresh.length >= MAX_MSGS) {
-    const oldest = Math.min(...fresh);
-    socket.emit('rate_limited', { retryAfterMs: Math.max(0, WINDOW_MS - (now - oldest)) });
-    return false;
-  }
-  fresh.push(now);
-  msgWindows.set(socket.id, fresh);
-  return true;
-}
-
-function allowImage(socket) {
-  const now = Date.now();
-  const arr = imageWindows.get(socket.id) || [];
-  const fresh = arr.filter((t) => now - t <= IMG_WINDOW_MS);
-  if (fresh.length >= MAX_IMAGES) {
-    socket.emit('image_rejected', { reason: 'Too many images. Please wait a moment.' });
-    return false;
-  }
-  fresh.push(now);
-  imageWindows.set(socket.id, fresh);
-  return true;
-}
-
-/* ================== Socket handlers ================== */
-io.on('connection', (socket) => {
-  console.log('[connect]', socket.id, 'origin:', socket.request.headers.origin);
-  broadcastOnline();
-  broadcastWaitingCount();
-
-  usernames.set(socket.id, 'Stranger');
-  userTopics.set(socket.id, new Set());
-
-  socket.on('set_username', (name) =>
-    usernames.set(socket.id, cleanText((name || '').trim() || 'Stranger'))
-  );
-  socket.on('set_topics', ({ topics }) =>
-    userTopics.set(
-      socket.id,
-      new Set(
-        (Array.isArray(topics)
-          ? topics.map((t) => String(t || '').toLowerCase().trim())
-          : []
-        ).filter(Boolean)
-      )
-    )
-  );
-
-  socket.on('ready_to_chat', () => {
-    if (partners.has(socket.id)) unpair(socket);
-    if (!waitingQueue.find((e) => e.id === socket.id)) waitingQueue.push({ id: socket.id });
-    socket.emit('waiting');
-    broadcastWaitingCount();
-    tryPair();
+  socket.on("set_username", (name) => {
+    const clean = typeof name === "string" && name.trim() ? name.trim().slice(0, 32) : "Stranger";
+    state.username.set(socket.id, clean);
   });
 
-  socket.on('disconnect_request', () => {
-    removeFromQueue(socket.id);
-    unpair(socket);
-    socket.emit('idle');
-    broadcastWaitingCount();
+  socket.on("set_topics", ({ topics }) => {
+    const t = Array.isArray(topics) ? topics.filter(Boolean).map(String).slice(0, 10) : [];
+    state.topics.set(socket.id, t);
   });
 
-  socket.on('next', () => {
-    removeFromQueue(socket.id);
-    if (partners.has(socket.id)) unpair(socket);
-    if (!waitingQueue.find((e) => e.id === socket.id)) waitingQueue.push({ id: socket.id });
-    socket.emit('waiting');
-    broadcastWaitingCount();
-    tryPair();
+  socket.on("ready_to_chat", () => {
+    // if already paired, ignore
+    if (state.partner.has(socket.id)) return;
+
+    state.waiting.add(socket.id);
+    state.waitingSince.set(socket.id, Date.now());
+    socket.emit("waiting");
+    emitCounts();
+
+    tryMatch();
   });
 
-  socket.on('report_partner', () => {
-    const pid = partners.get(socket.id);
-    if (pid) {
-      const partner = getSocket(pid);
-      partners.delete(socket.id);
-      socket.partner = null;
-      if (partner) {
-        partners.delete(partner.id);
-        partner.partner = null;
-        partner.emit('friend_left');
-      }
-    }
-    if (!waitingQueue.find((e) => e.id === socket.id)) waitingQueue.push({ id: socket.id });
-    socket.emit('waiting');
-    broadcastWaitingCount();
-    tryPair();
+  socket.on("next", () => {
+    // break current pair, then re-queue
+    clearPair(socket.id, "friend_left");
+    state.waiting.add(socket.id);
+    state.waitingSince.set(socket.id, Date.now());
+    socket.emit("waiting");
+    emitCounts();
+    tryMatch();
   });
 
-  socket.on('typing', ({ typing }) => {
-    const pid = partners.get(socket.id);
-    if (!pid) return;
-    const p = getSocket(pid);
-    if (!p) return;
-    p.emit('partner_typing', { typing: !!typing });
+  socket.on("disconnect_request", () => {
+    // leave chat & go idle
+    clearPair(socket.id, "friend_left");
+    state.waiting.delete(socket.id);
+    state.waitingSince.delete(socket.id);
+    socket.emit("idle");
+    emitCounts();
   });
 
-  socket.on('message', (payload) => {
-    if (!allowTextOrImage(socket)) return;
-    const pid = partners.get(socket.id); if (!pid) return;
-    const p = getSocket(pid); if (!p) return;
-    const msgId = payload?.msgId || `${socket.id}-${Date.now()}`;
-    const text = cleanText(String(payload?.text ?? ''));
-    socket.emit('msg_sent', { msgId });
-    p.emit('message', {
-      msgId, author: usernames.get(socket.id) || 'Stranger', text, fromId: socket.id, ts: Date.now()
+  socket.on("typing", ({ typing }) => {
+    const b = state.partner.get(socket.id);
+    if (!b) return;
+    io.to(b).emit("partner_typing", { typing: !!typing });
+  });
+
+  socket.on("message", ({ msgId, text }) => {
+    const b = state.partner.get(socket.id);
+    if (!b) return;
+    io.to(b).emit("message", {
+      msgId,
+      author: state.username.get(socket.id) || "Stranger",
+      text: String(text || ""),
+      fromId: socket.id,
+      ts: Date.now(),
     });
+    socket.emit("msg_sent", { msgId });
   });
 
-  socket.on('image', (payload) => {
-    if (!allowTextOrImage(socket) || !allowImage(socket)) return;
-    const pid = partners.get(socket.id); if (!pid) return;
-    const p = getSocket(pid); if (!p) return;
-    const msgId = payload?.msgId || `${socket.id}-img-${Date.now()}`;
-    const data = String(payload?.image || '');
-    const approxBytes = Math.ceil((data.length * 3) / 4);
-    if (approxBytes > MAX_IMAGE_BYTES) {
-      socket.emit('image_rejected', { reason: 'Image too large (>2MB)' });
-      return;
-    }
-    socket.emit('msg_sent', { msgId });
-    p.emit('image', {
-      msgId, author: usernames.get(socket.id) || 'Stranger', image: data, fromId: socket.id, ts: Date.now()
+  socket.on("image", ({ msgId, image }) => {
+    const b = state.partner.get(socket.id);
+    if (!b) return;
+    io.to(b).emit("image", {
+      msgId,
+      author: state.username.get(socket.id) || "Stranger",
+      image,
+      fromId: socket.id,
+      ts: Date.now(),
     });
+    socket.emit("msg_sent", { msgId });
   });
 
-  socket.on('delivered', ({ msgId }) => {
-    const pid = partners.get(socket.id); if (!pid) return;
-    const s = getSocket(pid); if (!s) return;
-    s.emit('msg_delivered', { msgId });
+  socket.on("delivered", ({ msgId }) => {
+    const b = state.partner.get(socket.id);
+    if (!b) return;
+    io.to(b).emit("msg_delivered", { msgId });
   });
 
-  socket.on('disconnect', () => {
-    console.log('[disconnect]', socket.id);
-    removeFromQueue(socket.id);
-    unpair(socket);
-    usernames.delete(socket.id);
-    userTopics.delete(socket.id);
-    msgWindows.delete(socket.id);
-    imageWindows.delete(socket.id);
-    broadcastOnline();
-    broadcastWaitingCount();
+  socket.on("disconnect", () => {
+    // clean up
+    clearPair(socket.id, "friend_left");
+    state.waiting.delete(socket.id);
+    state.waitingSince.delete(socket.id);
+    state.partner.delete(socket.id);
+    state.username.delete(socket.id);
+    state.topics.delete(socket.id);
+    state.online.delete(socket.id);
+    emitCounts();
   });
-
-  socket.emit('idle');
 });
 
-/* =================== Start =================== */
-server.listen(PORT, '0.0.0.0', () => {
-  const list = [...ALLOWED_SET];
-  if (NODE_ENV === 'production') {
-    console.log(`Server running on Render URL: ${RENDER_URL || '(unknown)'}`);
-    console.log(`Allowed client origins (exact):`, list);
-    console.log(`Netlify previews allowed by regex: ${NETLIFY_PREVIEW_RE}`);
-  } else {
-    console.log(`Server running on http://localhost:${PORT} (${NODE_ENV})`);
-    console.log('Allowed client origin: ANY (dev)');
-  }
+server.listen(PORT, () => {
+  console.log(`API running on :${PORT}`);
+  console.log(`Allowed origin: ${FRONTEND_ORIGIN}`);
 });

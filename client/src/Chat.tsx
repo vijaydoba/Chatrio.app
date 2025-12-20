@@ -61,6 +61,14 @@ export default function Chat() {
   const lastEmitRef = useRef<number>(0);
   const modeRef = useRef<Mode>("idle");
 
+  // ✅ iOS detection (Safari/Chrome iOS) — helps avoid keyboard/input bugs
+  const isIOS = useMemo(() => {
+    const ua = navigator.userAgent || "";
+    const iOS = /iPad|iPhone|iPod/.test(ua);
+    const iPadOS = ua.includes("Mac") && "ontouchend" in document; // iPadOS Safari reports Mac
+    return iOS || iPadOS;
+  }, []);
+
   // Sounds
   const audioCtxRef = useRef<AudioContext | null>(null);
   const ensureAudio = () => {
@@ -88,20 +96,26 @@ export default function Chat() {
       gain.disconnect();
     }, ms);
   };
-  const soundSent = () => beep(620, 70, 0.06);
   const soundReceived = () => beep(420, 120, 0.06);
 
-  // lock scroll when connected
+  // lock scroll when connected (⚠️ do NOT lock on iOS — it can break typing when keyboard opens)
   useEffect(() => {
     const body = document.body;
-    if (mode === "connected") {
-      body.style.overflow = "hidden";
-    } else {
-      body.style.overflow = "";
-    }
+
+    if (mode === "connected" && !isIOS) body.style.overflow = "hidden";
+    else body.style.overflow = "";
+
     return () => {
       body.style.overflow = "";
     };
+  }, [mode, isIOS]);
+
+  // Fullscreen chat experience when connected (Telegram/Instagram-like)
+  useEffect(() => {
+    const body = document.body;
+    if (mode === "connected") body.classList.add("chat-fullscreen");
+    else body.classList.remove("chat-fullscreen");
+    return () => body.classList.remove("chat-fullscreen");
   }, [mode]);
 
   // Prefs to localStorage
@@ -111,51 +125,44 @@ export default function Chat() {
     else root.classList.remove("dark");
     localStorage.setItem("theme", theme);
   }, [theme]);
+
   useEffect(() => {
     localStorage.setItem("soundOn", soundOn ? "on" : "off");
   }, [soundOn]);
+
   useEffect(() => {
     localStorage.setItem("topics", JSON.stringify(selectedTopics));
   }, [selectedTopics]);
+
   useEffect(() => {
     modeRef.current = mode;
   }, [mode]);
 
-  // Log mode changes
   useEffect(() => {
-    console.log("Mode updated to:", mode);
-  }, [mode]);
-
-  // Socket
-  useEffect(() => {
-    const socket = io(
-      process.env.REACT_APP_API_URL || "https://chatrio-app-2.onrender.com",
-      {
-        autoConnect: true,
-        transports: ["websocket"],
-        withCredentials: true,
-      }
-    );
+    const socket = io("https://api.chatrio.app", {
+      autoConnect: true,
+      transports: ["websocket"],
+      withCredentials: true,
+    });
 
     socketRef.current = socket;
 
     socket.on("connect", () => {
       setMyId(socket.id || "");
-      if (modeRef.current === "waiting") {
-        socket.emit("ready_to_chat");
-      } else if (modeRef.current === "connected") {
-        socket.emit("disconnect_request");
-        setMode("idle");
-        setMessages([]);
-        setPartnerTyping(false);
-        pushSystem("Reconnected. Start a new chat.");
-      }
+
+      // ✅ Always sync identity
       socket.emit("set_username", username);
       socket.emit("set_topics", { topics: selectedTopics });
+
+      // ✅ If user was waiting, re-enter queue
+      if (modeRef.current === "waiting") {
+        socket.emit("ready_to_chat");
+      }
     });
 
     socket.on("idle", () => resetChat("idle"));
     socket.on("waiting", () => resetChat("waiting"));
+
     socket.on("partner_found", ({ partner }) => {
       const name = partner || "Stranger";
       setPartnerName(name);
@@ -181,14 +188,6 @@ export default function Chat() {
 
     socket.on("msg_sent", ({ msgId }) => updateStatus(msgId, "sent"));
     socket.on("msg_delivered", ({ msgId }) => updateStatus(msgId, "delivered"));
-
-    socket.on("rate_limited", ({ retryAfterMs }) => {
-      const secs = Math.ceil((retryAfterMs ?? 0) / 1000);
-      showNotice(`Rate limited — try again in ${secs}s`);
-    });
-    socket.on("image_rejected", ({ reason }) => {
-      showNotice(reason || "Image was rejected");
-    });
 
     return () => {
       socket.disconnect();
@@ -250,18 +249,24 @@ export default function Chat() {
       showNotice("Cannot connect to server. Please try again.", 3000);
       return;
     }
-    setMode("waiting");
+
+    socketRef.current.emit("set_username", username);
+    socketRef.current.emit("set_topics", { topics: selectedTopics });
     socketRef.current.emit("ready_to_chat");
+
+    setMode("waiting");
   };
 
   const nextChat = () => {
     socketRef.current?.emit("next");
     resetChat("waiting");
   };
+
   const leaveChat = () => {
     socketRef.current?.emit("disconnect_request");
     resetChat("idle");
   };
+
   const reportAndNext = () => {
     socketRef.current?.emit("report_partner");
     resetChat("waiting");
@@ -362,8 +367,6 @@ export default function Chat() {
 
   const openFilePicker = () => fileInputRef.current?.click();
 
-  const canEditName = true; // always editable
-
   const bubble = (m: Message, i: number) => {
     if (m.kind === "system") {
       return (
@@ -416,46 +419,90 @@ export default function Chat() {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, atBottom]);
 
+  // iOS keyboard helper: when input is focused, ensure the last message is visible
+  const nudgeToBottom = () => {
+    if (modeRef.current !== "connected") return;
+    requestAnimationFrame(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    });
+  };
+
   return (
-    <div className={`container ${mode}`}>
-      <div className="header">
-        <h1 className="title">Chatrio</h1>
-        <div className="header-right">
-          <div className="online-pill">{online} online</div>
+    <div
+      className={`chat-container ${mode} ${mode === "connected" ? "tg" : ""}`}
+    >
+      {/* When CONNECTED, show a minimal Telegram/Instagram-like topbar */}
+      {mode === "connected" ? (
+        <div className="tg-topbar">
           <button
-            className="btn theme-toggle"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="icon-btn"
+            onClick={leaveChat}
+            aria-label="Leave chat"
           >
-            {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
+            ←
           </button>
+
+          <div className="tg-center">
+            <div className="tg-name">{partnerName}</div>
+            <div className="tg-sub">
+              {partnerTyping ? "typing…" : "Connected"}
+            </div>
+          </div>
+
+          <div className="tg-actions">
+            <button className="icon-btn" onClick={nextChat} aria-label="Next">
+              ⇄
+            </button>
+            <button
+              className="icon-btn danger"
+              onClick={reportAndNext}
+              aria-label="Report & Next"
+              title="Report & Next"
+            >
+              !
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="chat-header">
+          <h1 className="chat-title">Chatrio</h1>
+          <div className="chat-header-right">
+            <div className="online-pill">{online} online</div>
+            <button
+              className="btn theme-toggle"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
+            </button>
+            <button
+              className="btn theme-toggle"
+              onClick={() => setSoundOn((s) => !s)}
+            >
+              {soundOn ? "🔊 Sound" : "🔈 Muted"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Hide setup controls once connected (no disturbance) */}
+      {mode !== "connected" && (
+        <div className="row gap">
+          <input
+            className="input"
+            type="text"
+            value={nameDraft}
+            onChange={(e) => setNameDraft(e.target.value)}
+          />
           <button
-            className="btn theme-toggle"
-            onClick={() => setSoundOn((s) => !s)}
+            className="btn"
+            onClick={applyName}
+            disabled={nameDraft.trim() === username}
           >
-            {soundOn ? "🔊 Sound" : "🔈 Muted"}
+            Set Name
           </button>
         </div>
-      </div>
+      )}
 
-      {/* Name row */}
-      <div className="row gap">
-        <input
-          className="input"
-          type="text"
-          value={nameDraft}
-          onChange={(e) => setNameDraft(e.target.value)}
-          disabled={!canEditName}
-        />
-        <button
-          className="btn"
-          onClick={applyName}
-          disabled={nameDraft.trim() === username}
-        >
-          Set Name
-        </button>
-      </div>
-
-      {/* Topics hidden when connected */}
       {mode !== "connected" && (
         <div className="topics" role="group" aria-label="Interests">
           {ALL_TOPICS.map((t) => {
@@ -474,7 +521,6 @@ export default function Chat() {
         </div>
       )}
 
-      {/* Status */}
       {mode === "idle" && (
         <div className="mb-12">
           <div className="text-muted mb-8">
@@ -485,6 +531,7 @@ export default function Chat() {
           </button>
         </div>
       )}
+
       {mode === "waiting" && (
         <div className="mb-12">
           Looking for a stranger…{" "}
@@ -496,74 +543,47 @@ export default function Chat() {
           </div>
         </div>
       )}
+
       {mode === "friend_left" && (
         <div className="banner warning">Your friend left the chat.</div>
       )}
 
-      {mode === "connected" && (
-        <div className="status">
-          Connected with <span className="status-name">{partnerName}</span>!
-          <div className="typing-row">
-            {partnerTyping && (
-              <span className="typing" aria-live="polite">
-                Partner is typing…
-              </span>
-            )}
-          </div>
-          <div
-            className="mt-8"
-            style={{ display: "flex", gap: 8, flexWrap: "wrap" }}
-          >
-            <button className="btn btn-primary" onClick={nextChat}>
-              Next
-            </button>
-            <button className="btn btn-danger" onClick={leaveChat}>
-              Leave Chat
-            </button>
-            <button className="btn btn-danger" onClick={reportAndNext}>
-              Report &amp; Next
-            </button>
-          </div>
-        </div>
-      )}
+      {/* No big status area while connected (clean like Telegram/IG) */}
 
-      {/* Chat */}
       <div
-        className="chat"
+        className={`chat ${mode === "connected" ? "tg-chat" : ""}`}
         ref={chatScrollRef}
         role="log"
         aria-live="polite"
-        aria-relevant="additions"
       >
         {messages.map(bubble)}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Typing indicator at the bottom */}
       {mode === "connected" && partnerTyping && (
         <div className="typing-row typing-bottom">
           <span className="typing">Partner is typing…</span>
         </div>
       )}
 
-      {/* Notice */}
       {!!notice && <div className="banner">{notice}</div>}
 
-      {/* Composer */}
-      <div className="composer">
+      <div className={`composer ${mode === "connected" ? "tg-composer" : ""}`}>
         <input
           className="input flex-1"
           type="text"
           value={input}
           onChange={(e) => handleInputChange(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          onFocus={nudgeToBottom}
+          onClick={nudgeToBottom}
           disabled={mode !== "connected"}
           placeholder={
             mode === "connected" ? "Say hi…" : "Start a chat to type"
           }
         />
         <button
-          className="btn"
+          className={`btn ${mode === "connected" ? "tg-attach" : ""}`}
           onClick={openFilePicker}
           disabled={mode !== "connected"}
           title="Send photo"
@@ -578,15 +598,14 @@ export default function Chat() {
           onChange={(e) => onPickFile(e.target.files?.[0] || null)}
         />
         <button
-          className="btn"
+          className={`btn ${mode === "connected" ? "tg-send" : ""}`}
           onClick={sendMessage}
           disabled={mode !== "connected" || !input.trim()}
         >
-          Send
+          {mode === "connected" ? "➤" : "Send"}
         </button>
       </div>
 
-      {/* Lightbox */}
       {lightbox && (
         <div className="lightbox" onClick={() => setLightbox(null)}>
           <img src={lightbox} alt="Full size" className="lightbox-img" />

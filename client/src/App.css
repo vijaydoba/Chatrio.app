@@ -1,186 +1,132 @@
-/* ============== Chatrio Theme Vars ============== */
+App.css
+
+/* ===================== THEME VARIABLES ===================== */
 :root{
-  --bg:#ffffff; --text:#0b0f14; --muted:#2d2d2d; --card:#ffffff; --border:#eeeeee;
-  --pill-bg:#f8fafc; --pill-border:#e2e8f0;
-  --btn-bg:#f7f7f7; --btn-border:#cfcfcf;
-  --primary-border:#5b8cff; --primary-bg:#e8f0ff;
-  --danger-bg:#ffe6e6; --danger-border:#fa9494;
-  --status:#15803d; --status-name:#5b8cff;
-  --chat-gradient-top:#fafafa; --chat-gradient-bottom:#f7f7f7;
-  --bubble-other-bg:#ffffff; --bubble-other-border:#ececec;
-  --bubble-me-bg:#dff6d9; --bubble-me-border:#bdebb7;
-  --time:#666; --banner-bg:#fbfbfb; --banner-border:#e5e5e5;
-  --warning-border:#ffd7a1; --warning-bg:#fff6ea;
-  --tick:#5b8cff;
+  --bg:#0b0f14;
+  --text:#e7edf5;
+  --muted:#9fb3c8;
+  --card:#0f141a;
+  --border:#1c2430;
+
+  --pill-bg:#121a23;
+  --pill-border:#223041;
+
+  --btn-bg:#121a23;
+  --btn-border:#223041;
+
+  --primary:#7c3aed;
+  --primary-bg:rgba(124,58,237,.16);
+
+  --danger:#ef4444;
+  --danger-bg:rgba(239,68,68,.18);
 }
 
 .dark{
-  --bg:#0b0f14; --text:#e7edf5; --muted:#9fb3c8; --card:#0f141a; --border:#1c2430;
-  --pill-bg:#121a23; --pill-border:#223041;
-  --btn-bg:#121a23; --btn-border:#223041;
-  --primary-bg:#14324a; --primary-border:#7fb3ff;
-  --danger-bg:#3a1216; --danger-border:#8b2a34;
-  --status:#34d399; --status-name:#7fb3ff;
-  --chat-gradient-top:#0c1219; --chat-gradient-bottom:#0a1017;
-  --bubble-other-bg:#121a23; --bubble-other-border:#223041;
-  --bubble-me-bg:#14351f; --bubble-me-border:#2d6b3e;
-  --time:#8ea3b7; --banner-bg:#10161d; --banner-border:#1f2a37;
-  --warning-border:#624b20; --warning-bg:#2a2114; --tick:#93c5fd;
+  --bg:#070a12;
+  --card:#0f141a;
 }
 
-/* ============== Base ============== */
-html,body{background:var(--bg);color: var(--text);}
-.container{
-  max-width:760px;margin:32px auto;padding:18px;border:1px solid var(--border);
-  border-radius:12px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-  color:var(--text);background:var(--card);min-height:100svh;display:flex;flex-direction:column;
-}
-.header{display:flex;align-items:center;justify-content:space-between;}
-.header-right{display:flex;gap:8px;align-items:center;}
-.title{margin:0 0 14px}
-.online-pill{padding:6px 10px;border-radius:999px;border:1px solid var(--pill-border);
-  background:var(--pill-bg);font-size:13px;color:var(--text);}
-
-/* Utility */
-.row{display:flex;align-items:center;}
-.gap{gap:10px}.flex-1{flex:1}
-.mb-12{margin-bottom:12px}.mb-8{margin-bottom:8px}.mt-8{margin-top:8px}
-.text-muted{color:var(--muted)}
-
-/* ============== Controls ============== */
-.input{
-  padding:9px 10px;border-radius:10px;border:1px solid var(--btn-border);
-  outline:none;min-width:220px;background:var(--bg);color:var(--text);
-}
-.input:focus-visible{outline:2px solid var(--primary-border);outline-offset:2px;}
-.btn{
-  padding:9px 14px;border-radius:10px;border:1px solid var(--btn-border);
-  background:var(--btn-bg);font-weight:600;cursor:pointer;color:var(--text);
-  transition:background-color .15s ease,border-color .15s ease,transform .04s ease;
-}
-.btn:hover{background:#f0f0f0}.btn:active{transform:translateY(1px)}
-.btn:disabled{cursor:not-allowed;opacity:.6}
-.btn-primary{border-color:var(--primary-border);background:var(--primary-bg)}
-.btn-primary:hover{background:#dbe7ff}
-.btn-danger{border-color:var(--danger-border);background:var(--danger-bg)}
-.btn-danger:hover{background:#ffd9d9}
-.theme-toggle{min-width:92px}
-
-/* ============== Topics ============== */
-.topics{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 6px}
-.chip{
-  border:1px solid var(--btn-border);background:var(--bg);color:var(--text);
-  padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px;
-  transition:background-color .15s ease,border-color .15s ease;
-}
-.chip:hover{background:rgba(0,0,0,.03)}
-.chip-active{border-color:var(--primary-border);background:var(--primary-bg)}
-
-/* ============== Status ============== */
-.status{margin-bottom:12px;color:var(--status);font-weight:700}
-.status-name{color:var(--status-name)}
-.typing-row{min-height:20px}.typing{font-weight:500;color:var(--status-name);font-size:13px}
-.typing-bottom {
-  margin: 4px 0 6px 6px; /* space above composer */
+/* ===================== BASE ===================== */
+html,body{
+  background:
+    radial-gradient(800px 400px at 10% 0%, rgba(124,58,237,.15), transparent 60%),
+    radial-gradient(800px 400px at 90% 10%, rgba(34,211,238,.10), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
 }
 
-/* ============== Chat ============== */
-.chat{
-  flex:1 1 auto;min-height:280px;overflow-y:auto;-webkit-overflow-scrolling:touch;
-  background:linear-gradient(180deg,var(--chat-gradient-top) 0%,var(--chat-gradient-bottom) 100%);
-  margin:14px 0;padding:14px 12px;border-radius:12px;border:1px solid var(--border);
-}
-.chat::-webkit-scrollbar{width:10px}
-.chat::-webkit-scrollbar-track{background:transparent}
-.chat::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);border-radius:999px}
-.dark .chat::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12)}
+*{box-sizing:border-box}
 
-/* Bubbles */
-.bubble-row{display:flex;margin-bottom:10px}
-.bubble-row.left{justify-content:flex-start}
-.bubble-row.right{justify-content:flex-end}
-.bubble{
-  max-width:78%;color:var(--text);padding:10px 12px;box-shadow:0 1px 3px rgba(0,0,0,.06);
-  word-break:break-word;line-height:1.35;border:1px solid var(--bubble-other-border);
-  background:var(--bubble-other-bg);border-radius:16px 16px 16px 4px;
-}
-.bubble.me{background:var(--bubble-me-bg);border-color:var(--bubble-me-border);border-radius:16px 16px 4px 16px}
-.bubble-author{font-weight:700;margin-bottom:2px}
-.bubble-time{font-size:11px;color:var(--time)}
-.bubble-meta{margin-top:6px;display:flex;align-items:center;justify-content:flex-end;gap:6px}
-.bubble-ticks{font-size:12px;color:var(--tick)}
-.bubble-image{display:block;max-width:220px;border-radius:8px;cursor:zoom-in}
-
-/* System bubble */
-.bubble-row.center{justify-content:center}
-.bubble.system{background:var(--banner-bg);border-color:var(--banner-border);color:var(--text);
-  border-radius:10px;font-style:italic}
-
-/* Composer */
-.composer{
-  display:flex;gap:10px;align-items:center;background:var(--card);padding:10px;
-  border-radius:12px;border:1px solid var(--border);position:sticky;bottom:0;
-  padding-bottom:calc(env(safe-area-inset-bottom,0px) + 10px);z-index:5;
-}
-
-/* Banners */
-.banner{display:inline-block;margin-bottom:8px;padding:6px 10px;border-radius:8px;
-  border:1px solid var(--banner-border);background:var(--banner-bg);color:var(--text)}
-.banner.warning{color:#f59e0b;border-color:var(--warning-border);background:var(--warning-bg)}
-
-/* Lightbox */
-.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:1000}
-.lightbox-img{max-width:92vw;max-height:92vh;border-radius:10px}
-
-/* ============== Site chrome ============== */
+/* ===================== SITE LAYOUT ===================== */
 .site{min-height:100dvh;display:grid;grid-template-rows:auto 1fr auto}
-.site-wrap{max-width:980px;margin:0 auto;padding:0 16px}
-.site-header{border-bottom:1px solid var(--border);background:var(--card);position:sticky;top:0;z-index:60}
-.brand{display:inline-block;padding:14px 0;color:var(--text);text-decoration:none}
+.site-main{padding:32px 0}
+.site-wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+.site-wrap.header{display:flex;align-items:center;justify-content:space-between;gap:16px}
 
-/* Brand stack */
-.brand-logo{display:inline-flex;align-items:center;gap:8px}
-.brand-logo img{height:28px;width:auto;display:block}
-.brand-logo .wordmark{font-size:18px;font-weight:800;color:var(--text)}
-
-.nav{display:flex;gap:12px}
-.nav-link{padding:12px 0;color:var(--muted);text-decoration:none}
-.nav-link.active{color:var(--text);font-weight:700}
-.site-main{padding:24px 0}
-.site-footer{border-top:1px solid var(--border);background:var(--card);padding:16px 0}
-.footer-grid{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.footer-link,.footer-brand{color:var(--muted);text-decoration:none}
-
-/* Landing hero polish */
-.landing .hero{text-align:center;margin:28px 0 12px}
-.landing .hero h1{
-  margin:0 0 10px;font-size:clamp(28px,3.6vw,40px);line-height:1.15;color:var(--text);
+/* ===================== SITE HEADER (BLOG / NAVBAR) ===================== */
+.site-header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  backdrop-filter:blur(10px);
+  background:rgba(15,20,26,.85);
+  border-bottom:1px solid var(--border);
 }
-.landing .lead{margin:0 auto 18px;max-width:760px;color:var(--muted);font-size:clamp(16px,1.8vw,18px)}
-.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0 8px}
-.btn-lg{padding:12px 18px;border-radius:12px}
-.badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
-.badge{padding:6px 10px;border-radius:999px;border:1px solid var(--pill-border);background:var(--pill-bg);font-size:13px;color:var(--text)}
-.cards{display:grid;gap:12px;margin-top:18px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-.card{border:1px solid var(--border);background:var(--card);border-radius:12px;padding:14px}
-.card h3{margin:0 0 6px;font-size:18px}
-.dark .landing .lead{color:#9fb3c8}
-.dark .badge{border-color:#2b3b50;background:#10161d}
 
-/* ============== Visibility helpers ============== */
-.desktop-only{display:flex;gap:12px;align-items:center}
+/* Brand */
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:var(--text);
+}
+.brand-logo{display:inline-flex;align-items:center;gap:8px}
+.brand img{height:28px;width:auto;display:block}
+.wordmark{font-weight:800;font-size:18px}
+
+/* Nav */
+.nav{display:flex;gap:10px}
+.nav-link{
+  padding:8px 14px;
+  border-radius:999px;
+  color:var(--muted);
+  text-decoration:none;
+  font-weight:500;
+}
+.nav-link:hover{background:var(--pill-bg)}
+.nav-link.active{
+  color:#fff;
+  background:linear-gradient(135deg,rgba(124,58,237,.45),rgba(34,211,238,.35));
+}
+
+/* RIGHT SIDE (matches App.tsx) */
+.site-header-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+/* Buttons */
+.btn{
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid var(--btn-border);
+  background:var(--btn-bg);
+  color:var(--text);
+  cursor:pointer;
+  font-weight:600;
+}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.theme-toggle{white-space:nowrap}
+
+/* Utility used in App.tsx */
+.row{display:flex;align-items:center}
+.gap{gap:10px}
+
+/* ===================== HAMBURGER (mobile) ===================== */
+.desktop-only{display:flex}
 .mobile-only{display:none}
 
-/* Hamburger (only on mobile) */
 .hamburger{
-  width:40px;height:40px;border-radius:10px;border:1px solid var(--btn-border);
-  background:var(--btn-bg);display:inline-flex;align-items:center;justify-content:center;
+  width:42px;height:42px;
+  border-radius:12px;
+  border:1px solid var(--btn-border);
+  background:var(--btn-bg);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
   cursor:pointer;
 }
 .hb-bar{
-  width:18px;height:2px;background:var(--text);border-radius:2px;display:block;
+  width:18px;height:2px;
+  background:var(--text);
+  border-radius:2px;
+  display:block;
+  margin:2px 0;
   transition:transform .18s ease,opacity .18s ease;
-  position:relative;
 }
 .hamburger[aria-expanded="true"] .hb-bar:nth-child(1){
   transform:translateY(6px) rotate(45deg);
@@ -192,272 +138,1565 @@ html,body{background:var(--bg);color: var(--text);}
   transform:translateY(-6px) rotate(-45deg);
 }
 
-/* Mobile drawer */
-.mobile-drawer {
-  position: fixed;
-  top: 0; /* full height from top */
-  right: 0; /* start hidden on the right */
-  width: 260px; /* adjust menu width */
-  height: 100vh; /* full height */
-  background: var(--card);
-  transform: translateX(100%); /* move it completely off-screen to the right */
-  opacity: 0;
-  pointer-events: none;
-  transition: transform .3s ease, opacity .3s ease;
-  z-index: 100;
-  padding: 16px 12px;
-  box-shadow: -4px 0 12px rgba(0,0,0,0.1); /* subtle shadow for depth */
-  border-left: 1px solid var(--border);
+/* ===================== MOBILE DRAWER (THIS WAS MISSING) ===================== */
+.mobile-drawer{
+  position:fixed;
+  top:0;
+  right:0;
+  width:280px;
+  height:100vh;
+  background:rgba(15,20,26,.96);
+  border-left:1px solid var(--border);
+  box-shadow:-12px 0 30px rgba(0,0,0,.35);
+  padding:16px 14px;
+  transform:translateX(100%);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .28s ease, opacity .28s ease;
+  z-index:120;
 }
 
-.mobile-drawer.open {
-  transform: translateX(0); /* slide in */
-  opacity: 1;
-  pointer-events: auto;
+.mobile-drawer.open{
+  transform:translateX(0);
+  opacity:1;
+  pointer-events:auto;
 }
 
-.mobile-nav {
+.mobile-nav{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-bottom:14px;
+}
+
+.m-link{
+  display:block;
+  padding:12px 14px;
+  border-radius:12px;
+  text-decoration:none;
+  color:var(--text);
+  border:1px solid transparent;
+}
+.m-link:hover{
+  background:var(--pill-bg);
+  border-color:var(--pill-border);
+}
+
+/* Controls inside drawer */
+.mobile-controls .row{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:10px;
+}
+.mobile-controls .btn{width:100%;text-align:center}
+
+/* Backdrop */
+.drawer-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:110;
+}
+
+/* Responsive switches */
+@media(max-width:900px){
+  .desktop-only{display:none !important}
+  .mobile-only{display:inline-flex !important}
+}
+
+/* ===================== BLOG PAGE (matches your inline BlogList styles) ===================== */
+.blog-title{font-size:36px;margin:0 0 8px}
+.blog-sub{color:var(--muted);margin-bottom:18px}
+.blog-search{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.03);
+  color:var(--text);
+  outline:none;
+}
+.blog-search::placeholder{color:rgba(231,237,245,0.65)}
+.blog-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:14px;
+}
+.blog-card h3{margin:6px 0;color:#3b82f6}
+
+/* ===================== FOOTER ===================== */
+.site-footer{
+  border-top:1px solid var(--border);
+  padding:18px 0;
+}
+.footer-grid{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.footer-brand,.footer-link{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+/* ===================== CHAT UI (SCOPED) ===================== */
+.chat-container{
+  max-width:760px;
+  margin:32px auto;
+  padding:18px;
+  border-radius:16px;
+  background:var(--card);
+  border:1px solid var(--border);
+}
+
+.chat-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.chat-title{margin:0}
+.chat-header-right{display:flex;gap:8px;align-items:center}
+
+.online-pill{
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--pill-border);
+  background:var(--pill-bg);
+  font-size:13px;
+  color:var(--text);
+}
+
+.input{
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid var(--btn-border);
+  background:rgba(255,255,255,0.03);
+  color:var(--text);
+  outline:none;
+}
+.input:focus{border-color:rgba(124,58,237,.7)}
+
+.mb-12{margin-bottom:12px}
+.mb-8{margin-bottom:8px}
+.mt-8{margin-top:8px}
+.text-muted{color:var(--muted)}
+
+.topics{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 6px}
+.chip{
+  border:1px solid var(--btn-border);
+  background:rgba(255,255,255,0.03);
+  color:var(--text);
+  padding:8px 12px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:13px;
+}
+.chip-active{
+  border-color:rgba(124,58,237,.6);
+  background:rgba(124,58,237,.18);
+}
+
+.btn-primary{
+  border-color:rgba(124,58,237,.6);
+  background:rgba(124,58,237,.18);
+}
+.btn-danger{
+  border-color:rgba(239,68,68,.55);
+  background:rgba(239,68,68,.18);
+}
+
+.status{margin:10px 0 0;font-weight:700}
+.status-name{color:rgba(34,211,238,.9)}
+.typing{color:rgba(34,211,238,.9);font-size:13px}
+
+.chat{
+  margin:16px 0;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:linear-gradient(180deg,#0c1219,#0a1017);
+  height:400px;
+  overflow-y:auto;
+}
+
+.bubble-row{display:flex;margin-bottom:10px}
+.bubble-row.left{justify-content:flex-start}
+.bubble-row.right{justify-content:flex-end}
+.bubble-row.center{justify-content:center}
+
+.bubble{
+  max-width:78%;
+  padding:10px 12px;
+  border-radius:14px;
+  background:#121a23;
+  border:1px solid rgba(255,255,255,.06);
+}
+.bubble.me{background:rgba(124,58,237,.25)}
+.bubble.system{
+  background:rgba(255,255,255,0.05);
+  font-style:italic;
+}
+
+.bubble-author{font-weight:800;margin-bottom:4px}
+.bubble-meta{margin-top:6px;display:flex;justify-content:flex-end;gap:8px;font-size:12px;color:rgba(231,237,245,.7)}
+.bubble-image{display:block;max-width:240px;border-radius:10px;cursor:zoom-in}
+
+.composer{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.flex-1{flex:1}
+
+.banner{
+  display:inline-block;
+  padding:8px 12px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.10);
+  background:rgba(255,255,255,0.04);
+  margin:10px 0;
+}
+.banner.warning{
+  border-color:rgba(245,158,11,.35);
+  background:rgba(245,158,11,.12);
+}
+
+.lightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+}
+.lightbox-img{
+  max-width:92vw;
+  max-height:92vh;
+  border-radius:14px;
+}
+
+/* small screens polish */
+@media(max-width:520px){
+  .chat-container{margin:16px auto;padding:14px}
+  .chat{height:55vh}
+}
+
+
+
+
+/* ===== Coming Soon + Subscribe (center page) ===== */
+.coming{
+  min-height: calc(100dvh - 140px); /* header+footer space */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 48px 16px;
+}
+
+.coming-card{
+  width: min(860px, 100%);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 28px 22px;
+  box-shadow: 0 18px 60px rgba(0,0,0,.25);
+}
+
+.coming-badge{
+  display:inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(124,58,237,.16);
+  border: 1px solid rgba(124,58,237,.35);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+
+.coming-title{
+  margin: 0 0 10px;
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.12;
+  color: var(--text);
+}
+
+.coming-lead{
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.55;
+  max-width: 720px;
+}
+
+.coming-form{
+  margin-top: 18px;
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.coming-input{
+  flex: 1 1 260px;
+  min-width: 240px;
+  padding: 14px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--btn-border);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  outline: none;
+}
+
+.coming-input:focus-visible{
+  outline: 2px solid var(--primary-border);
+  outline-offset: 2px;
+}
+
+.coming-btn{
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(135deg, #7c3aed, #22d3ee);
+}
+
+.coming-btn:hover{ opacity: .92; }
+
+.coming-success{
+  margin-top: 18px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(34,197,94,.18);
+  border: 1px solid rgba(34,197,94,.35);
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.coming-tags{
+  margin-top: 16px;
+  display:flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.coming-tag{
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--pill-border);
+  background: var(--pill-bg);
+  font-size: 13px;
+  color: var(--text);
+}
+
+.post-figure {
+  max-width: 820px;          /* keeps content readable */
+  margin: 32px auto;         /* centers the figure */
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.post-figure img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+}
+
+.post-figure figcaption {
+  margin-top: 12px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65); /* visible in dark mode */
+  text-align: center;
+  line-height: 1.4;
+}
+
+
+
+.news-list {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.news-controls {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.news-search {
+  flex: 1;
+  padding: 10px;
+}
+
+.news-select {
+  padding: 10px;
+}
+
+.news-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.news-card {
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.news-thumb {
+  width: 140px;
+  height: 95px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.news-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.news-meta {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-bottom: 6px;
+}
+
+.news-title {
+  margin: 0 0 6px;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.news-title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.news-excerpt {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.8;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .news-controls {
+    flex-direction: column;
+  }
+
+  .news-card {
+    flex-direction: column;
+  }
+
+  .news-thumb {
+    width: 100%;
+    height: 180px;
+  }
+}
+
+
+/* ===================== BLOG HOME (NEW UI) ===================== */
+.blog-page{
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* HERO */
+.blog-hero{
+  padding: 10px 0 18px;
+}
+.blog-title{
+  font-size: 44px;
+  margin: 0 0 6px;
+  letter-spacing: -0.02em;
+}
+.blog-sub{
+  margin: 0 0 14px;
+  color: var(--muted);
+}
+
+.blog-search-wrap{ margin: 10px 0 12px; }
+
+.blog-pills{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.blog-pill{
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--pill-border);
+  background: var(--pill-bg);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 700;
+  opacity: 0.88;
+}
+.blog-pill:hover{ opacity: 1; }
+.blog-pill.active{
+  background: linear-gradient(135deg, rgba(124,58,237,.45), rgba(34,211,238,.35));
+  border-color: rgba(255,255,255,0.10);
+}
+
+/* LAYOUT */
+.blog-layout{
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 16px;
+  align-items: start;
+}
+
+/* FEATURED */
+.blog-featured{
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 16px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.blog-featured-media {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blog-featured-img {
+  width: 100%;
+  height: auto;              /* ✅ let image decide height */
+  max-height: 420px;         /* prevents it from being too tall */
+  object-fit: contain;       /* ✅ NO CROP */
+  border-radius: 14px;
+}
+
+
+.blog-featured-body{
+  padding: 16px 16px 18px;
+}
+
+.blog-meta{
+  font-size: 12px;
+  color: rgba(231,237,245,0.70);
+  margin-bottom: 8px;
+}
+
+.blog-featured-title{
+  margin: 0 0 10px;
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.blog-featured-excerpt{
+  margin: 0 0 14px;
+  color: rgba(231,237,245,0.78);
+  line-height: 1.55;
+}
+
+.blog-link{
+  color: inherit;
+  text-decoration: none;
+}
+.blog-link:hover{
+  text-decoration: underline;
+  text-decoration-color: rgba(124,58,237,.75);
+}
+
+.blog-cta{
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(34,211,238,.18));
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+/* SECTION TITLE */
+.blog-section-title{
+  margin: 14px 0 10px;
+  font-size: 16px;
+  color: rgba(231,237,245,0.80);
+  letter-spacing: 0.02em;
+}
+
+/* LIST CARDS */
+.blog-list{
+  display: grid;
+  gap: 12px;
+}
+
+.blog-card-row{
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.blog-thumb{
+  width: 140px;
+  height: 95px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.blog-card-body{
+  flex: 1;
+  min-width: 0;
+}
+
+.blog-card-title{
+  margin: 0 0 6px;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.blog-card-excerpt{
+  margin: 0;
+  color: rgba(231,237,245,0.75);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* EMPTY */
+.blog-empty{
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  padding: 18px;
+}
+.blog-empty-title{ font-weight: 900; margin-bottom: 6px; }
+.blog-empty-sub{ color: rgba(231,237,245,0.72); }
+
+/* SIDEBAR */
+.blog-side{
+  display: grid;
+  gap: 12px;
+  position: sticky;
+  top: 88px;
+}
+
+.blog-side-card{
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  padding: 14px;
+}
+
+.blog-side-title{
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.blog-side-list{
+  display: grid;
+  gap: 10px;
+}
+
+.blog-side-item{
+  display: flex;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+}
+.blog-side-item:hover{
+  border-color: rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+}
+
+.blog-side-thumb{
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.blog-side-item-title{
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.25;
+  margin-bottom: 3px;
+}
+.blog-side-item-meta{
+  font-size: 12px;
+  color: rgba(231,237,245,0.65);
+}
+
+.blog-side-pills{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.blog-side-pill{
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--pill-border);
+  background: var(--pill-bg);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 800;
+  opacity: 0.9;
+}
+.blog-side-pill:hover{ opacity: 1; }
+
+.blog-count{
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+  color: rgba(231,237,245,0.75);
+}
+
+/* MOBILE */
+@media (max-width: 980px){
+  .blog-layout{
+    grid-template-columns: 1fr;
+  }
+  .blog-side{
+    position: static;
+  }
+}
+
+@media (max-width: 600px){
+  .blog-title{ font-size: 34px; }
+  .blog-featured{
+    grid-template-columns: 1fr;
+  }
+  .blog-thumb{
+    width: 100%;
+    height: 180px;
+  }
+  .blog-card-row{
+    flex-direction: column;
+  }
+}
+
+/* ===================== COMMENTS ===================== */
+.comments{
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+
+.comments-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   margin-bottom: 12px;
 }
 
-.m-link {
-  display: block;
-  padding: 14px 18px;
-  border-radius: 8px;
-  color: var(--text);
-  font-size: 16px;
-  font-weight: 500;
-  text-decoration: none;
-  border: 1px solid transparent;
-  transition: background-color .15s ease, border-color .15s ease;
+.comments-title{
+  margin:0;
+  font-size: 18px;
 }
 
-.m-link:hover {
-  background: var(--pill-bg);
-  border-color: var(--pill-border);
-}
-
-/* Controls inside mobile drawer */
-.mobile-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.mobile-controls .row {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 8px;
-}
-
-.mobile-controls .btn {
-  width: 100%;
-  text-align: center;
-}
-
-/* Backdrop */
-.drawer-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, .5);
-  z-index: 90;
-  opacity: 0;
-  transition: opacity .3s ease;
-}
-
-.mobile-drawer.open ~ .drawer-backdrop {
-  opacity: 1;
-}
-
-/* ============== Responsive ============== */
-.input,.btn,.chip{min-height:44px}
-
-/* --- Desktop should mirror mobile header while connected --- */
-
-/* Hide only the # topics when connected (works on desktop too) */
-.container.connected .topics { display: none !important; }
-
-/* Keep the name row visible, compact, and on one line */
-.container.connected .row.gap {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 10px;
-  margin: 10px 0 6px;
-}
-
-/* Allow the input to shrink instead of pushing off-screen */
-.container.connected .row.gap .input {
-  flex: 1 1 auto;
-  min-width: 0;       /* critical: lets it shrink on desktop too */
-  width: auto;
-}
-
-/* Keep the button natural width and unbroken */
-.container.connected .row.gap .btn {
-  flex: 0 0 auto;
-  white-space: nowrap;
-  padding: 9px 12px;
-}
-
-/* Slight breathing room between the controls block and the chat box */
-.container.connected .status + .chat,
-.container.connected .row.gap + .chat {
-  margin-top: 8px;
-}
-
-/* Optional: align the header pills compactly on desktop as well */
-.container.connected .header-right {
-  gap: 8px;
-  flex-wrap: nowrap;
-}
-.container.connected .online-pill,
-.container.connected .theme-toggle {
-  height: 28px;
-  padding: 6px 10px;
+.comments-count{
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: rgba(231,237,245,0.8);
   font-size: 12px;
+  font-weight: 800;
+}
+
+.comments-form{
+  display:grid;
+  gap:10px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 14px;
+}
+
+.comments-input,
+.comments-textarea{
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  outline: none;
+}
+
+.comments-input::placeholder,
+.comments-textarea::placeholder{
+  color: rgba(231,237,245,0.55);
+}
+
+.comments-btn{
+  justify-self: start;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(34,211,238,.18));
+  color: var(--text);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.comments-error{
+  color: #fca5a5;
+  font-size: 13px;
+}
+
+.comments-empty{
+  color: rgba(231,237,245,0.65);
+  padding: 10px 2px;
+}
+
+.comments-list{
+  display:grid;
+  gap: 10px;
+}
+
+.comment{
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+}
+
+.comment-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom: 8px;
+}
+
+.comment-name{
+  font-weight: 900;
+}
+
+.comment-meta{
+  font-size: 12px;
+  color: rgba(231,237,245,0.6);
+}
+
+.comment-msg{
+  color: rgba(231,237,245,0.85);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.comment-del{
+  margin-top: 10px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.10);
+  color: rgba(231,237,245,0.7);
+  padding: 6px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.comment-del:hover{
+  border-color: rgba(239,68,68,0.5);
+  color: rgba(239,68,68,0.9);
 }
 
 
+/* =====================================================
+   TELEGRAM / INSTAGRAM-LIKE CHAT (CONNECTED ONLY)
+   - activates when Chat.tsx adds body.chat-fullscreen
+   - keeps desktop + other pages unchanged
+===================================================== */
 
-/* — force correct visibility — */
-@media (max-width:900px){
-  .site-header .desktop-only{display:none !important;}
-  .site-header .mobile-only{display:inline-flex !important;}
-  .hamburger:focus-visible{outline:2px solid var(--primary-border);outline-offset:2px;}
+/* Hide site chrome while chatting (no disturbance) */
+body.chat-fullscreen .site-header,
+body.chat-fullscreen .site-footer{
+  display:none;
 }
 
-/* --- Phone layout (like your 2nd screenshot) --- */
-*, *::before, *::after { box-sizing: border-box; }
+body.chat-fullscreen .site-main{
+  padding:0;
+}
 
-@media (max-width: 480px) {
-  html, body { overflow-x: hidden; }
+body.chat-fullscreen .site-wrap{
+  max-width:100%;
+  padding:0;
+}
 
-  /* Card centered, but not full-height */
-  .container {
-    max-width: 420px;
-    width: calc(100% - 32px);   /* 16px gutter on both sides */
-    margin: 16px auto;
+/* Container becomes a full-screen chat app */
+.chat-container.tg{
+  max-width:100%;
+  margin:0;
+  padding:0;
+  border:none;
+  border-radius:0;
+  height:100dvh;
+  display:flex;
+  flex-direction:column;
+  background:
+    radial-gradient(900px 500px at 20% 10%, rgba(124,58,237,.18), transparent 60%),
+    radial-gradient(900px 500px at 80% 0%, rgba(34,211,238,.12), transparent 60%),
+    var(--bg);
+}
+
+/* Topbar */
+.tg-topbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:12px 12px;
+  background:rgba(15,20,26,.88);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+}
+
+.tg-center{min-width:0;flex:1;text-align:center}
+.tg-name{
+  font-weight:900;
+  letter-spacing:-0.01em;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.tg-sub{
+  font-size:12px;
+  color:rgba(231,237,245,0.65);
+  margin-top:2px;
+}
+
+.tg-actions{display:flex;gap:8px;align-items:center}
+
+.icon-btn{
+  width:40px;
+  height:40px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.10);
+  background:rgba(255,255,255,0.04);
+  color:var(--text);
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+}
+.icon-btn:hover{background:rgba(255,255,255,0.06)}
+.icon-btn.danger:hover{border-color:rgba(239,68,68,0.55); color:rgba(239,68,68,0.95)}
+
+/* Chat area */
+.chat.tg-chat{
+  flex:1;
+  height:auto;
+  margin:0;
+  border:none;
+  border-radius:0;
+  background:transparent;
+  padding:16px 12px;
+  overflow-y:auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Bubble layout (Telegram-like) */
+.chat-container.tg .bubble{
+  max-width:min(86%, 520px);
+  border-radius:18px;
+  padding:10px 12px;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.05);
+  box-shadow: 0 8px 26px rgba(0,0,0,0.18);
+}
+
+.chat-container.tg .bubble.other{
+  background:rgba(255,255,255,0.05);
+}
+
+.chat-container.tg .bubble.me{
+  background: linear-gradient(135deg, rgba(124,58,237,.35), rgba(34,211,238,.20));
+  border-color: rgba(124,58,237,.35);
+}
+
+.chat-container.tg .bubble-author{
+  font-size:12px;
+  opacity:0.85;
+  margin-bottom:4px;
+}
+
+.chat-container.tg .bubble-meta{
+  opacity:0.85;
+}
+
+.chat-container.tg .bubble-image{
+  max-width: min(72vw, 360px);
+  border-radius:14px;
+}
+
+/* System message becomes a centered pill */
+.chat-container.tg .bubble.system{
+  background:rgba(255,255,255,0.06);
+  border-color:rgba(255,255,255,0.10);
+  font-style:normal;
+}
+
+/* Composer (Instagram/Telegram style) */
+.composer.tg-composer{
+  position:sticky;
+  bottom:0;
+  z-index:60;
+  padding:12px;
+  background:rgba(15,20,26,.90);
+  border-top:1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+}
+
+.composer.tg-composer .input{
+  border-radius:999px;
+  padding:12px 14px;
+  background:rgba(255,255,255,0.06);
+  border-color:rgba(255,255,255,0.12);
+}
+
+.composer.tg-composer .btn{
+  border-radius:999px;
+  padding:12px 14px;
+}
+
+.composer.tg-composer .tg-send{
+  width:46px;
+  height:46px;
+  padding:0;
+  border-radius:999px;
+  border-color:rgba(124,58,237,.45);
+  background: linear-gradient(135deg, rgba(124,58,237,.35), rgba(34,211,238,.18));
+}
+
+.composer.tg-composer .tg-attach{
+  width:46px;
+  height:46px;
+  padding:0;
+  border-radius:999px;
+}
+
+/* Mobile tweaks */
+@media (max-width: 600px){
+  .tg-topbar{padding:10px 10px}
+  .icon-btn{width:38px;height:38px;border-radius:14px}
+  .chat.tg-chat{padding:14px 10px}
+}
+
+
+/* =========================================================
+   TELEGRAM + INSTAGRAM CHAT POLISH (MOBILE-FIRST)
+   Drop-in overrides — keeps your desktop layout but makes
+   mobile feel like a modern chat app.
+   ========================================================= */
+
+/* Smooth, friendly typography + tap targets */
+:root{
+  --shadow-lg: 0 24px 70px rgba(0,0,0,.35);
+  --shadow-md: 0 14px 40px rgba(0,0,0,.30);
+  --shadow-sm: 0 10px 24px rgba(0,0,0,.22);
+
+  --glass: rgba(255,255,255,.06);
+  --glass-2: rgba(255,255,255,.04);
+  --glass-border: rgba(255,255,255,.10);
+
+  --accent-a: rgba(124,58,237,.55);
+  --accent-b: rgba(34,211,238,.40);
+  --ring: rgba(124,58,237,.70);
+}
+
+@media (prefers-reduced-motion: no-preference){
+  .chat-container,
+  .bubble,
+  .btn,
+  .chip,
+  .composer{
+    transition: transform .14s ease, opacity .14s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+}
+
+/* Make the chat card feel premium */
+.chat-container{
+  background:
+    radial-gradient(900px 380px at 20% 0%, rgba(124,58,237,.16), transparent 60%),
+    radial-gradient(900px 380px at 90% 10%, rgba(34,211,238,.10), transparent 60%),
+    var(--card);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Header = compact + modern */
+.chat-header{
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  margin-bottom: 10px;
+}
+.chat-title{
+  letter-spacing: -0.02em;
+}
+
+/* Pills & buttons */
+.online-pill{
+  background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border-color: rgba(255,255,255,.10);
+  box-shadow: 0 10px 20px rgba(0,0,0,.20) inset;
+}
+
+.btn{
+  box-shadow: 0 10px 22px rgba(0,0,0,.18);
+}
+.btn:hover:not(:disabled){
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,.14);
+}
+.btn:active:not(:disabled){
+  transform: translateY(0px);
+  opacity: .92;
+}
+.btn:focus-visible,
+.input:focus-visible,
+.chip:focus-visible{
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Inputs look like IG/Telegram */
+.input{
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border-color: rgba(255,255,255,.10);
+}
+.input::placeholder{
+  color: rgba(231,237,245,.55);
+}
+
+/* Topics chips */
+.chip{
+  background: rgba(255,255,255,.04);
+  border-color: rgba(255,255,255,.10);
+  box-shadow: 0 10px 20px rgba(0,0,0,.16);
+}
+.chip:hover{
+  border-color: rgba(255,255,255,.16);
+  transform: translateY(-1px);
+}
+.chip-active{
+  background: linear-gradient(135deg, rgba(124,58,237,.22), rgba(34,211,238,.14));
+  border-color: rgba(124,58,237,.50);
+}
+
+/* Chat area — smooth, modern */
+.chat{
+  background:
+    radial-gradient(900px 420px at 15% 0%, rgba(124,58,237,.10), transparent 55%),
+    radial-gradient(900px 420px at 95% 10%, rgba(34,211,238,.08), transparent 55%),
+    linear-gradient(180deg, rgba(10,16,23,.95), rgba(7,10,18,.95));
+  border-color: rgba(255,255,255,.08);
+  box-shadow: var(--shadow-md);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.20) transparent;
+}
+.chat::-webkit-scrollbar{ width: 10px; }
+.chat::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,.18);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+.chat::-webkit-scrollbar-thumb:hover{ background: rgba(255,255,255,.26); }
+
+/* Message bubbles — telegram style */
+.bubble{
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.06);
+  box-shadow: 0 14px 30px rgba(0,0,0,.18);
+  backdrop-filter: blur(8px);
+}
+.bubble.me{
+  background: linear-gradient(135deg, rgba(124,58,237,.38), rgba(34,211,238,.16));
+  border-color: rgba(124,58,237,.40);
+}
+.bubble.other{
+  background: rgba(255,255,255,.06);
+}
+.bubble.system{
+  background: rgba(255,255,255,.05);
+  border-color: rgba(255,255,255,.10);
+}
+
+/* Bubble “tails” (subtle) */
+.bubble.me::after,
+.bubble.other::after{
+  content:"";
+  position:absolute;
+  bottom: 10px;
+  width: 12px;
+  height: 12px;
+  transform: rotate(45deg);
+  border-radius: 2px;
+  opacity: .85;
+}
+.bubble.me{ position: relative; }
+.bubble.other{ position: relative; }
+
+.bubble.me::after{
+  right: -5px;
+  background: rgba(124,58,237,.30);
+  border-right: 1px solid rgba(124,58,237,.25);
+  border-bottom: 1px solid rgba(124,58,237,.25);
+}
+.bubble.other::after{
+  left: -5px;
+  background: rgba(255,255,255,.06);
+  border-left: 1px solid rgba(255,255,255,.08);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+/* Bubble author + meta cleaner */
+.bubble-author{
+  font-size: 12px;
+  opacity: .9;
+}
+.bubble-meta{
+  opacity: .9;
+}
+.bubble-time{
+  opacity: .75;
+}
+.bubble-ticks{
+  font-weight: 900;
+  opacity: .85;
+}
+
+/* Images */
+.bubble-image{
+  max-width: 260px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 18px 40px rgba(0,0,0,.25);
+}
+
+/* Composer — like Telegram: sticky, safe-area, rounded */
+.composer{
+  background: linear-gradient(180deg, rgba(15,20,26,.55), rgba(15,20,26,.85));
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: var(--shadow-md);
+}
+.composer .input{
+  border-radius: 14px;
+  padding: 12px 12px;
+}
+.composer .btn{
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+/* Notice/banner */
+.banner{
+  backdrop-filter: blur(8px);
+  background: rgba(255,255,255,.05);
+  border-color: rgba(255,255,255,.10);
+}
+
+/* ===================== MOBILE: FULL APP FEEL ===================== */
+@media (max-width: 600px){
+
+  /* remove “floating card” look */
+  .site-main{ padding: 10px 0; }
+  .site-wrap{ padding: 0 10px; }
+
+  .chat-container{
+    max-width: 100%;
+    margin: 0;
+    border-radius: 18px;
     padding: 12px;
-    min-height: auto;
-    border-radius: 12px;
-    overflow: hidden;           /* guard against tiny overflows */
   }
 
-  /* Header pills won’t force horizontal scroll */
-  .header-right { gap: 8px; flex-wrap: wrap; }
-
-  /* Name row: keep input + button on one line without overflow */
-  .row.gap { flex-wrap: nowrap; gap: 8px; }
-  .row.gap .input { flex: 1 1 auto; min-width: 0; }    /* allow shrink */
-  .row.gap .btn {
-    flex: 0 0 auto;
-    white-space: nowrap;
-    padding: 9px 12px;
-  }
-
-  /* Chips tidy spacing */
-  .topics { gap: 10px; margin: 12px 0 12px; }
-
-  /* Chat area with margins like the screenshot */
-  .chat {
-    flex: 1 1 auto;
-    min-height: 260px;
-    margin: 10px 0;
-    overflow-y: auto;
-  }
-
-  /* Composer inside the card; no overlap, responsive */
-  .composer {
-    position: static;           /* turn off sticky for card look */
+  /* Compact top: use less vertical space */
+  .chat-header{
     gap: 10px;
-    padding: 12px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
   }
-  .composer .input { flex: 1 1 auto; min-width: 0; }
-  .composer .btn   { min-width: 64px; }
-  .header-right {
-    flex-wrap: nowrap;         /* keep all three on one row */
+  .chat-title{
+    font-size: 20px;
+  }
+  .chat-header-right{
     gap: 6px;
   }
-  .online-pill {
-    padding: 4px 8px;
+  .online-pill{
     font-size: 12px;
+    padding: 5px 9px;
   }
-  .theme-toggle {
-    min-width: auto;           /* override 92px */
-    padding: 6px 10px;
-    font-size: 12px;
-    white-space: nowrap;       /* prevent breaking "Dark"/"Sound" */
+
+  /* Name row: stack for thumb-friendly */
+  .row.gap{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .row.gap .input{ width: 100%; }
+  .row.gap .btn{ width: 100%; padding: 12px 14px; }
+
+  /* Topics: comfy spacing + bigger chips */
+  .topics{
+    gap: 10px;
+    margin: 12px 0 10px;
+  }
+  .chip{
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  /* Status actions: 2-column grid */
+  .status{
+    margin-top: 10px;
+  }
+  .status .mt-8{
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px !important;
+  }
+  .status .mt-8 .btn{
+    width: 100%;
+    padding: 12px 14px;
+  }
+  /* Put “Report & Next” full width */
+  .status .mt-8 .btn.btn-danger:last-child{
+    grid-column: 1 / -1;
+  }
+
+  /* Chat takes the screen (real chat app) */
+  .chat{
+    height: calc(100dvh - 330px);
+    min-height: 44vh;
+    border-radius: 18px;
+  }
+
+  /* Sticky composer at bottom + safe area for iPhone */
+  .composer{
+    position: sticky;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+    border-radius: 18px;
+  }
+
+  /* Slightly larger bubbles */
+  .bubble{
+    max-width: 88%;
+    font-size: 14px;
+    border-radius: 18px;
   }
 }
 
-/* When connected, freeze the page and let only the chat scroll */
-.container.connected {
-  height: 100svh;
-  min-height: 100svh;
-  overflow: hidden;           /* page doesn't scroll */
+/* Very small phones */
+@media (max-width: 380px){
+  .status .mt-8{
+    grid-template-columns: 1fr;
+  }
+  .bubble-image{ max-width: 220px; }
+}
+
+
+/* =====================================================
+   TELEGRAM / INSTAGRAM-LIKE CHAT (CONNECTED ONLY)
+   (No disturbance: hides header/footer and turns chat into
+    a full-screen messenger style page)
+===================================================== */
+
+body.chat-fullscreen .site-header,
+body.chat-fullscreen .site-footer{
+  display:none;
+}
+
+body.chat-fullscreen .site-main{
+  padding:0;
+}
+
+body.chat-fullscreen .site-wrap{
+  max-width:100%;
+  padding:0;
+}
+
+/* Full screen chat shell */
+.chat-container.tg{
+  height: 100dvh;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  border: none;
   display: flex;
   flex-direction: column;
+  background:
+    radial-gradient(900px 420px at 20% 0%, rgba(124,58,237,.22), transparent 62%),
+    radial-gradient(900px 420px at 80% 10%, rgba(34,211,238,.16), transparent 62%),
+    var(--bg);
 }
 
-/* The chat log is the scroller */
-.chat {
-  flex: 1 1 auto;
-  overflow-y: auto;
+/* Topbar */
+.tg-topbar{
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  padding: 12px 12px;
+  backdrop-filter: blur(12px);
+  background: rgba(15,20,26,.72);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-/* Mobile: use full-height while connected, but keep your card layout when not connected */
-@media (max-width: 640px) {
-  .container.connected {
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
-    border-radius: 0;         /* app-like on phones while chatting */
+.tg-center{ min-width: 0; flex: 1; text-align:center; }
+.tg-name{
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tg-sub{ font-size: 12px; color: rgba(231,237,245,0.65); }
+
+.tg-actions{ display:flex; gap: 8px; }
+
+.icon-btn{
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  cursor: pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 900;
+}
+.icon-btn:hover{ background: rgba(255,255,255,0.06); }
+.icon-btn.danger{ border-color: rgba(239,68,68,0.35); }
+.icon-btn.danger:hover{ background: rgba(239,68,68,0.12); }
+
+/* Chat list area */
+.chat.tg-chat{
+  flex: 1;
+  height: auto;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background:
+    linear-gradient(180deg, rgba(12,18,25,0.10), rgba(10,16,23,0.12));
+  padding: 14px 12px;
+}
+
+/* Telegram-ish bubbles */
+.tg .bubble-row{ margin-bottom: 10px; }
+
+.tg .bubble{
+  max-width: 82%;
+  border-radius: 18px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,0.04);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+
+.tg .bubble.me{
+  border-color: rgba(124,58,237,.30);
+  background: linear-gradient(135deg, rgba(124,58,237,.28), rgba(34,211,238,.16));
+}
+
+.tg .bubble.system{
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.10);
+}
+
+.tg .bubble-author{ font-size: 12px; opacity: .9; }
+.tg .bubble-meta{ opacity: .75; }
+
+/* Composer (bottom bar) */
+.composer.tg-composer{
+  position: sticky;
+  bottom: 0;
+  z-index: 25;
+  padding: 12px;
+  background: rgba(15,20,26,.92);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+}
+
+.composer.tg-composer .input{
+  border-radius: 999px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.06);
+}
+
+.composer.tg-composer .tg-attach,
+.composer.tg-composer .tg-send{
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 900;
+}
+
+.composer.tg-composer .tg-send{
+  border-color: rgba(124,58,237,.35);
+  background: rgba(124,58,237,.22);
+}
+
+/* Mobile safe-area padding (iOS) */
+@media (max-width: 900px){
+  .composer.tg-composer{
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
   }
 }
-
-
-
-
-@media (max-width:380px){ .title{font-size:18px} .bubble{max-width:90%} }
-@media (orientation:landscape) and (max-height:480px){ .chat{min-height:200px} }
-
-/* ---------- FIX: prevent right-edge clipping on phones ---------- */
-
-/* Let the layout shrink; never create horizontal scroll */
-@media (max-width: 600px) {
-  html, body { width: 100%; overflow-x: hidden; }
-
-  /* These containers must not exceed the viewport */
-  .site, .site-wrap, .container { max-width: 100%; }
-
-  /* Flex rows can actually shrink */
-  .row.gap { min-width: 0; flex-wrap: nowrap; }
-  .row.gap > * { min-width: 0; }            /* critical */
-  .row.gap .input { flex: 1 1 auto; min-width: 0; width: auto; }
-
-  /* Header pills shouldn't push the layout wider */
-  .header-right { min-width: 0; flex-wrap: nowrap; gap: 8px; }
-  .header-right > * { min-width: 0; }
-
-  /* Base input min-width is 220px; relax it on small screens */
-  .input { min-width: 0; }
-  .theme-toggle { min-width: auto; }
+/* iOS: prevent zoom + improve typing reliability */
+.composer .input{
+  font-size:16px; /* important on iPhone */
+  -webkit-appearance: none;
 }
 
-/* Remove the card-level clipping that hides the right edge */
-@media (max-width: 480px) {
-  .container {
-    /* was: overflow: hidden; */
-    overflow: visible;
-    /* optional: safe-area padding for curved screens */
-    padding-left:  max(12px, env(safe-area-inset-left));
-    padding-right: max(12px, env(safe-area-inset-right));
-  }
-
-  /* Chips won't create horizontal scroll */
-  .topics { overflow-x: hidden; }
-}
