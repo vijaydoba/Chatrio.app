@@ -12,6 +12,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import Home from "./pages/Home";
 import Chat from "./Chat";
 
 import { POSTS, Post } from "./data/posts";
@@ -478,11 +479,14 @@ export default function App() {
               </div>
               {/* DROPDOWN MENU END */}
 
+              <NavLink className="nav-link" to="/chat">
+                💬 Chat
+              </NavLink>
               <NavLink className="nav-link" to="/about">
-                About Us
+                About
               </NavLink>
               <NavLink className="nav-link" to="/contact">
-                Contact Us
+                Contact
               </NavLink>
             </nav>
 
@@ -591,17 +595,24 @@ export default function App() {
 
           <NavLink
             className="m-link"
+            to="/chat"
+            onClick={() => setNavOpen(false)}
+          >
+            💬 Chat
+          </NavLink>
+          <NavLink
+            className="m-link"
             to="/about"
             onClick={() => setNavOpen(false)}
           >
-            About Us
+            About
           </NavLink>
           <NavLink
             className="m-link"
             to="/contact"
             onClick={() => setNavOpen(false)}
           >
-            Contact Us
+            Contact
           </NavLink>
 
           <div className="m-divider" />
@@ -660,7 +671,7 @@ export default function App() {
             <Route path="/blog/:category" element={<BlogList />} />
             <Route path="/blog/post/:slug" element={<BlogPost />} />
 
-            <Route path="/" element={<Chat theme={theme} setTheme={setTheme} soundOn={soundOn} setSoundOn={setSoundOn} />} />
+            <Route path="/" element={<Home />} />
             <Route path="/chat" element={<Chat theme={theme} setTheme={setTheme} soundOn={soundOn} setSoundOn={setSoundOn} />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
