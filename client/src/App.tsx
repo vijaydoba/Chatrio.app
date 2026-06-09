@@ -8,13 +8,10 @@ import {
   Navigate,
   useParams,
 } from "react-router-dom";
-
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
-import ChatComingSoon from "./pages/ChatComingSoon";
-import Comments from "./pages/Comments";
 import Chat from "./Chat";
 
 import { POSTS, Post } from "./data/posts";
@@ -36,8 +33,6 @@ function normalizeCategorySlug(cat?: string) {
   return String(cat).trim().toLowerCase();
 }
 
-// Your posts.ts currently has thumbnails like "images/image2.png" (missing leading "/").
-// This helper makes it work either way.
 function normalizeAssetPath(path?: string) {
   if (!path) return "/images/default-thumb.png";
   if (path.startsWith("http")) return path;
@@ -81,7 +76,6 @@ function BlogList() {
       new Set(POSTS.map((p) => p.category))
     ) as Post["category"][];
 
-    // Keep a stable order for UI pills
     const preferred: Post["category"][] = [
       "Love",
       "Romance",
@@ -101,13 +95,11 @@ function BlogList() {
   }, []);
 
   const popularPosts = useMemo(() => {
-    // Simple “popular”: newest 3 across all posts
     return POSTS.slice()
       .sort((a, b) => (a.date < b.date ? 1 : -1))
       .slice(0, 3);
   }, []);
 
-  // Blog route slugs used in your header
   const BLOG_ALL = "/blog";
   const BLOG_LOVE = "/blog/love";
   const BLOG_ROMANCE = "/blog/romance";
@@ -116,7 +108,6 @@ function BlogList() {
 
   return (
     <div className="blog-page">
-      {/* Hero */}
       <section className="blog-hero">
         <h1 className="blog-title">{pageTitle}</h1>
         <p className="blog-sub">
@@ -152,7 +143,6 @@ function BlogList() {
       </section>
 
       <section className="blog-layout">
-        {/* Main */}
         <div className="blog-main">
           {filtered.length === 0 ? (
             <div className="blog-empty">
@@ -163,7 +153,6 @@ function BlogList() {
             </div>
           ) : (
             <>
-              {/* Featured */}
               {featured && (
                 <article className="blog-featured">
                   <div className="blog-featured-media">
@@ -200,7 +189,6 @@ function BlogList() {
                 </article>
               )}
 
-              {/* Recent */}
               <h3 className="blog-section-title">Recent Articles</h3>
 
               <div className="blog-list">
@@ -235,7 +223,6 @@ function BlogList() {
           )}
         </div>
 
-        {/* Sidebar */}
         <aside className="blog-side">
           <div className="blog-side-card">
             <div className="blog-side-title">Popular Posts</div>
@@ -314,12 +301,10 @@ function BlogPost() {
       </div>
 
       <div
+        className="post-body"
         style={{ lineHeight: 1.8, opacity: 0.95 }}
         dangerouslySetInnerHTML={{ __html: post.contentHtml }}
       />
-
-      {/* Comments Section */}
-      <Comments slug={post.slug} />
     </div>
   );
 }
@@ -355,24 +340,31 @@ export default function App() {
   }, [soundOn]);
 
   const [navOpen, setNavOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown
 
+  // ESC closes drawer
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setNavOpen(false);
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // Lock background scroll when drawer is open
   useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth >= 900) setNavOpen(false);
+    const body = document.body;
+    const prev = body.style.overflow;
+    if (navOpen) body.style.overflow = "hidden";
+    else body.style.overflow = prev || "";
+    return () => {
+      body.style.overflow = prev || "";
     };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
+  }, [navOpen]);
 
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    setNavOpen(false);
+    setDropdownOpen(false); // Close dropdown on route change
   }, [pathname]);
 
   const BLOG_ALL = "/blog";
@@ -392,22 +384,105 @@ export default function App() {
             </span>
           </NavLink>
 
+          {/* Desktop navbar */}
           <div className="site-header-right desktop-only">
             <nav className="nav" aria-label="Primary">
-              <NavLink className="nav-link" to={BLOG_ALL}>
-                Blog
+              {/* DROPDOWN MENU START */}
+              <div
+                className="nav-dropdown-container"
+                onMouseEnter={() => setDropdownOpen(true)}
+                onMouseLeave={() => setDropdownOpen(false)}
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <NavLink
+                  className="nav-link"
+                  to={BLOG_ALL}
+                  style={{ display: "flex", alignItems: "center", gap: "4px" }}
+                >
+                  Blog{" "}
+                  <span style={{ fontSize: "0.7em", opacity: 0.7 }}>▼</span>
+                </NavLink>
+
+                {dropdownOpen && (
+                  <div
+                    className="nav-dropdown-menu"
+                    style={{
+                      position: "absolute",
+                      top: "100%",
+                      left: 0,
+                      backgroundColor: "var(--bg-card)", // uses your theme var
+                      border: "1px solid var(--border)",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      borderRadius: "8px",
+                      padding: "8px 0",
+                      minWidth: "180px",
+                      zIndex: 1000,
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <NavLink
+                      to={BLOG_LOVE}
+                      className="dropdown-item"
+                      style={{
+                        padding: "8px 16px",
+                        textDecoration: "none",
+                        color: "inherit",
+                        fontSize: "0.95rem",
+                      }}
+                    >
+                      Love
+                    </NavLink>
+                    <NavLink
+                      to={BLOG_ROMANCE}
+                      className="dropdown-item"
+                      style={{
+                        padding: "8px 16px",
+                        textDecoration: "none",
+                        color: "inherit",
+                        fontSize: "0.95rem",
+                      }}
+                    >
+                      Romance
+                    </NavLink>
+                    <NavLink
+                      to={BLOG_DATING}
+                      className="dropdown-item"
+                      style={{
+                        padding: "8px 16px",
+                        textDecoration: "none",
+                        color: "inherit",
+                        fontSize: "0.95rem",
+                      }}
+                    >
+                      Dating
+                    </NavLink>
+                    <NavLink
+                      to={BLOG_CHAT}
+                      className="dropdown-item"
+                      style={{
+                        padding: "8px 16px",
+                        textDecoration: "none",
+                        color: "inherit",
+                        fontSize: "0.95rem",
+                      }}
+                    >
+                      Chat & Connection
+                    </NavLink>
+                  </div>
+                )}
+              </div>
+              {/* DROPDOWN MENU END */}
+
+              <NavLink className="nav-link" to="/about">
+                About Us
               </NavLink>
-              <NavLink className="nav-link" to={BLOG_LOVE}>
-                Love
-              </NavLink>
-              <NavLink className="nav-link" to={BLOG_ROMANCE}>
-                Romance
-              </NavLink>
-              <NavLink className="nav-link" to={BLOG_CHAT}>
-                Chat
-              </NavLink>
-              <NavLink className="nav-link" to={BLOG_DATING}>
-                Dating
+              <NavLink className="nav-link" to="/contact">
+                Contact Us
               </NavLink>
             </nav>
 
@@ -429,9 +504,10 @@ export default function App() {
             </div>
           </div>
 
+          {/* Mobile hamburger */}
           <button
             className="hamburger mobile-only"
-            aria-label="Open menu"
+            aria-label={navOpen ? "Close menu" : "Open menu"}
             aria-expanded={navOpen}
             onClick={() => setNavOpen((v) => !v)}
           >
@@ -440,74 +516,142 @@ export default function App() {
             <span className="hb-bar" />
           </button>
         </div>
+      </header>
 
-        <div className={`mobile-drawer ${navOpen ? "open" : ""}`}>
-          <nav className="mobile-nav" aria-label="Mobile">
+      {/* Mobile Drawer */}
+      <div className={`mobile-drawer ${navOpen ? "open" : ""}`}>
+        <nav className="mobile-nav" aria-label="Mobile">
+          {/* Mobile "Submenu" (Indented) */}
+          <div className="mobile-group" style={{ marginBottom: "10px" }}>
             <NavLink
               className="m-link"
               to={BLOG_ALL}
               onClick={() => setNavOpen(false)}
+              style={{ fontWeight: "bold" }}
             >
               Blog
             </NavLink>
-            <NavLink
-              className="m-link"
-              to={BLOG_LOVE}
-              onClick={() => setNavOpen(false)}
+            <div
+              className="mobile-sublinks"
+              style={{
+                paddingLeft: "20px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px",
+                marginTop: "8px",
+                borderLeft: "2px solid var(--border)",
+              }}
             >
-              Love
-            </NavLink>
-            <NavLink
-              className="m-link"
-              to={BLOG_ROMANCE}
-              onClick={() => setNavOpen(false)}
-            >
-              Romance
-            </NavLink>
-            <NavLink
-              className="m-link"
-              to={BLOG_CHAT}
-              onClick={() => setNavOpen(false)}
-            >
-              Chat
-            </NavLink>
-            <NavLink
-              className="m-link"
-              to={BLOG_DATING}
-              onClick={() => setNavOpen(false)}
-            >
-              Dating
-            </NavLink>
-          </nav>
-
-          <div className="mobile-controls">
-            <div className="row gap">
-              <button
-                className="btn theme-toggle"
-                onClick={() => {
-                  setTheme(theme === "dark" ? "light" : "dark");
-                  setNavOpen(false);
+              <NavLink
+                to={BLOG_LOVE}
+                onClick={() => setNavOpen(false)}
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                  opacity: 0.8,
                 }}
               >
-                {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
-              </button>
-              <button
-                className="btn theme-toggle"
-                onClick={() => {
-                  setSoundOn((s) => !s);
-                  setNavOpen(false);
+                Love
+              </NavLink>
+              <NavLink
+                to={BLOG_ROMANCE}
+                onClick={() => setNavOpen(false)}
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                  opacity: 0.8,
                 }}
               >
-                {soundOn ? "🔊 Sound" : "🔈 Muted"}
-              </button>
+                Romance
+              </NavLink>
+              <NavLink
+                to={BLOG_DATING}
+                onClick={() => setNavOpen(false)}
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                  opacity: 0.8,
+                }}
+              >
+                Dating
+              </NavLink>
+              <NavLink
+                to={BLOG_CHAT}
+                onClick={() => setNavOpen(false)}
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                  opacity: 0.8,
+                }}
+              >
+                Chat
+              </NavLink>
             </div>
           </div>
-        </div>
 
-        {navOpen && (
-          <div className="drawer-backdrop" onClick={() => setNavOpen(false)} />
-        )}
-      </header>
+          <NavLink
+            className="m-link"
+            to="/about"
+            onClick={() => setNavOpen(false)}
+          >
+            About Us
+          </NavLink>
+          <NavLink
+            className="m-link"
+            to="/contact"
+            onClick={() => setNavOpen(false)}
+          >
+            Contact Us
+          </NavLink>
+
+          <div className="m-divider" />
+
+          <NavLink
+            className="m-link"
+            to="/privacy"
+            onClick={() => setNavOpen(false)}
+          >
+            Privacy Policy
+          </NavLink>
+          <NavLink
+            className="m-link"
+            to="/terms"
+            onClick={() => setNavOpen(false)}
+          >
+            Terms of Service
+          </NavLink>
+        </nav>
+
+        <div className="mobile-controls">
+          <div className="row gap">
+            <button
+              className="btn theme-toggle"
+              onClick={() => {
+                setTheme(theme === "dark" ? "light" : "dark");
+                setNavOpen(false);
+              }}
+            >
+              {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
+            </button>
+            <button
+              className="btn theme-toggle"
+              onClick={() => {
+                setSoundOn((s) => !s);
+                setNavOpen(false);
+              }}
+            >
+              {soundOn ? "🔊 Sound" : "🔈 Muted"}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Backdrop */}
+      {navOpen && (
+        <div className="drawer-backdrop" onClick={() => setNavOpen(false)} />
+      )}
+
+      {/* --------------------------- */}
 
       <main className="site-main">
         <div className="site-wrap">
@@ -516,8 +660,8 @@ export default function App() {
             <Route path="/blog/:category" element={<BlogList />} />
             <Route path="/blog/post/:slug" element={<BlogPost />} />
 
-            <Route path="/" element={<Chat />} />
-            <Route path="/chat" element={<Chat />} />
+            <Route path="/" element={<Chat theme={theme} setTheme={setTheme} soundOn={soundOn} setSoundOn={setSoundOn} />} />
+            <Route path="/chat" element={<Chat theme={theme} setTheme={setTheme} soundOn={soundOn} setSoundOn={setSoundOn} />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy" element={<Privacy />} />
@@ -535,16 +679,25 @@ export default function App() {
           </div>
           <div
             className="footer-links"
-            style={{ display: "flex", gap: 12, flexWrap: "wrap" }}
+            style={{
+              display: "flex",
+              gap: 15,
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
           >
-            <NavLink to="/privacy" className="footer-link">
-              Privacy
-            </NavLink>
-            <NavLink to="/terms" className="footer-link">
-              Terms
+            <NavLink to="/about" className="footer-link">
+              About
             </NavLink>
             <NavLink to="/contact" className="footer-link">
               Contact
+            </NavLink>
+            <span style={{ opacity: 0.3 }}>|</span>
+            <NavLink to="/privacy" className="footer-link">
+              Privacy Policy
+            </NavLink>
+            <NavLink to="/terms" className="footer-link">
+              Terms of Service
             </NavLink>
           </div>
         </div>

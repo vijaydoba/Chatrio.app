@@ -30,7 +30,14 @@ const ALL_TOPICS = [
   "fitness",
 ];
 
-export default function Chat() {
+type ChatProps = {
+  theme: Theme;
+  setTheme: (t: Theme) => void;
+  soundOn: boolean;
+  setSoundOn: (fn: (s: boolean) => boolean) => void;
+};
+
+export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps) {
   const [mode, setMode] = useState<Mode>("idle");
   const [username, setUsername] = useState("Stranger");
   const [nameDraft, setNameDraft] = useState("Stranger");
@@ -45,12 +52,6 @@ export default function Chat() {
   const [selectedTopics, setSelectedTopics] = useState<string[]>(() =>
     JSON.parse(localStorage.getItem("topics") || "[]")
   );
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem("theme") as Theme) || "light"
-  );
-  const [soundOn, setSoundOn] = useState(
-    () => localStorage.getItem("soundOn") !== "off"
-  );
   const [lightbox, setLightbox] = useState<string | null>(null);
 
   const socketRef = useRef<Socket | null>(null);
@@ -61,13 +62,28 @@ export default function Chat() {
   const lastEmitRef = useRef<number>(0);
   const modeRef = useRef<Mode>("idle");
 
-  // ✅ iOS detection (Safari/Chrome iOS) — helps avoid keyboard/input bugs
+  // ✅ iOS detection
   const isIOS = useMemo(() => {
     const ua = navigator.userAgent || "";
     const iOS = /iPad|iPhone|iPod/.test(ua);
-    const iPadOS = ua.includes("Mac") && "ontouchend" in document; // iPadOS Safari reports Mac
+    const iPadOS = ua.includes("Mac") && "ontouchend" in document;
     return iOS || iPadOS;
   }, []);
+
+  const USERNAME_MAX = 16;
+
+  const sanitizeUsername = (raw: string) => {
+    let v = raw.replace(/[^a-zA-Z0-9 _]/g, "");
+    v = v.replace(/\s+/g, " ");
+    if (v.length > USERNAME_MAX) v = v.slice(0, USERNAME_MAX);
+    return v;
+  };
+  const onlineLabel = (n: number) => {
+    if (n <= 4) return "A few online";
+    if (n <= 19) return "Several online";
+    if (n <= 99) return "Dozens online";
+    return `${n} online`;
+  };
 
   // Sounds
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -98,19 +114,17 @@ export default function Chat() {
   };
   const soundReceived = () => beep(420, 120, 0.06);
 
-  // lock scroll when connected (⚠️ do NOT lock on iOS — it can break typing when keyboard opens)
+  // lock scroll
   useEffect(() => {
     const body = document.body;
-
     if (mode === "connected" && !isIOS) body.style.overflow = "hidden";
     else body.style.overflow = "";
-
     return () => {
       body.style.overflow = "";
     };
   }, [mode, isIOS]);
 
-  // Fullscreen chat experience when connected (Telegram/Instagram-like)
+  // Fullscreen chat experience
   useEffect(() => {
     const body = document.body;
     if (mode === "connected") body.classList.add("chat-fullscreen");
@@ -118,14 +132,7 @@ export default function Chat() {
     return () => body.classList.remove("chat-fullscreen");
   }, [mode]);
 
-  // Prefs to localStorage
-  useEffect(() => {
-    const root = document.documentElement;
-    if (theme === "dark") root.classList.add("dark");
-    else root.classList.remove("dark");
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
+  // Prefs
   useEffect(() => {
     localStorage.setItem("soundOn", soundOn ? "on" : "off");
   }, [soundOn]);
@@ -149,12 +156,8 @@ export default function Chat() {
 
     socket.on("connect", () => {
       setMyId(socket.id || "");
-
-      // ✅ Always sync identity
       socket.emit("set_username", username);
       socket.emit("set_topics", { topics: selectedTopics });
-
-      // ✅ If user was waiting, re-enter queue
       if (modeRef.current === "waiting") {
         socket.emit("ready_to_chat");
       }
@@ -181,11 +184,9 @@ export default function Chat() {
 
     socket.on("message", (msg) => handleIncoming(msg));
     socket.on("image", (msg) => handleIncoming(msg));
-
     socket.on("partner_typing", ({ typing }) => setPartnerTyping(!!typing));
     socket.on("online", (n) => setOnline(Number(n) || 1));
     socket.on("waiting_count", (n) => setWaitingCount(Number(n) || 0));
-
     socket.on("msg_sent", ({ msgId }) => updateStatus(msgId, "sent"));
     socket.on("msg_delivered", ({ msgId }) => updateStatus(msgId, "delivered"));
 
@@ -226,7 +227,13 @@ export default function Chat() {
   };
 
   const applyName = () => {
-    const next = nameDraft.trim() || "Stranger";
+    const cleaned = sanitizeUsername(nameDraft).trim();
+    if (cleaned.length < 2) {
+      showNotice("Name must be at least 2 characters.", 2000);
+      setNameDraft(username);
+      return;
+    }
+    const next = cleaned || "Stranger";
     setUsername(next);
     setNameDraft(next);
     socketRef.current?.emit("set_username", next);
@@ -249,11 +256,9 @@ export default function Chat() {
       showNotice("Cannot connect to server. Please try again.", 3000);
       return;
     }
-
     socketRef.current.emit("set_username", username);
     socketRef.current.emit("set_topics", { topics: selectedTopics });
     socketRef.current.emit("ready_to_chat");
-
     setMode("waiting");
   };
 
@@ -419,7 +424,6 @@ export default function Chat() {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, atBottom]);
 
-  // iOS keyboard helper: when input is focused, ensure the last message is visible
   const nudgeToBottom = () => {
     if (modeRef.current !== "connected") return;
     requestAnimationFrame(() => {
@@ -427,11 +431,17 @@ export default function Chat() {
     });
   };
 
+  // ✅ NEW: VIP Button Handler
+  const openVip = () => {
+    // Points to the route we added in server.js
+    // Adjust domain if your API is on a different subdomain
+    window.open("https://api.chatrio.app/go-vip", "_blank");
+  };
+
   return (
     <div
       className={`chat-container ${mode} ${mode === "connected" ? "tg" : ""}`}
     >
-      {/* When CONNECTED, show a minimal Telegram/Instagram-like topbar */}
       {mode === "connected" ? (
         <div className="tg-topbar">
           <button
@@ -450,6 +460,19 @@ export default function Chat() {
           </div>
 
           <div className="tg-actions">
+            {/* 💰 VIP ICON IN CHAT */}
+            <button
+              className="icon-btn"
+              onClick={openVip}
+              title="VIP Features"
+              style={{
+                color: "#FDB931",
+                borderColor: "rgba(253, 185, 49, 0.3)",
+              }}
+            >
+              💎
+            </button>
+
             <button className="icon-btn" onClick={nextChat} aria-label="Next">
               ⇄
             </button>
@@ -467,16 +490,18 @@ export default function Chat() {
         <div className="chat-header">
           <h1 className="chat-title">Chatrio</h1>
           <div className="chat-header-right">
-            <div className="online-pill">{online} online</div>
+            <div className="online-pill">{onlineLabel(online)}</div>
             <button
               className="btn theme-toggle"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              aria-label="Toggle theme"
             >
               {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
             </button>
             <button
               className="btn theme-toggle"
               onClick={() => setSoundOn((s) => !s)}
+              aria-label="Toggle sound"
             >
               {soundOn ? "🔊 Sound" : "🔈 Muted"}
             </button>
@@ -484,17 +509,16 @@ export default function Chat() {
         </div>
       )}
 
-      {/* Hide setup controls once connected (no disturbance) */}
       {mode !== "connected" && (
-        <div className="row gap">
+        <div className="name-row">
           <input
             className="input"
             type="text"
             value={nameDraft}
-            onChange={(e) => setNameDraft(e.target.value)}
+            onChange={(e) => setNameDraft(sanitizeUsername(e.target.value))}
           />
           <button
-            className="btn"
+            className="btn btn-primary-soft"
             onClick={applyName}
             disabled={nameDraft.trim() === username}
           >
@@ -526,9 +550,25 @@ export default function Chat() {
           <div className="text-muted mb-8">
             Choose interests (optional) and click <strong>New Chat</strong>.
           </div>
-          <button className="btn btn-primary" onClick={startNewChat}>
-            New Chat
-          </button>
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            <button className="btn btn-primary" onClick={startNewChat}>
+              New Chat
+            </button>
+
+            {/* 💰 MONEY MAKER BUTTON */}
+            <button
+              className="btn"
+              onClick={openVip}
+              style={{
+                background: "linear-gradient(135deg, #FFD700 0%, #FDB931 100%)",
+                color: "#000",
+                border: "none",
+                fontWeight: "bold",
+              }}
+            >
+              💎 Unlock VIP
+            </button>
+          </div>
         </div>
       )}
 
@@ -547,8 +587,6 @@ export default function Chat() {
       {mode === "friend_left" && (
         <div className="banner warning">Your friend left the chat.</div>
       )}
-
-      {/* No big status area while connected (clean like Telegram/IG) */}
 
       <div
         className={`chat ${mode === "connected" ? "tg-chat" : ""}`}
@@ -582,14 +620,7 @@ export default function Chat() {
             mode === "connected" ? "Say hi…" : "Start a chat to type"
           }
         />
-        <button
-          className={`btn ${mode === "connected" ? "tg-attach" : ""}`}
-          onClick={openFilePicker}
-          disabled={mode !== "connected"}
-          title="Send photo"
-        >
-          📷
-        </button>
+
         <input
           ref={fileInputRef}
           type="file"
