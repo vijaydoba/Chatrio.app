@@ -1214,3 +1214,156 @@ html:not(.dark) .composer.tg-composer .tg-send{
   background-color: rgba(255, 255, 255, 0.1);
   color: #4dabf7;
 }
+
+/* ===================== MOBILE EXPERIENCE IMPROVEMENTS ===================== */
+
+/* Remove tap highlight on all interactive elements */
+button, a, .chip, .btn, .m-link, .nav-link, .hamburger, .icon-btn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* iOS font smoothing */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Safe area for iPhone notch — header */
+@supports (padding: env(safe-area-inset-top)) {
+  .site-header {
+    padding-top: env(safe-area-inset-top);
+    height: calc(72px + env(safe-area-inset-top));
+  }
+  .site-wrap.header {
+    height: calc(72px);
+  }
+}
+
+/* Safe area for iPhone home indicator — footer */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .site-footer {
+    padding-bottom: calc(18px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 900px) {
+  /* Reduce top page padding on mobile */
+  .site-main { padding: 8px 0 24px; }
+
+  /* Minimum 44px touch targets */
+  .btn, .chip, .blog-pill { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .icon-btn { width: 44px; height: 44px; }
+
+  /* Chat container — more compact, elegant on mobile */
+  .chat-container {
+    margin: 10px 0;
+    border-radius: 20px;
+    padding: 16px 14px;
+  }
+
+  /* Hide Dark/Light + Sound from chat card header on mobile — they're already in the drawer */
+  .chat-header-right .btn.theme-toggle {
+    display: none;
+  }
+
+  /* Chat title sizing */
+  .chat-title { font-size: 22px; }
+
+  /* Online pill smaller */
+  .online-pill { font-size: 12px; padding: 5px 10px; }
+
+  /* Interest tags — bigger touch targets */
+  .chip { padding: 10px 14px; font-size: 14px; }
+
+  /* Name input full width on mobile */
+  .name-row { flex-direction: column; gap: 8px; }
+  .name-row .input, .name-row .btn { width: 100%; }
+
+  /* Better chat bubble spacing */
+  .bubble { max-width: 88%; }
+
+  /* Blog cards — stack cleanly */
+  .blog-card-row { padding: 12px; gap: 10px; }
+  .blog-side { display: none; }
+  .blog-layout { grid-template-columns: 1fr !important; }
+
+  /* Blog hero padding */
+  .blog-hero { padding: 6px 0 14px; }
+  .blog-title { font-size: 30px; }
+
+  /* Footer stack */
+  .footer-grid { flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+  .footer-links { justify-content: center; }
+}
+
+@media (max-width: 520px) {
+  /* Site wrap horizontal padding */
+  .site-wrap { padding: 0 12px; }
+
+  /* Chat card full bleed on very small screens */
+  .chat-container {
+    margin: 6px 0;
+    border-radius: 16px;
+    padding: 14px 12px;
+  }
+
+  /* Slightly taller chat area */
+  .chat { height: 58vh; }
+
+  /* Larger chat input — prevents iOS zoom */
+  .input { font-size: 16px !important; }
+
+  /* New Chat button full width */
+  .btn-new-chat { width: 100%; }
+
+  /* Blog thumb smaller on very small screens */
+  .blog-thumb { width: 90px; height: 72px; }
+
+  /* Blog title */
+  .blog-title { font-size: 26px; }
+  .blog-featured-title { font-size: 18px; }
+  .blog-card-title { font-size: 16px; }
+
+  /* Chat interest label */
+  .topics { gap: 6px; }
+  .chip { padding: 8px 12px; font-size: 13px; }
+}
+
+/* ===================== TG CHAT MOBILE POLISH ===================== */
+@media (max-width: 900px) {
+  /* Fullscreen chat topbar — safe area */
+  .tg-topbar {
+    padding: calc(12px + env(safe-area-inset-top, 0px)) 12px 12px;
+  }
+
+  /* Larger icon buttons in connected chat */
+  .icon-btn { border-radius: 12px; }
+
+  /* Composer safe area already handled — ensure input doesn't zoom on iOS */
+  .composer.tg-composer .input {
+    font-size: 16px;
+  }
+
+  /* Bubbles take more width on mobile */
+  .tg .bubble { max-width: 88%; }
+}
+
+/* ===================== BLOG SIDEBAR — SHOW INLINE ON MOBILE ===================== */
+@media (max-width: 900px) {
+  /* Show popular posts inline below article list on mobile instead of sidebar */
+  .blog-side {
+    display: grid;
+    gap: 12px;
+  }
+  .blog-side-card { padding: 12px; }
+  .blog-side-title { font-size: 15px; margin-bottom: 8px; }
+}
+
+/* ===================== COMING SOON PAGE MOBILE ===================== */
+@media (max-width: 520px) {
+  .coming { padding: 28px 12px; }
+  .coming-card { padding: 20px 14px; border-radius: 14px; }
+  .coming-title { font-size: clamp(22px, 7vw, 30px); }
+  .coming-form { flex-direction: column; }
+}
