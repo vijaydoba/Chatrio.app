@@ -16,6 +16,7 @@ app.use(
 );
 app.use(express.json());
 
+// --- ROUTES ---
 app.get("/", (req, res) => res.send("Chatrio API ✅"));
 app.get("/health", (req, res) => res.json({ ok: true }));
 

@@ -431,13 +431,6 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
     });
   };
 
-  // ✅ NEW: VIP Button Handler
-  const openVip = () => {
-    // Points to the route we added in server.js
-    // Adjust domain if your API is on a different subdomain
-    window.open("https://api.chatrio.app/go-vip", "_blank");
-  };
-
   return (
     <div
       className={`chat-container ${mode} ${mode === "connected" ? "tg" : ""}`}
@@ -448,6 +441,7 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
             className="icon-btn"
             onClick={leaveChat}
             aria-label="Leave chat"
+            title="Leave this chat"
           >
             ←
           </button>
@@ -460,29 +454,16 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
           </div>
 
           <div className="tg-actions">
-            {/* 💰 VIP ICON IN CHAT */}
-            <button
-              className="icon-btn"
-              onClick={openVip}
-              title="VIP Features"
-              style={{
-                color: "#FDB931",
-                borderColor: "rgba(253, 185, 49, 0.3)",
-              }}
-            >
-              💎
-            </button>
-
-            <button className="icon-btn" onClick={nextChat} aria-label="Next">
+            <button className="icon-btn" onClick={nextChat} aria-label="Next stranger" title="Next — find a new stranger">
               ⇄
             </button>
             <button
               className="icon-btn danger"
               onClick={reportAndNext}
               aria-label="Report & Next"
-              title="Report & Next"
+              title="Report this user and find next"
             >
-              !
+              🚩
             </button>
           </div>
         </div>
@@ -550,25 +531,9 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
           <div className="text-muted mb-8">
             Choose interests (optional) and click <strong>New Chat</strong>.
           </div>
-          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-            <button className="btn btn-primary" onClick={startNewChat}>
-              New Chat
-            </button>
-
-            {/* 💰 MONEY MAKER BUTTON */}
-            <button
-              className="btn"
-              onClick={openVip}
-              style={{
-                background: "linear-gradient(135deg, #FFD700 0%, #FDB931 100%)",
-                color: "#000",
-                border: "none",
-                fontWeight: "bold",
-              }}
-            >
-              💎 Unlock VIP
-            </button>
-          </div>
+          <button className="btn btn-primary" onClick={startNewChat} title="Find a random stranger to chat with">
+            New Chat
+          </button>
         </div>
       )}
 
