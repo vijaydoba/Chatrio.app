@@ -147,36 +147,101 @@ img, video, canvas, svg{ max-width:100%; height:auto; }
 .brand{
   display: flex;
   align-items: center;
-  gap: 10px;
   text-decoration: none;
   color: var(--text);
   flex-shrink: 0;
 }
-.brand-logo{ display: inline-flex; align-items: center; gap: 8px; }
-.brand img{ height: 28px; width: auto; display: block; }
-.wordmark{ font-weight: 800; font-size: 18px; letter-spacing: -0.02em; }
+.brand-logo{ display: inline-flex; align-items: center; gap: 9px; }
+.brand-mark{ display: block; flex-shrink: 0; }
+.wordmark{
+  font-weight: 900;
+  font-size: 19px;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #6d28d9, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
 /* Desktop Navigation */
-.nav{ display: flex; gap: 6px; }
+.nav{ display: flex; gap: 2px; align-items: center; }
 .nav-link{
-  padding: 8px 14px;
-  border-radius: 999px;
+  padding: 7px 13px;
+  border-radius: 8px;
   color: var(--muted);
   text-decoration: none;
   font-weight: 600;
   font-size: 14px;
-  transition: all 0.2s ease;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
 }
 .nav-link:hover{ background: var(--pill-bg); color: var(--text); }
 .nav-link.active{
-  color: #fff;
-  background: linear-gradient(135deg, rgba(124,58,237,.85), rgba(34,211,238,.75));
+  color: var(--text);
+  background: var(--pill-bg);
+  font-weight: 700;
+}
+
+/* Dropdown trigger */
+.nav-link-dropdown{ display: inline-flex; align-items: center; gap: 5px; }
+.nav-chevron{ width: 10px; height: 6px; flex-shrink: 0; opacity: .6; transition: transform .2s ease; }
+.nav-dropdown-container:hover .nav-chevron{ transform: rotate(180deg); }
+
+/* Dropdown menu */
+.nav-dropdown-container{ position: relative; display: flex; align-items: center; }
+.nav-dropdown-menu{
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 180px;
+  background: var(--card-solid);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 6px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+}
+.dropdown-item{
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.dropdown-item:hover{ background: var(--pill-bg); color: var(--text); }
+.dropdown-item.active{ color: var(--text); font-weight: 700; }
+
+/* Nav icon buttons (theme + sound) */
+.nav-actions{ display: flex; align-items: center; gap: 4px; margin-left: 8px; padding-left: 12px; border-left: 1px solid var(--border); }
+.nav-icon-btn{
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-icon-btn:hover{
+  background: var(--pill-bg);
+  border-color: var(--border);
+  color: var(--text);
 }
 
 .site-header-right{
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 /* Buttons */
@@ -1198,22 +1263,7 @@ html:not(.dark) .composer.tg-composer .tg-send{
   background: rgba(138,180,255,.18);
   border-color: rgba(138,180,255,.42);
 }
-/* Add to App.css */
-.dropdown-item:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-  color: #007bff; /* Or your brand color */
-}
-
-/* Dark mode support for dropdown */
-.dark .nav-dropdown-menu {
-  background-color: #2a2a2a !important;
-  border-color: #444 !important;
-}
-
-.dark .dropdown-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #4dabf7;
-}
+/* Dark mode dropdown handled by CSS variables — no overrides needed */
 
 /* ===================== MOBILE EXPERIENCE IMPROVEMENTS ===================== */
 

@@ -380,7 +380,19 @@ export default function App() {
         <div className="site-wrap header">
           <NavLink to="/" className="brand" onClick={() => setNavOpen(false)}>
             <span className="brand-logo">
-              <img src="/branding/chatrio-64.png" alt="Chatrio" />
+              <svg className="brand-mark" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="bm" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#6d28d9" />
+                    <stop offset="100%" stopColor="#06b6d4" />
+                  </linearGradient>
+                </defs>
+                <rect x="1" y="2" width="34" height="23" rx="9" fill="url(#bm)" />
+                <path d="M5 25 L2 34 L15 25Z" fill="url(#bm)" />
+                <circle cx="10" cy="13.5" r="2.2" fill="white" />
+                <circle cx="18" cy="13.5" r="2.2" fill="white" />
+                <circle cx="26" cy="13.5" r="2.2" fill="white" />
+              </svg>
               <span className="wordmark">Chatrio</span>
             </span>
           </NavLink>
@@ -388,122 +400,56 @@ export default function App() {
           {/* Desktop navbar */}
           <div className="site-header-right desktop-only">
             <nav className="nav" aria-label="Primary">
-              {/* DROPDOWN MENU START */}
               <div
                 className="nav-dropdown-container"
                 onMouseEnter={() => setDropdownOpen(true)}
                 onMouseLeave={() => setDropdownOpen(false)}
-                style={{
-                  position: "relative",
-                  display: "flex",
-                  alignItems: "center",
-                }}
               >
-                <NavLink
-                  className="nav-link"
-                  to={BLOG_ALL}
-                  style={{ display: "flex", alignItems: "center", gap: "4px" }}
-                >
-                  Blog{" "}
-                  <span style={{ fontSize: "0.7em", opacity: 0.7 }}>▼</span>
+                <NavLink className="nav-link nav-link-dropdown" to={BLOG_ALL}>
+                  Blog
+                  <svg className="nav-chevron" viewBox="0 0 10 6" fill="none">
+                    <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </NavLink>
-
                 {dropdownOpen && (
-                  <div
-                    className="nav-dropdown-menu"
-                    style={{
-                      position: "absolute",
-                      top: "100%",
-                      left: 0,
-                      backgroundColor: "var(--bg-card)", // uses your theme var
-                      border: "1px solid var(--border)",
-                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                      borderRadius: "8px",
-                      padding: "8px 0",
-                      minWidth: "180px",
-                      zIndex: 1000,
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <NavLink
-                      to={BLOG_LOVE}
-                      className="dropdown-item"
-                      style={{
-                        padding: "8px 16px",
-                        textDecoration: "none",
-                        color: "inherit",
-                        fontSize: "0.95rem",
-                      }}
-                    >
-                      Love
-                    </NavLink>
-                    <NavLink
-                      to={BLOG_ROMANCE}
-                      className="dropdown-item"
-                      style={{
-                        padding: "8px 16px",
-                        textDecoration: "none",
-                        color: "inherit",
-                        fontSize: "0.95rem",
-                      }}
-                    >
-                      Romance
-                    </NavLink>
-                    <NavLink
-                      to={BLOG_DATING}
-                      className="dropdown-item"
-                      style={{
-                        padding: "8px 16px",
-                        textDecoration: "none",
-                        color: "inherit",
-                        fontSize: "0.95rem",
-                      }}
-                    >
-                      Dating
-                    </NavLink>
-                    <NavLink
-                      to={BLOG_CHAT}
-                      className="dropdown-item"
-                      style={{
-                        padding: "8px 16px",
-                        textDecoration: "none",
-                        color: "inherit",
-                        fontSize: "0.95rem",
-                      }}
-                    >
-                      Chat & Connection
-                    </NavLink>
+                  <div className="nav-dropdown-menu">
+                    <NavLink to={BLOG_LOVE} className="dropdown-item">Love</NavLink>
+                    <NavLink to={BLOG_ROMANCE} className="dropdown-item">Romance</NavLink>
+                    <NavLink to={BLOG_DATING} className="dropdown-item">Dating</NavLink>
+                    <NavLink to={BLOG_CHAT} className="dropdown-item">Chat & Connection</NavLink>
                   </div>
                 )}
               </div>
-              {/* DROPDOWN MENU END */}
 
-              <NavLink className="nav-link" to="/chat">
-                💬 Chat
-              </NavLink>
-              <NavLink className="nav-link" to="/about">
-                About
-              </NavLink>
-              <NavLink className="nav-link" to="/contact">
-                Contact
-              </NavLink>
+              <NavLink className="nav-link" to="/chat">Chat</NavLink>
+              <NavLink className="nav-link" to="/about">About</NavLink>
+              <NavLink className="nav-link" to="/contact">Contact</NavLink>
             </nav>
 
-            <div className="row gap">
+            <div className="nav-actions">
               <button
-                className="btn theme-toggle"
+                className="nav-icon-btn"
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                 aria-label="Toggle theme"
+                title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
               >
-                {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
+                {theme === "dark" ? (
+                  <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 1.78a1 1 0 011.42 1.42l-.71.7a1 1 0 11-1.42-1.41l.71-.71zM18 9a1 1 0 110 2h-1a1 1 0 110-2h1zM4.22 4.78a1 1 0 010 1.42l-.71.71a1 1 0 01-1.42-1.42l.71-.71a1 1 0 011.42 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm6.36-2.64a1 1 0 010 1.41l-.71.71a1 1 0 11-1.41-1.41l.7-.71a1 1 0 011.42 0zM3 9a1 1 0 110 2H2a1 1 0 110-2h1zm1.22 4.36a1 1 0 011.41 0l.71.71a1 1 0 11-1.41 1.41l-.71-.7a1 1 0 010-1.42zM10 6a4 4 0 100 8 4 4 0 000-8z"/></svg>
+                ) : (
+                  <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                )}
               </button>
               <button
-                className="btn theme-toggle"
+                className="nav-icon-btn"
                 onClick={() => setSoundOn((s) => !s)}
                 aria-label="Toggle sound"
+                title={soundOn ? "Mute sounds" : "Unmute sounds"}
               >
-                {soundOn ? "🔊 Sound" : "🔈 Muted"}
+                {soundOn ? (
+                  <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clipRule="evenodd"/></svg>
+                ) : (
+                  <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM12.293 7.293a1 1 0 011.414 0L15 8.586l1.293-1.293a1 1 0 111.414 1.414L16.414 10l1.293 1.293a1 1 0 01-1.414 1.414L15 11.414l-1.293 1.293a1 1 0 01-1.414-1.414L13.586 10l-1.293-1.293a1 1 0 010-1.414z" clipRule="evenodd"/></svg>
+                )}
               </button>
             </div>
           </div>
@@ -598,7 +544,7 @@ export default function App() {
             to="/chat"
             onClick={() => setNavOpen(false)}
           >
-            💬 Chat
+            Chat
           </NavLink>
           <NavLink
             className="m-link"
@@ -637,21 +583,17 @@ export default function App() {
           <div className="row gap">
             <button
               className="btn theme-toggle"
-              onClick={() => {
-                setTheme(theme === "dark" ? "light" : "dark");
-                setNavOpen(false);
-              }}
+              onClick={() => { setTheme(theme === "dark" ? "light" : "dark"); setNavOpen(false); }}
+              aria-label="Toggle theme"
             >
-              {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
+              {theme === "dark" ? "Light Mode" : "Dark Mode"}
             </button>
             <button
               className="btn theme-toggle"
-              onClick={() => {
-                setSoundOn((s) => !s);
-                setNavOpen(false);
-              }}
+              onClick={() => { setSoundOn((s) => !s); setNavOpen(false); }}
+              aria-label="Toggle sound"
             >
-              {soundOn ? "🔊 Sound" : "🔈 Muted"}
+              {soundOn ? "Mute Sound" : "Unmute Sound"}
             </button>
           </div>
         </div>

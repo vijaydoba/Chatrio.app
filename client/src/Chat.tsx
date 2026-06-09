@@ -476,15 +476,17 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
               className="btn theme-toggle"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               aria-label="Toggle theme"
+              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             >
-              {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
+              {theme === "dark" ? "Light" : "Dark"}
             </button>
             <button
               className="btn theme-toggle"
               onClick={() => setSoundOn((s) => !s)}
               aria-label="Toggle sound"
+              title={soundOn ? "Mute sounds" : "Unmute sounds"}
             >
-              {soundOn ? "🔊 Sound" : "🔈 Muted"}
+              {soundOn ? "Sound On" : "Muted"}
             </button>
           </div>
         </div>
