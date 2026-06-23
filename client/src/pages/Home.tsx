@@ -1,64 +1,219 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { STORIES } from "../data/stories";
+
+const HOME_STORIES = STORIES.slice(0, 12);
 
 const features = [
-  { icon: "🎭", title: "100% Anonymous", desc: "No account, no email, no profile. Just open and chat instantly." },
-  { icon: "⚡", title: "Instant Connect", desc: "Paired with a stranger in seconds. Zero waiting, zero friction." },
-  { icon: "🎯", title: "Interest Matching", desc: "Pick topics like gaming, music, or travel to find your kind of person." },
-  { icon: "📸", title: "Photo Sharing", desc: "Share images directly in the chat. Easy, instant, no uploads needed." },
-  { icon: "🔒", title: "Privacy First", desc: "No messages stored. Your conversations vanish when you leave." },
-  { icon: "🌙", title: "Dark Mode", desc: "Comfortable on the eyes, any time of day or night." },
+  {
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="24" height="24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+        <path d="M8.5 9a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM15.5 9a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+        <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+      </svg>
+    ),
+    title: "100% Anonymous",
+    desc: "No account, no email, no profile. Open and chat instantly with zero identity required.",
+  },
+  {
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="24" height="24">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+    ),
+    title: "Instant Connect",
+    desc: "Paired with a stranger in seconds. Zero waiting, zero friction.",
+  },
+  {
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="24" height="24">
+        <circle cx="12" cy="12" r="10"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    ),
+    title: "Interest Matching",
+    desc: "Pick topics like gaming, music, or travel to find someone who gets you.",
+  },
+  {
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="24" height="24">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+    ),
+    title: "Photo Sharing",
+    desc: "Share images directly in the chat. Easy, instant, no uploads needed.",
+  },
+  {
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="24" height="24">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0110 0v4"/>
+      </svg>
+    ),
+    title: "Privacy First",
+    desc: "No messages stored. Your conversations vanish the moment you leave.",
+  },
+  {
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="24" height="24">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+      </svg>
+    ),
+    title: "Dark Mode",
+    desc: "Easy on the eyes, any time of day or night. Switches with one tap.",
+  },
 ];
 
 const steps = [
-  { num: "1", title: "Set your name", desc: "Choose any name you like — or just stay as Stranger." },
-  { num: "2", title: "Pick interests", desc: "Optional: select topics to match with someone who gets you." },
-  { num: "3", title: "Hit New Chat", desc: "One click and you're live. Meet a new person right now." },
+  { num: "01", title: "Set your name", desc: "Choose any name — or stay as Stranger." },
+  { num: "02", title: "Pick interests", desc: "Optional topics to match with someone who gets you." },
+  { num: "03", title: "Hit New Chat", desc: "One click and you're live with a new person right now." },
+];
+
+const faqs = [
+  {
+    q: "Is Chatrio completely free?",
+    a: "Yes — always. Chatrio has no subscription fees, no premium tiers, and no hidden costs. The anonymous chat experience is free for everyone.",
+  },
+  {
+    q: "Do I need to create an account?",
+    a: "No account is needed. Visit Chatrio, choose a nickname (or stay as \"Stranger\"), pick your interests, and click New Chat. No email, no password, no profile required.",
+  },
+  {
+    q: "Is my chat history saved anywhere?",
+    a: "No. Messages are delivered in real time but never stored on Chatrio's servers. The moment you close the chat, your conversation is gone permanently.",
+  },
+  {
+    q: "How does interest matching work?",
+    a: "Pick interests like gaming, music, travel, or fitness. Chatrio pairs you with someone who selected the same or similar topics, so you always have something to talk about.",
+  },
+  {
+    q: "Is Chatrio a good Omegle alternative?",
+    a: "Chatrio launched as a modern alternative to Omegle, with a cleaner mobile-first interface, interest-based matching, photo sharing, and a stronger commitment to privacy.",
+  },
+  {
+    q: "How does Chatrio handle inappropriate content?",
+    a: "Users can report inappropriate behavior with one click. Repeated violations result in bans. Automated filters also detect and block the most harmful content categories.",
+  },
+  {
+    q: "Can I use Chatrio on my phone?",
+    a: "Yes. Chatrio is fully responsive and works on any modern smartphone browser — iOS Safari and Android Chrome included. No app download required.",
+  },
+  {
+    q: "What makes Chatrio different from other random chat sites?",
+    a: "Three things: instant connections (no waiting rooms), real interest matching (not just random pairing), and genuine privacy (no data stored, no accounts, no tracking).",
+  },
 ];
 
 export default function Home() {
   return (
     <div className="lp-page">
+      <Helmet>
+        <title>Chatrio – Free Anonymous Chat with Strangers | No Sign-Up</title>
+        <meta name="description" content="Chatrio is a free anonymous chat app — talk to strangers instantly with no sign-up. The best Omegle alternative in 2025. Pick your interests, click New Chat, and connect in seconds." />
+        <link rel="canonical" href="https://chatrio.app/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Chatrio – Free Anonymous Chat with Strangers" />
+        <meta property="og:description" content="Chat with strangers anonymously. No sign-up needed. Free, instant, private random chat." />
+        <meta property="og:url" content="https://chatrio.app/" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png" />
+        <meta property="og:image:width" content="512" />
+        <meta property="og:image:height" content="512" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Chatrio – Free Anonymous Chat with Strangers" />
+        <meta name="twitter:description" content="Chat with strangers anonymously. No sign-up needed. Free, instant, private random chat." />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          "name": "How to Chat with Strangers on Chatrio",
+          "description": "Start an anonymous chat with a stranger in seconds — no account required.",
+          "step": [
+            { "@type": "HowToStep", "position": 1, "name": "Set your name", "text": "Choose any name or stay as Stranger — no registration needed." },
+            { "@type": "HowToStep", "position": 2, "name": "Pick interests", "text": "Select optional topics like gaming, music, or travel to match with the right person." },
+            { "@type": "HowToStep", "position": 3, "name": "Hit New Chat", "text": "Click once and you are live with a new person instantly." }
+          ],
+          "totalTime": "PT30S",
+          "tool": [{ "@type": "HowToTool", "name": "Web browser" }]
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqs.map(f => ({
+            "@type": "Question",
+            "name": f.q,
+            "acceptedAnswer": { "@type": "Answer", "text": f.a }
+          }))
+        })}</script>
+      </Helmet>
 
       {/* ── HERO ── */}
       <section className="lp-hero">
-        <div className="lp-live-badge">
+        <div className="lp-live-badge lp-anim-fade-up" style={{ animationDelay: "0ms" }}>
           <span className="lp-live-dot" />
           Live chat · No sign-up needed
         </div>
 
-        <h1 className="lp-headline">
+        <h1 className="lp-headline lp-anim-fade-up" style={{ animationDelay: "80ms" }}>
           Chat with strangers.<br />
           <span className="lp-gradient-text">Real talk, right now.</span>
         </h1>
 
-        <p className="lp-sub">
+        <p className="lp-sub lp-anim-fade-up" style={{ animationDelay: "160ms" }}>
           Anonymous one-on-one chat with smart interest matching.
           Meet someone new in seconds — no account, no history.
         </p>
 
-        <div className="lp-cta-row">
+        <div className="lp-cta-row lp-anim-fade-up" style={{ animationDelay: "240ms" }}>
           <NavLink to="/chat" className="lp-btn-primary">
-            Start Chatting →
+            Start Chatting
           </NavLink>
           <NavLink to="/blog" className="lp-btn-ghost">
             Read our blog
           </NavLink>
         </div>
 
-        <div className="lp-trust-row">
-          <span>✓ No account</span>
-          <span>✓ No message logs</span>
-          <span>✓ Free forever</span>
+        <div className="lp-trust-row lp-anim-fade-up" style={{ animationDelay: "320ms" }}>
+          <span>No account</span>
+          <span>No message logs</span>
+          <span>Free forever</span>
+        </div>
+      </section>
+
+      {/* ── WEB STORIES ── */}
+      <section className="lp-stories-section">
+        <div className="lp-stories-header">
+          <h2 className="lp-stories-title">Stories</h2>
+          <NavLink to="/web-stories" className="lp-stories-viewall">View all →</NavLink>
+        </div>
+        <div className="lp-stories-scroll">
+          {HOME_STORIES.map((s) => (
+            <NavLink
+              key={s.id}
+              to={`/web-stories/${s.id}`}
+              className="lp-story-bubble"
+              aria-label={s.title}
+            >
+              <div className="lp-story-ring">
+                <div className="lp-story-avatar" style={{ background: s.gradient }}>
+                  <span className="lp-story-emoji">{s.emoji}</span>
+                </div>
+              </div>
+              <span className="lp-story-label">{s.shortTitle}</span>
+            </NavLink>
+          ))}
         </div>
       </section>
 
       {/* ── HOW IT WORKS ── */}
       <section className="lp-section">
-        <h2 className="lp-section-title">How it works</h2>
+        <h2 className="lp-section-title lp-anim-fade-up">How it works</h2>
         <div className="lp-steps-grid">
-          {steps.map((s) => (
-            <div className="lp-step" key={s.num}>
+          {steps.map((s, i) => (
+            <div className="lp-step lp-anim-fade-up" key={s.num} style={{ animationDelay: `${i * 80}ms` }}>
               <div className="lp-step-num">{s.num}</div>
               <h3 className="lp-step-title">{s.title}</h3>
               <p className="lp-step-desc">{s.desc}</p>
@@ -69,10 +224,10 @@ export default function Home() {
 
       {/* ── FEATURES ── */}
       <section className="lp-section">
-        <h2 className="lp-section-title">Everything you need</h2>
+        <h2 className="lp-section-title lp-anim-fade-up">Everything you need</h2>
         <div className="lp-features-grid">
-          {features.map((f) => (
-            <div className="lp-feature-card" key={f.title}>
+          {features.map((f, i) => (
+            <div className="lp-feature-card lp-anim-fade-up" key={f.title} style={{ animationDelay: `${i * 60}ms` }}>
               <div className="lp-feature-icon">{f.icon}</div>
               <h3 className="lp-feature-title">{f.title}</h3>
               <p className="lp-feature-desc">{f.desc}</p>
@@ -81,10 +236,53 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── WHY ANONYMOUS CHAT ── */}
+      <section className="lp-narrative lp-anim-fade-up">
+        <div className="lp-narrative-inner">
+          <h2>Why anonymous chat?</h2>
+          <p>
+            There's something freeing about talking to someone who doesn't know you. No
+            social pressure, no curated persona, no history to carry. Anonymous chat lets
+            you be direct, curious, or vulnerable in ways that feel harder with people
+            already in your life.
+          </p>
+          <p>
+            Chatrio was built around that idea. Every conversation starts fresh. The
+            person you're matched with shares at least one interest with you — but nothing
+            else about you is shared or stored. When the chat ends, it's gone. No logs,
+            no screenshots saved server-side, no profile to look up later.
+          </p>
+          <p>
+            Interest matching changes the dynamic significantly. Instead of an opening
+            message into the void, you start with common ground: gaming, music, travel,
+            fitness, or dozens of other topics. That one shared thread is enough to turn
+            a random connection into a real conversation.
+          </p>
+          <p>
+            Chatrio works in your browser on any device — no download, no sign-up, no
+            waiting. Just pick a name (or stay as Stranger), choose your interests, and
+            you're live within seconds.
+          </p>
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section className="lp-faq lp-anim-fade-up">
+        <h2 className="lp-section-title">Frequently asked questions</h2>
+        <div className="lp-faq-grid">
+          {faqs.map((item) => (
+            <div className="lp-faq-item" key={item.q}>
+              <p className="lp-faq-q">{item.q}</p>
+              <p className="lp-faq-a">{item.a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ── FINAL CTA ── */}
-      <section className="lp-final-cta">
+      <section className="lp-final-cta lp-anim-fade-up">
         <div className="lp-cta-logo">
-          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
             <defs>
               <linearGradient id="lg" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stopColor="#6d28d9" />
@@ -101,7 +299,7 @@ export default function Home() {
         <h2 className="lp-cta-title">Ready to meet someone new?</h2>
         <p className="lp-cta-sub">No sign-up. No fluff. Just connect.</p>
         <NavLink to="/chat" className="lp-btn-primary">
-          Open Chat →
+          Open Chat
         </NavLink>
       </section>
 

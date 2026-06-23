@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg16" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a1a"/>
+      <stop offset="55%" stop-color="#1a0a2e"/>
+      <stop offset="100%" stop-color="#2d0a0a"/>
+    </linearGradient>
+    <linearGradient id="redGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dc2626"/>
+      <stop offset="100%" stop-color="#7f1d1d"/>
+    </linearGradient>
+    <linearGradient id="purpleGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <radialGradient id="glow16a" cx="30%" cy="40%" r="45%">
+      <stop offset="0%" stop-color="#dc2626" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#dc2626" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow16b" cx="75%" cy="60%" r="40%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg16)"/>
+  <ellipse cx="350" cy="280" rx="380" ry="280" fill="url(#glow16a)"/>
+  <ellipse cx="880" cy="380" rx="340" ry="260" fill="url(#glow16b)"/>
+
+  <!-- Broken screen / monitor shape -->
+  <rect x="340" y="160" width="520" height="310" rx="12" fill="none" stroke="#dc2626" stroke-width="2.5" opacity="0.4"/>
+  <rect x="348" y="168" width="504" height="294" rx="8" fill="white" opacity="0.03"/>
+  <!-- Crack lines -->
+  <line x1="600" y1="160" x2="560" y2="340" stroke="#dc2626" stroke-width="1.5" opacity="0.5"/>
+  <line x1="560" y1="340" x2="610" y2="470" stroke="#dc2626" stroke-width="1.5" opacity="0.5"/>
+  <line x1="560" y1="340" x2="480" y2="390" stroke="#dc2626" stroke-width="1" opacity="0.3"/>
+  <line x1="600" y1="160" x2="660" y2="250" stroke="#dc2626" stroke-width="1" opacity="0.3"/>
+  <!-- Monitor stand -->
+  <rect x="565" y="470" width="70" height="18" rx="4" fill="none" stroke="#dc2626" stroke-width="1.5" opacity="0.3"/>
+  <rect x="540" y="488" width="120" height="8" rx="4" fill="none" stroke="#dc2626" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Big X over screen -->
+  <line x1="380" y1="190" x2="820" y2="450" stroke="#dc2626" stroke-width="3.5" opacity="0.55"/>
+  <line x1="820" y1="190" x2="380" y2="450" stroke="#dc2626" stroke-width="3.5" opacity="0.55"/>
+
+  <!-- "CLOSED" badge -->
+  <rect x="468" y="282" width="264" height="66" rx="8" fill="#dc2626" opacity="0.85"/>
+  <text x="600" y="324" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="32" fill="white" font-weight="900" letter-spacing="6">CLOSED</text>
+
+  <!-- Alternative chat bubbles right side -->
+  <rect x="900" y="200" width="180" height="48" rx="16" fill="url(#purpleGlow)" opacity="0.75"/>
+  <rect x="920" y="262" width="140" height="40" rx="14" fill="white" opacity="0.12"/>
+  <rect x="905" y="316" width="160" height="40" rx="14" fill="url(#purpleGlow)" opacity="0.55"/>
+
+  <!-- Left side — calendar/date icon -->
+  <rect x="110" y="220" width="160" height="160" rx="14" fill="white" opacity="0.04" stroke="white" stroke-width="1" stroke-opacity="0.12"/>
+  <rect x="110" y="220" width="160" height="40" rx="14" fill="#dc2626" opacity="0.5"/>
+  <text x="190" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="white" opacity="0.9">NOV 2023</text>
+  <text x="190" y="330" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="46" fill="white" opacity="0.7" font-weight="900">8</text>
+  <text x="190" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white" opacity="0.5" letter-spacing="1">SHUTDOWN DATE</text>
+
+  <!-- Dot grid -->
+  <pattern id="dots16" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+    <circle cx="2" cy="2" r="1" fill="white" opacity="0.03"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#dots16)"/>
+
+  <!-- Headings -->
+  <text x="600" y="72" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="40" fill="white" font-weight="bold">Can You Still Use Omegle</text>
+  <text x="600" y="124" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="40" fill="url(#purpleGlow)" font-weight="bold">in 2025?</text>
+  <text x="600" y="162" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#fca5a5" opacity="0.7" letter-spacing="2">THE TRUTH + BEST ALTERNATIVES THAT STILL WORK</text>
+
+  <text x="600" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="white" opacity="0.25" letter-spacing="3">CHATRIO.APP</text>
+</svg>

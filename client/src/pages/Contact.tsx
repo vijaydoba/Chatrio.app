@@ -1,9 +1,31 @@
 // client/src/pages/Contact.tsx
 import React from "react";
+import { Helmet } from "react-helmet-async";
 
 export default function Contact() {
   return (
     <article className="doc max-w-[800px] mx-auto py-10 px-5 font-sans leading-loose text-slate-700 dark:text-slate-300">
+      <Helmet>
+        <title>Contact Chatrio – Get Help & Support</title>
+        <meta name="description" content="Contact the Chatrio team for support, feedback, privacy requests, or partnership enquiries. We respond within 24–48 hours." />
+        <link rel="canonical" href="https://chatrio.app/contact" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Contact Chatrio – Get Help & Support" />
+        <meta property="og:description" content="Reach out to the Chatrio team for support, feedback, or partnership enquiries." />
+        <meta property="og:url" content="https://chatrio.app/contact" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Contact Chatrio" />
+        <meta name="twitter:description" content="Reach out to the Chatrio team for support or feedback." />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "url": "https://chatrio.app/contact",
+          "name": "Contact Chatrio",
+          "description": "Contact the Chatrio support team.",
+          "publisher": { "@type": "Organization", "name": "Chatrio", "url": "https://chatrio.app" }
+        })}</script>
+      </Helmet>
       <header className="mb-10 border-b border-slate-200 dark:border-slate-700 pb-5">
         <h1 className="text-4xl mb-2 font-bold text-slate-900 dark:text-slate-50">
           Contact Us

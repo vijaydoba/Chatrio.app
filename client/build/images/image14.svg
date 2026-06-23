@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg14" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f0520"/>
+      <stop offset="60%" stop-color="#4c1d95"/>
+      <stop offset="100%" stop-color="#831843"/>
+    </linearGradient>
+    <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#be185d" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#be185d" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg14)"/>
+  <ellipse cx="300" cy="150" rx="280" ry="200" fill="#6d28d9" opacity="0.12"/>
+  <ellipse cx="950" cy="500" rx="300" ry="220" fill="#be185d" opacity="0.12"/>
+  <circle cx="600" cy="340" r="220" fill="url(#glow)"/>
+  <!-- Neural network nodes -->
+  <circle cx="420" cy="230" r="7" fill="#f9a8d4" opacity="0.9"/>
+  <circle cx="540" cy="190" r="5" fill="#c4b5fd" opacity="0.8"/>
+  <circle cx="600" cy="260" r="9" fill="#f9a8d4"/>
+  <circle cx="670" cy="200" r="5" fill="#c4b5fd" opacity="0.8"/>
+  <circle cx="780" cy="240" r="7" fill="#f9a8d4" opacity="0.9"/>
+  <circle cx="460" cy="310" r="6" fill="#c4b5fd" opacity="0.8"/>
+  <circle cx="740" cy="310" r="6" fill="#c4b5fd" opacity="0.8"/>
+  <circle cx="500" cy="390" r="7" fill="#f9a8d4" opacity="0.9"/>
+  <circle cx="700" cy="390" r="7" fill="#f9a8d4" opacity="0.9"/>
+  <circle cx="600" cy="440" r="9" fill="#ec4899"/>
+  <circle cx="360" cy="360" r="5" fill="#c4b5fd" opacity="0.7"/>
+  <circle cx="840" cy="360" r="5" fill="#c4b5fd" opacity="0.7"/>
+  <!-- Neural network lines -->
+  <line x1="420" y1="230" x2="540" y2="190" stroke="#f9a8d4" stroke-width="1" opacity="0.3"/>
+  <line x1="540" y1="190" x2="600" y2="260" stroke="#c4b5fd" stroke-width="1" opacity="0.3"/>
+  <line x1="600" y1="260" x2="670" y2="200" stroke="#f9a8d4" stroke-width="1" opacity="0.3"/>
+  <line x1="670" y1="200" x2="780" y2="240" stroke="#c4b5fd" stroke-width="1" opacity="0.3"/>
+  <line x1="420" y1="230" x2="460" y2="310" stroke="#f9a8d4" stroke-width="1" opacity="0.3"/>
+  <line x1="780" y1="240" x2="740" y2="310" stroke="#c4b5fd" stroke-width="1" opacity="0.3"/>
+  <line x1="460" y1="310" x2="500" y2="390" stroke="#f9a8d4" stroke-width="1.5" opacity="0.4"/>
+  <line x1="740" y1="310" x2="700" y2="390" stroke="#c4b5fd" stroke-width="1.5" opacity="0.4"/>
+  <line x1="500" y1="390" x2="600" y2="440" stroke="#ec4899" stroke-width="2" opacity="0.5"/>
+  <line x1="700" y1="390" x2="600" y2="440" stroke="#ec4899" stroke-width="2" opacity="0.5"/>
+  <line x1="360" y1="360" x2="460" y2="310" stroke="#c4b5fd" stroke-width="1" opacity="0.25"/>
+  <line x1="840" y1="360" x2="740" y2="310" stroke="#c4b5fd" stroke-width="1" opacity="0.25"/>
+  <line x1="600" y1="260" x2="600" y2="440" stroke="#ec4899" stroke-width="1" stroke-dasharray="6,4" opacity="0.2"/>
+  <!-- Chat bubbles subtle -->
+  <rect x="90" y="270" width="160" height="50" rx="14" fill="white" opacity="0.06"/>
+  <rect x="955" y="200" width="150" height="50" rx="14" fill="white" opacity="0.06"/>
+  <rect x="110" y="340" width="110" height="40" rx="12" fill="white" opacity="0.04"/>
+  <!-- Headings -->
+  <text x="600" y="108" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="44" fill="white" font-weight="bold" letter-spacing="0.5">The Psychology of</text>
+  <text x="600" y="162" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="44" fill="url(#hg)" font-weight="bold" letter-spacing="0.5">Falling in Love Online</text>
+  <text x="600" y="208" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#d8b4fe" opacity="0.75" letter-spacing="2">WHY CHAT ROMANCES FEEL SO REAL</text>
+  <!-- Bottom brand -->
+  <text x="600" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="white" opacity="0.35" letter-spacing="3">CHATRIO.APP</text>
+</svg>

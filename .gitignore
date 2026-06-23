@@ -5,6 +5,7 @@ client/node_modules/
 
 # Ignore environment files
 client/.env
+server/.env
 
 # Ignore OS and log files
 *.log

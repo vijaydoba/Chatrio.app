@@ -1,10 +1,20 @@
 // src/pages/Terms.tsx
 import React from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 export default function Terms() {
   return (
     <article className="max-w-[900px] mx-auto py-10 px-5 font-sans leading-loose text-slate-600 dark:text-slate-300">
+      <Helmet>
+        <title>Terms of Service – Chatrio Anonymous Chat</title>
+        <meta name="description" content="Read Chatrio's terms of service. Understand the rules and guidelines for using our free anonymous chat platform responsibly." />
+        <link rel="canonical" href="https://chatrio.app/terms" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Terms of Service – Chatrio" />
+        <meta property="og:url" content="https://chatrio.app/terms" />
+        <meta name="robots" content="index, follow" />
+      </Helmet>
       <header className="mb-12 border-b border-slate-200 dark:border-slate-700 pb-8">
         <h1 className="text-4xl md:text-5xl mb-4 font-bold text-slate-900 dark:text-slate-50">
           Terms of Service
