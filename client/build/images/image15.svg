@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg15" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1c0a00"/>
+      <stop offset="50%" stop-color="#7c2d12"/>
+      <stop offset="100%" stop-color="#14532d"/>
+    </linearGradient>
+    <linearGradient id="phoneGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fed7aa"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="bubbleOrange" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#fb923c"/>
+    </linearGradient>
+    <radialGradient id="glow15a" cx="30%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow15b" cx="70%" cy="60%" r="50%">
+      <stop offset="0%" stop-color="#16a34a" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#16a34a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg15)"/>
+  <ellipse cx="250" cy="200" rx="350" ry="280" fill="url(#glow15a)"/>
+  <ellipse cx="950" cy="430" rx="320" ry="260" fill="url(#glow15b)"/>
+  <!-- Mobile phone -->
+  <rect x="490" y="130" width="220" height="390" rx="28" fill="white" opacity="0.08" stroke="white" stroke-width="2" stroke-opacity="0.25"/>
+  <rect x="502" y="162" width="196" height="320" rx="8" fill="white" opacity="0.04"/>
+  <circle cx="600" cy="497" r="15" fill="none" stroke="white" stroke-width="2" stroke-opacity="0.2"/>
+  <rect x="560" y="140" width="80" height="6" rx="3" fill="white" opacity="0.15"/>
+  <!-- Chat bubbles inside phone -->
+  <rect x="512" y="178" width="130" height="38" rx="12" fill="url(#bubbleOrange)" opacity="0.7"/>
+  <rect x="536" y="228" width="150" height="38" rx="12" fill="white" opacity="0.15"/>
+  <rect x="512" y="278" width="110" height="38" rx="12" fill="url(#bubbleOrange)" opacity="0.7"/>
+  <rect x="548" y="328" width="140" height="38" rx="12" fill="white" opacity="0.15"/>
+  <rect x="512" y="376" width="120" height="38" rx="12" fill="url(#bubbleOrange)" opacity="0.5"/>
+  <!-- Connection nodes - left side -->
+  <circle cx="300" cy="220" r="10" fill="#fbbf24" opacity="0.8"/>
+  <circle cx="240" cy="315" r="8" fill="#fb923c" opacity="0.7"/>
+  <circle cx="320" cy="400" r="10" fill="#fbbf24" opacity="0.8"/>
+  <circle cx="180" cy="430" r="6" fill="#fb923c" opacity="0.5"/>
+  <!-- Connection nodes - right side -->
+  <circle cx="900" cy="200" r="10" fill="#4ade80" opacity="0.8"/>
+  <circle cx="960" cy="310" r="8" fill="#22c55e" opacity="0.7"/>
+  <circle cx="890" cy="410" r="10" fill="#4ade80" opacity="0.8"/>
+  <circle cx="1020" cy="440" r="6" fill="#22c55e" opacity="0.5"/>
+  <!-- Connection lines left -->
+  <line x1="300" y1="220" x2="490" y2="280" stroke="#fbbf24" stroke-width="1.5" opacity="0.25"/>
+  <line x1="240" y1="315" x2="490" y2="315" stroke="#fb923c" stroke-width="1.5" opacity="0.25"/>
+  <line x1="320" y1="400" x2="490" y2="360" stroke="#fbbf24" stroke-width="1.5" opacity="0.25"/>
+  <line x1="180" y1="430" x2="320" y2="400" stroke="#fb923c" stroke-width="1" opacity="0.2"/>
+  <!-- Connection lines right -->
+  <line x1="900" y1="200" x2="710" y2="280" stroke="#4ade80" stroke-width="1.5" opacity="0.25"/>
+  <line x1="960" y1="310" x2="710" y2="315" stroke="#22c55e" stroke-width="1.5" opacity="0.25"/>
+  <line x1="890" y1="410" x2="710" y2="360" stroke="#4ade80" stroke-width="1.5" opacity="0.25"/>
+  <line x1="1020" y1="440" x2="890" y2="410" stroke="#22c55e" stroke-width="1" opacity="0.2"/>
+  <!-- Dot grid pattern background subtle -->
+  <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+    <circle cx="2" cy="2" r="1.2" fill="white" opacity="0.04"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <!-- Text -->
+  <text x="600" y="94" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="42" fill="white" font-weight="bold">Best Anonymous Chat App</text>
+  <text x="600" y="146" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="42" fill="#fbbf24" font-weight="bold">in India 2025</text>
+  <text x="600" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#fdba74" opacity="0.7" letter-spacing="2">NO SIGN-UP · FREE · WORKS ON MOBILE</text>
+  <!-- India flag stripes bottom accent -->
+  <rect x="0" y="615" width="1200" height="5" fill="#FF9933" opacity="0.7"/>
+  <rect x="0" y="620" width="1200" height="5" fill="white" opacity="0.25"/>
+  <rect x="0" y="625" width="1200" height="5" fill="#138808" opacity="0.7"/>
+  <text x="600" y="604" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="white" opacity="0.3" letter-spacing="3">CHATRIO.APP</text>
+</svg>

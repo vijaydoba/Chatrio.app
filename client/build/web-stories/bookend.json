@@ -1,0 +1,76 @@
+{
+  "bookendVersion": "v1.0",
+  "shareProviders": [
+    "twitter",
+    "facebook",
+    "whatsapp",
+    "email"
+  ],
+  "components": [
+    {
+      "type": "heading",
+      "text": "More Stories from Chatrio"
+    },
+    {
+      "type": "small",
+      "title": "How to End a Chat Without It Feeling Awkward",
+      "url": "https://chatrio.app/web-stories/how-to-say-goodbye-in-chat/",
+      "image": "https://chatrio.app/branding/chatrio-512.png"
+    },
+    {
+      "type": "small",
+      "title": "Why Emojis Change Everything in Text",
+      "url": "https://chatrio.app/web-stories/why-emojis-change-everything/",
+      "image": "https://chatrio.app/branding/chatrio-512.png"
+    },
+    {
+      "type": "small",
+      "title": "The Art of Asking Questions That People Actually Want to Answer",
+      "url": "https://chatrio.app/web-stories/the-art-of-asking-questions/",
+      "image": "https://chatrio.app/branding/chatrio-512.png"
+    },
+    {
+      "type": "small",
+      "title": "Turning Awkward Moments Into Awesome Ones",
+      "url": "https://chatrio.app/web-stories/turning-awkward-into-awesome/",
+      "image": "https://chatrio.app/branding/chatrio-512.png"
+    },
+    {
+      "type": "small",
+      "title": "Why You Should Talk to More Strangers",
+      "url": "https://chatrio.app/web-stories/why-you-should-talk-to-more-strangers/",
+      "image": "https://chatrio.app/branding/chatrio-512.png"
+    },
+    {
+      "type": "small",
+      "title": "How to Get Past Small Talk Every Time",
+      "url": "https://chatrio.app/web-stories/how-to-get-past-small-talk/",
+      "image": "https://chatrio.app/branding/chatrio-512.png"
+    },
+    {
+      "type": "small",
+      "title": "What Talking to Strangers Online Teaches You About Yourself",
+      "url": "https://chatrio.app/web-stories/what-online-chat-teaches-you/",
+      "image": "https://chatrio.app/branding/chatrio-512.png"
+    },
+    {
+      "type": "small",
+      "title": "Why Anonymous Chat Is Perfect for Introverts",
+      "url": "https://chatrio.app/web-stories/why-anonymous-chat-works-for-introverts/",
+      "image": "https://chatrio.app/branding/chatrio-512.png"
+    },
+    {
+      "type": "cta-link",
+      "links": [
+        {
+          "text": "Chat Anonymously Free →",
+          "url": "https://chatrio.app/chat"
+        },
+        {
+          "text": "Browse All Stories",
+          "url": "https://chatrio.app/stories"
+        }
+      ]
+    }
+  ]
+}

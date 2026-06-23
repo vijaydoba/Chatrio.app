@@ -1,10 +1,20 @@
 // src/pages/Privacy.tsx
 import React from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 export default function Privacy() {
   return (
     <article className="max-w-[900px] mx-auto py-10 px-5 font-sans leading-loose text-slate-600 dark:text-slate-300">
+      <Helmet>
+        <title>Privacy Policy – Chatrio Anonymous Chat</title>
+        <meta name="description" content="Read Chatrio's privacy policy. We don't store your messages, don't track you, and don't require any personal information to use our anonymous chat service." />
+        <link rel="canonical" href="https://chatrio.app/privacy" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Privacy Policy – Chatrio" />
+        <meta property="og:url" content="https://chatrio.app/privacy" />
+        <meta name="robots" content="index, follow" />
+      </Helmet>
       <header className="mb-12 border-b border-slate-200 dark:border-slate-700 pb-8">
         <h1 className="text-4xl md:text-5xl mb-4 font-bold text-slate-900 dark:text-slate-50">
           Privacy Policy

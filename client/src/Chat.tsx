@@ -1,4 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { io, Socket } from "socket.io-client";
 import "./App.css";
 
@@ -18,17 +20,14 @@ type Message = {
 };
 
 const ALL_TOPICS = [
-  "music",
-  "gaming",
-  "coding",
-  "movies",
-  "sports",
-  "travel",
-  "food",
-  "books",
-  "art",
-  "fitness",
+  "music", "gaming", "coding", "movies", "sports",
+  "travel", "food", "books", "art", "fitness",
 ];
+
+const TOPIC_EMOJIS: Record<string, string> = {
+  music: "🎵", gaming: "🎮", coding: "💻", movies: "🎬", sports: "⚽",
+  travel: "✈️", food: "🍕", books: "📚", art: "🎨", fitness: "💪",
+};
 
 type ChatProps = {
   theme: Theme;
@@ -38,6 +37,7 @@ type ChatProps = {
 };
 
 export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps) {
+  const navigate = useNavigate();
   const [mode, setMode] = useState<Mode>("idle");
   const [username, setUsername] = useState("Stranger");
   const [nameDraft, setNameDraft] = useState("Stranger");
@@ -52,7 +52,12 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
   const [selectedTopics, setSelectedTopics] = useState<string[]>(() =>
     JSON.parse(localStorage.getItem("topics") || "[]")
   );
-  const [lightbox, setLightbox] = useState<string | null>(null);
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showBgPicker, setShowBgPicker] = useState(false);
+  const [chatBg, setChatBg] = useState(() => localStorage.getItem("chatBg") || "default");
+  const [skipConfirm, setSkipConfirm] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   const socketRef = useRef<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -114,6 +119,20 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
   };
   const soundReceived = () => beep(420, 120, 0.06);
 
+  // Block browser save / print shortcuts
+  useEffect(() => {
+    const block = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === "s" || e.key === "p" || e.key === "u")) {
+        e.preventDefault();
+      }
+      if (e.key === "PrintScreen") {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener("keydown", block);
+    return () => window.removeEventListener("keydown", block);
+  }, []);
+
   // lock scroll
   useEffect(() => {
     const body = document.body;
@@ -123,6 +142,23 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
       body.style.overflow = "";
     };
   }, [mode, isIOS]);
+
+  // close menu on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+        setShowBgPicker(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  // persist bg choice
+  useEffect(() => {
+    localStorage.setItem("chatBg", chatBg);
+  }, [chatBg]);
 
   // Fullscreen chat experience
   useEffect(() => {
@@ -176,10 +212,13 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
     });
 
     socket.on("friend_left", () => {
-      setMode("friend_left");
       setPartnerTyping(false);
-      pushSystem("Your friend left the chat.");
-      setTimeout(() => resetChat("idle"), 1500);
+      pushSystem("Your friend left. Finding someone new…");
+      setTimeout(() => {
+        setMessages([]);
+        setMode("waiting");
+        socketRef.current?.emit("ready_to_chat");
+      }, 1500);
     });
 
     socket.on("message", (msg) => handleIncoming(msg));
@@ -204,6 +243,11 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
   const handleIncoming = (msg: Message) => {
     addMessage({ ...msg, kind: "user" });
     socketRef.current?.emit("delivered", { msgId: msg.msgId });
+    if (msg.fromId?.startsWith("bot_")) {
+      setMessages((prev) =>
+        prev.map((m) => m.status ? { ...m, status: "delivered" } : m)
+      );
+    }
     soundReceived();
   };
 
@@ -251,7 +295,7 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
   };
 
   const startNewChat = () => {
-    if (mode !== "idle") return;
+    if (mode === "waiting" || mode === "connected") return;
     if (!socketRef.current?.connected) {
       showNotice("Cannot connect to server. Please try again.", 3000);
       return;
@@ -317,6 +361,10 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
 
   const onPickFile = (file?: File | null) => {
     if (!file || mode !== "connected") return;
+    if (file.type.startsWith("video/") || file.type.startsWith("audio/")) {
+      showNotice("Only images can be sent.");
+      return;
+    }
     if (!file.type.startsWith("image/")) {
       showNotice("Please select an image.");
       return;
@@ -381,22 +429,38 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
       );
     }
     const isYou = m.fromId === myId;
+    const prev = i > 0 ? messages[i - 1] : null;
+    const next = i < messages.length - 1 ? messages[i + 1] : null;
+    const sameAsPrev = prev?.kind === "user" && prev.fromId === m.fromId;
+    const sameAsNext = next?.kind === "user" && next.fromId === m.fromId;
     const ticks =
       isYou &&
       (m.status === "delivered" ? "✓✓" : m.status === "sent" ? "✓" : "");
     return (
-      <div key={i} className={`bubble-row ${isYou ? "right" : "left"}`}>
-        <div className={`bubble ${isYou ? "me" : "other"}`}>
-          <div className="bubble-author">{isYou ? username : m.author}</div>
+      <div key={i} className={`bubble-row ${isYou ? "right" : "left"}${sameAsPrev ? " grouped" : ""}`}>
+        {!isYou && (
+          <div className="msg-avatar-wrap">
+            {!sameAsNext
+              ? <div className="avatar-circle">{(m.author?.[0] || "?").toUpperCase()}</div>
+              : <div className="avatar-spacer" />}
+          </div>
+        )}
+        <div className={`bubble ${isYou ? "me" : "other"}${sameAsPrev ? " no-tail" : ""}`}>
           {m.image ? (
-            <img
-              className="bubble-image"
-              src={m.image}
-              alt="Sent"
-              onClick={() => setLightbox(m.image!)}
-            />
+            <div className="img-shield-wrap">
+              <img
+                className="bubble-image"
+                src={m.image}
+                alt=""
+                draggable={false}
+              />
+              <div
+                className="img-shield"
+                onContextMenu={(e) => e.preventDefault()}
+              />
+            </div>
           ) : (
-            <div>{m.text}</div>
+            <div className="bubble-text">{m.text}</div>
           )}
           <div className="bubble-meta">
             <span className="bubble-time">
@@ -435,180 +499,261 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
     <div
       className={`chat-container ${mode} ${mode === "connected" ? "tg" : ""}`}
     >
+      <Helmet>
+        <title>Free Random Chat – Talk to Strangers | Chatrio</title>
+        <meta name="description" content="Start a free anonymous chat with a random stranger right now. No sign-up, no account. Choose your interests and click New Chat — instant connection." />
+        <link rel="canonical" href="https://chatrio.app/chat" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Free Random Chat – Talk to Strangers | Chatrio" />
+        <meta property="og:description" content="Anonymous random chat. No sign-up needed. Meet strangers instantly." />
+        <meta property="og:url" content="https://chatrio.app/chat" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Free Random Chat – Chatrio" />
+        <meta name="twitter:description" content="Anonymous random chat with strangers. No sign-up needed." />
+      </Helmet>
       {mode === "connected" ? (
         <div className="tg-topbar">
           <button
             className="icon-btn"
-            onClick={leaveChat}
-            aria-label="Leave chat"
-            title="Leave this chat"
+            onClick={() => { socketRef.current?.emit("disconnect_request"); navigate("/"); }}
+            aria-label="Go to home"
+            title="Home"
           >
             ←
           </button>
 
-          <div className="tg-center">
-            <div className="tg-name">{partnerName}</div>
-            <div className="tg-sub">
-              {partnerTyping ? "typing…" : "Connected"}
+          <div className="tg-avatar-name">
+            <div className="tg-avatar">{(partnerName?.[0] || "?").toUpperCase()}</div>
+            <div className="tg-center">
+              <div className="tg-name">{partnerName}</div>
+              <div className="tg-sub">
+                {partnerTyping ? "typing…" : "online"}
+              </div>
             </div>
           </div>
 
           <div className="tg-actions">
-            <button className="icon-btn" onClick={nextChat} aria-label="Next stranger" title="Next — find a new stranger">
-              ⇄
-            </button>
-            <button
-              className="icon-btn danger"
-              onClick={reportAndNext}
-              aria-label="Report & Next"
-              title="Report this user and find next"
-            >
-              🚩
-            </button>
+            <div className="tg-menu-wrap" ref={menuRef}>
+              <button
+                className="icon-btn"
+                onClick={() => { setMenuOpen((v) => !v); setShowBgPicker(false); }}
+                aria-label="More options"
+                title="More options"
+              >
+                ⋮
+              </button>
+
+              {menuOpen && (
+                <div className="tg-dropdown">
+                  {!showBgPicker ? (
+                    <>
+                      <button className="tg-dd-item" onClick={() => setShowBgPicker(true)}>
+                        <span className="tg-dd-icon">🎨</span> Change Background
+                      </button>
+                      <button className="tg-dd-item" onClick={() => { setMessages([]); setMenuOpen(false); }}>
+                        <span className="tg-dd-icon">🗑️</span> Clear Chat
+                      </button>
+                      <button className="tg-dd-item tg-dd-danger" onClick={() => { setMenuOpen(false); reportAndNext(); }}>
+                        <span className="tg-dd-icon">🚩</span> Report
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="tg-dd-label">Pick a background</div>
+                      <div className="tg-bg-grid">
+                        {[
+                          { id: "default", label: "Default", style: {} },
+                          { id: "dots",    label: "Dots",    style: {} },
+                          { id: "gradient-purple", label: "Purple", style: {} },
+                          { id: "gradient-ocean",  label: "Ocean",  style: {} },
+                          { id: "dark-solid",      label: "Dark",   style: {} },
+                        ].map((bg) => (
+                          <button
+                            key={bg.id}
+                            className={`tg-bg-swatch tg-bg-${bg.id} ${chatBg === bg.id ? "active" : ""}`}
+                            onClick={() => { setChatBg(bg.id); setMenuOpen(false); setShowBgPicker(false); }}
+                            title={bg.label}
+                          >
+                            {chatBg === bg.id && <span className="tg-bg-check">✓</span>}
+                          </button>
+                        ))}
+                      </div>
+                      <button className="tg-dd-item tg-dd-back" onClick={() => setShowBgPicker(false)}>
+                        ← Back
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       ) : (
-        <div className="chat-header">
-          <h1 className="chat-title">Chatrio</h1>
-          <div className="chat-header-right">
-            <div className="online-pill">{onlineLabel(online)}</div>
-            <button
-              className="btn theme-toggle"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              aria-label="Toggle theme"
-              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            >
-              {theme === "dark" ? "Light" : "Dark"}
+        /* ── LOBBY TOPBAR ── */
+        <div className="lobby-topbar">
+          <div className="lobby-status">
+            <span className="lobby-live-dot" />
+            <span className="lobby-online-text">{onlineLabel(online)}</span>
+          </div>
+          <div className="lobby-topbar-actions">
+            <button className="lobby-icon-btn" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">
+              {theme === "dark"
+                ? <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                : <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+              }
             </button>
-            <button
-              className="btn theme-toggle"
-              onClick={() => setSoundOn((s) => !s)}
-              aria-label="Toggle sound"
-              title={soundOn ? "Mute sounds" : "Unmute sounds"}
-            >
-              {soundOn ? "Sound On" : "Muted"}
+            <button className="lobby-icon-btn" onClick={() => setSoundOn((s) => !s)} aria-label="Toggle sound">
+              {soundOn
+                ? <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+                : <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+              }
             </button>
           </div>
         </div>
       )}
 
-      {mode !== "connected" && (
-        <div className="name-row">
-          <input
-            className="input"
-            type="text"
-            value={nameDraft}
-            onChange={(e) => setNameDraft(sanitizeUsername(e.target.value))}
-          />
-          <button
-            className="btn btn-primary-soft"
-            onClick={applyName}
-            disabled={nameDraft.trim() === username}
-          >
-            Set Name
-          </button>
-        </div>
-      )}
-
-      {mode !== "connected" && (
-        <div className="topics" role="group" aria-label="Interests">
-          {ALL_TOPICS.map((t) => {
-            const active = selectedTopics.includes(t);
-            return (
-              <button
-                key={t}
-                className={`chip ${active ? "chip-active" : ""}`}
-                onClick={() => toggleTopic(t)}
-                aria-pressed={active}
-              >
-                #{t}
-              </button>
-            );
-          })}
-        </div>
-      )}
-
+      {/* ── LOBBY: idle ── */}
       {mode === "idle" && (
-        <div className="mb-12">
-          <div className="text-muted mb-8">
-            Choose interests (optional) and click <strong>New Chat</strong>.
+        <div className="lobby">
+
+          <div className="lobby-hero">
+            <div className="lobby-icon">
+              <svg viewBox="0 0 48 48" width="32" height="32" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M44 28a6 6 0 01-6 6H14l-8 8V10a6 6 0 016-6h26a6 6 0 016 6z"/>
+                <circle cx="18" cy="22" r="2" fill="white" stroke="none"/>
+                <circle cx="26" cy="22" r="2" fill="white" stroke="none"/>
+                <circle cx="34" cy="22" r="2" fill="white" stroke="none"/>
+              </svg>
+            </div>
+            <h2 className="lobby-title">Meet someone new</h2>
+            <p className="lobby-sub">Anonymous · Instant · Real</p>
           </div>
-          <button className="btn btn-primary" onClick={startNewChat} title="Find a random stranger to chat with">
+
+          <div className="lobby-card">
+            <div className="lobby-field">
+              <label className="lobby-label">Your name</label>
+              <div className="lobby-name-row">
+                <input
+                  className="lobby-input"
+                  type="text"
+                  value={nameDraft}
+                  placeholder="Enter a name…"
+                  onChange={(e) => setNameDraft(sanitizeUsername(e.target.value))}
+                />
+                <button className="lobby-save-btn" onClick={applyName} disabled={nameDraft.trim() === username}>
+                  Save
+                </button>
+              </div>
+            </div>
+
+            <div className="lobby-field">
+              <label className="lobby-label">
+                Match by interest
+                <span className="lobby-opt"> · optional</span>
+              </label>
+              <div className="lobby-chips" role="group" aria-label="Interests">
+                {ALL_TOPICS.map((t) => {
+                  const active = selectedTopics.includes(t);
+                  return (
+                    <button key={t} className={`lchip${active ? " lchip-on" : ""}`} onClick={() => toggleTopic(t)} aria-pressed={active}>
+                      <span className="lchip-emoji">{TOPIC_EMOJIS[t]}</span>{t}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {!!notice && <div className="lobby-notice">{notice}</div>}
+
+          <button className="lobby-start-btn" onClick={startNewChat}>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            </svg>
             New Chat
           </button>
         </div>
       )}
 
+      {/* ── WAITING ── */}
       {mode === "waiting" && (
-        <div className="mb-12">
-          Looking for a stranger…{" "}
-          {waitingCount > 0 ? `(${waitingCount} waiting)` : ""}
-          <div className="mt-8">
-            <button className="btn btn-danger" onClick={leaveChat}>
-              Cancel &amp; Go Idle
+        <div className="lobby-waiting">
+          <div className="waiting-anim">
+            <div className="waiting-ring" />
+            <div className="waiting-ring" />
+            <div className="waiting-ring" />
+            <div className="waiting-core">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+              </svg>
+            </div>
+          </div>
+          <p className="waiting-title">Finding someone for you…</p>
+          {waitingCount > 1 && <p className="waiting-sub">{waitingCount} people waiting</p>}
+          <button className="waiting-cancel" onClick={leaveChat}>Cancel</button>
+        </div>
+      )}
+
+      {/* ── CONNECTED: full-screen chat ── */}
+      {mode === "connected" && (
+        <>
+          <div className={`chat tg-chat tg-bg-${chatBg}`} ref={chatScrollRef} role="log" aria-live="polite">
+            {messages.map(bubble)}
+            {partnerTyping && (
+              <div className="bubble-row left typing-row-wa">
+                <div className="msg-avatar-wrap">
+                  <div className="avatar-circle">{(partnerName?.[0] || "?").toUpperCase()}</div>
+                </div>
+                <div className="bubble other typing-bubble-wa">
+                  <span className="typing-dot" />
+                  <span className="typing-dot" />
+                  <span className="typing-dot" />
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {!!notice && <div className="banner">{notice}</div>}
+
+          <div className="composer tg-composer">
+            {skipConfirm ? (
+              <div className="skip-confirm-row">
+                <span className="skip-confirm-label">Skip this chat?</span>
+                <button className="skip-confirm-yes" onClick={() => { setSkipConfirm(false); nextChat(); }}>Skip</button>
+                <button className="skip-confirm-no" onClick={() => setSkipConfirm(false)}>Cancel</button>
+              </div>
+            ) : (
+              <button className="btn tg-skip-btn" onClick={() => setSkipConfirm(true)} aria-label="Skip" title="Skip to next stranger">
+                Skip
+              </button>
+            )}
+            <button className="btn tg-attach" onClick={openFilePicker} aria-label="Attach image" title="Send a photo">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>
+              </svg>
+            </button>
+            <input
+              className="input flex-1"
+              type="text"
+              value={input}
+              onChange={(e) => handleInputChange(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              onFocus={nudgeToBottom}
+              onClick={nudgeToBottom}
+              placeholder="Message…"
+            />
+            <input ref={fileInputRef} type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => onPickFile(e.target.files?.[0] || null)} />
+            <button className="btn tg-send" onClick={sendMessage} disabled={!input.trim()}>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M2 21l21-9L2 3v7l15 2-15 2z"/>
+              </svg>
             </button>
           </div>
-        </div>
+        </>
       )}
 
-      {mode === "friend_left" && (
-        <div className="banner warning">Your friend left the chat.</div>
-      )}
-
-      <div
-        className={`chat ${mode === "connected" ? "tg-chat" : ""}`}
-        ref={chatScrollRef}
-        role="log"
-        aria-live="polite"
-      >
-        {messages.map(bubble)}
-        <div ref={messagesEndRef} />
-      </div>
-
-      {mode === "connected" && partnerTyping && (
-        <div className="typing-row typing-bottom">
-          <span className="typing">Partner is typing…</span>
-        </div>
-      )}
-
-      {!!notice && <div className="banner">{notice}</div>}
-
-      <div className={`composer ${mode === "connected" ? "tg-composer" : ""}`}>
-        <input
-          className="input flex-1"
-          type="text"
-          value={input}
-          onChange={(e) => handleInputChange(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          onFocus={nudgeToBottom}
-          onClick={nudgeToBottom}
-          disabled={mode !== "connected"}
-          placeholder={
-            mode === "connected" ? "Say hi…" : "Start a chat to type"
-          }
-        />
-
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          style={{ display: "none" }}
-          onChange={(e) => onPickFile(e.target.files?.[0] || null)}
-        />
-        <button
-          className={`btn ${mode === "connected" ? "tg-send" : ""}`}
-          onClick={sendMessage}
-          disabled={mode !== "connected" || !input.trim()}
-        >
-          {mode === "connected" ? "➤" : "Send"}
-        </button>
-      </div>
-
-      {lightbox && (
-        <div className="lightbox" onClick={() => setLightbox(null)}>
-          <img src={lightbox} alt="Full size" className="lightbox-img" />
-        </div>
-      )}
     </div>
   );
 }

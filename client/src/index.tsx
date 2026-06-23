@@ -14,11 +14,9 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+const rootElement = document.getElementById("root") as HTMLElement;
 
-root.render(
+const app = (
   <React.StrictMode>
     <HelmetProvider>
       <BrowserRouter>
@@ -27,3 +25,10 @@ root.render(
     </HelmetProvider>
   </React.StrictMode>
 );
+
+// Use hydrateRoot when react-snap has pre-rendered content, createRoot otherwise
+if (rootElement.hasChildNodes()) {
+  ReactDOM.hydrateRoot(rootElement, app);
+} else {
+  ReactDOM.createRoot(rootElement).render(app);
+}

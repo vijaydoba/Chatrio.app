@@ -1,10 +1,38 @@
 // Updated About.tsx with more detailed content
+import { Helmet } from "react-helmet-async";
+
 export default function About() {
   return (
     <article
       className="doc"
       style={{ maxWidth: "800px", margin: "0 auto", padding: "20px" }}
     >
+      <Helmet>
+        <title>About Chatrio – Anonymous Chat App | Privacy-First Platform</title>
+        <meta name="description" content="Learn about Chatrio — a free, anonymous chat platform that connects strangers instantly. No accounts, no tracking, no data stored. Built for real conversations." />
+        <link rel="canonical" href="https://chatrio.app/about" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="About Chatrio – Anonymous Chat App" />
+        <meta property="og:description" content="Chatrio connects strangers instantly without accounts or data storage. Anonymous, free, and privacy-first." />
+        <meta property="og:url" content="https://chatrio.app/about" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="About Chatrio – Anonymous Chat App" />
+        <meta name="twitter:description" content="Chatrio connects strangers instantly without accounts or data storage." />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          "url": "https://chatrio.app/about",
+          "name": "About Chatrio",
+          "description": "Chatrio is a free anonymous chat platform connecting strangers instantly.",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Chatrio",
+            "url": "https://chatrio.app",
+            "logo": "https://chatrio.app/branding/chatrio-512.png"
+          }
+        })}</script>
+      </Helmet>
       <h1>About Chatrio: Connecting People Anonymously Since 2024</h1>
 
       <p className="lead">
@@ -108,28 +136,22 @@ export default function About() {
         </li>
       </ul>
 
-      <h2>📈 Our Impact</h2>
-      <div className="stats">
-        <div className="stat">
-          <span className="stat-number">50,000+</span>
-          <span className="stat-label">Daily Conversations</span>
-        </div>
-        <div className="stat">
-          <span className="stat-number">150+</span>
-          <span className="stat-label">Countries</span>
-        </div>
-        <div className="stat">
-          <span className="stat-number">98%</span>
-          <span className="stat-label">Positive Feedback</span>
-        </div>
-      </div>
-
-      <h2>🤝 Our Team</h2>
+      <h2>🌱 Our Growth</h2>
       <p>
-        Chatrio is developed by a small, passionate team of developers,
-        designers, and community moderators who believe in creating positive
-        online spaces. We're distributed across three continents and united by
-        our mission to make the internet feel human again.
+        Chatrio launched in 2024 and has grown steadily through word of mouth.
+        Users in dozens of countries visit daily to connect with strangers over
+        shared interests — from gaming and music to travel and relationships.
+        We don't publish vanity metrics, but every conversation that starts on
+        Chatrio is a real person choosing to connect with another real person,
+        and that's what we optimize for.
+      </p>
+
+      <h2>🤝 Who Builds Chatrio</h2>
+      <p>
+        Chatrio is an independent project built and maintained by a small team
+        of developers who believe the internet works best when it brings people
+        together without demanding their data in return. We take user feedback
+        seriously and ship improvements regularly.
       </p>
 
       <h2>📚 Additional Resources</h2>
@@ -162,14 +184,7 @@ export default function About() {
 
       <div className="update-notice">
         <small>
-          <em>
-            Last updated:{" "}
-            {new Date().toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </em>
+          <em>Last updated: June 2025</em>
         </small>
       </div>
     </article>

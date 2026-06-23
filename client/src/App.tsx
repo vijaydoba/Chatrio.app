@@ -8,11 +8,13 @@ import {
   Navigate,
   useParams,
 } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Home from "./pages/Home";
+import Stories, { StoryPage } from "./pages/Stories";
 import Chat from "./Chat";
 
 import { POSTS, Post } from "./data/posts";
@@ -107,8 +109,33 @@ function BlogList() {
   const BLOG_DATING = "/blog/dating";
   const BLOG_CHAT = "/blog/chat%20%26%20connection";
 
+  const blogDesc = activeCategory === "all"
+    ? "Read articles about love, romance, dating, and online connections on the Chatrio blog."
+    : `Explore ${pageTitle} articles — tips, stories, and insights about ${pageTitle.toLowerCase()} and online connections.`;
+
   return (
     <div className="blog-page">
+      <Helmet>
+        <title>{activeCategory === "all" ? "Blog – Love, Dating & Chat Tips" : `${pageTitle} Blog`} | Chatrio</title>
+        <meta name="description" content={blogDesc} />
+        <link rel="canonical" href={activeCategory === "all" ? "https://chatrio.app/blog" : `https://chatrio.app/blog/${activeCategory}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={`${activeCategory === "all" ? "Chatrio Blog" : pageTitle} – Love, Dating & Chat`} />
+        <meta property="og:description" content={blogDesc} />
+        <meta property="og:url" content={activeCategory === "all" ? "https://chatrio.app/blog" : `https://chatrio.app/blog/${activeCategory}`} />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`Chatrio Blog – ${pageTitle}`} />
+        <meta name="twitter:description" content={blogDesc} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Blog",
+          "url": "https://chatrio.app/blog",
+          "name": "Chatrio Blog",
+          "description": "Articles about love, dating, romance, and online connections.",
+          "publisher": { "@type": "Organization", "name": "Chatrio", "url": "https://chatrio.app", "logo": "https://chatrio.app/branding/chatrio-512.png" }
+        })}</script>
+      </Helmet>
       <section className="blog-hero">
         <h1 className="blog-title">{pageTitle}</h1>
         <p className="blog-sub">
@@ -279,6 +306,11 @@ function BlogList() {
   );
 }
 
+function readingTime(html: string): number {
+  const words = html.replace(/<[^>]+>/g, " ").trim().split(/\s+/).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
 function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const post: Post | undefined = POSTS.find((p) => p.slug === slug);
@@ -292,13 +324,54 @@ function BlogPost() {
     );
   }
 
+  const canonicalUrl = `https://chatrio.app/blog/post/${post.slug}`;
+  const ogImage = post.thumbnail ? `https://chatrio.app/${String(post.thumbnail).replace(/^\/?/, "")}` : "https://chatrio.app/branding/chatrio-512.png";
+  const mins = readingTime(post.contentHtml);
+
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", padding: 12 }}>
+      <Helmet>
+        <title>{post.title} | Chatrio Blog</title>
+        <meta name="description" content={post.excerpt} />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.excerpt} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="article:published_time" content={post.date} />
+        <meta property="article:section" content={post.category} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={post.excerpt} />
+        <meta name="twitter:image" content={ogImage} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": post.title,
+          "description": post.excerpt,
+          "image": ogImage,
+          "datePublished": post.date,
+          "url": canonicalUrl,
+          "author": { "@type": "Organization", "name": "Chatrio" },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Chatrio",
+            "url": "https://chatrio.app",
+            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png" }
+          },
+          "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl }
+        })}</script>
+      </Helmet>
       <NavLink to="/blog">← Back to Blog</NavLink>
 
       <h1 style={{ marginTop: 12 }}>{post.title}</h1>
-      <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 16 }}>
-        {post.date} • {post.category}
+      <div className="blog-meta-row">
+        <span>{post.date}</span>
+        <span>·</span>
+        <span>{post.category}</span>
+        <span>·</span>
+        <span className="post-read-time">{mins} min read</span>
       </div>
 
       <div
@@ -306,6 +379,81 @@ function BlogPost() {
         style={{ lineHeight: 1.8, opacity: 0.95 }}
         dangerouslySetInnerHTML={{ __html: post.contentHtml }}
       />
+    </div>
+  );
+}
+
+/* ---------------- Cookie Banner ---------------- */
+
+function CookieBanner() {
+  const [visible, setVisible] = useState(() => !localStorage.getItem("cookie_consent"));
+  const [showPrefs, setShowPrefs] = useState(false);
+  const [analytics, setAnalytics] = useState(true);
+
+  if (!visible) return null;
+
+  function accept() {
+    localStorage.setItem("cookie_consent", "all");
+    setVisible(false);
+  }
+
+  function decline() {
+    localStorage.setItem("cookie_consent", "essential");
+    setVisible(false);
+  }
+
+  function savePrefs() {
+    localStorage.setItem("cookie_consent", analytics ? "all" : "essential");
+    setVisible(false);
+  }
+
+  return (
+    <div className="cookie-banner" role="dialog" aria-label="Cookie consent">
+      <div className="cookie-inner">
+        {!showPrefs ? (
+          <>
+            <div className="cookie-title">🍪 We use cookies</div>
+            <p className="cookie-text">
+              Chatrio uses essential cookies to keep the platform running, and optional cookies for analytics and
+              advertising. You can accept all, choose your preferences, or decline optional ones. Your choice is saved for 12 months.{" "}
+              <a href="/privacy" className="cookie-link">Privacy Policy</a>
+            </p>
+            <div className="cookie-actions">
+              <button className="cookie-btn cookie-btn-outline" onClick={() => setShowPrefs(true)}>Manage Preferences</button>
+              <button className="cookie-btn cookie-btn-outline" onClick={decline}>Decline Optional</button>
+              <button className="cookie-btn cookie-btn-primary" onClick={accept}>Accept All</button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="cookie-title">🍪 Manage Preferences</div>
+            <div className="cookie-pref-row">
+              <div className="cookie-pref-info">
+                <strong>Essential Cookies</strong>
+                <span>Required for the platform to work. Cannot be disabled.</span>
+              </div>
+              <div className="cookie-toggle cookie-toggle-on">Always On</div>
+            </div>
+            <div className="cookie-pref-row">
+              <div className="cookie-pref-info">
+                <strong>Analytics & Advertising</strong>
+                <span>Help us understand usage and show relevant ads.</span>
+              </div>
+              <button
+                className={`cookie-toggle ${analytics ? "cookie-toggle-on" : "cookie-toggle-off"}`}
+                onClick={() => setAnalytics((v) => !v)}
+                aria-pressed={analytics}
+              >
+                {analytics ? "On" : "Off"}
+              </button>
+            </div>
+            <div className="cookie-actions">
+              <button className="cookie-btn cookie-btn-outline" onClick={() => setShowPrefs(false)}>Back</button>
+              <button className="cookie-btn cookie-btn-primary" onClick={savePrefs}>Save Preferences</button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
@@ -413,15 +561,16 @@ export default function App() {
                 </NavLink>
                 {dropdownOpen && (
                   <div className="nav-dropdown-menu">
-                    <NavLink to={BLOG_LOVE} className="dropdown-item">Love</NavLink>
-                    <NavLink to={BLOG_ROMANCE} className="dropdown-item">Romance</NavLink>
-                    <NavLink to={BLOG_DATING} className="dropdown-item">Dating</NavLink>
-                    <NavLink to={BLOG_CHAT} className="dropdown-item">Chat & Connection</NavLink>
+                    <NavLink to={BLOG_LOVE} className="dropdown-item"><span className="dd-icon">💖</span>Love</NavLink>
+                    <NavLink to={BLOG_ROMANCE} className="dropdown-item"><span className="dd-icon">🌹</span>Romance</NavLink>
+                    <NavLink to={BLOG_DATING} className="dropdown-item"><span className="dd-icon">✨</span>Dating</NavLink>
+                    <NavLink to={BLOG_CHAT} className="dropdown-item"><span className="dd-icon">💬</span>Chat & Connection</NavLink>
                   </div>
                 )}
               </div>
 
-              <NavLink className="nav-link" to="/chat">Chat</NavLink>
+              <NavLink className="nav-link nav-link-cta" to="/chat">Chat</NavLink>
+              <NavLink className="nav-link" to="/web-stories">Web Stories</NavLink>
               <NavLink className="nav-link" to="/about">About</NavLink>
               <NavLink className="nav-link" to="/contact">Contact</NavLink>
             </nav>
@@ -470,132 +619,82 @@ export default function App() {
 
       {/* Mobile Drawer */}
       <div className={`mobile-drawer ${navOpen ? "open" : ""}`}>
+        {/* Drawer header */}
+        <div className="drawer-header">
+          <div className="drawer-brand-mark">
+            <svg viewBox="0 0 36 36" width="20" height="20" fill="none">
+              <rect x="1" y="2" width="34" height="23" rx="9" fill="white" fillOpacity="0.9"/>
+              <path d="M5 25 L2 34 L15 25Z" fill="white" fillOpacity="0.9"/>
+              <circle cx="10" cy="13.5" r="2.2" fill="#7c3aed"/>
+              <circle cx="18" cy="13.5" r="2.2" fill="#7c3aed"/>
+              <circle cx="26" cy="13.5" r="2.2" fill="#7c3aed"/>
+            </svg>
+          </div>
+          <span className="drawer-brand-name">Chatrio</span>
+        </div>
+
         <nav className="mobile-nav" aria-label="Mobile">
-          {/* Mobile "Submenu" (Indented) */}
-          <div className="mobile-group" style={{ marginBottom: "10px" }}>
-            <NavLink
-              className="m-link"
-              to={BLOG_ALL}
-              onClick={() => setNavOpen(false)}
-              style={{ fontWeight: "bold" }}
-            >
+          <NavLink className="m-link m-link-cta" to="/chat" onClick={() => setNavOpen(false)}>
+            Chat
+          </NavLink>
+
+          <div className="mob-blog-group">
+            <NavLink className="m-link" to={BLOG_ALL} onClick={() => setNavOpen(false)}>
               Blog
             </NavLink>
-            <div
-              className="mobile-sublinks"
-              style={{
-                paddingLeft: "20px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px",
-                marginTop: "8px",
-                borderLeft: "2px solid var(--border)",
-              }}
-            >
-              <NavLink
-                to={BLOG_LOVE}
-                onClick={() => setNavOpen(false)}
-                style={{
-                  textDecoration: "none",
-                  color: "inherit",
-                  opacity: 0.8,
-                }}
-              >
-                Love
-              </NavLink>
-              <NavLink
-                to={BLOG_ROMANCE}
-                onClick={() => setNavOpen(false)}
-                style={{
-                  textDecoration: "none",
-                  color: "inherit",
-                  opacity: 0.8,
-                }}
-              >
-                Romance
-              </NavLink>
-              <NavLink
-                to={BLOG_DATING}
-                onClick={() => setNavOpen(false)}
-                style={{
-                  textDecoration: "none",
-                  color: "inherit",
-                  opacity: 0.8,
-                }}
-              >
-                Dating
-              </NavLink>
-              <NavLink
-                to={BLOG_CHAT}
-                onClick={() => setNavOpen(false)}
-                style={{
-                  textDecoration: "none",
-                  color: "inherit",
-                  opacity: 0.8,
-                }}
-              >
-                Chat
-              </NavLink>
+            <div className="mob-sub-links">
+              <NavLink className="mob-sub-link" to={BLOG_LOVE} onClick={() => setNavOpen(false)}>Love</NavLink>
+              <NavLink className="mob-sub-link" to={BLOG_ROMANCE} onClick={() => setNavOpen(false)}>Romance</NavLink>
+              <NavLink className="mob-sub-link" to={BLOG_DATING} onClick={() => setNavOpen(false)}>Dating</NavLink>
+              <NavLink className="mob-sub-link" to={BLOG_CHAT} onClick={() => setNavOpen(false)}>Chat & Connection</NavLink>
             </div>
           </div>
 
-          <NavLink
-            className="m-link"
-            to="/chat"
-            onClick={() => setNavOpen(false)}
-          >
-            Chat
-          </NavLink>
-          <NavLink
-            className="m-link"
-            to="/about"
-            onClick={() => setNavOpen(false)}
-          >
-            About
-          </NavLink>
-          <NavLink
-            className="m-link"
-            to="/contact"
-            onClick={() => setNavOpen(false)}
-          >
-            Contact
-          </NavLink>
+          <NavLink className="m-link" to="/web-stories" onClick={() => setNavOpen(false)}>Web Stories</NavLink>
+          <NavLink className="m-link" to="/about" onClick={() => setNavOpen(false)}>About</NavLink>
+          <NavLink className="m-link" to="/contact" onClick={() => setNavOpen(false)}>Contact</NavLink>
 
           <div className="m-divider" />
 
-          <NavLink
-            className="m-link"
-            to="/privacy"
-            onClick={() => setNavOpen(false)}
-          >
-            Privacy Policy
-          </NavLink>
-          <NavLink
-            className="m-link"
-            to="/terms"
-            onClick={() => setNavOpen(false)}
-          >
-            Terms of Service
-          </NavLink>
+          <NavLink className="m-link m-link-muted" to="/privacy" onClick={() => setNavOpen(false)}>Privacy</NavLink>
+          <NavLink className="m-link m-link-muted" to="/terms" onClick={() => setNavOpen(false)}>Terms</NavLink>
         </nav>
 
-        <div className="mobile-controls">
-          <div className="row gap">
-            <button
-              className="btn theme-toggle"
-              onClick={() => { setTheme(theme === "dark" ? "light" : "dark"); setNavOpen(false); }}
-              aria-label="Toggle theme"
-            >
-              {theme === "dark" ? "Light Mode" : "Dark Mode"}
-            </button>
-            <button
-              className="btn theme-toggle"
-              onClick={() => { setSoundOn((s) => !s); setNavOpen(false); }}
-              aria-label="Toggle sound"
-            >
-              {soundOn ? "Mute Sound" : "Unmute Sound"}
-            </button>
-          </div>
+        {/* Footer icon buttons */}
+        <div className="drawer-footer">
+          <button
+            className="drawer-icon-btn"
+            onClick={() => { setTheme(theme === "dark" ? "light" : "dark"); setNavOpen(false); }}
+            aria-label="Toggle theme"
+          >
+            {theme === "dark"
+              ? <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 1.78a1 1 0 011.42 1.42l-.71.7a1 1 0 11-1.42-1.41l.71-.71zM18 9a1 1 0 110 2h-1a1 1 0 110-2h1zM4.22 4.78a1 1 0 010 1.42l-.71.71a1 1 0 01-1.42-1.42l.71-.71a1 1 0 011.42 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm6.36-2.64a1 1 0 010 1.41l-.71.71a1 1 0 11-1.41-1.41l.7-.71a1 1 0 011.42 0zM3 9a1 1 0 110 2H2a1 1 0 110-2h1zm1.22 4.36a1 1 0 011.41 0l.71.71a1 1 0 11-1.41 1.41l-.71-.7a1 1 0 010-1.42zM10 6a4 4 0 100 8 4 4 0 000-8z"/></svg>
+              : <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+            }
+            {theme === "dark" ? "Light" : "Dark"}
+          </button>
+          <button
+            className="drawer-icon-btn"
+            onClick={() => { setSoundOn((s) => !s); setNavOpen(false); }}
+            aria-label="Toggle sound"
+          >
+            {soundOn
+              ? <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clipRule="evenodd"/></svg>
+              : <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM12.293 7.293a1 1 0 011.414 0L15 8.586l1.293-1.293a1 1 0 111.414 1.414L16.414 10l1.293 1.293a1 1 0 01-1.414 1.414L15 11.414l-1.293 1.293a1 1 0 01-1.414-1.414L13.586 10l-1.293-1.293a1 1 0 010-1.414z" clipRule="evenodd"/></svg>
+            }
+            {soundOn ? "Mute" : "Sound"}
+          </button>
+          <a
+            className="drawer-icon-btn"
+            href="https://x.com/chatrioapp"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow on X"
+            onClick={() => setNavOpen(false)}
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.912-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            Follow
+          </a>
         </div>
       </div>
 
@@ -614,6 +713,11 @@ export default function App() {
             <Route path="/blog/post/:slug" element={<BlogPost />} />
 
             <Route path="/" element={<Home />} />
+            <Route path="/web-stories" element={<Stories />} />
+            <Route path="/web-stories/:id" element={<StoryPage />} />
+            {/* legacy redirects */}
+            <Route path="/stories" element={<Stories />} />
+            <Route path="/stories/:id" element={<StoryPage />} />
             <Route path="/chat" element={<Chat theme={theme} setTheme={setTheme} soundOn={soundOn} setSoundOn={setSoundOn} />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
@@ -624,6 +728,8 @@ export default function App() {
           </Routes>
         </div>
       </main>
+
+      <CookieBanner />
 
       <footer className="site-footer">
         <div className="site-wrap footer-grid">
@@ -637,21 +743,25 @@ export default function App() {
               gap: 15,
               flexWrap: "wrap",
               justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <NavLink to="/about" className="footer-link">
-              About
-            </NavLink>
-            <NavLink to="/contact" className="footer-link">
-              Contact
-            </NavLink>
+            <NavLink to="/about" className="footer-link">About</NavLink>
+            <NavLink to="/contact" className="footer-link">Contact</NavLink>
             <span style={{ opacity: 0.3 }}>|</span>
-            <NavLink to="/privacy" className="footer-link">
-              Privacy Policy
-            </NavLink>
-            <NavLink to="/terms" className="footer-link">
-              Terms of Service
-            </NavLink>
+            <NavLink to="/privacy" className="footer-link">Privacy Policy</NavLink>
+            <NavLink to="/terms" className="footer-link">Terms of Service</NavLink>
+            <span style={{ opacity: 0.3 }}>|</span>
+            <a
+              href="https://x.com/chatrioapp"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-link footer-x-link"
+              aria-label="Follow Chatrio on X"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" style={{ marginRight: 4, verticalAlign: "middle" }}><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.912-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              @chatrioapp
+            </a>
           </div>
         </div>
       </footer>

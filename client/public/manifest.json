@@ -1,22 +1,25 @@
-
-
 {
   "short_name": "Chatrio",
-  "name": "Chatrio - Anonymous Chat",
+  "name": "Chatrio - Chat with Strangers",
+  "description": "Free anonymous random chat. No sign-up needed.",
   "icons": [
     {
       "src": "/branding/chatrio-64.png",
       "sizes": "64x64",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/branding/chatrio-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "/chat",
   "display": "standalone",
-  "theme_color": "#0d6efd",
-  "background_color": "#ffffff"
+  "orientation": "portrait",
+  "theme_color": "#7c3aed",
+  "background_color": "#0b0f14",
+  "categories": ["social", "communication"]
 }

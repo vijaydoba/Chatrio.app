@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg17" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1c0500"/>
+      <stop offset="50%" stop-color="#7c2d00"/>
+      <stop offset="100%" stop-color="#064e3b"/>
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+    <radialGradient id="glow17a" cx="25%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow17b" cx="80%" cy="55%" r="45%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg17)"/>
+  <ellipse cx="280" cy="320" rx="380" ry="300" fill="url(#glow17a)"/>
+  <ellipse cx="960" cy="350" rx="340" ry="260" fill="url(#glow17b)"/>
+
+  <!-- Latin America simplified map silhouette -->
+  <!-- Mexico rough shape -->
+  <path d="M 380 240 L 500 230 L 530 260 L 510 300 L 470 320 L 430 310 L 400 280 Z" fill="#f97316" opacity="0.18"/>
+  <!-- Central America -->
+  <path d="M 470 320 L 510 300 L 520 340 L 500 380 L 480 370 L 475 345 Z" fill="#fbbf24" opacity="0.12"/>
+  <!-- South America rough -->
+  <path d="M 460 380 L 560 370 L 600 410 L 590 500 L 540 530 L 480 510 L 440 460 L 445 420 Z" fill="#10b981" opacity="0.16"/>
+
+  <!-- Chat bubble left (Mexico) -->
+  <rect x="95" y="240" width="220" height="60" rx="18" fill="url(#orangeGrad)" opacity="0.8"/>
+  <polygon points="115,300 95,330 150,300" fill="url(#orangeGrad)" opacity="0.8"/>
+  <text x="205" y="278" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="white" font-weight="bold">¡Hola!</text>
+
+  <!-- Chat bubble right (Colombia) -->
+  <rect x="870" y="280" width="240" height="60" rx="18" fill="url(#greenGrad)" opacity="0.75"/>
+  <polygon points="1090,340 1110,365 1070,340" fill="url(#greenGrad)" opacity="0.75"/>
+  <text x="990" y="318" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="white" font-weight="bold">¿Qué tal?</text>
+
+  <!-- Chat bubble bottom (Spain) -->
+  <rect x="700" y="400" width="220" height="55" rx="16" fill="url(#orangeGrad)" opacity="0.65"/>
+  <text x="810" y="434" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="white" font-weight="bold">¡Buenas noches!</text>
+
+  <!-- Country flag accent nodes -->
+  <circle cx="620" cy="290" r="14" fill="#f97316" opacity="0.9"/>
+  <text x="620" y="296" text-anchor="middle" font-family="Arial" font-size="14">🇲🇽</text>
+  <circle cx="680" cy="380" r="14" fill="#fbbf24" opacity="0.9"/>
+  <text x="680" y="386" text-anchor="middle" font-family="Arial" font-size="14">🇨🇴</text>
+  <circle cx="720" cy="300" r="14" fill="#10b981" opacity="0.9"/>
+  <text x="720" y="306" text-anchor="middle" font-family="Arial" font-size="14">🇪🇸</text>
+  <circle cx="760" cy="420" r="12" fill="#34d399" opacity="0.8"/>
+  <text x="760" y="426" text-anchor="middle" font-family="Arial" font-size="12">🇪🇨</text>
+
+  <!-- Connection lines between nodes -->
+  <line x1="620" y1="290" x2="680" y2="380" stroke="#fbbf24" stroke-width="1.5" opacity="0.3"/>
+  <line x1="680" y1="380" x2="760" y2="420" stroke="#10b981" stroke-width="1.5" opacity="0.3"/>
+  <line x1="620" y1="290" x2="720" y2="300" stroke="#f97316" stroke-width="1.5" opacity="0.3"/>
+  <line x1="720" y1="300" x2="760" y2="420" stroke="#34d399" stroke-width="1" opacity="0.25"/>
+
+  <!-- Mexico red-white-green stripe accent top -->
+  <rect x="0" y="0" width="1200" height="5" fill="#006847" opacity="0.6"/>
+  <rect x="0" y="5" width="1200" height="5" fill="white" opacity="0.15"/>
+  <rect x="0" y="10" width="1200" height="5" fill="#ce1126" opacity="0.6"/>
+
+  <!-- Colombia yellow-blue-red stripe accent bottom -->
+  <rect x="0" y="615" width="1200" height="5" fill="#FCD116" opacity="0.7"/>
+  <rect x="0" y="620" width="1200" height="5" fill="#003893" opacity="0.5"/>
+  <rect x="0" y="625" width="1200" height="5" fill="#CE1126" opacity="0.6"/>
+
+  <!-- Dot grid -->
+  <pattern id="dots17" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+    <circle cx="2" cy="2" r="1" fill="white" opacity="0.04"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#dots17)"/>
+
+  <!-- Headings -->
+  <text x="600" y="78" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="40" fill="white" font-weight="bold">Best Anonymous Chat App</text>
+  <text x="600" y="130" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="40" fill="url(#orangeGrad)" font-weight="bold">Latin America 2025</text>
+  <text x="600" y="172" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#fcd34d" opacity="0.7" letter-spacing="2">MÉXICO · COLOMBIA · ESPAÑA · ECUADOR</text>
+
+  <text x="600" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="white" opacity="0.25" letter-spacing="3">CHATRIO.APP</text>
+</svg>
