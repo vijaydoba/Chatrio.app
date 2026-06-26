@@ -26,19 +26,25 @@ if (process.argv.includes("--setup")) {
   const key = crypto.randomBytes(16).toString("hex"); // 32-char hex key
   fs.writeFileSync(KEY_FILE, key, "utf8");
   fs.writeFileSync(PUBLIC_KEY_FILE, key, "utf8");
+  // IndexNow REQUIRES the key file to be named {key}.txt and served at the
+  // site root. indexnow-key.txt alone is not enough — Bing/IndexNow fetch
+  // https://chatrio.app/{key}.txt and 403 if it doesn't return the raw key.
+  const KEYED_FILE = path.join(__dirname, `../client/public/${key}.txt`);
+  fs.writeFileSync(KEYED_FILE, key, "utf8");
   console.log(`
 ✅  IndexNow key generated: ${key}
 
 Key saved to:
   scripts/indexnow-key.txt        ← keeps the key safe
-  client/public/indexnow-key.txt  ← served at https://chatrio.app/${key}.txt
+  client/public/indexnow-key.txt  ← reference copy
+  client/public/${key}.txt  ← served at https://chatrio.app/${key}.txt (REQUIRED by IndexNow)
 
 Next steps:
   1. Build and deploy so the key file is live:
        cd client && npm run build
-       rsync -avz --delete client/build/ root@72.60.178.97:/var/www/chatrio/client/build/
+       rsync -avz --delete client/build/ root@72.60.178.97:/var/www/chatrio/
 
-  2. Verify it's live:
+  2. Verify it's live (must return the raw key, not HTML):
        curl https://chatrio.app/${key}.txt
 
   3. Then run the notifier:
