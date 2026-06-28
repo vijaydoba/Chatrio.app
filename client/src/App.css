@@ -908,12 +908,15 @@ img, video, canvas, svg{ max-width:100%; height:auto; }
 /* Portrait (3:4) heroes — cap width so they don't dominate the article */
 .post-figure--portrait {
   max-width: 340px;
+  margin: 32px auto;
 }
 .post-figure--portrait img {
+  display: block;
   max-height: 440px;
   width: auto;
   margin: 0 auto;
   max-width: 340px;
+  border-radius: 12px;
 }
 
 /* Square portrait images (1:1) - smaller constraint */
@@ -922,12 +925,24 @@ img, video, canvas, svg{ max-width:100%; height:auto; }
   margin: 32px auto;
 }
 .post-figure--square img {
+  display: block;
   max-width: 300px;
   max-height: 300px;
   width: auto;
   height: auto;
   margin: 0 auto;
   border-radius: 12px;
+}
+
+@media (max-width: 600px) {
+  .post-figure--square {
+    max-width: 280px;
+    margin: 24px auto;
+  }
+  .post-figure--square img {
+    max-width: 280px;
+    max-height: 280px;
+  }
 }
 
 /* BLOG HOME NEW UI */
@@ -1532,7 +1547,7 @@ html {
 /* Safe area for iPhone home indicator — footer */
 @supports (padding: env(safe-area-inset-bottom)) {
   .site-footer {
-    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
   }
 }
 
