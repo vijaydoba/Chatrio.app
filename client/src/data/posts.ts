@@ -15183,12 +15183,12 @@ prove that.
     slug: "chat-with-strangers-uk-free-2026",
     title: "Chat With Strangers in the UK — Free & Anonymous (2026)",
     excerpt: "Want to talk to strangers in the UK for free? Here's how to meet new people across Britain anonymously in 2026 — no app, no sign-up, no phone number — and do it safely.",
-    thumbnail: "images/image18.png",
+    thumbnail: "images/portraits/girl-uk.png",
     date: "2026-06-26",
     category: "Chat & Connection",
     contentHtml: `
       <figure class="post-figure">
-        <img src="/images/image18.png" alt="Chat with strangers in the UK free and anonymous in 2026" />
+        <img src="/images/portraits/girl-uk.png" alt="Illustration of a friendly young woman chatting online in the UK" />
         <figcaption>Meeting new people across the UK is easiest when there's no sign-up between you and the conversation</figcaption>
       </figure>
 
@@ -15751,12 +15751,12 @@ prove that.
     slug: "chat-with-strangers-in-mexico-free-2026",
     title: "Chat With Strangers in Mexico — Free & Anonymous (2026)",
     excerpt: "Want to meet new people in Mexico online for free? Here's how to chat with strangers across Mexico anonymously in 2026 — no app, no sign-up, no phone number.",
-    thumbnail: "images/image3.png",
+    thumbnail: "images/portraits/girl-mexico.png",
     date: "2026-06-26",
     category: "Chat & Connection",
     contentHtml: `
       <figure class="post-figure">
-        <img src="/images/image3.png" alt="Chat with strangers in Mexico free and anonymous 2026" />
+        <img src="/images/portraits/girl-mexico.png" alt="Illustration of a friendly young woman chatting online in Mexico" />
         <figcaption>Meeting new people across Mexico is easiest when there's no account or app between you and the conversation</figcaption>
       </figure>
 
@@ -16130,12 +16130,12 @@ prove that.
     slug: "best-chat-rooms-usa-no-registration-2026",
     title: "Best Free Chat Rooms in the USA — No Registration (2026)",
     excerpt: "Looking for free online chat rooms in the USA without signing up? Here are the best options for meeting Americans online in 2026 — anonymous, instant, and completely free.",
-    thumbnail: "images/image7.png",
+    thumbnail: "images/portraits/girl-us.png",
     date: "2026-06-26",
     category: "Chat & Connection",
     contentHtml: `
       <figure class="post-figure">
-        <img src="/images/image7.png" alt="Best free chat rooms USA no registration 2026 — meet Americans online" />
+        <img src="/images/portraits/girl-us.png" alt="Illustration of a friendly young woman in a free USA chat room meeting new people online" />
         <figcaption>The best US chat rooms in 2026 are the ones that let you start talking without signing anything</figcaption>
       </figure>
 
@@ -16279,12 +16279,12 @@ prove that.
     slug: "indian-chat-app-to-talk-to-strangers-2026",
     title: "Indian Chat App to Talk to Strangers (Free, No Sign-Up) — 2026",
     excerpt: "Looking for an Indian chat app to talk to strangers? Here's the best free option in 2026 — no registration, no phone number, works on any phone, with a huge Indian user base.",
-    thumbnail: "images/image11.png",
+    thumbnail: "images/portraits/girl-india.png",
     date: "2026-06-26",
     category: "Chat & Connection",
     contentHtml: `
       <figure class="post-figure">
-        <img src="/images/image11.png" alt="Indian chat app to talk to strangers free no sign-up 2026" />
+        <img src="/images/portraits/girl-india.png" alt="Illustration of a friendly young woman using an Indian chat app to talk to strangers" />
         <figcaption>India is one of the largest markets for anonymous chat — here's the best app to use in 2026</figcaption>
       </figure>
 
@@ -16511,12 +16511,12 @@ prove that.
     slug: "chat-with-strangers-in-indonesia-free-2026",
     title: "Chat With Strangers in Indonesia — Free & Anonymous (2026)",
     excerpt: "Want to talk to strangers in Indonesia for free? Here's how to meet new people across Indonesia anonymously in 2026 — no app, no sign-up, light on data, works on any phone.",
-    thumbnail: "images/image8.png",
+    thumbnail: "images/portraits/girl-indonesia.png",
     date: "2026-06-26",
     category: "Chat & Connection",
     contentHtml: `
       <figure class="post-figure">
-        <img src="/images/image8.png" alt="Chat with strangers in Indonesia free and anonymous 2026" />
+        <img src="/images/portraits/girl-indonesia.png" alt="Illustration of a friendly young woman chatting online in Indonesia" />
         <figcaption>Indonesia's mobile-first internet makes browser-based anonymous chat a natural fit</figcaption>
       </figure>
 
@@ -16621,12 +16621,12 @@ prove that.
     slug: "chat-with-strangers-in-dubai-uae-free-2026",
     title: "Chat With Strangers in Dubai & the UAE — Free (2026)",
     excerpt: "Want to meet new people in Dubai or across the UAE online? Here's how to chat with strangers anonymously in 2026 — free, no sign-up, no phone number, from any device.",
-    thumbnail: "images/image9.png",
+    thumbnail: "images/portraits/girl-uae.png",
     date: "2026-06-26",
     category: "Chat & Connection",
     contentHtml: `
       <figure class="post-figure">
-        <img src="/images/image9.png" alt="Chat with strangers in Dubai and the UAE free anonymous 2026" />
+        <img src="/images/portraits/girl-uae.png" alt="Illustration of a friendly young woman chatting online in the UAE" />
         <figcaption>The UAE's diverse, international population makes anonymous chat a natural way to meet new people</figcaption>
       </figure>
 
@@ -16719,12 +16719,12 @@ prove that.
     slug: "chat-with-strangers-in-canada-free-2026",
     title: "Chat With Strangers in Canada — Free & Anonymous (2026)",
     excerpt: "Looking to meet new people in Canada online for free? Here's how to chat with strangers across Canada anonymously in 2026 — no app, no sign-up, no phone number.",
-    thumbnail: "images/image12.png",
+    thumbnail: "images/portraits/girl-canada.png",
     date: "2026-06-26",
     category: "Chat & Connection",
     contentHtml: `
       <figure class="post-figure">
-        <img src="/images/image12.png" alt="Chat with strangers in Canada free and anonymous 2026" />
+        <img src="/images/portraits/girl-canada.png" alt="Illustration of a friendly young woman chatting online in Canada" />
         <figcaption>Long winters and spread-out cities make online connection especially valuable in Canada</figcaption>
       </figure>
 

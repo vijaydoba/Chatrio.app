@@ -16,12 +16,15 @@ export type Story = {
   gradient: string;
   category: string;
   readTime: string;
+  /* Optional poster/share image (e.g. country portrait); used for web-story poster + OG image */
+  posterImage?: string;
   slides: StorySlide[];
 };
 
 export const STORIES: Story[] = [
   {
     id: "chat-with-strangers-in-the-usa-free",
+    posterImage: "/images/portraits/girl-us.png",
     title: "Chat With Strangers in the USA — Free",
     shortTitle: "USA Free Chat",
     emoji: "🇺🇸",
@@ -52,6 +55,7 @@ export const STORIES: Story[] = [
   },
   {
     id: "talk-to-strangers-online-in-india-free",
+    posterImage: "/images/portraits/girl-india.png",
     title: "Talk to Strangers Online in India — Free",
     shortTitle: "India Free Chat",
     emoji: "🇮🇳",
@@ -8459,6 +8463,7 @@ export const STORIES: Story[] = [
   },
   {
     id: "chat-with-strangers-in-the-uk-free",
+    posterImage: "/images/portraits/girl-uk.png",
     title: "Chat With Strangers in the UK — Free",
     shortTitle: "UK Free Chat",
     emoji: "🇬🇧",
@@ -8731,6 +8736,7 @@ export const STORIES: Story[] = [
   // ── BATCH — June 26, 2026 (geo + intent, GSC-informed) ────────────────────
   {
     id: "chat-with-strangers-in-indonesia-free",
+    posterImage: "/images/portraits/girl-indonesia.png",
     title: "Chat With Strangers in Indonesia — Free",
     shortTitle: "Indonesia Free Chat",
     emoji: "🇮🇩",
@@ -8746,6 +8752,7 @@ export const STORIES: Story[] = [
   },
   {
     id: "chat-with-strangers-in-dubai-free",
+    posterImage: "/images/portraits/girl-uae.png",
     title: "Chat With Strangers in Dubai & the UAE — Free",
     shortTitle: "Dubai Free Chat",
     emoji: "🇦🇪",
@@ -8761,6 +8768,7 @@ export const STORIES: Story[] = [
   },
   {
     id: "chat-with-strangers-in-canada-free",
+    posterImage: "/images/portraits/girl-canada.png",
     title: "Chat With Strangers in Canada — Free",
     shortTitle: "Canada Free Chat",
     emoji: "🇨🇦",
@@ -8776,6 +8784,7 @@ export const STORIES: Story[] = [
   },
   {
     id: "chat-with-strangers-in-the-philippines-free",
+    posterImage: "/images/portraits/girl-philippines.png",
     title: "Chat With Strangers in the Philippines — Free",
     shortTitle: "Philippines Free Chat",
     emoji: "🇵🇭",
@@ -8791,6 +8800,7 @@ export const STORIES: Story[] = [
   },
   {
     id: "chat-with-strangers-in-pakistan-free",
+    posterImage: "/images/portraits/girl-pakistan.png",
     title: "Chat With Strangers in Pakistan — Free",
     shortTitle: "Pakistan Free Chat",
     emoji: "🇵🇰",
@@ -8806,6 +8816,7 @@ export const STORIES: Story[] = [
   },
   {
     id: "chat-with-strangers-in-brazil-free",
+    posterImage: "/images/portraits/girl-brazil.png",
     title: "Chat With Strangers in Brazil — Free",
     shortTitle: "Brazil Free Chat",
     emoji: "🇧🇷",
@@ -8836,6 +8847,7 @@ export const STORIES: Story[] = [
   },
   {
     id: "indian-chat-app-to-meet-strangers",
+    posterImage: "/images/portraits/girl-india.png",
     title: "Indian Chat App to Meet Strangers (No Sign-Up)",
     shortTitle: "Indian Chat App",
     emoji: "🇮🇳",

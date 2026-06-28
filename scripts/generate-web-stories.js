@@ -116,6 +116,10 @@ function buildStoryHTML(story) {
   const firstSlide = story.slides[0];
   const desc       = esc(firstSlide.text.slice(0, 155));
   const titleEsc   = esc(story.title);
+  /* Per-story poster/share image (e.g. country portrait); falls back to brand logo */
+  const posterSrc  = story.posterImage
+    ? `${BASE_URL}${story.posterImage}`
+    : `${BASE_URL}/branding/chatrio-512.png`;
 
   const pages = story.slides.map((slide, i) => renderPage(slide, i)).join("");
 
@@ -137,7 +141,7 @@ function buildStoryHTML(story) {
       url:     BASE_URL,
       logo:    { "@type": "ImageObject", url: `${BASE_URL}/branding/chatrio-512.png` },
     },
-    image: { "@type": "ImageObject", url: `${BASE_URL}/branding/chatrio-512.png` },
+    image: { "@type": "ImageObject", url: posterSrc },
   });
 
   /* AMP boilerplate — exact verbatim content required */
@@ -164,11 +168,12 @@ function buildStoryHTML(story) {
   <meta property="og:type"        content="article">
   <meta property="og:title"       content="${titleEsc}">
   <meta property="og:description" content="${desc}">
-  <meta property="og:image"       content="${BASE_URL}/branding/chatrio-512.png">
+  <meta property="og:image"       content="${posterSrc}">
   <meta property="og:url"         content="${storyUrl}">
   <meta name="twitter:card"        content="summary_large_image">
   <meta name="twitter:title"       content="${titleEsc}">
   <meta name="twitter:description" content="${desc}">
+  <meta name="twitter:image"        content="${posterSrc}">
   <style amp-boilerplate>${BP}</style><noscript><style amp-boilerplate>${BPN}</style></noscript>
   <style amp-custom>
 body{margin:0;padding:0}
@@ -195,7 +200,7 @@ ${gradCSS}
     title="${titleEsc}"
     publisher="Chatrio"
     publisher-logo-src="${BASE_URL}/branding/chatrio-64.png"
-    poster-portrait-src="${BASE_URL}/branding/chatrio-512.png"
+    poster-portrait-src="${posterSrc}"
     poster-square-src="${BASE_URL}/branding/chatrio-512.png"
   >${pages}
     <amp-story-bookend src="${BASE_URL}/web-stories/bookend.json" layout="nodisplay"></amp-story-bookend>
