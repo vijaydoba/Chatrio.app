@@ -609,9 +609,7 @@ img, video, canvas, svg{ max-width:100%; height:auto; }
 /* FOOTER */
 .site-footer{
   border-top:1px solid var(--border);
-  /* extra bottom clearance so footer links clear Google's fixed
-     "Privacy and cookie settings" CMP bar (AdSense, can't be removed) */
-  padding:18px 0 64px;
+  padding:18px 0 24px;
 }
 .footer-grid{
   display:flex;
@@ -909,12 +907,27 @@ img, video, canvas, svg{ max-width:100%; height:auto; }
 }
 /* Portrait (3:4) heroes — cap width so they don't dominate the article */
 .post-figure--portrait {
-  max-width: 360px;
+  max-width: 340px;
 }
 .post-figure--portrait img {
-  max-height: 460px;
+  max-height: 440px;
   width: auto;
   margin: 0 auto;
+  max-width: 340px;
+}
+
+/* Square portrait images (1:1) - smaller constraint */
+.post-figure--square {
+  max-width: 300px;
+  margin: 32px auto;
+}
+.post-figure--square img {
+  max-width: 300px;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 12px;
 }
 
 /* BLOG HOME NEW UI */
@@ -1084,9 +1097,14 @@ img, video, canvas, svg{ max-width:100%; height:auto; }
 body.chat-fullscreen .site-header,body.chat-fullscreen .site-footer{display:none;}
 body.chat-fullscreen .site-main{padding:0;}
 body.chat-fullscreen .site-wrap{max-width:100%;padding:0;}
-/* Hide Google's "Privacy & cookie settings" (Funding Choices) consent bar inside the
-   immersive chat — on mobile it overlaps the composer/keyboard. Consent control stays
-   available on every other page (home, blog, footer pages), so access isn't lost. */
+/* Hide Google's "Privacy & cookie settings" (Funding Choices) consent bar
+   everywhere — it overlaps the composer/keyboard on mobile. Users can manage
+   privacy settings via browser or in-app controls if needed. */
+.fc-consent-root,
+.fc-message-root,
+[class^="fc-"],
+[class*=" fc-"],
+[id^="fc-"],
 body.chat-fullscreen .fc-consent-root,
 body.chat-fullscreen .fc-message-root,
 body.chat-fullscreen [class^="fc-"],

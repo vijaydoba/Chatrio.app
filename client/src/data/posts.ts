@@ -15187,7 +15187,7 @@ prove that.
     date: "2026-06-26",
     category: "Chat & Connection",
     contentHtml: `
-      <figure class="post-figure post-figure--portrait">
+      <figure class="post-figure post-figure--square">
         <img src="/images/portraits/girl-uk.png" alt="Illustration of a friendly young woman chatting online in the UK" />
         <figcaption>Meeting new people across the UK is easiest when there's no sign-up between you and the conversation</figcaption>
       </figure>
@@ -15755,7 +15755,7 @@ prove that.
     date: "2026-06-26",
     category: "Chat & Connection",
     contentHtml: `
-      <figure class="post-figure post-figure--portrait">
+      <figure class="post-figure post-figure--square">
         <img src="/images/portraits/girl-mexico.png" alt="Illustration of a friendly young woman chatting online in Mexico" />
         <figcaption>Meeting new people across Mexico is easiest when there's no account or app between you and the conversation</figcaption>
       </figure>
@@ -16134,7 +16134,7 @@ prove that.
     date: "2026-06-26",
     category: "Chat & Connection",
     contentHtml: `
-      <figure class="post-figure post-figure--portrait">
+      <figure class="post-figure post-figure--square">
         <img src="/images/portraits/girl-us.png" alt="Illustration of a friendly young woman in a free USA chat room meeting new people online" />
         <figcaption>The best US chat rooms in 2026 are the ones that let you start talking without signing anything</figcaption>
       </figure>
@@ -16283,7 +16283,7 @@ prove that.
     date: "2026-06-26",
     category: "Chat & Connection",
     contentHtml: `
-      <figure class="post-figure post-figure--portrait">
+      <figure class="post-figure post-figure--square">
         <img src="/images/portraits/girl-india.png" alt="Illustration of a friendly young woman using an Indian chat app to talk to strangers" />
         <figcaption>India is one of the largest markets for anonymous chat — here's the best app to use in 2026</figcaption>
       </figure>
@@ -16515,7 +16515,7 @@ prove that.
     date: "2026-06-26",
     category: "Chat & Connection",
     contentHtml: `
-      <figure class="post-figure post-figure--portrait">
+      <figure class="post-figure post-figure--square">
         <img src="/images/portraits/girl-indonesia.png" alt="Illustration of a friendly young woman chatting online in Indonesia" />
         <figcaption>Indonesia's mobile-first internet makes browser-based anonymous chat a natural fit</figcaption>
       </figure>
@@ -16625,7 +16625,7 @@ prove that.
     date: "2026-06-26",
     category: "Chat & Connection",
     contentHtml: `
-      <figure class="post-figure post-figure--portrait">
+      <figure class="post-figure post-figure--square">
         <img src="/images/portraits/girl-uae.png" alt="Illustration of a friendly young woman chatting online in the UAE" />
         <figcaption>The UAE's diverse, international population makes anonymous chat a natural way to meet new people</figcaption>
       </figure>
@@ -16723,7 +16723,7 @@ prove that.
     date: "2026-06-26",
     category: "Chat & Connection",
     contentHtml: `
-      <figure class="post-figure post-figure--portrait">
+      <figure class="post-figure post-figure--square">
         <img src="/images/portraits/girl-canada.png" alt="Illustration of a friendly young woman chatting online in Canada" />
         <figcaption>Long winters and spread-out cities make online connection especially valuable in Canada</figcaption>
       </figure>
@@ -17136,7 +17136,7 @@ prove that.
     date: "2026-06-28",
     category: "Chat & Connection",
     contentHtml: `
-      <figure class="post-figure post-figure--portrait">
+      <figure class="post-figure post-figure--square">
         <img src="/images/portraits/girl-philippines.png" alt="Illustration of a friendly young woman chatting online in the Philippines" />
         <figcaption>Filipinos are among the world's most active social chatters — online connection is second nature</figcaption>
       </figure>
@@ -17232,7 +17232,7 @@ prove that.
     date: "2026-06-28",
     category: "Chat & Connection",
     contentHtml: `
-      <figure class="post-figure post-figure--portrait">
+      <figure class="post-figure post-figure--square">
         <img src="/images/portraits/girl-pakistan.png" alt="Illustration of a friendly young woman chatting online in Pakistan" />
         <figcaption>Anonymous chat gives people across Pakistan a private, low-pressure way to meet someone new</figcaption>
       </figure>
