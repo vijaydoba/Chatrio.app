@@ -1,6 +1,6 @@
 import React from "react";
-import { useParams, NavLink } from "react-router-dom";
-import { POSTS, Post } from "../data/posts";
+import { useParams, NavLink, Navigate } from "react-router-dom";
+import { POSTS, Post, POST_REDIRECTS } from "../data/posts";
 import { Helmet } from "react-helmet-async";
 
 function buildToc(html: string): { tocItems: { id: string; text: string }[]; bodyHtml: string } {
@@ -38,6 +38,12 @@ function extractFaq(html: string): Array<{ question: string; answer: string }> |
 
 export default function NewsPost() {
   const { slug } = useParams<{ slug: string }>();
+
+  // Consolidated duplicate posts: send old URLs to their canonical keeper.
+  if (slug && POST_REDIRECTS[slug]) {
+    return <Navigate to={`/blog/post/${POST_REDIRECTS[slug]}`} replace />;
+  }
+
   const post = POSTS.find((p: Post) => p.slug === slug);
 
   if (!post) {
