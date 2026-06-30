@@ -1,5 +1,5 @@
 // src/App.tsx
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, Suspense } from "react";
 import {
   Routes,
   Route,
@@ -16,6 +16,10 @@ import Terms from "./pages/Terms";
 import Home from "./pages/Home";
 import Stories, { StoryPage } from "./pages/Stories";
 import Chat from "./Chat";
+import CirclesLocal from "./pages/CirclesLocal";
+import CirclesAdmin from "./pages/CirclesAdmin";
+import CohortRoom from "./pages/CohortRoom";
+import Auth from "./pages/Auth";
 
 import { POSTS, Post } from "./data/posts";
 
@@ -306,82 +310,7 @@ function BlogList() {
   );
 }
 
-function readingTime(html: string): number {
-  const words = html.replace(/<[^>]+>/g, " ").trim().split(/\s+/).length;
-  return Math.max(1, Math.round(words / 200));
-}
-
-function BlogPost() {
-  const { slug } = useParams<{ slug: string }>();
-  const post: Post | undefined = POSTS.find((p) => p.slug === slug);
-
-  if (!post) {
-    return (
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: 12 }}>
-        <p>Post not found.</p>
-        <NavLink to="/blog">← Back to Blog</NavLink>
-      </div>
-    );
-  }
-
-  const canonicalUrl = `https://chatrio.app/blog/post/${post.slug}`;
-  const ogImage = post.thumbnail ? `https://chatrio.app/${String(post.thumbnail).replace(/^\/?/, "")}` : "https://chatrio.app/branding/chatrio-512.png";
-  const mins = readingTime(post.contentHtml);
-
-  return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: 12 }}>
-      <Helmet>
-        <title>{post.title} | Chatrio Blog</title>
-        <meta name="description" content={post.excerpt} />
-        <link rel="canonical" href={canonicalUrl} />
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.excerpt} />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:image" content={ogImage} />
-        <meta property="article:published_time" content={post.date} />
-        <meta property="article:section" content={post.category} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={post.excerpt} />
-        <meta name="twitter:image" content={ogImage} />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Article",
-          "headline": post.title,
-          "description": post.excerpt,
-          "image": ogImage,
-          "datePublished": post.date,
-          "url": canonicalUrl,
-          "author": { "@type": "Organization", "name": "Chatrio" },
-          "publisher": {
-            "@type": "Organization",
-            "name": "Chatrio",
-            "url": "https://chatrio.app",
-            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png" }
-          },
-          "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl }
-        })}</script>
-      </Helmet>
-      <NavLink to="/blog">← Back to Blog</NavLink>
-
-      <h1 style={{ marginTop: 12 }}>{post.title}</h1>
-      <div className="blog-meta-row">
-        <span>{post.date}</span>
-        <span>·</span>
-        <span>{post.category}</span>
-        <span>·</span>
-        <span className="post-read-time">{mins} min read</span>
-      </div>
-
-      <div
-        className="post-body"
-        style={{ lineHeight: 1.8, opacity: 0.95 }}
-        dangerouslySetInnerHTML={{ __html: post.contentHtml }}
-      />
-    </div>
-  );
-}
+const BlogPost = React.lazy(() => import("./pages/BlogPost"));
 
 /* ---------------- Cookie Banner ---------------- */
 
@@ -461,16 +390,10 @@ function CookieBanner() {
 /* ---------------- App ---------------- */
 
 export default function App() {
-  const systemPrefersDark = useMemo(
-    () =>
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches,
-    []
-  );
-
   const [theme, setTheme] = useState<Theme>(() => {
+    // First-time visitors default to dark mode; returning users keep their saved choice.
     const saved = localStorage.getItem("theme") as Theme | null;
-    return saved ?? (systemPrefersDark ? "dark" : "light");
+    return saved ?? "dark";
   });
 
   const [soundOn, setSoundOn] = useState<boolean>(
@@ -570,6 +493,7 @@ export default function App() {
               </div>
 
               <NavLink className="nav-link nav-link-cta" to="/chat">Chat</NavLink>
+              <NavLink className="nav-link" to="/circles">Circles</NavLink>
               <NavLink className="nav-link" to="/web-stories">Web Stories</NavLink>
               <NavLink className="nav-link" to="/about">About</NavLink>
               <NavLink className="nav-link" to="/contact">Contact</NavLink>
@@ -650,6 +574,7 @@ export default function App() {
             </div>
           </div>
 
+          <NavLink className="m-link" to="/circles" onClick={() => setNavOpen(false)}>Circles</NavLink>
           <NavLink className="m-link" to="/web-stories" onClick={() => setNavOpen(false)}>Web Stories</NavLink>
           <NavLink className="m-link" to="/about" onClick={() => setNavOpen(false)}>About</NavLink>
           <NavLink className="m-link" to="/contact" onClick={() => setNavOpen(false)}>Contact</NavLink>
@@ -684,17 +609,6 @@ export default function App() {
             }
             {soundOn ? "Mute" : "Sound"}
           </button>
-          <a
-            className="drawer-icon-btn"
-            href="https://x.com/chatrioapp"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Follow on X"
-            onClick={() => setNavOpen(false)}
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.912-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            Follow
-          </a>
         </div>
       </div>
 
@@ -707,6 +621,7 @@ export default function App() {
 
       <main className="site-main">
         <div className="site-wrap">
+          <Suspense fallback={null}>
           <Routes>
             <Route path="/blog" element={<BlogList />} />
             <Route path="/blog/:category" element={<BlogList />} />
@@ -719,6 +634,12 @@ export default function App() {
             <Route path="/stories" element={<Stories />} />
             <Route path="/stories/:id" element={<StoryPage />} />
             <Route path="/chat" element={<Chat theme={theme} setTheme={setTheme} soundOn={soundOn} setSoundOn={setSoundOn} />} />
+            <Route path="/circles" element={<CirclesLocal />} />
+            <Route path="/circles-admin" element={<CirclesAdmin />} />
+            <Route path="/nearby" element={<Navigate to="/circles" replace />} />
+            <Route path="/circles/:cohortId" element={<CohortRoom />} />
+            <Route path="/login" element={<Auth mode="login" />} />
+            <Route path="/signup" element={<Auth mode="signup" />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy" element={<Privacy />} />
@@ -726,6 +647,7 @@ export default function App() {
 
             <Route path="*" element={<Navigate to="/blog" replace />} />
           </Routes>
+          </Suspense>
         </div>
       </main>
 
@@ -751,17 +673,6 @@ export default function App() {
             <span style={{ opacity: 0.3 }}>|</span>
             <NavLink to="/privacy" className="footer-link">Privacy Policy</NavLink>
             <NavLink to="/terms" className="footer-link">Terms of Service</NavLink>
-            <span style={{ opacity: 0.3 }}>|</span>
-            <a
-              href="https://x.com/chatrioapp"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="footer-link footer-x-link"
-              aria-label="Follow Chatrio on X"
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" style={{ marginRight: 4, verticalAlign: "middle" }}><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.912-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-              @chatrioapp
-            </a>
           </div>
         </div>
       </footer>
