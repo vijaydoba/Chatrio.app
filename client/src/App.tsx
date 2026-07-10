@@ -1,314 +1,36 @@
 // src/App.tsx
-import React, { useEffect, useMemo, useState, Suspense } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import {
   Routes,
   Route,
   NavLink,
   useLocation,
   Navigate,
-  useParams,
 } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Home from "./pages/Home";
-import Stories, { StoryPage } from "./pages/Stories";
-import Chat from "./Chat";
-import CirclesLocal from "./pages/CirclesLocal";
-import CirclesAdmin from "./pages/CirclesAdmin";
-import CohortRoom from "./pages/CohortRoom";
-import Auth from "./pages/Auth";
-
-import { POSTS, Post } from "./data/posts";
 
 import "./App.css";
 
+// Route-level code splitting: keep the main bundle lean for content pages
+// (mobile CWV) — chat/circles/stories code loads only when those routes open.
+// BlogList pulls in data/posts.ts (~80KB) so it must stay lazy too, or every
+// page — including Home — pays for it in the main bundle's parse/exec time.
+const BlogList = React.lazy(() => import("./pages/BlogList"));
+const Stories = React.lazy(() => import("./pages/Stories"));
+const StoryPage = React.lazy(() => import("./pages/Stories").then((m) => ({ default: m.StoryPage })));
+const Chat = React.lazy(() => import("./Chat"));
+const CirclesLocal = React.lazy(() => import("./pages/CirclesLocal"));
+const CirclesAdmin = React.lazy(() => import("./pages/CirclesAdmin"));
+const CohortRoom = React.lazy(() => import("./pages/CohortRoom"));
+const Auth = React.lazy(() => import("./pages/Auth"));
+
 type Theme = "light" | "dark";
 
-/* ---------------- Helpers ---------------- */
-function titleCase(s: string) {
-  return s
-    .split(" ")
-    .map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w))
-    .join(" ");
-}
-
-function normalizeCategorySlug(cat?: string) {
-  if (!cat) return "all";
-  return String(cat).trim().toLowerCase();
-}
-
-function normalizeAssetPath(path?: string) {
-  if (!path) return "/images/default-thumb.png";
-  if (path.startsWith("http")) return path;
-  if (path.startsWith("/")) return path;
-  return `/${path}`;
-}
-
 /* ---------------- Pages (inline) ---------------- */
-
-function BlogList() {
-  const { category } = useParams<{ category?: string }>();
-  const activeCategory = normalizeCategorySlug(category);
-
-  const [q, setQ] = useState("");
-  const query = q.toLowerCase().trim();
-
-  const pageTitle =
-    activeCategory === "all"
-      ? "Blog"
-      : titleCase(activeCategory.replace(/\s*&\s*/g, " & "));
-
-  const filtered = useMemo(() => {
-    return POSTS.slice()
-      .sort((a, b) => (a.date < b.date ? 1 : -1))
-      .filter((p) => {
-        if (activeCategory === "all") return true;
-        return p.category.toLowerCase() === activeCategory;
-      })
-      .filter((p) => {
-        if (!query) return true;
-        const hay = `${p.title} ${p.excerpt} ${p.category}`.toLowerCase();
-        return hay.includes(query);
-      });
-  }, [activeCategory, query]);
-
-  const featured = filtered[0];
-  const rest = featured ? filtered.slice(1) : filtered;
-
-  const categories = useMemo(() => {
-    const all = Array.from(
-      new Set(POSTS.map((p) => p.category))
-    ) as Post["category"][];
-
-    const preferred: Post["category"][] = [
-      "Love",
-      "Romance",
-      "Chat & Connection",
-      "Dating",
-    ];
-
-    return preferred.filter((c) => all.includes(c));
-  }, []);
-
-  const counts = useMemo(() => {
-    const m = new Map<string, number>();
-    POSTS.forEach((p) => {
-      m.set(p.category, (m.get(p.category) ?? 0) + 1);
-    });
-    return m;
-  }, []);
-
-  const popularPosts = useMemo(() => {
-    return POSTS.slice()
-      .sort((a, b) => (a.date < b.date ? 1 : -1))
-      .slice(0, 3);
-  }, []);
-
-  const BLOG_ALL = "/blog";
-  const BLOG_LOVE = "/blog/love";
-  const BLOG_ROMANCE = "/blog/romance";
-  const BLOG_DATING = "/blog/dating";
-  const BLOG_CHAT = "/blog/chat%20%26%20connection";
-
-  const blogDesc = activeCategory === "all"
-    ? "Read articles about love, romance, dating, and online connections on the Chatrio blog."
-    : `Explore ${pageTitle} articles — tips, stories, and insights about ${pageTitle.toLowerCase()} and online connections.`;
-
-  return (
-    <div className="blog-page">
-      <Helmet>
-        <title>{activeCategory === "all" ? "Blog – Love, Dating & Chat Tips" : `${pageTitle} Blog`} | Chatrio</title>
-        <meta name="description" content={blogDesc} />
-        <link rel="canonical" href={activeCategory === "all" ? "https://chatrio.app/blog" : `https://chatrio.app/blog/${activeCategory}`} />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={`${activeCategory === "all" ? "Chatrio Blog" : pageTitle} – Love, Dating & Chat`} />
-        <meta property="og:description" content={blogDesc} />
-        <meta property="og:url" content={activeCategory === "all" ? "https://chatrio.app/blog" : `https://chatrio.app/blog/${activeCategory}`} />
-        <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`Chatrio Blog – ${pageTitle}`} />
-        <meta name="twitter:description" content={blogDesc} />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Blog",
-          "url": "https://chatrio.app/blog",
-          "name": "Chatrio Blog",
-          "description": "Articles about love, dating, romance, and online connections.",
-          "publisher": { "@type": "Organization", "name": "Chatrio", "url": "https://chatrio.app", "logo": "https://chatrio.app/branding/chatrio-512.png" }
-        })}</script>
-      </Helmet>
-      <section className="blog-hero">
-        <h1 className="blog-title">{pageTitle}</h1>
-        <p className="blog-sub">
-          Real stories, modern love, and meaningful conversations.
-        </p>
-
-        <div className="blog-search-wrap">
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder={`Search in ${pageTitle.toLowerCase()}...`}
-            className="blog-search"
-          />
-        </div>
-
-        <div className="blog-pills">
-          <NavLink to={BLOG_ALL} className="blog-pill">
-            All
-          </NavLink>
-          <NavLink to={BLOG_LOVE} className="blog-pill">
-            Love
-          </NavLink>
-          <NavLink to={BLOG_ROMANCE} className="blog-pill">
-            Romance
-          </NavLink>
-          <NavLink to={BLOG_CHAT} className="blog-pill">
-            Chat
-          </NavLink>
-          <NavLink to={BLOG_DATING} className="blog-pill">
-            Dating
-          </NavLink>
-        </div>
-      </section>
-
-      <section className="blog-layout">
-        <div className="blog-main">
-          {filtered.length === 0 ? (
-            <div className="blog-empty">
-              <div className="blog-empty-title">No posts found</div>
-              <div className="blog-empty-sub">
-                Try a different keyword or category.
-              </div>
-            </div>
-          ) : (
-            <>
-              {featured && (
-                <article className="blog-featured">
-                  <div className="blog-featured-media">
-                    <img
-                      src={normalizeAssetPath(featured.thumbnail)}
-                      alt={featured.title}
-                      className="blog-featured-img"
-                    />
-                  </div>
-
-                  <div className="blog-featured-body">
-                    <div className="blog-meta">
-                      {featured.date} • {featured.category}
-                    </div>
-
-                    <h2 className="blog-featured-title">
-                      <NavLink
-                        to={`/blog/post/${featured.slug}`}
-                        className="blog-link"
-                      >
-                        {featured.title}
-                      </NavLink>
-                    </h2>
-
-                    <p className="blog-featured-excerpt">{featured.excerpt}</p>
-
-                    <NavLink
-                      to={`/blog/post/${featured.slug}`}
-                      className="blog-cta"
-                    >
-                      Read More <span aria-hidden="true">→</span>
-                    </NavLink>
-                  </div>
-                </article>
-              )}
-
-              <h3 className="blog-section-title">Recent Articles</h3>
-
-              <div className="blog-list">
-                {rest.map((p) => (
-                  <article className="blog-card-row" key={p.slug}>
-                    <img
-                      className="blog-thumb"
-                      src={normalizeAssetPath(p.thumbnail)}
-                      alt={p.title}
-                    />
-
-                    <div className="blog-card-body">
-                      <div className="blog-meta">
-                        {p.date} • {p.category}
-                      </div>
-
-                      <h3 className="blog-card-title">
-                        <NavLink
-                          to={`/blog/post/${p.slug}`}
-                          className="blog-link"
-                        >
-                          {p.title}
-                        </NavLink>
-                      </h3>
-
-                      <p className="blog-card-excerpt">{p.excerpt}</p>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-
-        <aside className="blog-side">
-          <div className="blog-side-card">
-            <div className="blog-side-title">Popular Posts</div>
-
-            <div className="blog-side-list">
-              {popularPosts.map((p) => (
-                <NavLink
-                  key={p.slug}
-                  to={`/blog/post/${p.slug}`}
-                  className="blog-side-item"
-                >
-                  <img
-                    src={normalizeAssetPath(p.thumbnail)}
-                    alt={p.title}
-                    className="blog-side-thumb"
-                  />
-                  <div className="blog-side-text">
-                    <div className="blog-side-item-title">{p.title}</div>
-                    <div className="blog-side-item-meta">
-                      {p.date} • {p.category}
-                    </div>
-                  </div>
-                </NavLink>
-              ))}
-            </div>
-          </div>
-
-          <div className="blog-side-card">
-            <div className="blog-side-title">Categories</div>
-
-            <div className="blog-side-pills">
-              <NavLink to={BLOG_ALL} className="blog-side-pill">
-                All <span className="blog-count">{POSTS.length}</span>
-              </NavLink>
-
-              {categories.map((c) => {
-                const slug =
-                  c.toLowerCase() === "chat & connection"
-                    ? BLOG_CHAT
-                    : `/blog/${c.toLowerCase()}`;
-                return (
-                  <NavLink key={c} to={slug} className="blog-side-pill">
-                    {c.replace("Chat & Connection", "Chat")}
-                    <span className="blog-count">{counts.get(c) ?? 0}</span>
-                  </NavLink>
-                );
-              })}
-            </div>
-          </div>
-        </aside>
-      </section>
-    </div>
-  );
-}
 
 const BlogPost = React.lazy(() => import("./pages/BlogPost"));
 
@@ -413,6 +135,7 @@ export default function App() {
 
   const [navOpen, setNavOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown
+  const [mobBlogOpen, setMobBlogOpen] = useState(false); // State for mobile blog dropdown
 
   // ESC closes drawer
   useEffect(() => {
@@ -437,6 +160,7 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setNavOpen(false);
     setDropdownOpen(false); // Close dropdown on route change
+    setMobBlogOpen(false);
   }, [pathname]);
 
   const BLOG_ALL = "/blog";
@@ -471,6 +195,9 @@ export default function App() {
           {/* Desktop navbar */}
           <div className="site-header-right desktop-only">
             <nav className="nav" aria-label="Primary">
+              <NavLink className="nav-link nav-link-cta" to="/chat">Chat</NavLink>
+              <NavLink className="nav-link" to="/circles">Circles</NavLink>
+
               <div
                 className="nav-dropdown-container"
                 onMouseEnter={() => setDropdownOpen(true)}
@@ -492,8 +219,6 @@ export default function App() {
                 )}
               </div>
 
-              <NavLink className="nav-link nav-link-cta" to="/chat">Chat</NavLink>
-              <NavLink className="nav-link" to="/circles">Circles</NavLink>
               <NavLink className="nav-link" to="/web-stories">Web Stories</NavLink>
               <NavLink className="nav-link" to="/about">About</NavLink>
               <NavLink className="nav-link" to="/contact">Contact</NavLink>
@@ -561,20 +286,30 @@ export default function App() {
           <NavLink className="m-link m-link-cta" to="/chat" onClick={() => setNavOpen(false)}>
             Chat
           </NavLink>
+          <NavLink className="m-link" to="/circles" onClick={() => setNavOpen(false)}>Circles</NavLink>
 
           <div className="mob-blog-group">
-            <NavLink className="m-link" to={BLOG_ALL} onClick={() => setNavOpen(false)}>
+            <button
+              type="button"
+              className={`mob-blog-toggle${pathname.startsWith("/blog") ? " active" : ""}`}
+              onClick={() => setMobBlogOpen((v) => !v)}
+              aria-expanded={mobBlogOpen}
+            >
               Blog
-            </NavLink>
-            <div className="mob-sub-links">
-              <NavLink className="mob-sub-link" to={BLOG_LOVE} onClick={() => setNavOpen(false)}>Love</NavLink>
-              <NavLink className="mob-sub-link" to={BLOG_ROMANCE} onClick={() => setNavOpen(false)}>Romance</NavLink>
-              <NavLink className="mob-sub-link" to={BLOG_DATING} onClick={() => setNavOpen(false)}>Dating</NavLink>
-              <NavLink className="mob-sub-link" to={BLOG_CHAT} onClick={() => setNavOpen(false)}>Chat & Connection</NavLink>
-            </div>
+              <svg className={`mob-blog-chevron${mobBlogOpen ? " open" : ""}`} viewBox="0 0 10 6" fill="none">
+                <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            {mobBlogOpen && (
+              <div className="mob-sub-links">
+                <NavLink className="mob-sub-link" to={BLOG_LOVE} onClick={() => setNavOpen(false)}><span className="dd-icon">💖</span>Love</NavLink>
+                <NavLink className="mob-sub-link" to={BLOG_ROMANCE} onClick={() => setNavOpen(false)}><span className="dd-icon">🌹</span>Romance</NavLink>
+                <NavLink className="mob-sub-link" to={BLOG_DATING} onClick={() => setNavOpen(false)}><span className="dd-icon">✨</span>Dating</NavLink>
+                <NavLink className="mob-sub-link" to={BLOG_CHAT} onClick={() => setNavOpen(false)}><span className="dd-icon">💬</span>Chat & Connection</NavLink>
+              </div>
+            )}
           </div>
 
-          <NavLink className="m-link" to="/circles" onClick={() => setNavOpen(false)}>Circles</NavLink>
           <NavLink className="m-link" to="/web-stories" onClick={() => setNavOpen(false)}>Web Stories</NavLink>
           <NavLink className="m-link" to="/about" onClick={() => setNavOpen(false)}>About</NavLink>
           <NavLink className="m-link" to="/contact" onClick={() => setNavOpen(false)}>Contact</NavLink>
@@ -630,9 +365,6 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/web-stories" element={<Stories />} />
             <Route path="/web-stories/:id" element={<StoryPage />} />
-            {/* legacy redirects */}
-            <Route path="/stories" element={<Stories />} />
-            <Route path="/stories/:id" element={<StoryPage />} />
             <Route path="/chat" element={<Chat theme={theme} setTheme={setTheme} soundOn={soundOn} setSoundOn={setSoundOn} />} />
             <Route path="/circles" element={<CirclesLocal />} />
             <Route path="/circles-admin" element={<CirclesAdmin />} />

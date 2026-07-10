@@ -38,10 +38,11 @@ const storyIds   = extractField(storiesSrc, "id");
 const staticPages = [
   { loc: "/",             lastmod: TODAY, changefreq: "weekly",  priority: "1.0" },
   { loc: "/blog",         lastmod: TODAY, changefreq: "weekly",  priority: "0.9" },
-  { loc: "/stories",      lastmod: TODAY, changefreq: "weekly",  priority: "0.8" },
+  { loc: "/web-stories",  lastmod: TODAY, changefreq: "weekly",  priority: "0.8" },
   { loc: "/blog/love",    lastmod: TODAY, changefreq: "weekly",  priority: "0.7" },
   { loc: "/blog/romance", lastmod: TODAY, changefreq: "weekly",  priority: "0.7" },
   { loc: "/blog/dating",  lastmod: TODAY, changefreq: "weekly",  priority: "0.7" },
+  { loc: "/circles",      lastmod: TODAY, changefreq: "weekly",  priority: "0.8" },
   { loc: "/about",        lastmod: TODAY, changefreq: "monthly", priority: "0.6" },
   { loc: "/contact",      lastmod: TODAY, changefreq: "monthly", priority: "0.5" },
   { loc: "/privacy",      lastmod: TODAY, changefreq: "yearly",  priority: "0.4" },
@@ -55,14 +56,6 @@ const postPages = slugs.map((slug, i) => ({
   changefreq: "monthly",
   priority: "0.8",
   image: thumbnails[i] ? `${BASE_URL}/${thumbnails[i]}` : null,
-}));
-
-/* ── Story pages (React) ── */
-const storyPages = storyIds.map((id) => ({
-  loc: `/stories/${id}`,
-  lastmod: TODAY,
-  changefreq: "monthly",
-  priority: "0.7",
 }));
 
 /* ── Google Web Story pages (AMP) ── */
@@ -97,10 +90,7 @@ ${staticPages.map(urlEntry).join("\n")}
   <!-- BLOG POSTS -->
 ${postPages.map(urlEntry).join("\n")}
 
-  <!-- STORIES (React) -->
-${storyPages.map(urlEntry).join("\n")}
-
-  <!-- GOOGLE WEB STORIES (AMP) -->
+  <!-- GOOGLE WEB STORIES (AMP) — /stories/ React routes excluded: canonical points here -->
 ${webStoryPages.map(urlEntry).join("\n")}
 
 </urlset>
@@ -108,21 +98,19 @@ ${webStoryPages.map(urlEntry).join("\n")}
 
 const sitemapOut = path.join(__dirname, "../client/public/sitemap.xml");
 fs.writeFileSync(sitemapOut, xml, "utf8");
-console.log(`✅  sitemap.xml updated — ${staticPages.length} static, ${postPages.length} posts, ${storyPages.length} stories, ${webStoryPages.length} web stories`);
+console.log(`✅  sitemap.xml updated — ${staticPages.length} static, ${postPages.length} posts, ${webStoryPages.length} web stories (React /stories/ routes excluded from sitemap)`);
 
 /* ── Auto-update reactSnap.include in package.json ── */
 const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
 
 const snapInclude = [
-  // Static pages
+  // Static pages (includes /web-stories; /stories/* is retired — see nginx 301s)
   ...staticPages.map(p => p.loc),
   // Every blog post
   ...postPages.map(p => p.loc),
-  // Every story
-  ...storyPages.map(p => p.loc),
 ];
 
 pkg.reactSnap.include = snapInclude;
 
 fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n", "utf8");
-console.log(`✅  reactSnap.include updated — ${snapInclude.length} URLs will be prerendered`);
+console.log(`✅  reactSnap.include updated — ${snapInclude.length} URLs will be prerendered (stories excluded — covered by AMP)`);
