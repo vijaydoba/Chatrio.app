@@ -1,0 +1,35 @@
+# Chatrio
+
+> Chatrio is a free, anonymous web app that instantly pairs you with a random
+> stranger for a private 1-on-1 chat — no account, no app download, and no phone
+> number required. It is a modern, browser-based Omegle alternative. Chatrio also
+> offers "Circles": recurring small groups (~8 people) that meet weekly around a
+> shared interest, for people who want connection that lasts beyond a single chat.
+
+## Key pages
+- Chat now (random 1-on-1): https://chatrio.app/chat
+- Home: https://chatrio.app/
+- Blog (love, dating, chat tips): https://chatrio.app/blog
+- Web stories: https://chatrio.app/web-stories
+- Circles (recurring groups): https://chatrio.app/circles
+- About: https://chatrio.app/about
+- Contact: https://chatrio.app/contact
+- Privacy: https://chatrio.app/privacy
+- Terms: https://chatrio.app/terms
+
+## Facts
+- Price: 100% free. No subscription, no premium tiers, no hidden costs.
+- Sign-up: Not required for random chat. Circles mode uses a free account.
+- Anonymous: No name, email, or phone number needed for random chat.
+- Privacy: Random-chat messages are delivered in real time and never stored.
+- Matching: Optional interest/topic-based matching (gaming, music, travel, etc.).
+- Platform: Works in any modern browser on desktop, iOS, and Android. No install.
+- Features: Text, image sharing, typing indicators, delivery receipts, skip/next.
+- Positioning: A cleaner, mobile-first, privacy-focused alternative to Omegle
+  (which shut down in November 2023), Chatroulette, and OmeTV.
+
+## Use cases
+- Talk to a stranger when bored or lonely, instantly and anonymously.
+- Meet new people worldwide without revealing your identity.
+- Find someone who shares your interests via topic-based matching.
+- Join a recurring small group (a "Circle") for ongoing weekly conversation.
