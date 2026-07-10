@@ -87,10 +87,10 @@ const storyIds = extractField(storiesSrc, "id");
 
 const urls = [
   `${BASE_URL}/`,
-  `${BASE_URL}/stories`,
   `${BASE_URL}/blog`,
-  ...slugs.map((s) => `${BASE_URL}/blog/post/${s}`),
-  ...storyIds.map((id) => `${BASE_URL}/stories/${id}`),
+  `${BASE_URL}/web-stories`,
+  ...slugs.map((s) => `${BASE_URL}/blog/${s}`),
+  ...storyIds.map((id) => `${BASE_URL}/web-stories/${id}`),
 ];
 
 /* ── Send to IndexNow endpoint ── */

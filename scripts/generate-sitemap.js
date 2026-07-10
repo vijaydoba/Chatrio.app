@@ -51,7 +51,7 @@ const staticPages = [
 
 /* ── Blog posts ── */
 const postPages = slugs.map((slug, i) => ({
-  loc: `/blog/post/${slug}`,
+  loc: `/blog/${slug}`,
   lastmod: dates[i] || TODAY,
   changefreq: "monthly",
   priority: "0.8",

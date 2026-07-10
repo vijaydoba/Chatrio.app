@@ -5,6 +5,7 @@ import {
   Route,
   NavLink,
   useLocation,
+  useParams,
   Navigate,
 } from "react-router-dom";
 import About from "./pages/About";
@@ -33,6 +34,21 @@ type Theme = "light" | "dark";
 /* ---------------- Pages (inline) ---------------- */
 
 const BlogPost = React.lazy(() => import("./pages/BlogPost"));
+
+// /blog/:slug is shared by category listing pages and individual post pages —
+// resolve which to render based on the param. Must cover every value in
+// Post["category"] (posts.ts) lowercased, since useParams decodes the URL
+// (the nav pill for "Chat & Connection" links to /blog/chat%20%26%20connection).
+const BLOG_CATEGORY_SLUGS = new Set([
+  "love", "romance", "dating", "relationships", "chat & connection", "mental health",
+]);
+function BlogRoute() {
+  const { slug } = useParams<{ slug?: string }>();
+  if (slug && BLOG_CATEGORY_SLUGS.has(slug.toLowerCase())) {
+    return <BlogList />;
+  }
+  return <BlogPost />;
+}
 
 /* ---------------- Cookie Banner ---------------- */
 
@@ -359,8 +375,7 @@ export default function App() {
           <Suspense fallback={null}>
           <Routes>
             <Route path="/blog" element={<BlogList />} />
-            <Route path="/blog/:category" element={<BlogList />} />
-            <Route path="/blog/post/:slug" element={<BlogPost />} />
+            <Route path="/blog/:slug" element={<BlogRoute />} />
 
             <Route path="/" element={<Home />} />
             <Route path="/web-stories" element={<Stories />} />
