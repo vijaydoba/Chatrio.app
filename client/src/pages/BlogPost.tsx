@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useParams, NavLink, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { POSTS, Post, POST_REDIRECTS } from "../data/posts";
@@ -9,15 +9,31 @@ function readingTime(html: string): number {
   return Math.max(1, Math.round(words / 200));
 }
 
+function seoTitle(title: string): string {
+  const SUFFIX = " | Chatrio";
+  const MAX = 60;
+  if (title.length <= MAX) return title + SUFFIX;
+  const cut = title.slice(0, MAX).trimEnd();
+  const lastSpace = cut.lastIndexOf(" ");
+  const short = lastSpace > MAX * 0.6 ? cut.slice(0, lastSpace) : cut;
+  return short + "…" + SUFFIX;
+}
+
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
+  const post: Post | undefined = POSTS.find((p) => p.slug === slug);
+
+  const relatedPosts = useMemo(() => {
+    if (!post) return [];
+    const sameCat = POSTS.filter((p) => p.slug !== post.slug && p.category === post.category).slice(0, 3);
+    const other = POSTS.filter((p) => p.slug !== post.slug && p.category !== post.category).slice(0, 3 - sameCat.length);
+    return [...sameCat, ...other];
+  }, [post]);
 
   // Consolidated duplicate posts: redirect old slugs to their canonical keeper.
   if (slug && POST_REDIRECTS[slug]) {
-    return <Navigate to={`/blog/post/${POST_REDIRECTS[slug]}`} replace />;
+    return <Navigate to={`/blog/${POST_REDIRECTS[slug]}`} replace />;
   }
-
-  const post: Post | undefined = POSTS.find((p) => p.slug === slug);
 
   if (!post) {
     return (
@@ -29,14 +45,14 @@ export default function BlogPost() {
   }
 
   const contentHtml = POST_CONTENT[post.slug] || "";
-  const canonicalUrl = `https://chatrio.app/blog/post/${post.slug}`;
+  const canonicalUrl = `https://chatrio.app/blog/${post.slug}`;
   const ogImage = post.thumbnail ? `https://chatrio.app/${String(post.thumbnail).replace(/^\/?/, "")}` : "https://chatrio.app/branding/chatrio-512.png";
   const mins = readingTime(contentHtml);
 
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", padding: 12 }}>
       <Helmet>
-        <title>{post.title} | Chatrio Blog</title>
+        <title>{seoTitle(post.title)}</title>
         <meta name="description" content={post.excerpt} />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:type" content="article" />
@@ -52,18 +68,24 @@ export default function BlogPost() {
         <meta name="twitter:image" content={ogImage} />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "Article",
+          "@type": "BlogPosting",
           "headline": post.title,
           "description": post.excerpt,
-          "image": ogImage,
+          "image": {
+            "@type": "ImageObject",
+            "url": ogImage,
+            "width": post.thumbnail ? 1200 : 512,
+            "height": post.thumbnail ? 630 : 512
+          },
           "datePublished": post.date,
+          "dateModified": post.date,
           "url": canonicalUrl,
-          "author": { "@type": "Organization", "name": "Chatrio" },
+          "author": { "@type": "Organization", "name": "Chatrio", "url": "https://chatrio.app" },
           "publisher": {
             "@type": "Organization",
             "name": "Chatrio",
             "url": "https://chatrio.app",
-            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png" }
+            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png", "width": 512, "height": 512 }
           },
           "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl }
         })}</script>
@@ -73,7 +95,7 @@ export default function BlogPost() {
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://chatrio.app/" },
             { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://chatrio.app/blog" },
-            { "@type": "ListItem", "position": 3, "name": post.category, "item": `https://chatrio.app/blog/${String(post.category).toLowerCase()}` },
+            { "@type": "ListItem", "position": 3, "name": post.category, "item": `https://chatrio.app/blog/${encodeURIComponent(String(post.category).toLowerCase())}` },
             { "@type": "ListItem", "position": 4, "name": post.title, "item": canonicalUrl }
           ]
         })}</script>
@@ -94,6 +116,22 @@ export default function BlogPost() {
         style={{ lineHeight: 1.8, opacity: 0.95 }}
         dangerouslySetInnerHTML={{ __html: contentHtml }}
       />
+
+      {relatedPosts.length > 0 && (
+        <nav aria-label="Related posts" style={{ marginTop: 48, borderTop: "1px solid var(--border, #e2e8f0)", paddingTop: 32 }}>
+          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: 16 }}>Related Articles</h2>
+          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
+            {relatedPosts.map((p) => (
+              <li key={p.slug} style={{ border: "1px solid var(--border, #e2e8f0)", borderRadius: 8, padding: 16 }}>
+                <NavLink to={`/blog/${p.slug}`} style={{ textDecoration: "none", color: "inherit", display: "block" }}>
+                  <div style={{ fontSize: "0.75rem", color: "var(--muted, #64748b)", marginBottom: 6 }}>{p.category}</div>
+                  <div style={{ fontWeight: 600, lineHeight: 1.4 }}>{p.title}</div>
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
     </div>
   );
 }
