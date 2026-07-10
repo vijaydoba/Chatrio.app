@@ -4,9 +4,9 @@ import { NavLink, useParams, useNavigate } from "react-router-dom";
 import { STORIES, Story } from "../data/stories";
 
 const CHAR_IMAGES: Record<string, string[]> = {
-  girl:   ["/images/image7.png", "/images/image8.png", "/images/image6.png", "/images/image4.png"],
-  boy:    ["/images/image2.png", "/images/image3.png", "/images/image5.png"],
-  couple: ["/images/image9.png", "/images/image11.png", "/images/image12.png"],
+  girl:   ["/images/image7.webp", "/images/image8.webp", "/images/image6.webp", "/images/image4.webp"],
+  boy:    ["/images/image2.webp", "/images/image3.webp", "/images/image5.webp"],
+  couple: ["/images/image9.webp", "/images/image11.webp", "/images/image12.webp"],
 };
 function charSrc(character: string, slideIdx: number): string {
   const imgs = CHAR_IMAGES[character] ?? [];
@@ -97,15 +97,22 @@ export function StoryPage() {
           "@type": "Article",
           "headline": story.title,
           "description": story.slides[0].text.slice(0, 160),
+          "image": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png", "width": 512, "height": 512 },
+          "datePublished": "2025-01-01",
+          "dateModified": "2026-07-02",
           "url": canonicalUrl,
-          "author": { "@type": "Organization", "name": "Chatrio" },
+          "author": { "@type": "Organization", "name": "Chatrio", "url": "https://chatrio.app" },
           "publisher": {
             "@type": "Organization",
             "name": "Chatrio",
             "url": "https://chatrio.app",
-            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png" }
-          }
+            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png", "width": 512, "height": 512 }
+          },
+          "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl }
         })}</script>
+        {story.slides[0].character && (
+          <link rel="preload" as="image" href={charSrc(story.slides[0].character, 0)} />
+        )}
       </Helmet>
 
       {/* Phone-card: gradient background, constrained width on desktop */}
@@ -161,6 +168,7 @@ export function StoryPage() {
               src={charSrc(current.character, slide)}
               alt={current.character}
               className="story-character-img"
+              fetchPriority={slide === 0 ? "high" : "auto"}
             />
           ) : (
             <div className="story-slide-emoji" key={`emoji-${slide}`}>{current.emoji}</div>
@@ -220,15 +228,20 @@ function StoryCard({ story }: { story: Story }) {
         to={`/web-stories/${story.id}`}
         className="story-card"
         aria-label={`Read: ${story.title}`}
+        style={{ background: story.gradient }}
       >
-        <div className="story-card-bg" style={{ background: story.gradient }}>
-          <span className="story-card-emoji">{story.emoji}</span>
-          <div className="story-card-badge">{story.readTime}</div>
+        <span className="story-card-emoji-bg" aria-hidden="true">{story.emoji}</span>
+        <div className="story-card-top">
+          <span className="story-card-time">{story.readTime}</span>
         </div>
-        <div className="story-card-body">
-          <div className="story-card-cat">{story.category}</div>
+        <div className="story-card-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </div>
+        <div className="story-card-overlay">
+          <span className="story-card-cat">{story.category}</span>
           <h3 className="story-card-title">{story.title}</h3>
-          <p className="story-card-preview">{story.slides[0].heading}</p>
           <div className="story-card-dots">
             {story.slides.map((_, i) => (
               <span key={i} className="story-card-dot" />
@@ -263,6 +276,26 @@ const FEATURED_IDS = [
   "loneliness-cure-nobody-talks-about",
   "the-app-replacing-dating-apps-2026",
   "one-conversation-away-from-everything",
+  "rizz-meaning",
+  "delulu-meaning",
+  "breadcrumbing-meaning",
+  "cuffing-season-meaning",
+  "love-bombing-signs",
+  "are-you-a-dry-texter",
+  "good-morning-texts-for-her",
+  "micro-cheating-is-it-cheating",
+  "what-does-situationship-mean",
+  "left-on-read-meaning",
+  "orbiting-dating-term",
+  "how-to-rizz-someone-up",
+  "dating-app-bio-ideas",
+  "how-to-tell-if-someone-likes-you-through-text",
+  "signs-someone-is-manifesting-you",
+  "chatrandom-alternative-free-no-sign-up",
+  "bazoocam-alternative-free-no-download",
+  "joingy-alternative-text-or-video",
+  "camsurf-alternative-safer-video-chat",
+  "tinychat-alternative-1-on-1-chat",
 ];
 
 /* 7 visible categories — kept in a fixed, curated order */
@@ -281,7 +314,11 @@ const orderedStories = [
   ...STORIES.filter((s) => !FEATURED_IDS.includes(s.id)),
 ];
 
+const INITIAL_PER_CAT = 24;
+
 export default function Stories() {
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+
   const categories = VISIBLE_CATEGORIES.filter((cat) =>
     orderedStories.some((s) => s.category === cat)
   );
@@ -327,14 +364,25 @@ export default function Stories() {
 
       {categories.map((cat) => {
         const catStories = orderedStories.filter((s) => s.category === cat);
+        const isExpanded = expanded.has(cat);
+        const visible = isExpanded ? catStories : catStories.slice(0, INITIAL_PER_CAT);
+        const hasMore = catStories.length > INITIAL_PER_CAT;
         return (
           <section key={cat} className="stories-category-section">
             <h2 className="stories-cat-title">{cat}</h2>
             <div className="stories-grid">
-              {catStories.map((s) => (
+              {visible.map((s) => (
                 <StoryCard key={s.id} story={s} />
               ))}
             </div>
+            {hasMore && !isExpanded && (
+              <button
+                className="stories-show-more"
+                onClick={() => setExpanded((prev) => { const s = new Set(prev); s.add(cat); return s; })}
+              >
+                Show all {catStories.length} {cat} stories
+              </button>
+            )}
           </section>
         );
       })}
