@@ -10,7 +10,6 @@
 - Chat now (random 1-on-1): https://chatrio.app/chat
 - Home: https://chatrio.app/
 - Blog (love, dating, chat tips): https://chatrio.app/blog
-- Web stories: https://chatrio.app/web-stories
 - Circles (recurring groups): https://chatrio.app/circles
 - About: https://chatrio.app/about
 - Contact: https://chatrio.app/contact

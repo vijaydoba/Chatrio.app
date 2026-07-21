@@ -1,0 +1,24 @@
+{
+  "name": "chatrio",
+  "version": "1.0.0",
+  "description": "**Chatrio** is an anonymous 1‑on‑1 random chat web app — talk to strangers instantly, no sign‑up required. It pairs two online users in real time over WebSockets, with optional topic‑based matching, and also ships a full SEO content layer (blog + AMP web stories) under the same domain.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vijaydoba/Chatrio.app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vijaydoba/Chatrio.app/issues"
+  },
+  "homepage": "https://github.com/vijaydoba/Chatrio.app#readme",
+  "dependencies": {
+    "apify-client": "^2.23.4",
+    "dotenv": "^17.4.2"
+  }
+}

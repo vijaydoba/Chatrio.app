@@ -23,27 +23,24 @@ function extractField(src, fieldName) {
 }
 
 const postsPath    = path.join(__dirname, "../client/src/data/posts.ts");
-const storiesPath  = path.join(__dirname, "../client/src/data/stories.ts");
 const pkgPath      = path.join(__dirname, "../client/package.json");
 
 const postsSrc   = fs.readFileSync(postsPath, "utf8");
-const storiesSrc = fs.readFileSync(storiesPath, "utf8");
 
 const slugs      = extractField(postsSrc, "slug");
 const dates      = extractField(postsSrc, "date");
 const thumbnails = extractField(postsSrc, "thumbnail");
-const storyIds   = extractField(storiesSrc, "id");
 
 /* ── Static pages ── */
 const staticPages = [
   { loc: "/",             lastmod: TODAY, changefreq: "weekly",  priority: "1.0" },
   { loc: "/blog",         lastmod: TODAY, changefreq: "weekly",  priority: "0.9" },
-  { loc: "/web-stories",  lastmod: TODAY, changefreq: "weekly",  priority: "0.8" },
   { loc: "/blog/love",    lastmod: TODAY, changefreq: "weekly",  priority: "0.7" },
   { loc: "/blog/romance", lastmod: TODAY, changefreq: "weekly",  priority: "0.7" },
   { loc: "/blog/dating",  lastmod: TODAY, changefreq: "weekly",  priority: "0.7" },
   { loc: "/circles",      lastmod: TODAY, changefreq: "weekly",  priority: "0.8" },
   { loc: "/about",        lastmod: TODAY, changefreq: "monthly", priority: "0.6" },
+  { loc: "/editorial-standards", lastmod: TODAY, changefreq: "monthly", priority: "0.5" },
   { loc: "/contact",      lastmod: TODAY, changefreq: "monthly", priority: "0.5" },
   { loc: "/privacy",      lastmod: TODAY, changefreq: "yearly",  priority: "0.4" },
   { loc: "/terms",        lastmod: TODAY, changefreq: "yearly",  priority: "0.4" },
@@ -56,14 +53,6 @@ const postPages = slugs.map((slug, i) => ({
   changefreq: "monthly",
   priority: "0.8",
   image: thumbnails[i] ? `${BASE_URL}/${thumbnails[i]}` : null,
-}));
-
-/* ── Google Web Story pages (AMP) ── */
-const webStoryPages = storyIds.map((id) => ({
-  loc: `/web-stories/${id}/`,
-  lastmod: TODAY,
-  changefreq: "monthly",
-  priority: "0.8",
 }));
 
 /* ── Build sitemap XML ── */
@@ -90,21 +79,18 @@ ${staticPages.map(urlEntry).join("\n")}
   <!-- BLOG POSTS -->
 ${postPages.map(urlEntry).join("\n")}
 
-  <!-- GOOGLE WEB STORIES (AMP) — /stories/ React routes excluded: canonical points here -->
-${webStoryPages.map(urlEntry).join("\n")}
-
 </urlset>
 `;
 
 const sitemapOut = path.join(__dirname, "../client/public/sitemap.xml");
 fs.writeFileSync(sitemapOut, xml, "utf8");
-console.log(`✅  sitemap.xml updated — ${staticPages.length} static, ${postPages.length} posts, ${webStoryPages.length} web stories (React /stories/ routes excluded from sitemap)`);
+console.log(`✅  sitemap.xml updated — ${staticPages.length} static, ${postPages.length} posts (web stories retired)`);
 
 /* ── Auto-update reactSnap.include in package.json ── */
 const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
 
 const snapInclude = [
-  // Static pages (includes /web-stories; /stories/* is retired — see nginx 301s)
+  // Static pages (web stories retired — see nginx 410 for /web-stories/*)
   ...staticPages.map(p => p.loc),
   // Every blog post
   ...postPages.map(p => p.loc),
@@ -113,4 +99,4 @@ const snapInclude = [
 pkg.reactSnap.include = snapInclude;
 
 fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n", "utf8");
-console.log(`✅  reactSnap.include updated — ${snapInclude.length} URLs will be prerendered (stories excluded — covered by AMP)`);
+console.log(`✅  reactSnap.include updated — ${snapInclude.length} URLs will be prerendered`);

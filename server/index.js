@@ -3,6 +3,7 @@ const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
 require("dotenv").config();
+const circles = require("./circles");
 
 const PORT = process.env.PORT || 5050;
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "https://chatrio.app";
@@ -13,6 +14,55 @@ app.use(express.json());
 
 app.get("/", (req, res) => res.send("Chatrio API ✅"));
 app.get("/health", (req, res) => res.json({ ok: true }));
+
+// --- Circles (recurring cohort mode) REST API ---
+function authMiddleware(req, res, next) {
+  const h = req.headers.authorization || "";
+  const token = h.startsWith("Bearer ") ? h.slice(7) : null;
+  const payload = token && circles.verifyToken(token);
+  if (!payload) return res.status(401).json({ error: "Authentication required" });
+  const user = circles.getUserById(payload.uid);
+  if (!user) return res.status(401).json({ error: "Account not found" });
+  req.user = user;
+  next();
+}
+
+function handle(fn) {
+  return (req, res) => {
+    try {
+      res.json(fn(req, res));
+    } catch (e) {
+      res.status(e.status || 500).json({ error: e.message || "Server error" });
+    }
+  };
+}
+
+// --- Waitlist: public email capture + admin export ---
+app.post("/waitlist", handle((req) => circles.joinWaitlist(req.body || {})));
+app.get("/waitlist", (req, res) => {
+  const adminToken = process.env.ADMIN_TOKEN;
+  const provided = (req.headers.authorization || "").replace(/^Bearer\s+/i, "") || req.query.key;
+  if (!adminToken || provided !== adminToken) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  res.json(circles.listWaitlist());
+});
+
+app.post("/auth/signup", handle((req) => circles.signup(req.body || {})));
+app.post("/auth/login", handle((req) => circles.login(req.body || {})));
+app.get("/auth/me", authMiddleware, handle((req) => circles.publicUser(req.user)));
+
+app.get("/circles", authMiddleware, handle((req) => circles.listCircles(req.user.id)));
+app.post("/circles/:id/join", authMiddleware, handle((req) =>
+  circles.joinCircle(req.user.id, Number(req.params.id))
+));
+app.get("/my/cohorts", authMiddleware, handle((req) => circles.listMyCohorts(req.user.id)));
+app.get("/cohorts/:id", authMiddleware, handle((req) =>
+  circles.cohortDetail(Number(req.params.id), req.user.id)
+));
+app.get("/cohorts/:id/messages", authMiddleware, handle((req) =>
+  circles.getMessages(Number(req.params.id), req.user.id)
+));
 
 const server = http.createServer(app);
 
@@ -271,6 +321,49 @@ io.on("connection", (socket) => {
     const b = state.partner.get(socket.id);
     if (!b || b.startsWith("bot_")) return;
     io.to(b).emit("msg_delivered", { msgId });
+  });
+
+  // --- Circles: authenticated group cohort rooms (separate from random chat) ---
+  let cohortUser = null;
+  const token = socket.handshake.auth && socket.handshake.auth.token;
+  if (token) {
+    const payload = circles.verifyToken(token);
+    if (payload) cohortUser = circles.getUserById(payload.uid) || null;
+  }
+
+  socket.on("cohort_join", ({ cohortId }) => {
+    if (!cohortUser) return socket.emit("cohort_error", { error: "Not authenticated" });
+    if (!circles.cohortMembership(cohortId, cohortUser.id)) {
+      return socket.emit("cohort_error", { error: "Not a member of this cohort" });
+    }
+    socket.join(`cohort_${cohortId}`);
+    socket.emit("cohort_ready", { cohortId });
+    io.to(`cohort_${cohortId}`).emit("cohort_presence", {
+      cohortId,
+      userId: cohortUser.id,
+      name: cohortUser.name,
+      event: "join",
+    });
+  });
+
+  socket.on("cohort_message", ({ cohortId, text }) => {
+    if (!cohortUser) return socket.emit("cohort_error", { error: "Not authenticated" });
+    if (!circles.cohortMembership(cohortId, cohortUser.id)) return;
+    const clean = String(text || "").trim().slice(0, 2000);
+    if (!clean) return;
+    const saved = circles.saveMessage(cohortId, cohortUser.id, clean);
+    io.to(`cohort_${cohortId}`).emit("cohort_message", { cohortId, ...saved });
+  });
+
+  socket.on("cohort_typing", ({ cohortId, typing }) => {
+    if (!cohortUser) return;
+    if (!circles.cohortMembership(cohortId, cohortUser.id)) return;
+    socket.to(`cohort_${cohortId}`).emit("cohort_typing", {
+      cohortId,
+      userId: cohortUser.id,
+      name: cohortUser.name,
+      typing: !!typing,
+    });
   });
 
   socket.on("disconnect", () => {

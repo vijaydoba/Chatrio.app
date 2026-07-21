@@ -9,10 +9,12 @@ import {
   Navigate,
 } from "react-router-dom";
 import About from "./pages/About";
+import EditorialStandards from "./pages/EditorialStandards";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Home from "./pages/Home";
+import { Helmet } from "react-helmet-async";
 
 import "./App.css";
 
@@ -21,8 +23,6 @@ import "./App.css";
 // BlogList pulls in data/posts.ts (~80KB) so it must stay lazy too, or every
 // page — including Home — pays for it in the main bundle's parse/exec time.
 const BlogList = React.lazy(() => import("./pages/BlogList"));
-const Stories = React.lazy(() => import("./pages/Stories"));
-const StoryPage = React.lazy(() => import("./pages/Stories").then((m) => ({ default: m.StoryPage })));
 const Chat = React.lazy(() => import("./Chat"));
 const CirclesLocal = React.lazy(() => import("./pages/CirclesLocal"));
 const CirclesAdmin = React.lazy(() => import("./pages/CirclesAdmin"));
@@ -48,6 +48,23 @@ function BlogRoute() {
     return <BlogList />;
   }
   return <BlogPost />;
+}
+
+function NotFound() {
+  return (
+    <section className="not-found-page">
+      <Helmet>
+        <title>Page Not Found | Chatrio</title>
+        <meta name="description" content="The requested Chatrio page could not be found." />
+        <meta name="robots" content="noindex,follow" />
+      </Helmet>
+      <h1>Page not found</h1>
+      <p>The page may have moved or the address may be incorrect.</p>
+      <NavLink to="/">Return home</NavLink>
+      <span aria-hidden="true"> · </span>
+      <NavLink to="/blog">Browse the blog</NavLink>
+    </section>
+  );
 }
 
 /* ---------------- Cookie Banner ---------------- */
@@ -235,7 +252,6 @@ export default function App() {
                 )}
               </div>
 
-              <NavLink className="nav-link" to="/web-stories">Web Stories</NavLink>
               <NavLink className="nav-link" to="/about">About</NavLink>
               <NavLink className="nav-link" to="/contact">Contact</NavLink>
             </nav>
@@ -326,7 +342,6 @@ export default function App() {
             )}
           </div>
 
-          <NavLink className="m-link" to="/web-stories" onClick={() => setNavOpen(false)}>Web Stories</NavLink>
           <NavLink className="m-link" to="/about" onClick={() => setNavOpen(false)}>About</NavLink>
           <NavLink className="m-link" to="/contact" onClick={() => setNavOpen(false)}>Contact</NavLink>
 
@@ -378,8 +393,6 @@ export default function App() {
             <Route path="/blog/:slug" element={<BlogRoute />} />
 
             <Route path="/" element={<Home />} />
-            <Route path="/web-stories" element={<Stories />} />
-            <Route path="/web-stories/:id" element={<StoryPage />} />
             <Route path="/chat" element={<Chat theme={theme} setTheme={setTheme} soundOn={soundOn} setSoundOn={setSoundOn} />} />
             <Route path="/circles" element={<CirclesLocal />} />
             <Route path="/circles-admin" element={<CirclesAdmin />} />
@@ -388,11 +401,12 @@ export default function App() {
             <Route path="/login" element={<Auth mode="login" />} />
             <Route path="/signup" element={<Auth mode="signup" />} />
             <Route path="/about" element={<About />} />
+            <Route path="/editorial-standards" element={<EditorialStandards />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
 
-            <Route path="*" element={<Navigate to="/blog" replace />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           </Suspense>
         </div>
@@ -416,10 +430,21 @@ export default function App() {
             }}
           >
             <NavLink to="/about" className="footer-link">About</NavLink>
+            <NavLink to="/editorial-standards" className="footer-link">Editorial Standards</NavLink>
             <NavLink to="/contact" className="footer-link">Contact</NavLink>
             <span style={{ opacity: 0.3 }}>|</span>
             <NavLink to="/privacy" className="footer-link">Privacy Policy</NavLink>
             <NavLink to="/terms" className="footer-link">Terms of Service</NavLink>
+          </div>
+          <div className="footer-badges" style={{ display: "flex", justifyContent: "center", marginTop: 12 }}>
+            <a href="https://startupfa.me/s/chatrio?utm_source=chatrio.app" target="_blank" rel="noopener noreferrer">
+              <img
+                src="https://startupfa.me/badges/featured-badge-small.webp"
+                alt="Chatrio - Featured on Startup Fame"
+                width="224"
+                height="36"
+              />
+            </a>
           </div>
         </div>
       </footer>

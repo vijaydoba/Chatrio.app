@@ -901,6 +901,20 @@ img, video, canvas, svg{ max-width:100%; height:auto; }
   border-radius: 12px;
   display: block;
 }
+
+/* Intrinsic width/height attributes reserve the exact aspect ratio. This
+   fallback also keeps every article image stable and responsive. */
+.post-body img {
+  max-width: 100%;
+  height: auto;
+}
+
+.not-found-page {
+  max-width: 720px;
+  margin: 48px auto;
+  padding: 24px 12px;
+  text-align: center;
+}
 .post-figure figcaption {
   margin-top: 12px;
   font-size: 13px;
@@ -3920,6 +3934,48 @@ html.dark .tg-chat.tg-bg-dots { background-color: #1a1a2e; background-image: rad
   opacity: 0.75;
   margin-bottom: 16px;
 }
+.post-author-link {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: none;
+}
+.post-author-link:hover { text-decoration: underline; }
+
+/* Author bio box (E-E-A-T signal at the end of every post) */
+.post-author-box {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-top: 48px;
+  padding: 20px;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  background: var(--card, rgba(127, 127, 127, 0.06));
+}
+.post-author-avatar {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+  color: #fff;
+  background: linear-gradient(135deg, #6366f1, #ec4899);
+}
+.post-author-name {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.post-author-bio {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted, #64748b);
+}
+.post-author-bio a { color: inherit; text-decoration: underline; }
 /* ===================== HOME — STORIES SECTION ===================== */
 
 .lp-stories-section {

@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import "./index.css";
 import App from "./App";
+import { AuthProvider } from "./auth";
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -20,7 +21,9 @@ const app = (
   <React.StrictMode>
     <HelmetProvider>
       <BrowserRouter>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </BrowserRouter>
     </HelmetProvider>
   </React.StrictMode>

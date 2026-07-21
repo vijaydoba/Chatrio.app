@@ -1,0 +1,10 @@
+# Disavow file for chatrio.app
+# Generated 2026-07-13 from Semrush Backlink Audit (toxicity 60-100)
+# Format per Google's disavow tool spec: https://search.google.com/search-console/disavow-links
+domain:hostprinter.com
+domain:bisprofit.com
+domain:cindylaup.com
+domain:bazerdaily.com
+domain:backlinksolutions.info
+domain:rankvancelinks.info
+domain:rankvancelinks.online

@@ -11,9 +11,9 @@ const BASE_URL = "https://chatrio.app";
 const TODAY    = new Date().toISOString().split("T")[0];
 
 const CHAR_IMAGES = {
-  girl:   ["/images/image7.png", "/images/image8.png", "/images/image6.png", "/images/image4.png"],
-  boy:    ["/images/image2.png", "/images/image3.png", "/images/image5.png"],
-  couple: ["/images/image9.png", "/images/image11.png", "/images/image12.png"],
+  girl:   ["/images/image7.webp", "/images/image8.webp", "/images/image6.webp", "/images/image4.webp"],
+  boy:    ["/images/image2.webp", "/images/image3.webp", "/images/image5.webp"],
+  couple: ["/images/image9.webp", "/images/image11.webp", "/images/image12.webp"],
 };
 
 /* AMP animate-in names */
@@ -100,11 +100,14 @@ function renderPage(slide, slideIdx) {
       </amp-story-cta-layer>`
     : "";
 
+  /* Use h1 on first slide for SEO — subsequent slides use h2 */
+  const headingTag = slideIdx === 0 ? "h1" : "h2";
+
   return `
     <amp-story-page id="page-${slideIdx}" auto-advance-after="6s">${bgLayer}
       <amp-story-layer template="vertical" class="content-layer${isPhoto ? " photo-content" : ""}">
         ${media}
-        <h1 class="slide-heading" animate-in="${anim}" animate-in-delay="300ms">${esc(slide.heading)}</h1>
+        <${headingTag} class="slide-heading" animate-in="${anim}" animate-in-delay="300ms">${esc(slide.heading)}</${headingTag}>
         <p  class="slide-text"    animate-in="${anim}" animate-in-delay="500ms">${esc(slide.text)}</p>
       </amp-story-layer>${ctaLayer}
     </amp-story-page>`;
@@ -123,6 +126,24 @@ function buildStoryHTML(story) {
 
   const pages = story.slides.map((slide, i) => renderPage(slide, i)).join("");
 
+  /* Preload LCP images: bg image is the true LCP (fills 720×1280); char portrait is secondary */
+  const firstBgSrc = firstSlide.bgImage
+    ? (firstSlide.bgImage.startsWith("http") ? firstSlide.bgImage : `${BASE_URL}${firstSlide.bgImage}`)
+    : null;
+  const CHAR_IMAGES_MAP = {
+    girl:   ["/images/image7.webp", "/images/image8.webp", "/images/image6.webp", "/images/image4.webp"],
+    boy:    ["/images/image2.webp", "/images/image3.webp", "/images/image5.webp"],
+    couple: ["/images/image9.webp", "/images/image11.webp", "/images/image12.webp"],
+  };
+  const firstCharSrc = firstSlide.character
+    ? `${BASE_URL}${(CHAR_IMAGES_MAP[firstSlide.character] || [])[0] || ""}`
+    : null;
+  /* Always preload bg (true LCP); also preload char portrait when present */
+  const lcpPreload = [
+    firstBgSrc ? `<link rel="preload" as="image" href="${firstBgSrc}">` : "",
+    firstCharSrc ? `<link rel="preload" as="image" href="${firstCharSrc}">` : "",
+  ].filter(Boolean).join("\n  ");
+
   /* Apply story gradient to all pages via CSS — no empty fill layers needed */
   const gradCSS = `amp-story-page{background:${story.gradient}}`;
 
@@ -139,9 +160,14 @@ function buildStoryHTML(story) {
       "@type": "Organization",
       name:    "Chatrio",
       url:     BASE_URL,
-      logo:    { "@type": "ImageObject", url: `${BASE_URL}/branding/chatrio-512.png` },
+      logo:    { "@type": "ImageObject", url: `${BASE_URL}/branding/chatrio-64.png`, width: 64, height: 64 },
     },
-    image: { "@type": "ImageObject", url: posterSrc },
+    image: {
+      "@type": "ImageObject",
+      url: posterSrc,
+      width: story.posterImage ? 720 : 512,
+      height: story.posterImage ? 1280 : 512,
+    },
   });
 
   /* AMP boilerplate — exact verbatim content required */
@@ -163,6 +189,7 @@ function buildStoryHTML(story) {
   <script async custom-element="amp-story" src="https://cdn.ampproject.org/v0/amp-story-1.0.js"></script>
   <title>${titleEsc} | Chatrio Stories</title>
   <link rel="canonical" href="${storyUrl}">
+  ${lcpPreload}
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
   <meta name="description" content="${desc}">
   <meta property="og:type"        content="article">
@@ -180,7 +207,7 @@ body{margin:0;padding:0}
 .content-layer{padding:36px 24px 28px;box-sizing:border-box}
 .char-img{display:block;margin:0 auto 20px;border-radius:50%;border:3px solid rgba(255,255,255,.55);box-shadow:0 4px 24px rgba(0,0,0,.45)}
 .slide-emoji{font-size:68px;margin:0 0 20px;text-align:center;display:block;line-height:1}
-.slide-heading{font-size:30px;font-weight:700;color:#fff;margin:0 0 14px;line-height:1.25;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.55);font-family:Google Sans,Roboto,sans-serif}
+h1.slide-heading,h2.slide-heading,.slide-heading{font-size:30px;font-weight:700;color:#fff;margin:0 0 14px;line-height:1.25;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.55);font-family:Google Sans,Roboto,sans-serif}
 .slide-text{font-size:17px;color:rgba(255,255,255,.93);margin:0 0 22px;line-height:1.55;text-align:center;text-shadow:0 1px 5px rgba(0,0,0,.4);font-family:Google Sans,Roboto,sans-serif}
 .photo-content{justify-content:flex-start;padding-top:32%;padding-bottom:20px}
 .photo-content .slide-heading{font-size:32px;text-shadow:0 2px 16px rgba(0,0,0,.8)}

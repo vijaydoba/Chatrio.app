@@ -1,0 +1,93 @@
+═══════════════════════════════════════════════════════
+  CHATRIO SEO KEYWORD RESEARCH REPORT
+  Generated: 6/30/2026, 6:43:01 PM
+═══════════════════════════════════════════════════════
+
+── OUR RANKINGS ───────────────────────────────────────
+  random chat online                            not in top 10
+  free anonymous chat no registration           not in top 10
+  online chat rooms                             not in top 10
+  talk to strangers online                      not in top 10
+  anonymous chat app                            not in top 10
+  anonymous chat                                not in top 10
+  stranger chat                                 not in top 10
+  random video chat                             not in top 10
+  omegle alternative                            not in top 10
+  chat with strangers                           not in top 10
+
+── TOP COMPETITOR DOMAINS (by SERP appearances) ───────
+  6x  strangerline.io
+  6x  opentalk.club
+  6x  www.chatib.us
+  5x  play.google.com
+  3x  y99.in
+  3x  chat.talkwithstranger.com
+  3x  yapping.me
+  2x  www.reddit.com
+  2x  anonchat.com
+  2x  knot.chat
+  1x  chatsj.com
+  1x  viby.chat
+  1x  en.wikipedia.org
+  1x  apps.apple.com
+  1x  www.whisperly.live
+
+── OPPORTUNITY KEYWORDS (we're not ranking) ───────────
+  These are your highest-priority targets:
+
+  • random chat online
+    Top result: strangerline.io
+  • free anonymous chat no registration
+    Top result: strangerline.io
+  • online chat rooms
+    Top result: viby.chat
+  • talk to strangers online
+    Top result: strangerline.io
+  • anonymous chat app
+    Top result: play.google.com
+  • anonymous chat
+    Top result: play.google.com
+  • stranger chat
+    Top result: strangerline.io
+  • random video chat
+    Top result: opentalk.club
+  • omegle alternative
+    Top result: opentalk.club
+  • chat with strangers
+    Top result: strangerline.io
+
+── LONG-TAIL KEYWORD IDEAS ─────────────────────────────
+  • Anonymous Chat / AnonChat - Apps on Google Play
+  • Best app to anonymously chat, call, and send photos/videos?
+  • 15 Best Anonymous Messaging Apps for iOS and Android
+  • Social Chat: Make New Friends - App Store
+  • Free Anonymous Chat Rooms, Dating
+  • Anonymous Chat Rooms, Dating - Apps on Google Play
+  • Top 24 free Apps like Anonymous Chat Rooms ...
+  • The Best Private Messaging Apps We've Tested for 2026
+  • Free Anonymous Stranger Chat
+  • Free Chat Rooms,Free Online Chat With No Registration 2026
+  • List of chat websites
+  • Chat Room
+  • Chatzy: Free Private Chat Rooms
+  • Chatiw : Free text chat rooms
+  • Chat Rooms - Find Friends - Apps on Google Play
+  • Wireclub: Free Online Chat Rooms
+  • 321 Chat - Free Chat Rooms for Everyone
+  • Free Chat Rooms For Everyone - #1 Chat Avenue
+  • 100% Free online chat rooms and private chat rooms
+  • Online chat rooms (or website) that is only meant for ...
+  • Chat Buddy: Free Chat Rooms – UK and USA Chat
+  • Free Anonymous Chat with Strangers Online
+  • Anonymous Chat AnonChat for Android - Download
+  • Lumo: Anonymous Chat & Connect - Apps on Google Play
+  • StrangerLine: Talk to Strangers Online - Free Anonymous ...
+  • Chat.TalkWithStranger.com – Talk To Strangers
+  • Chat Online without Registration
+  • Just a Chat - Free Online Chat Rooms for Everyone!
+  • Talky
+  • Talk to Strangers Online Free — Random Video & Text Chat ...
+
+═══════════════════════════════════════════════════════
+  Full JSON data → scripts/seo-keyword-report.json
+═══════════════════════════════════════════════════════
