@@ -22,32 +22,22 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Chatrio" />
     <meta name="format-detection" content="telephone=no" />
-    <meta name="description" content="Chatrio is a free anonymous chat app — talk to strangers instantly with no sign-up. The best Omegle alternative in 2025. Pick your interests, click New Chat, and connect in seconds." />
     <meta name="keywords" content="chat with strangers, random chat, anonymous chat, Omegle alternative, free chat, stranger chat, online chat, random chat app India" />
     <meta name="application-name" content="Chatrio" />
     <meta name="robots" content="index, follow, max-snippet:160, max-image-preview:large" />
     <meta name="author" content="Chatrio" />
 
-    <!-- Open Graph -->
+    <!-- Open Graph (static across all pages) -->
     <meta property="og:site_name" content="Chatrio" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Chatrio – Free Anonymous Chat with Strangers | No Sign-Up" />
-    <meta property="og:description" content="Talk to strangers instantly — no account, no email, completely free. Pick your interests and connect in seconds. The best Omegle alternative in 2025." />
-    <meta property="og:url" content="https://chatrio.app/" />
     <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png" />
     <meta property="og:image:width" content="512" />
     <meta property="og:image:height" content="512" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Chatrio – Free Anonymous Chat with Strangers | No Sign-Up" />
-    <meta name="twitter:description" content="Talk to strangers instantly. No account, no email, completely free. The best Omegle alternative in 2025." />
     <meta name="twitter:image" content="https://chatrio.app/branding/chatrio-512.png" />
 
-    <!-- Canonical -->
-    <link rel="canonical" href="https://chatrio.app/" />
-
-    <!-- JSON-LD: WebSite + WebApplication -->
+    <!-- JSON-LD: WebSite + Organization (sitewide); WebApplication lives only on Home via Helmet -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -57,33 +47,28 @@
           "@id": "https://chatrio.app/#website",
           "url": "https://chatrio.app/",
           "name": "Chatrio",
+          "alternateName": "Chatrio - Chat with Strangers",
           "description": "Anonymous random chat with strangers — no sign-up required.",
           "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://chatrio.app/blog?q={search_term_string}",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://chatrio.app/blog?q={search_term_string}"
+            },
             "query-input": "required name=search_term_string"
           }
-        },
-        {
-          "@type": "WebApplication",
-          "@id": "https://chatrio.app/#app",
-          "name": "Chatrio",
-          "url": "https://chatrio.app/chat",
-          "applicationCategory": "CommunicationApplication",
-          "operatingSystem": "Web",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          },
-          "description": "Free anonymous chat app — talk to strangers instantly without signing up."
         },
         {
           "@type": "Organization",
           "@id": "https://chatrio.app/#org",
           "name": "Chatrio",
           "url": "https://chatrio.app/",
-          "logo": "https://chatrio.app/branding/chatrio-512.png",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://chatrio.app/branding/chatrio-512.png",
+            "width": 512,
+            "height": 512
+          },
           "contactPoint": {
             "@type": "ContactPoint",
             "email": "chatrioapp@gmail.com",
@@ -102,7 +87,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/branding/chatrio-512.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-    <title>Chatrio – Free Anonymous Chat with Strangers | No Sign-Up</title>
+    <title>Chatrio</title>
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PFV6PRM1N2"></script>
     <script>

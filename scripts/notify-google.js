@@ -77,20 +77,13 @@ const postsSrc = fs.readFileSync(
   path.join(__dirname, "../client/src/data/posts.ts"),
   "utf8"
 );
-const storiesSrc = fs.readFileSync(
-  path.join(__dirname, "../client/src/data/stories.ts"),
-  "utf8"
-);
 
 const slugs = extractField(postsSrc, "slug");
-const storyIds = extractField(storiesSrc, "id");
 
 const urls = [
   `${BASE_URL}/`,
   `${BASE_URL}/blog`,
-  `${BASE_URL}/web-stories`,
   ...slugs.map((s) => `${BASE_URL}/blog/${s}`),
-  ...storyIds.map((id) => `${BASE_URL}/web-stories/${id}`),
 ];
 
 /* ── Send to IndexNow endpoint ── */

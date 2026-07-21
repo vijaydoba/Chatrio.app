@@ -1,9 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { STORIES } from "../data/stories";
-
-const HOME_STORIES = STORIES.slice(0, 12);
 
 const features = [
   {
@@ -92,6 +89,10 @@ const faqs = [
     a: "Pick interests like gaming, music, travel, or fitness. Chatrio pairs you with someone who selected the same or similar topics, so you always have something to talk about.",
   },
   {
+    q: "Can I talk to strangers online for free?",
+    a: "Yes. Chatrio lets you talk to strangers online free — no sign-up, no app, and no payment. Just set a nickname, pick your interests, and hit New Chat to connect with someone new instantly.",
+  },
+  {
     q: "Is Chatrio a good Omegle alternative?",
     a: "Chatrio launched as a modern alternative to Omegle, with a cleaner mobile-first interface, interest-based matching, photo sharing, and a stronger commitment to privacy.",
   },
@@ -107,14 +108,41 @@ const faqs = [
     q: "What makes Chatrio different from other random chat sites?",
     a: "Three things: instant connections (no waiting rooms), real interest matching (not just random pairing), and genuine privacy (no data stored, no accounts, no tracking).",
   },
+  {
+    q: "What is Circles?",
+    a: "Circles is Chatrio's newest feature — an anonymous local chat to meet people near you. Your location is only ever shared approximately (never exact), you send one intro message before a chat opens, and you can join local group rooms too. No account required.",
+  },
 ];
 
 export default function Home() {
+  // Reveal sections as they scroll into view (the hero animates on load instead).
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll<HTMLElement>(".lp-reveal"));
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      els.forEach((el) => el.classList.add("in"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   return (
     <div className="lp-page">
       <Helmet>
-        <title>Chatrio – Free Anonymous Chat with Strangers | No Sign-Up</title>
-        <meta name="description" content="Chatrio is a free anonymous chat app — talk to strangers instantly with no sign-up. The best Omegle alternative in 2025. Pick your interests, click New Chat, and connect in seconds." />
+        <title>Anonymous Chat – Talk to Strangers Online Free | Chatrio</title>
+        <meta name="description" content="Talk to strangers online free on Chatrio — anonymous chat with no sign-up and no app download. Pick your interests and connect with someone new in seconds. Start chatting now." />
         <link rel="canonical" href="https://chatrio.app/" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Chatrio – Free Anonymous Chat with Strangers" />
@@ -148,6 +176,22 @@ export default function Home() {
             "acceptedAnswer": { "@type": "Answer", "text": f.a }
           }))
         })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "@id": "https://chatrio.app/#app",
+          "name": "Chatrio",
+          "url": "https://chatrio.app/chat",
+          "applicationCategory": "CommunicationApplication",
+          "operatingSystem": "All",
+          "offers": {
+            "@type": "Offer",
+            "price": 0,
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          },
+          "description": "Free anonymous chat app — talk to strangers instantly without signing up."
+        })}</script>
       </Helmet>
 
       {/* ── HERO ── */}
@@ -158,12 +202,12 @@ export default function Home() {
         </div>
 
         <h1 className="lp-headline lp-anim-fade-up" style={{ animationDelay: "80ms" }}>
-          Chat with strangers.<br />
+          Anonymous chat with strangers.<br />
           <span className="lp-gradient-text">Real talk, right now.</span>
         </h1>
 
         <p className="lp-sub lp-anim-fade-up" style={{ animationDelay: "160ms" }}>
-          Anonymous one-on-one chat with smart interest matching.
+          Talk to strangers online free with smart interest matching.
           Meet someone new in seconds — no account, no history.
         </p>
 
@@ -171,8 +215,9 @@ export default function Home() {
           <NavLink to="/chat" className="lp-btn-primary">
             Start Chatting
           </NavLink>
-          <NavLink to="/blog" className="lp-btn-ghost">
-            Read our blog
+          <NavLink to="/circles" className="lp-btn-circles">
+            <span className="lp-live-dot" />
+            Explore Circles
           </NavLink>
         </div>
 
@@ -183,37 +228,47 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── WEB STORIES ── */}
-      <section className="lp-stories-section">
-        <div className="lp-stories-header">
-          <h2 className="lp-stories-title">Stories</h2>
-          <NavLink to="/web-stories" className="lp-stories-viewall">View all →</NavLink>
-        </div>
-        <div className="lp-stories-scroll">
-          {HOME_STORIES.map((s) => (
-            <NavLink
-              key={s.id}
-              to={`/web-stories/${s.id}`}
-              className="lp-story-bubble"
-              aria-label={s.title}
-            >
-              <div className="lp-story-ring">
-                <div className="lp-story-avatar" style={{ background: s.gradient }}>
-                  <span className="lp-story-emoji">{s.emoji}</span>
-                </div>
-              </div>
-              <span className="lp-story-label">{s.shortTitle}</span>
+      {/* ── CIRCLES PROMO ── */}
+      <section className="lp-circles-promo lp-reveal">
+        <div className="lp-circles-inner">
+          <div className="lp-circles-copy">
+            <span className="lp-circles-tag">
+              <span className="lp-live-dot" />
+              New on Chatrio
+            </span>
+            <h2 className="lp-circles-title">Circles — meet people near you</h2>
+            <p className="lp-circles-desc">
+              Our newest way to connect: anonymous local chat. See who's nearby, send
+              one intro message, or join a local group room — all without an account
+              or your exact location.
+            </p>
+            <ul className="lp-circles-list">
+              <li>Approximate location only — never exact</li>
+              <li>One intro message, no spam DMs</li>
+              <li>Local group rooms to meet more people at once</li>
+            </ul>
+            <NavLink to="/circles" className="lp-btn-primary">
+              Explore Circles
             </NavLink>
-          ))}
+          </div>
+          <div className="lp-circles-radar" aria-hidden="true">
+            <div className="lp-radar-ring lp-radar-ring-1" />
+            <div className="lp-radar-ring lp-radar-ring-2" />
+            <div className="lp-radar-ring lp-radar-ring-3" />
+            <div className="lp-radar-center" />
+            <span className="lp-radar-blip" style={{ top: "18%", left: "68%" }} />
+            <span className="lp-radar-blip" style={{ top: "62%", left: "22%", animationDelay: ".6s" }} />
+            <span className="lp-radar-blip" style={{ top: "72%", left: "68%", animationDelay: "1.2s" }} />
+          </div>
         </div>
       </section>
 
       {/* ── HOW IT WORKS ── */}
       <section className="lp-section">
-        <h2 className="lp-section-title lp-anim-fade-up">How it works</h2>
+        <h2 className="lp-section-title lp-reveal">How it works</h2>
         <div className="lp-steps-grid">
           {steps.map((s, i) => (
-            <div className="lp-step lp-anim-fade-up" key={s.num} style={{ animationDelay: `${i * 80}ms` }}>
+            <div className="lp-step lp-reveal" key={s.num} style={{ ["--reveal-delay" as any]: `${i * 80}ms` }}>
               <div className="lp-step-num">{s.num}</div>
               <h3 className="lp-step-title">{s.title}</h3>
               <p className="lp-step-desc">{s.desc}</p>
@@ -224,10 +279,10 @@ export default function Home() {
 
       {/* ── FEATURES ── */}
       <section className="lp-section">
-        <h2 className="lp-section-title lp-anim-fade-up">Everything you need</h2>
+        <h2 className="lp-section-title lp-reveal">Everything you need</h2>
         <div className="lp-features-grid">
           {features.map((f, i) => (
-            <div className="lp-feature-card lp-anim-fade-up" key={f.title} style={{ animationDelay: `${i * 60}ms` }}>
+            <div className="lp-feature-card lp-reveal" key={f.title} style={{ ["--reveal-delay" as any]: `${i * 60}ms` }}>
               <div className="lp-feature-icon">{f.icon}</div>
               <h3 className="lp-feature-title">{f.title}</h3>
               <p className="lp-feature-desc">{f.desc}</p>
@@ -237,7 +292,7 @@ export default function Home() {
       </section>
 
       {/* ── WHY ANONYMOUS CHAT ── */}
-      <section className="lp-narrative lp-anim-fade-up">
+      <section className="lp-narrative lp-reveal">
         <div className="lp-narrative-inner">
           <h2>Why anonymous chat?</h2>
           <p>
@@ -267,7 +322,7 @@ export default function Home() {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="lp-faq lp-anim-fade-up">
+      <section className="lp-faq lp-reveal">
         <h2 className="lp-section-title">Frequently asked questions</h2>
         <div className="lp-faq-grid">
           {faqs.map((item) => (
@@ -280,7 +335,7 @@ export default function Home() {
       </section>
 
       {/* ── FINAL CTA ── */}
-      <section className="lp-final-cta lp-anim-fade-up">
+      <section className="lp-final-cta lp-reveal">
         <div className="lp-cta-logo">
           <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
             <defs>

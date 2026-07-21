@@ -19,6 +19,46 @@ function seoTitle(title: string): string {
   return short + "…" + SUFFIX;
 }
 
+type ImageDimensions = { width: number; height: number };
+
+// Article bodies are stored as HTML strings, so React cannot add intrinsic
+// dimensions to their images for us. Supplying the real aspect ratios here
+// lets the browser reserve space before each image downloads, preventing CLS.
+function articleImageDimensions(src: string): ImageDimensions | undefined {
+  if (/\/images\/portraits\/girl-[^/]+\.png$/.test(src)) return { width: 1000, height: 1000 };
+  if (/\/images\/hero-(?:36-questions|green-flags|micro-connections|conversation-games|good-goodbye)\.jpg$/.test(src)) {
+    return { width: 940, height: 627 };
+  }
+  if (/\/images\/hero-[^/]+\.png$/.test(src)) return { width: 1200, height: 630 };
+
+  const imageNumber = src.match(/\/images\/image(\d*)\.png$/)?.[1];
+  if (imageNumber === undefined) return undefined;
+  if (imageNumber === "" || imageNumber === "10") return { width: 1536, height: 1024 };
+
+  const number = Number(imageNumber);
+  if ([2, 3, 5, 6, 7, 8, 9].includes(number)) return { width: 400, height: 266 };
+  if (number === 4) return { width: 266, height: 400 };
+  if ([11, 12].includes(number)) return { width: 400, height: 218 };
+  if (number === 13) return { width: 1024, height: 559 };
+  if (number >= 14 && number <= 18) return { width: 1200, height: 630 };
+  if (number >= 19 && number <= 22) return { width: 1600, height: 900 };
+  return undefined;
+}
+
+export function stabilizeArticleImages(html: string): string {
+  return html.replace(/<img\b([^>]*)>/gi, (tag, attributes: string) => {
+    const src = attributes.match(/\bsrc=["']([^"']+)["']/i)?.[1];
+    const dimensions = src ? articleImageDimensions(src) : undefined;
+    if (!dimensions) return tag;
+
+    const width = /\bwidth=/i.test(attributes) ? "" : ` width="${dimensions.width}"`;
+    const height = /\bheight=/i.test(attributes) ? "" : ` height="${dimensions.height}"`;
+    const loading = /\bloading=/i.test(attributes) ? "" : ' loading="lazy"';
+    const decoding = /\bdecoding=/i.test(attributes) ? "" : ' decoding="async"';
+    return `<img${attributes}${width}${height}${loading}${decoding}>`;
+  });
+}
+
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const post: Post | undefined = POSTS.find((p) => p.slug === slug);
@@ -38,13 +78,19 @@ export default function BlogPost() {
   if (!post) {
     return (
       <div style={{ maxWidth: 900, margin: "0 auto", padding: 12 }}>
-        <p>Post not found.</p>
+        <Helmet>
+          <title>Article Not Found | Chatrio</title>
+          <meta name="description" content="The requested Chatrio article could not be found." />
+          <meta name="robots" content="noindex,follow" />
+        </Helmet>
+        <h1>Article not found</h1>
+        <p>The article may have moved or the address may be incorrect.</p>
         <NavLink to="/blog">← Back to Blog</NavLink>
       </div>
     );
   }
 
-  const contentHtml = POST_CONTENT[post.slug] || "";
+  const contentHtml = stabilizeArticleImages(POST_CONTENT[post.slug] || "");
   const canonicalUrl = `https://chatrio.app/blog/${post.slug}`;
   const ogImage = post.thumbnail ? `https://chatrio.app/${String(post.thumbnail).replace(/^\/?/, "")}` : "https://chatrio.app/branding/chatrio-512.png";
   const mins = readingTime(contentHtml);
@@ -80,7 +126,14 @@ export default function BlogPost() {
           "datePublished": post.date,
           "dateModified": post.date,
           "url": canonicalUrl,
-          "author": { "@type": "Organization", "name": "Chatrio", "url": "https://chatrio.app" },
+          "author": {
+            "@type": "Person",
+            "name": "Vijay",
+            "url": "https://chatrio.app/about",
+            "jobTitle": "Founder",
+            "description": "Founder of Chatrio, writing about anonymous chat, online safety, and digital connection.",
+            "worksFor": { "@type": "Organization", "name": "Chatrio", "url": "https://chatrio.app" }
+          },
           "publisher": {
             "@type": "Organization",
             "name": "Chatrio",
@@ -104,6 +157,8 @@ export default function BlogPost() {
 
       <h1 style={{ marginTop: 12 }}>{post.title}</h1>
       <div className="blog-meta-row">
+        <span>By <NavLink to="/about" className="post-author-link" rel="author">Vijay</NavLink></span>
+        <span>·</span>
         <span>{post.date}</span>
         <span>·</span>
         <span>{post.category}</span>
@@ -112,10 +167,24 @@ export default function BlogPost() {
       </div>
 
       <div
-        className="post-body"
+        className="post-body google-anno-skip"
         style={{ lineHeight: 1.8, opacity: 0.95 }}
         dangerouslySetInnerHTML={{ __html: contentHtml }}
       />
+
+      <aside className="post-author-box" aria-label="About the author">
+        <div className="post-author-avatar" aria-hidden="true">V</div>
+        <div>
+          <div className="post-author-name">Vijay · Founder of Chatrio</div>
+          <p className="post-author-bio">
+            Vijay is the founder of Chatrio. He built the platform to make anonymous,
+            judgment-free conversation with strangers simple and safe, and writes about
+            online connection, chat safety, and digital loneliness. Every article here is
+            written and reviewed against our{" "}
+            <NavLink to="/editorial-standards">editorial standards</NavLink>.
+          </p>
+        </div>
+      </aside>
 
       {relatedPosts.length > 0 && (
         <nav aria-label="Related posts" style={{ marginTop: 48, borderTop: "1px solid var(--border, #e2e8f0)", paddingTop: 32 }}>

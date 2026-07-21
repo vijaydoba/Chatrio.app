@@ -1,7 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { io, Socket } from "socket.io-client";
+import DynamicIsland from "./DynamicIsland";
+import { useKeyboardViewport } from "./useKeyboardViewport";
 import "./App.css";
 
 type MsgStatus = "sending" | "sent" | "delivered";
@@ -57,12 +59,15 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
   const [showBgPicker, setShowBgPicker] = useState(false);
   const [chatBg, setChatBg] = useState(() => localStorage.getItem("chatBg") || "default");
   const [skipConfirm, setSkipConfirm] = useState(false);
+  const [matched, setMatched] = useState(false);
+  const matchTimerRef = useRef<number | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const socketRef = useRef<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const chatScrollRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const messageInputRef = useRef<HTMLInputElement | null>(null);
   const typingTimeoutRef = useRef<number | null>(null);
   const lastEmitRef = useRef<number>(0);
   const modeRef = useRef<Mode>("idle");
@@ -133,10 +138,11 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
     return () => window.removeEventListener("keydown", block);
   }, []);
 
-  // lock scroll
+  // lock scroll only on mobile devices (where keyboard covers content)
   useEffect(() => {
     const body = document.body;
-    if (mode === "connected" && !isIOS) body.style.overflow = "hidden";
+    const isMobile = window.innerWidth < 900 || isIOS;
+    if (mode === "connected" && isMobile) body.style.overflow = "hidden";
     else body.style.overflow = "";
     return () => {
       body.style.overflow = "";
@@ -168,6 +174,12 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
     return () => body.classList.remove("chat-fullscreen");
   }, [mode]);
 
+  // WhatsApp/Instagram-style: keep composer above the keyboard + list pinned to bottom.
+  const scrollChatToBottom = useCallback(() => {
+    messagesEndRef.current?.scrollIntoView({ block: "end" });
+  }, []);
+  useKeyboardViewport(mode === "connected", scrollChatToBottom);
+
   // Prefs
   useEffect(() => {
     localStorage.setItem("soundOn", soundOn ? "on" : "off");
@@ -180,6 +192,28 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
   useEffect(() => {
     modeRef.current = mode;
   }, [mode]);
+
+  // WhatsApp/Instagram: Auto-focus input when connected, blur when disconnected
+  useEffect(() => {
+    if (mode === "connected") {
+      setTimeout(() => messageInputRef.current?.focus(), 100);
+    } else {
+      messageInputRef.current?.blur();
+    }
+  }, [mode]);
+
+  // Remove Google's consent banner if it appears (fallback to CSS hiding)
+  useEffect(() => {
+    const removeConsentBanner = () => {
+      const banners = document.querySelectorAll(
+        '[class*="fc-"], [id*="fc-"], .fc-consent-root, .fc-message-root'
+      );
+      banners.forEach((el) => el.remove());
+    };
+    removeConsentBanner();
+    const interval = setInterval(removeConsentBanner, 500);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const socket = io("https://api.chatrio.app", {
@@ -205,10 +239,17 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
     socket.on("partner_found", ({ partner }) => {
       const name = partner || "Stranger";
       setPartnerName(name);
-      setMode("connected");
       setMessages([]);
       setPartnerTyping(false);
-      pushSystem(`You're now connected with ${name}.`);
+      // Let the Dynamic Island play its "matched" celebration, then open the chat.
+      setMatched(true);
+      if (matchTimerRef.current) window.clearTimeout(matchTimerRef.current);
+      matchTimerRef.current = window.setTimeout(() => {
+        matchTimerRef.current = null;
+        setMatched(false);
+        setMode("connected");
+        pushSystem(`You're now connected with ${name}.`);
+      }, 1100);
     });
 
     socket.on("friend_left", () => {
@@ -235,6 +276,11 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
   }, []);
 
   const resetChat = (newMode: Mode) => {
+    if (matchTimerRef.current) {
+      window.clearTimeout(matchTimerRef.current);
+      matchTimerRef.current = null;
+    }
+    setMatched(false);
     setMode(newMode);
     setMessages([]);
     setPartnerTyping(false);
@@ -357,6 +403,8 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
     socketRef.current?.emit("message", { msgId, text: input });
     setInput("");
     socketRef.current?.emit("typing", { typing: false });
+    // Keep the keyboard open so the user can keep chatting without re-tapping the input.
+    messageInputRef.current?.focus();
   };
 
   const onPickFile = (file?: File | null) => {
@@ -484,9 +532,22 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
   }, [messages.length]);
 
   useEffect(() => {
-    if (atBottom)
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (atBottom) {
+      requestAnimationFrame(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      });
+    }
   }, [messages, atBottom]);
+
+  // Always scroll to bottom on new messages (don't wait for atBottom check on mobile)
+  useEffect(() => {
+    if (mode === "connected" && messages.length > 0) {
+      const timer = setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [messages.length, mode]);
 
   const nudgeToBottom = () => {
     if (modeRef.current !== "connected") return;
@@ -592,10 +653,19 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
       ) : (
         /* ── LOBBY TOPBAR ── */
         <div className="lobby-topbar">
-          <div className="lobby-status">
-            <span className="lobby-live-dot" />
-            <span className="lobby-online-text">{onlineLabel(online)}</span>
-          </div>
+          {theme === "dark" ? (
+            <DynamicIsland
+              state={matched ? "matched" : mode === "waiting" ? "searching" : "idle"}
+              onlineLabel={onlineLabel(online)}
+              waitingCount={waitingCount}
+              partnerName={partnerName}
+            />
+          ) : (
+            <div className="lobby-status">
+              <span className="lobby-live-dot" />
+              <span className="lobby-online-text">{onlineLabel(online)}</span>
+            </div>
+          )}
           <div className="lobby-topbar-actions">
             <button className="lobby-icon-btn" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">
               {theme === "dark"
@@ -679,7 +749,7 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
       {/* ── WAITING ── */}
       {mode === "waiting" && (
         <div className="lobby-waiting">
-          <div className="waiting-anim">
+          <div className={`waiting-anim${matched ? " matched" : ""}`}>
             <div className="waiting-ring" />
             <div className="waiting-ring" />
             <div className="waiting-ring" />
@@ -689,9 +759,11 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
               </svg>
             </div>
           </div>
-          <p className="waiting-title">Finding someone for you…</p>
-          {waitingCount > 1 && <p className="waiting-sub">{waitingCount} people waiting</p>}
-          <button className="waiting-cancel" onClick={leaveChat}>Cancel</button>
+          <p className="waiting-title">{matched ? "Connected!" : "Finding someone for you…"}</p>
+          {matched
+            ? <p className="waiting-sub">Say hi to {partnerName} 👋</p>
+            : waitingCount > 1 && <p className="waiting-sub">{waitingCount} people waiting</p>}
+          {!matched && <button className="waiting-cancel" onClick={leaveChat}>Cancel</button>}
         </div>
       )}
 
@@ -735,6 +807,7 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
               </svg>
             </button>
             <input
+              ref={messageInputRef}
               className="input flex-1"
               type="text"
               value={input}
@@ -745,7 +818,7 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
               placeholder="Message…"
             />
             <input ref={fileInputRef} type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => onPickFile(e.target.files?.[0] || null)} />
-            <button className="btn tg-send" onClick={sendMessage} disabled={!input.trim()}>
+            <button className="btn tg-send" onMouseDown={(e) => e.preventDefault()} onClick={sendMessage} disabled={!input.trim()}>
               <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                 <path d="M2 21l21-9L2 3v7l15 2-15 2z"/>
               </svg>

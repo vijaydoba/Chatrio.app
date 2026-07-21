@@ -1,11 +1,22 @@
 # Ignore Node dependencies
 client/node_modules/
+server/node_modules/
+node_modules/
+
+# Ignore local SQLite database (Circles)
+server/*.db
+server/*.db-wal
+server/*.db-shm
+server/circles-local/*.db
+server/circles-local/*.db-wal
+server/circles-local/*.db-shm
 
 # Ignore build/output folders
 
 # Ignore environment files
 client/.env
 server/.env
+.env
 
 # Ignore OS and log files
 *.log

@@ -29,7 +29,16 @@ export default function About() {
             "@type": "Organization",
             "name": "Chatrio",
             "url": "https://chatrio.app",
-            "logo": "https://chatrio.app/branding/chatrio-512.png"
+            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png", "width": 512, "height": 512 },
+            "founder": { "@type": "Person", "name": "Vijay", "jobTitle": "Founder", "url": "https://chatrio.app/about" }
+          },
+          "mainEntity": {
+            "@type": "Person",
+            "name": "Vijay",
+            "jobTitle": "Founder of Chatrio",
+            "url": "https://chatrio.app/about",
+            "description": "Vijay is the founder of Chatrio and writes about anonymous chat, online safety, and digital loneliness.",
+            "worksFor": { "@type": "Organization", "name": "Chatrio", "url": "https://chatrio.app" }
           }
         })}</script>
       </Helmet>
@@ -146,12 +155,19 @@ export default function About() {
         and that's what we optimize for.
       </p>
 
-      <h2>🤝 Who Builds Chatrio</h2>
+      <h2 id="vijay">🤝 Who Builds Chatrio</h2>
       <p>
-        Chatrio is an independent project built and maintained by a small team
-        of developers who believe the internet works best when it brings people
-        together without demanding their data in return. We take user feedback
-        seriously and ship improvements regularly.
+        Chatrio is an independent project founded and maintained by{" "}
+        <strong>Vijay</strong>, who built the platform on a simple belief: the
+        internet works best when it brings people together without demanding
+        their data in return. Vijay writes and reviews the articles on this blog —
+        covering anonymous chat, online safety, and digital loneliness — and ships
+        product improvements regularly based on user feedback.
+      </p>
+      <p>
+        Every article is written and reviewed against our{" "}
+        <a href="/editorial-standards">editorial standards</a>, so you know how
+        the guidance here is researched and kept accurate.
       </p>
 
       <h2>📚 Additional Resources</h2>
@@ -184,7 +200,7 @@ export default function About() {
 
       <div className="update-notice">
         <small>
-          <em>Last updated: June 2025</em>
+          <em>Last updated: July 2026</em>
         </small>
       </div>
     </article>

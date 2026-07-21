@@ -220,6 +220,8 @@ export default function BlogList() {
                         src={normalizeAssetPath(getSlotImage(p.thumbnail, "card"))}
                         alt={p.title}
                         loading="lazy"
+                        width={280}
+                        height={190}
                       />
                     </picture>
 
@@ -261,6 +263,8 @@ export default function BlogList() {
                     src={normalizeAssetPath(getSlotImage(p.thumbnail, "thumb"))}
                     alt={p.title}
                     loading="lazy"
+                    width={104}
+                    height={104}
                     className="blog-side-thumb"
                   />
                   <div className="blog-side-text">

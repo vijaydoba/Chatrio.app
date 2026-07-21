@@ -125,6 +125,20 @@ export default function Privacy() {
         </li>
       </ul>
 
+      <p className="mt-4">
+        <strong className="text-slate-900 dark:text-slate-100">
+          Circles (approximate location):
+        </strong>{" "}
+        Our optional Circles feature lets you discover and chat with people near
+        you. If you choose to use it, your browser asks your permission to share
+        your location. We immediately <strong>fuzz</strong> it to an approximate
+        area (rounded to a coarse grid) and only ever store and show this{" "}
+        <strong>approximate</strong> location — never your exact coordinates, and
+        never on a map. Circles is for users <strong>18 and older</strong>, uses
+        an anonymous device identifier (no name, email, or account), and you can
+        hide your location or stop sharing at any time.
+      </p>
+
       <h2 className="text-2xl font-semibold mt-10 mb-4 text-slate-900 dark:text-slate-100">
         2. Cookies and Tracking Technologies
       </h2>

@@ -1,0 +1,57 @@
+directory,dr,dofollow,priority,category,submit_url,status,notes
+LinkedIn company page,99,no,high,Company profile,https://www.linkedin.com/company/setup/new/,todo,factual fields only
+Wikidata,93,no,high,Company profile,https://www.wikidata.org,done,item created 2026-07-13 as Q140529478 (Chatrio); statements added: instance of=website, official website=https://chatrio.app, inception=2025; notability risk noted - no 3rd party press, may get flagged by patrollers
+Substack,93,yes,high,Newsletter,https://substack.com,done,publication created 2026-07-14 at vijay83061.substack.com renamed to "Chatrio"; first post "Welcome to Chatrio" published with links to chatrio.app + /blog
+SourceForge,92,yes,high,SaaS directory,https://sourceforge.net/user/register,skipped,not a fit - free path is open-source project hosting (git/downloads), paid path is a vendor lead-gen form requiring phone number; Chatrio is closed-source, would be a fabricated empty listing
+Crunchbase,91,no,high,Company profile,https://www.crunchbase.com,done,submitted 2026-07-13 (Google social auth was already linked, no LinkedIn needed); profile queued for Crunchbase review, may take a few minutes to appear at uuid a326c690-e208-4a4b-b222-cfa489de0cac
+Scoop.it,91,yes,high,Curation,https://www.scoop.it,done,2 scoops published 2026-07-13 to topic vijay-babubhai-doba: chatrio.app homepage + chatrio.app/blog index, each with tags and an insight note
+Product Hunt,91,yes,high,Launch,https://www.producthunt.com/posts/new,blocked,needs screenshots + demo video; frame launch around Circles not base product; warm up account before launch date
+Dev.to,90,yes,high,Tech/content,https://dev.to,done,published 2026-07-13 https://dev.to/vijay_rathod_b9db92cb65f8/pre-rendering-a-160-post-react-spa-with-react-snap-the-gotcha-that-silently-breaks-your-seo-3ino
+Slashdot,88,yes,high,SaaS directory,https://slashdot.org/submission,todo,
+TheSaaSDirectory,88,yes,high,SaaS directory,https://thesaasdirectory.com,pending review,submitted 2026-07-14 as "Chatrio" - HQ Surat Gujarat India, categories: Communications and Media Software, Social Networks Software, Live Chat Software; awaiting moderation approval
+Diigo,85,yes,high,Bookmarking,https://www.diigo.com,done,2 bookmarks added 2026-07-14 to vijay83061 library: chatrio.app homepage + best-anonymous-chat-app-for-mobile-2026 blog post, each tagged and with a note
+Pearltrees,84,yes,high,Bookmarking,https://www.pearltrees.com,done,2 pearls added 2026-07-14 to vijay83061 account: chatrio.app homepage + chatrio.app/blog
+Feedspot,80,yes,high,Blog directory,https://www.feedspot.com,done,submitted 2026-07-14 as https://chatrio.app/blog, location Surat Gujarat India; free submission confirmed, declined paid upgrade for featured listing
+Taalk,80,yes,high,Startup directory,https://taalk.com,todo,
+Tech.co,80,yes,high,Startup directory,https://tech.co,todo,
+PRLog,80,yes,high,Press release,https://www.prlog.org,todo,hook: Circles proximity chat feature or a traffic milestone
+AlternativeTo,79,no,high,SaaS/alternative,https://alternativeto.net/manage-item/,pending review,submitted 2026-07-14 at alternativeto.net/software/chatrio/, awaiting 24h approval; tags anonymous-chat/random-chat/chatroulette-alternative; listed 3 alternatives (Chatroulette, OmeTV, OmegleMe) for visibility; icon uploaded by user (local file upload not supported in this session)
+Startup Fame,77,yes,high,Startup directory,https://startupfa.me,pending review,profile at startupfa.me/dashboard/chatrio (Variant A copy, HQ India, founder checkbox for +1 dofollow); badge embedded in chatrio.app footer and deployed 2026-07-19/20, verification passed ("will be reviewed soon"); logo/image not uploaded (file upload blocked in this session)
+SaaSHub,77,yes,high,SaaS/alternative,https://www.saashub.com/submit,pending review,Chatrio already had an auto-generated listing at saashub.com/chatrio with an inaccurate description (described a generic B2B chat-widget product); submitted edit 2026-07-19 correcting description to Variant B copy + added HQ Surat Gujarat India; awaiting moderator approval; categories/competitors already correct
+PR.com,77,yes,high,Press release,https://www.pr.com,done,press release submitted 2026-07-14 (free $0 tier, no charge) - "Chatrio Launches Circles, Bringing Anonymous Proximity-Based Local Chat to Chatrio.app", hook = Circles launch + 160+ blog posts; industry: Technology Internet; contact name/phone filled in by user directly (not fabricated)
+Indie Hackers,76,yes,high,Startup community,https://www.indiehackers.com/products,done,product page created 2026-07-14 at indiehackers.com/product/chatrio (name/tagline/website/logo/motivation/founder info filled); build-in-public intro post published "Building Chatrio: instant anonymous chat, solo indie build"
+Slant,75,mixed,high,Q&A,https://www.slant.co,todo,answer "what is the best Omegle alternative" question
+OpenPR,72,yes,medium,Press release,https://www.openpr.com,blocked,form explicitly rejects Gmail addresses ("do not accept Gmail... will be deleted") and requires a real personal name - needs your non-Gmail email + name
+F6S,65,yes,medium,Startup directory,https://www.f6s.com/company/create,blocked,redirects to unrelated existing page, requires login
+BetaList,64,yes,medium,Launch,https://betalist.com/submit,blocked,same blocker as Product Hunt
+StartUs,62,yes,medium,Startup directory,https://startus.cc,dead,domain does not resolve as of 2026-07-19
+Today Launches,60,yes,medium,Startup directory,https://todaylaunches.com,blocked,free tier form requires a mandatory logo upload (file upload not supported in this session) + real founder name
+WebWiki,60,yes,medium,Web directory,https://www.webwiki.com,todo,not reattempted 2026-07-19 (already flagged low priority/no working path in earlier session)
+StartupBuffer,57,yes,medium,Startup directory,https://startupbuffer.com,blocked,Cloudflare bot-check challenge, will not bypass
+Feedough,55,yes,medium,Startup directory,https://www.feedough.com/startup-submission/,dead,submission URL 404s, no alternate path found in nav as of 2026-07-19
+Open Launch,55,yes,medium,Launch directory,https://open-launch.com,blocked,requires login/signup
+Indie Hacker Tools,55,yes,medium,Tool directory,https://indiehacker.tools,blocked,list-tool page renders blank/broken as of 2026-07-19
+New SaaSly,52,yes,medium,SaaS directory,https://newsaasly.com,skipped,paid-only ($20 one-time), no free tier
+Startup Stash,50,yes,medium,Startup directory,https://startupstash.com/add-listing/,blocked,"Let's Get It Started!" button non-functional as of 2026-07-19
+Business Software,49,yes,medium,SaaS directory,https://www.business-software.com,skipped,bad fit - B2B enterprise software directory (ERP/CRM/Accounting), not a fit for a consumer chat app
+FiveTaco,47,yes,medium,SaaS directory,https://fivetaco.com,blocked,requires account creation (email+password)
+Promote Project,47,yes,medium,Launch directory,https://promoteproject.com,blocked,requires login
+Makerthrive,45,yes,medium,Startup directory,https://makerthrive.com,skipped,pivoted to paid sponsorship/media-kit only, no free listing option as of 2026-07-19
+StartupTracker,44,yes,medium,Startup directory,https://startuptracker.io,blocked,free multi-step form filled through Founder info + Company links; blocked at Company links step which requires an official Twitter/X handle (Chatrio has none) and a logo upload (not supported)
+BusinessHunt,43,yes,medium,Startup directory,https://businesshunt.co,blocked,.com is parked/for-sale; working domain is .co; requires login to submit
+TrustMRR,40,yes,medium,Startup directory,https://trustmrr.com,skipped,bad fit - it's an MRR-based marketplace for buying/selling revenue-generating SaaS, not a general directory
+Uneed,40,yes,medium,Tool directory,https://www.uneed.best/submit-a-tool,blocked,auto-scrapes a good preview with no account needed, but saving/submitting requires account creation
+10words,40,yes,medium,Micro directory,https://10words.io,blocked,requires account creation with password
+Launched.io,40,yes,medium,Launch directory,https://launched.io,dead,domain does not resolve as of 2026-07-19
+SideProjectors,35,yes,low,Startup directory,https://www.sideprojectors.com,todo,
+Build Voyage,33,yes,low,Launch directory,https://buildvoyage.com,todo,
+AlphaDigits,32,yes,low,Startup directory,https://alphadigits.com,todo,
+Fazier,30,yes,low,Launch directory,https://fazier.com/submit,todo,
+Microlaunch,30,yes,low,Launch directory,https://microlaunch.net,todo,
+PitchWall,25,yes,low,Launch directory,https://pitchwall.co,todo,
+PeerPush,25,yes,low,Launch directory,https://peerpush.net,todo,
+OpenHunts,25,yes,low,Launch directory,https://openhunts.com,todo,
+What Launched Today,20,yes,low,Launch directory,https://whatlaunched.today,todo,
+Tiny Launch,20,yes,low,Launch directory,https://tinylaun.ch,todo,
+Listicle outreach batch (10 targets),40-70,yes,manual,Editorial outreach,manual outreach,todo,cold outreach to existing "best Omegle alternatives 2026" / "best random chat apps" posts on other sites
+Reddit (r/omegle r/chatting r/MakeNewFriendsHere),N/A,no,manual,Community,https://reddit.com,todo,90/10 rule - genuine participation only, mention chatrio when organically relevant
