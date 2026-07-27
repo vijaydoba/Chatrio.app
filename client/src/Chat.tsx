@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { io, Socket } from "socket.io-client";
 import DynamicIsland from "./DynamicIsland";
@@ -51,6 +51,9 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
   const [online, setOnline] = useState(1);
   const [waitingCount, setWaitingCount] = useState(0);
   const [notice, setNotice] = useState<string>("");
+  // True once the user has had at least one chat this session — switches the
+  // waiting-screen Circles promo to the "that chat is gone" wording.
+  const [hadChat, setHadChat] = useState(false);
   const [selectedTopics, setSelectedTopics] = useState<string[]>(() =>
     JSON.parse(localStorage.getItem("topics") || "[]")
   );
@@ -239,6 +242,7 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
     socket.on("partner_found", ({ partner }) => {
       const name = partner || "Stranger";
       setPartnerName(name);
+      setHadChat(true);
       setMessages([]);
       setPartnerTyping(false);
       // Let the Dynamic Island play its "matched" celebration, then open the chat.
@@ -568,7 +572,7 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
         <meta property="og:title" content="Free Random Chat – Talk to Strangers | Chatrio" />
         <meta property="og:description" content="Anonymous random chat. No sign-up needed. Meet strangers instantly." />
         <meta property="og:url" content="https://chatrio.app/chat" />
-        <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png?v=2" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="Free Random Chat – Chatrio" />
         <meta name="twitter:description" content="Anonymous random chat with strangers. No sign-up needed." />
@@ -764,6 +768,27 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
             ? <p className="waiting-sub">Say hi to {partnerName} 👋</p>
             : waitingCount > 1 && <p className="waiting-sub">{waitingCount} people waiting</p>}
           {!matched && <button className="waiting-cancel" onClick={leaveChat}>Cancel</button>}
+          {!matched && (
+            <Link to="/circles" className="waiting-circles-promo">
+              <span className="wcp-head">
+                <span className="wcp-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </span>
+                <span className="wcp-text">
+                  <b>{hadChat ? "That person is gone forever." : "Waiting too long?"}</b>
+                  <span>
+                    {hadChat
+                      ? "On Circles, people near you stick around — chat again anytime."
+                      : "Real people might be right near you — anonymous, no account."}
+                  </span>
+                </span>
+              </span>
+              <span className="wcp-cta">See who's near you →</span>
+            </Link>
+          )}
         </div>
       )}
 

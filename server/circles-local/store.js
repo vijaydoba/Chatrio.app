@@ -325,6 +325,15 @@ function isMember(groupId, userId) {
   return !!db.prepare("SELECT 1 FROM group_members WHERE group_id = ? AND user_id = ? LIMIT 1").get(groupId, userId);
 }
 
+function groupMemberIds(groupId) {
+  return db.prepare("SELECT user_id FROM group_members WHERE group_id = ?").all(groupId).map((r) => r.user_id);
+}
+
+function groupName(groupId) {
+  const g = db.prepare("SELECT name FROM groups WHERE id = ?").get(groupId);
+  return g ? g.name : "";
+}
+
 const createGroup = db.transaction((userId, name, topic) => {
   const nm = sanitizeText(name, GROUP_NAME_MAX);
   if (nm.length < 2) throw httpErr(400, "Group name must be at least 2 characters");
@@ -525,6 +534,51 @@ function listBans() {
     .all();
 }
 
+// ── push notifications (native app) ──
+function registerPushToken(userId, token, platform) {
+  token = String(token || "").trim();
+  if (!token) throw httpErr(400, "Missing push token");
+  db.prepare(
+    "INSERT OR REPLACE INTO push_tokens (user_id, token, platform, created_at) VALUES (?, ?, ?, ?)"
+  ).run(userId, token, String(platform || "").slice(0, 20), now());
+  return { ok: true };
+}
+
+function unregisterPushToken(userId, token) {
+  db.prepare("DELETE FROM push_tokens WHERE user_id = ? AND token = ?").run(userId, String(token || ""));
+  return { ok: true };
+}
+
+// One row per device — a user with 2 phones gets pushed on both.
+function pushTokensForUsers(userIds) {
+  const ids = [...new Set(userIds.map(Number))].filter(Boolean);
+  if (!ids.length) return [];
+  const placeholders = ids.map(() => "?").join(",");
+  return db.prepare(`SELECT user_id, token FROM push_tokens WHERE user_id IN (${placeholders})`).all(...ids);
+}
+
+// ── browser Web Push subscriptions ──
+function saveWebPushSub(userId, subscription) {
+  const endpoint = subscription && typeof subscription.endpoint === "string" ? subscription.endpoint : "";
+  if (!endpoint || !subscription.keys) throw httpErr(400, "Invalid push subscription");
+  db.prepare(
+    "INSERT OR REPLACE INTO web_push_subs (user_id, endpoint, sub_json, created_at) VALUES (?, ?, ?, ?)"
+  ).run(userId, endpoint, JSON.stringify(subscription), now());
+  return { ok: true };
+}
+
+function deleteWebPushSub(userId, endpoint) {
+  db.prepare("DELETE FROM web_push_subs WHERE user_id = ? AND endpoint = ?").run(userId, String(endpoint || ""));
+  return { ok: true };
+}
+
+function webPushSubsForUsers(userIds) {
+  const ids = [...new Set(userIds.map(Number))].filter(Boolean);
+  if (!ids.length) return [];
+  const placeholders = ids.map(() => "?").join(",");
+  return db.prepare(`SELECT user_id, endpoint, sub_json FROM web_push_subs WHERE user_id IN (${placeholders})`).all(...ids);
+}
+
 module.exports = {
   httpErr,
   publicUser,
@@ -556,6 +610,8 @@ module.exports = {
   leaveGroup,
   myGroups,
   isMember,
+  groupMemberIds,
+  groupName,
   requireMember,
   groupMessages,
   saveGroupMessage,
@@ -563,4 +619,10 @@ module.exports = {
   unblockUser,
   blockedList,
   reportUser,
+  registerPushToken,
+  unregisterPushToken,
+  pushTokensForUsers,
+  saveWebPushSub,
+  deleteWebPushSub,
+  webPushSubsForUsers,
 };

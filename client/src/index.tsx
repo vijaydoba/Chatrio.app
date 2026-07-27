@@ -6,15 +6,6 @@ import "./index.css";
 import App from "./App";
 import { AuthProvider } from "./auth";
 
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/custom-sw.js").then(
-      (registration) => console.log("SW registered:", registration),
-      (error) => console.log("SW registration failed:", error)
-    );
-  });
-}
-
 const rootElement = document.getElementById("root") as HTMLElement;
 
 const app = (
@@ -31,7 +22,14 @@ const app = (
 
 // Use hydrateRoot when react-snap has pre-rendered content, createRoot otherwise
 if (rootElement.hasChildNodes()) {
-  ReactDOM.hydrateRoot(rootElement, app);
+  ReactDOM.hydrateRoot(rootElement, app, {
+    onRecoverableError(error, errorInfo) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error(
+        `Hydration recoverable error: ${message}${errorInfo.componentStack || ""}`
+      );
+    },
+  });
 } else {
   ReactDOM.createRoot(rootElement).render(app);
 }

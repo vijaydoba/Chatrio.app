@@ -101,6 +101,15 @@ CREATE TABLE IF NOT EXISTS group_messages (
 );
 
 CREATE INDEX IF NOT EXISTS idx_loc_vis  ON user_location(is_visible, lat, lng);
+
+-- FCM device tokens for the native app (a user can have several devices).
+CREATE TABLE IF NOT EXISTS push_tokens (
+  user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  token      TEXT NOT NULL,
+  platform   TEXT NOT NULL DEFAULT '',
+  created_at INTEGER NOT NULL,
+  PRIMARY KEY (user_id, token)
+);
 `);
 
 // Additive migration for pre-existing DBs: avatar variant (seeds the anime avatar
@@ -117,6 +126,18 @@ try { db.exec("ALTER TABLE users ADD COLUMN gender TEXT NOT NULL DEFAULT ''"); }
 
 // Additive migration: read-receipt timestamp (NULL = recipient hasn't seen it yet).
 try { db.exec("ALTER TABLE dm_messages ADD COLUMN read_at INTEGER"); } catch (e) { /* already there */ }
+
+// Browser Web Push subscriptions (VAPID) — one row per browser/device, so the
+// same anon user can be reached on desktop Chrome and Android Chrome at once.
+db.exec(`
+CREATE TABLE IF NOT EXISTS web_push_subs (
+  user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  endpoint   TEXT NOT NULL,
+  sub_json   TEXT NOT NULL,
+  created_at INTEGER NOT NULL,
+  PRIMARY KEY (user_id, endpoint)
+);
+`);
 
 db.exec(`
 CREATE INDEX IF NOT EXISTS idx_dm_pair  ON dm_messages(a_user, b_user, id);

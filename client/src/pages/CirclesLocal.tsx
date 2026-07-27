@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Helmet } from "react-helmet-async";
 import { Socket } from "socket.io-client";
 import {
-  circles, connectCirclesSocket,
+  circles, connectCirclesSocket, enableWebPush, resyncWebPush, webPushSupported,
   Me, NearbyUser, Incoming, Thread, DmMsg, Group, MyGroup, GroupMsg, BlockedUser, Gender,
 } from "../circlesApi";
 import { useKeyboardViewport } from "../useKeyboardViewport";
@@ -461,6 +461,39 @@ export default function CirclesLocal() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [me, locShared]);
 
+  // ── browser push notifications ──
+  const [pushOffer, setPushOffer] = useState(false);
+
+  // Returning users with permission already granted: silently make sure the
+  // server still has this browser's subscription.
+  useEffect(() => {
+    if (isPrerender || !me || !me.ageOk) return;
+    resyncWebPush();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [me]);
+
+  // First-timers: offer the bell once they're actually in (location shared),
+  // unless they've dismissed it before or already answered the browser prompt.
+  useEffect(() => {
+    if (isPrerender || !me || !me.ageOk || !locShared) return;
+    if (!webPushSupported() || Notification.permission !== "default") return;
+    if (localStorage.getItem("circles_push_dismissed") === "1") return;
+    setPushOffer(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [me, locShared]);
+
+  const turnOnPush = async () => {
+    setPushOffer(false);
+    const r = await enableWebPush();
+    if (r === "granted") toast("🔔 Notifications on — we'll ping you when someone says hi.");
+    else if (r === "denied") toast("Notifications blocked — enable them for chatrio.app in your browser settings.");
+    else toast("Couldn't enable notifications in this browser.");
+  };
+  const dismissPushOffer = () => {
+    setPushOffer(false);
+    localStorage.setItem("circles_push_dismissed", "1");
+  };
+
   const refreshNearby = async () => { try { setNearby(await circles.nearby()); } catch (e) { /* noop */ } };
   const refreshRequests = async () => { try { setIncoming(await circles.incoming()); } catch (e) { /* noop */ } };
   const refreshThreads = async () => { try { setThreads(await circles.threads()); } catch (e) { /* noop */ } };
@@ -622,6 +655,25 @@ export default function CirclesLocal() {
         <title>Circles — Local Chat App to Meet People Near You | Chatrio</title>
         <meta name="description" content="Circles is a free anonymous local chat. See who's nearby, send one intro message, and chat if they accept. No account, no exact location, 18+." />
         <link rel="canonical" href="https://chatrio.app/circles" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "@id": "https://chatrio.app/circles#app",
+          "name": "Circles",
+          "url": "https://chatrio.app/circles",
+          "description": "Free anonymous local chat — see who's nearby, send one intro message, and chat if they accept. No account, no exact location shared, 18+.",
+          "applicationCategory": "SocialNetworkingApplication",
+          "operatingSystem": "All",
+          "isPartOf": { "@id": "https://chatrio.app/#website" },
+          "publisher": { "@id": "https://chatrio.app/#org" },
+          "contentRating": "18+",
+          "offers": {
+            "@type": "Offer",
+            "price": 0,
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        })}</script>
       </Helmet>
       <div className="cl-toast-wrap" aria-live="polite" role="status">
         {!!notice && <div className="cl-toast">{notice}</div>}
@@ -871,6 +923,18 @@ export default function CirclesLocal() {
           {Ic.chat}Chats{totalUnread ? <span className="cl-tab-badge">{totalUnread}</span> : null}
         </button>
       </div>
+
+      {pushOffer && (
+        <div className="cl-push-offer" role="region" aria-label="Enable notifications">
+          <span className="cl-push-ic" aria-hidden="true">{Ic.bell}</span>
+          <span className="cl-push-txt">
+            <b>Don't miss a reply</b>
+            <span>Get a ping when someone says hi — even with this tab closed.</span>
+          </span>
+          <button className="cl-btn cl-sm" onClick={turnOnPush}>Turn on</button>
+          <button className="cl-push-x" aria-label="Dismiss" onClick={dismissPushOffer}>×</button>
+        </div>
+      )}
 
       {tab === "nearby" && (
         <div className="cl-list">

@@ -63,7 +63,68 @@ export const circles = {
   joinGroup: (id: number) => req(`/groups/${id}/join`, { method: "POST" }),
   leaveGroup: (id: number) => req(`/groups/${id}/leave`, { method: "POST" }),
   groupMessages: (id: number): Promise<GroupMsg[]> => req(`/groups/${id}/messages`),
+  // push notifications (native app only)
+  registerPushToken: (token: string, platform: string) =>
+    req("/push/register", { method: "POST", body: JSON.stringify({ token, platform }) }),
+  unregisterPushToken: (token: string) =>
+    req("/push/unregister", { method: "POST", body: JSON.stringify({ token }) }),
+  // push notifications (browser Web Push)
+  getVapidKey: (): Promise<{ key: string }> => req("/push/vapid-key"),
+  subscribePush: (subscription: PushSubscriptionJSON) =>
+    req("/push/subscribe", { method: "POST", body: JSON.stringify({ subscription }) }),
+  unsubscribePush: (endpoint: string) =>
+    req("/push/unsubscribe", { method: "POST", body: JSON.stringify({ endpoint }) }),
 };
+
+// ── browser Web Push helpers ──
+export function webPushSupported(): boolean {
+  return "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+}
+
+function urlBase64ToUint8Array(base64: string): Uint8Array {
+  const padding = "=".repeat((4 - (base64.length % 4)) % 4);
+  const b64 = (base64 + padding).replace(/-/g, "+").replace(/_/g, "/");
+  const raw = window.atob(b64);
+  return Uint8Array.from(Array.from(raw, (c) => c.charCodeAt(0)));
+}
+
+async function subscribeAndSave(): Promise<boolean> {
+  const reg = await navigator.serviceWorker.register("/circles-push-sw.js");
+  const { key } = await circles.getVapidKey();
+  if (!key) return false;
+  let sub = await reg.pushManager.getSubscription();
+  if (!sub) {
+    sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(key) as BufferSource,
+    });
+  }
+  await circles.subscribePush(sub.toJSON());
+  return true;
+}
+
+// User-gesture path: asks for permission, then subscribes this browser.
+export async function enableWebPush(): Promise<"granted" | "denied" | "unsupported" | "failed"> {
+  if (!webPushSupported()) return "unsupported";
+  const perm = await Notification.requestPermission();
+  if (perm !== "granted") return "denied";
+  try {
+    return (await subscribeAndSave()) ? "granted" : "failed";
+  } catch {
+    return "failed";
+  }
+}
+
+// Silent path on page load: permission already granted → make sure the server
+// still has this browser's subscription (it can rotate or be pruned).
+export async function resyncWebPush(): Promise<void> {
+  if (!webPushSupported() || Notification.permission !== "granted") return;
+  try {
+    await subscribeAndSave();
+  } catch {
+    /* best-effort */
+  }
+}
 
 // ── admin / moderation (Phase 3) ──
 export type Report = {
