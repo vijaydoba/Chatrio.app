@@ -5,6 +5,7 @@ const cors = require("cors");
 const { Server } = require("socket.io");
 require("dotenv").config();
 const store = require("./store");
+const push = require("./push");
 
 const PORT = process.env.CIRCLES_PORT || 5060;
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "https://chatrio.app";
@@ -93,6 +94,11 @@ app.post("/dm/request", auth, handle((req) => {
   const result = store.sendRequest(req.user.id, toUserId, text);
   // Real-time nudge so the recipient sees the intro without refreshing.
   io.to(`user_${Number(toUserId)}`).emit("dm_request", { from: store.publicUser(req.user) });
+  push.sendToUsers([Number(toUserId)], {
+    title: "New Circles intro",
+    body: `${req.user.nickname} said hi`,
+    data: { type: "dm_request" },
+  });
   return result;
 }));
 app.get("/dm/incoming", auth, handle((req) => store.incomingRequests(req.user.id)));
@@ -135,6 +141,24 @@ app.post("/block", auth, handle((req) => store.blockUser(req.user.id, (req.body 
 app.post("/unblock", auth, handle((req) => store.unblockUser(req.user.id, (req.body || {}).userId)));
 app.get("/blocked", auth, handle((req) => store.blockedList(req.user.id)));
 app.post("/report", auth, handle((req) => store.reportUser(req.user.id, (req.body || {}).userId, (req.body || {}).reason)));
+
+// push notifications (native app)
+app.post("/push/register", auth, handle((req) => {
+  const { token, platform } = req.body || {};
+  return store.registerPushToken(req.user.id, token, platform);
+}));
+app.post("/push/unregister", auth, handle((req) =>
+  store.unregisterPushToken(req.user.id, (req.body || {}).token)
+));
+
+// push notifications (browser Web Push)
+app.get("/push/vapid-key", handle(() => ({ key: push.vapidPublicKey })));
+app.post("/push/subscribe", auth, handle((req) =>
+  store.saveWebPushSub(req.user.id, (req.body || {}).subscription)
+));
+app.post("/push/unsubscribe", auth, handle((req) =>
+  store.deleteWebPushSub(req.user.id, (req.body || {}).endpoint)
+));
 
 // ── admin / moderation (Phase 3) — gated by X-Admin-Token ──
 app.get("/admin/reports", admin, handle(() => store.listReports()));
@@ -195,9 +219,18 @@ io.on("connection", (socket) => {
       // Recipient already has the thread open (both joined the room) — mark
       // this message read immediately instead of waiting for their next dm_open.
       const roomSockets = await io.in(dmRoom(me.id, other)).fetchSockets();
-      if (roomSockets.some((s) => s.data.user.id === other)) {
+      const recipientViewing = roomSockets.some((s) => s.data.user.id === other);
+      if (recipientViewing) {
         const r = store.markRead(other, me.id);
         if (r.changed) io.to(dmRoom(me.id, other)).emit("dm_read", { by: other, at: r.at });
+      } else {
+        // Not actively looking at this thread — this is the case a browser tab
+        // can't cover, so it's the one push is actually for.
+        push.sendToUsers([other], {
+          title: me.nickname,
+          body: saved.text.length > 120 ? `${saved.text.slice(0, 117)}...` : saved.text,
+          data: { type: "dm_message", otherId: me.id },
+        });
       }
     } catch (e) {
       socket.emit("dm_error", { error: e.message || "Could not send" });
@@ -225,11 +258,22 @@ io.on("connection", (socket) => {
       // just on history reload. (Group posts aren't gated at send time the way
       // DMs are, so the block filter has to happen on delivery.)
       const sockets = await io.in(`group_${gid}`).fetchSockets();
+      const viewing = new Set();
       for (const s of sockets) {
         const uid = s.data.user.id;
         if (uid !== me.id && store.isBlockedBetween(uid, me.id)) continue;
+        viewing.add(uid);
         s.emit("group_message", saved);
       }
+      // Members not currently looking at the room get a push instead.
+      const offline = store
+        .groupMemberIds(gid)
+        .filter((uid) => uid !== me.id && !viewing.has(uid) && !store.isBlockedBetween(uid, me.id));
+      push.sendToUsers(offline, {
+        title: store.groupName(gid),
+        body: `${me.nickname}: ${saved.text.length > 100 ? `${saved.text.slice(0, 97)}...` : saved.text}`,
+        data: { type: "group_message", groupId: gid },
+      });
     } catch (e) {
       socket.emit("group_error", { error: e.message || "Could not send" });
     }

@@ -16,8 +16,25 @@ const BUILD_DIR = process.env.PRERENDER_BUILD_DIR
   ? path.resolve(process.env.PRERENDER_BUILD_DIR)
   : path.join(__dirname, "../client/build");
 const CLIENT_PACKAGE = require("../client/package.json");
-const ROUTES = CLIENT_PACKAGE.reactSnap.include;
-const PORT = 45999;
+const ROUTES = process.env.PRERENDER_ROUTES
+  ? process.env.PRERENDER_ROUTES.split(",").map((route) => route.trim()).filter(Boolean)
+  : CLIENT_PACKAGE.reactSnap.include;
+const ARTICLE_ROUTES = ROUTES.filter(
+  (route) =>
+    route.startsWith("/blog/") &&
+    ![
+      "/blog/love",
+      "/blog/romance",
+      "/blog/dating",
+      "/blog/chat%20%26%20connection",
+      "/blog/relationships",
+      "/blog/mental%20health",
+    ].includes(route)
+);
+const HYDRATION_CHECK_ROUTES = process.env.PRERENDER_HYDRATION_ROUTES
+  ? process.env.PRERENDER_HYDRATION_ROUTES.split(",").map((route) => route.trim()).filter(Boolean)
+  : ["/", "/blog", ARTICLE_ROUTES.at(-1), "/about"].filter(Boolean);
+const PORT = Number(process.env.PRERENDER_PORT || 45999);
 const ROUTES_PER_BROWSER = 10;
 const CHROME_PATH = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
@@ -133,11 +150,88 @@ async function render(browser, route) {
     } catch (error) {
       throw new Error(`${error.message}${errors.length ? `; ${errors.join("; ")}` : ""}`);
     }
+    // Home's reveal observer adds `.in` after React mounts. Persisting that
+    // effect-only class into the snapshot makes the next first render disagree
+    // with the DOM it is hydrating. Restore React's declarative class list
+    // before serialization; the observer will add `.in` again as sections
+    // enter the viewport after hydration.
+    await page.evaluate(() => {
+      document.querySelectorAll(".lp-reveal.in").forEach((element) => {
+        element.classList.remove("in");
+      });
+    });
     const html = (await page.content()).replace(/react-snap-onload/g, "onload");
     if (!/<h1[ >]/i.test(html) || /<div id="root"><\/div>/.test(html)) {
       throw new Error(`rendered output is incomplete${errors.length ? `; ${errors.join("; ")}` : ""}`);
     }
     return html;
+  } finally {
+    await page.close().catch(() => {});
+  }
+}
+
+async function verifyHydration(browser, route) {
+  const page = await browser.newPage();
+  const hydrationErrors = [];
+
+  page.on("console", (message) => {
+    const text = message.text();
+    if (
+      message.type() === "error" &&
+      /(?:hydration|hydrating|server rendered html|minified react error #418)/i.test(text)
+    ) {
+      hydrationErrors.push(`console: ${text}`);
+    }
+  });
+  page.on("pageerror", (error) => {
+    if (/(?:hydration|hydrating|minified react error #418)/i.test(error.message)) {
+      hydrationErrors.push(`page: ${error.message}`);
+    }
+  });
+
+  await page.evaluateOnNewDocument(() => {
+    window.__chatrioLayoutShifts = [];
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        if (!entry.hadRecentInput) window.__chatrioLayoutShifts.push(entry.value);
+      }
+    }).observe({ type: "layout-shift", buffered: true });
+  });
+
+  await page.setRequestInterception(true);
+  page.on("request", (request) => {
+    const requestUrl = request.url();
+    if (requestUrl.startsWith(`http://127.0.0.1:${PORT}`) || requestUrl.startsWith("data:")) {
+      request.continue();
+    } else {
+      request.abort();
+    }
+  });
+
+  try {
+    await page.goto(`http://127.0.0.1:${PORT}${route}`, {
+      waitUntil: "networkidle0",
+      timeout: 30000,
+    });
+    await delay(500);
+
+    const result = await page.evaluate(() => ({
+      cls: (window.__chatrioLayoutShifts || []).reduce((sum, value) => sum + value, 0),
+      hasHeading: Boolean(document.querySelector("h1")),
+      hasLoadingArticle: /Loading article/i.test(document.querySelector("#root")?.textContent || ""),
+      rootTextLength: document.querySelector("#root")?.textContent?.trim().length || 0,
+    }));
+
+    if (hydrationErrors.length) {
+      throw new Error(`${route} hydration failed: ${hydrationErrors.join("; ")}`);
+    }
+    if (!result.hasHeading || result.rootTextLength < 100 || result.hasLoadingArticle) {
+      throw new Error(`${route} incomplete hydrated content: ${JSON.stringify(result)}`);
+    }
+    if (result.cls > 0.05) {
+      throw new Error(`${route} lab CLS ${result.cls.toFixed(3)} exceeds 0.05`);
+    }
+    console.log(`hydration ok (${route}, CLS ${result.cls.toFixed(3)})`);
   } finally {
     await page.close().catch(() => {});
   }
@@ -188,6 +282,12 @@ async function main() {
 
     if (!homepageHtml) throw new Error("Homepage was not prerendered.");
     fs.writeFileSync(path.join(BUILD_DIR, "200.html"), homepageHtml);
+
+    await browser.close();
+    browser = await launchBrowser();
+    for (const route of HYDRATION_CHECK_ROUTES) {
+      await verifyHydration(browser, route);
+    }
   } finally {
     if (browser) await browser.close().catch(() => {});
     await new Promise((resolve) => server.close(resolve));
