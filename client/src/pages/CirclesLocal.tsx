@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { NavLink } from "react-router-dom";
 import { Socket } from "socket.io-client";
 import {
   circles, connectCirclesSocket, enableWebPush, resyncWebPush, webPushSupported,
@@ -473,11 +474,11 @@ export default function CirclesLocal() {
   }, [me]);
 
   // First-timers: offer the bell once they're actually in (location shared),
-  // unless they've dismissed it before or already answered the browser prompt.
+  // unless they've already answered the browser prompt. Dismissing only hides
+  // it for this visit — it reappears on the next refresh until they answer.
   useEffect(() => {
     if (isPrerender || !me || !me.ageOk || !locShared) return;
     if (!webPushSupported() || Notification.permission !== "default") return;
-    if (localStorage.getItem("circles_push_dismissed") === "1") return;
     setPushOffer(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [me, locShared]);
@@ -491,7 +492,6 @@ export default function CirclesLocal() {
   };
   const dismissPushOffer = () => {
     setPushOffer(false);
-    localStorage.setItem("circles_push_dismissed", "1");
   };
 
   const refreshNearby = async () => { try { setNearby(await circles.nearby()); } catch (e) { /* noop */ } };
@@ -750,6 +750,14 @@ export default function CirclesLocal() {
           <p>Talk to people near you one-on-one, or start a local group pinned to your area — a coffee meetup, late-night talks, a running crew. Everything is anonymous, moderated, and strictly 18+.</p>
           <h2>How can it remember me without a sign-up?</h2>
           <p>When you first use Circles, your browser generates a random anonymous ID that never leaves your device except to identify your session. Your nickname, anime avatar, and chats are linked to that ID — not to an email, phone number, or real name. Come back on the same device and browser and Circles recognizes you; clear your browser data and that identity is erased permanently.</p>
+          <h2>Learn more about Circles</h2>
+          <ul className="cl-seo-links">
+            <li><NavLink to="/blog/introducing-circles-anonymous-local-chat-near-you">Introducing Circles: anonymous local chat to meet people near you</NavLink></li>
+            <li><NavLink to="/blog/nearby-chat-apps-how-they-work-safely">Nearby chat apps: how they work and how to use them safely</NavLink></li>
+            <li><NavLink to="/blog/local-anonymous-chat-talk-to-people-in-your-area">Local anonymous chat: talk to people in your area without sharing your identity</NavLink></li>
+            <li><NavLink to="/blog/how-to-meet-people-near-me-without-giving-up-privacy">How to meet people near me without giving up your privacy</NavLink></li>
+            <li><NavLink to="/blog/make-friends-nearby-without-dating-apps">Best ways to make friends nearby without dating apps</NavLink></li>
+          </ul>
         </section>
       </>
     );
