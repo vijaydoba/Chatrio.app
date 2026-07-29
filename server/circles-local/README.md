@@ -43,6 +43,7 @@ core random-chat server is never at risk.
 | `groups` | `name`, `topic`, `creator`, fuzzed `lat`/`lng`, `last_active` (Phase 2 local rooms) |
 | `group_members` | `group_id`, `user_id` · **PK(group_id,user_id)** |
 | `group_messages` | `group_id`, `from_user`, `text` |
+| `push_tokens` | `user_id`, `token` (FCM), `platform` · **PK(user_id,token)** — one row per device |
 
 ---
 
@@ -74,6 +75,8 @@ All REST calls require the `X-Anon-Token: <uuid>` header. Base URL is
 | `POST /groups/:id/join` | — | join a room |
 | `POST /groups/:id/leave` | — | leave (room is deleted when it empties) |
 | `GET /groups/:id/messages` | — | room history (hides blocked senders) |
+| `POST /push/register` | `{ token, platform }` | register a device's FCM token (native app only) |
+| `POST /push/unregister` | `{ token }` | remove a device's FCM token |
 
 ### Admin / moderation (Phase 3)
 Gated by `X-Admin-Token: <CIRCLES_ADMIN_TOKEN>` (set the env var; if unset, all admin
@@ -105,11 +108,13 @@ Connect with `auth: { token }`. In prod the client sets `path: "/circles-api/soc
 ## 4. Files
 
 **Backend** (`server/circles-local/`)
-- `db.js` — SQLite schema (users, location, DM, groups, blocks, reports, **bans**)
+- `db.js` — SQLite schema (users, location, DM, groups, blocks, reports, bans, **push_tokens**)
 - `geo.js` — fuzzing, haversine, distance buckets, bounding box
-- `store.js` — domain logic (identity, location, nearby, DM, groups, safety, **moderation**)
+- `store.js` — domain logic (identity, location, nearby, DM, groups, safety, moderation, **push token storage**)
 - `index.js` — express REST + socket.io (port `CIRCLES_PORT`, default 5060); ban
   enforcement in REST `auth` + socket handshake; `/admin/*` gated by `CIRCLES_ADMIN_TOKEN`
+- `push.js` — FCM push via `firebase-admin`; **no-op** unless `FIREBASE_SERVICE_ACCOUNT_JSON`
+  is set (see `MOBILE-APP.md` at repo root for the native Android app this powers)
 
 **Frontend** (`client/src/`)
 - `circlesApi.ts` — token mgmt + REST client + socket; `circlesAdmin` admin client
@@ -158,6 +163,7 @@ rsync -avz --exclude node_modules --exclude 'circles-local.db*' \
   server/circles-local/ root@<vps>:/var/www/chatrio-circles-server/
 ssh root@<vps> 'cd /var/www/chatrio-circles-server && npm install --omit=dev'
 # .env: CIRCLES_PORT=5060, FRONTEND_ORIGIN=https://chatrio.app, CIRCLES_ADMIN_TOKEN=<secret> (for /admin/* + /circles-admin)
+# .env (optional): FIREBASE_SERVICE_ACCOUNT_JSON=<service account json, one line> — enables push sends; see MOBILE-APP.md §5
 ssh root@<vps> 'cd /var/www/chatrio-circles-server && pm2 start index.js --name chatrio-circles-api && pm2 save'
 ```
 
@@ -189,6 +195,12 @@ needs HTTPS, which prod already serves.
   `reports` view, ban/unban with at-the-door enforcement (REST + socket) + live-socket
   disconnect (`bans` table, `/admin/*` gated by `CIRCLES_ADMIN_TOKEN`); token-gated
   **admin dashboard UI** at `/circles-admin`; fuller privacy/safety copy on the age gate.
+- **Native Android app + push notifications (2026-07-22)** ✅ scaffolded, not deployed.
+  Capacitor-wrapped Android build shipping Circles only (retention experiment — see
+  `MOBILE-APP.md` at repo root for the full rationale and setup steps). `push_tokens`
+  table + `/push/register` + `push.js` (FCM via `firebase-admin`, no-op until a Firebase
+  project is wired up). Still needs: Android Studio build/test, Firebase project +
+  `google-services.json` + service account key, backend deploy, Play Console submission.
 
 ### Done today (2026-06-29)
 - **Backend deployed** to `/var/www/chatrio-circles-server` (pm2 `chatrio-circles-api`):
@@ -211,8 +223,9 @@ needs HTTPS, which prod already serves.
    `rsync -avz --delete client/build/ root@<vps>:/var/www/chatrio/` (dry-run with
    `-n` first — `--delete` only removes the old hashed JS bundle). Backend is
    already live, so this single step makes everything go live.
-2. **Browser push (background notifications)** — not started. Needs a VAPID keypair,
-   a `push_subscriptions` table + subscribe endpoint, `web-push` send on new
+2. **Browser push (background notifications, web)** — not started. Distinct from
+   the native app's FCM push (above): needs a VAPID keypair, a separate
+   `push_subscriptions` table + subscribe endpoint, `web-push` send on new
    message/intro when the recipient is offline, and `push` / `notificationclick`
    handlers in `client/public/custom-sw.ts`.
 3. **Invite the waitlist** (see [circles-waitlist] in project memory).

@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@capacitor/android": "^8.4.2",
+    "@capacitor/app": "^8.1.1",
+    "@capacitor/cli": "^8.4.2",
+    "@capacitor/core": "^8.4.2",
+    "@capacitor/push-notifications": "^8.1.2",
     "@dicebear/collection": "^9.4.2",
     "@dicebear/core": "^9.4.2",
     "@testing-library/dom": "^10.4.1",
@@ -25,8 +30,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prebuild": "node ../scripts/generate-sitemap.js",
+    "prebuild": "node ../scripts/generate-sitemap.js && node ../scripts/generate-blog-content.js && node ../scripts/audit-blog.js",
     "build": "react-scripts build",
+    "audit:blog": "node ../scripts/audit-blog.js",
+    "backup:blog": "node ../scripts/generate-blog-backup.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postbuild": "react-snap"
@@ -75,7 +82,11 @@
       "/blog/love",
       "/blog/romance",
       "/blog/dating",
+      "/blog/chat%20%26%20connection",
+      "/blog/relationships",
+      "/blog/mental%20health",
       "/circles",
+      "/blind-date",
       "/about",
       "/editorial-standards",
       "/contact",
@@ -244,10 +255,28 @@
       "/blog/flingster-alternative-2026-free-no-sign-up",
       "/blog/thundr-alternative-2026-free-no-sign-up",
       "/blog/uhmegle-alternative-2026-free-no-sign-up",
-      "/blog/chathub-alternative-2026-free-no-sign-up"
+      "/blog/chathub-alternative-2026-free-no-sign-up",
+      "/blog/voice-chat-with-strangers-guide-2026",
+      "/blog/what-is-a-situationship-signs-meaning-2026",
+      "/blog/what-is-love-bombing-signs-red-flags-2026",
+      "/blog/what-is-a-parasocial-relationship-2026",
+      "/blog/what-is-a-social-battery-protect-yours-2026",
+      "/blog/what-is-emotional-intimacy-how-to-build-it-2026",
+      "/blog/what-is-limerence-obsessive-infatuation-explained-2026",
+      "/blog/avoidant-attachment-style-signs-online-chat-2026",
+      "/blog/anxious-attachment-style-signs-how-to-cope-2026",
+      "/blog/why-people-ghost-psychology-of-being-ghosted-2026",
+      "/blog/what-is-breadcrumbing-signs-how-to-stop-accepting-it-2026",
+      "/blog/secure-attachment-style-signs-online-relationships-2026",
+      "/blog/what-is-a-blind-date-app-how-it-works-2026",
+      "/blog/anonymous-dating-apps-guide-2026",
+      "/blog/virtual-dating-tips-video-dates-2026"
     ],
     "exclude": [
       "/chat"
     ]
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5"
   }
 }

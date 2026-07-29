@@ -1,5 +1,6 @@
 // src/App.tsx
 import React, { useEffect, useState, Suspense } from "react";
+import { Capacitor } from "@capacitor/core";
 import {
   Routes,
   Route,
@@ -8,23 +9,29 @@ import {
   useParams,
   Navigate,
 } from "react-router-dom";
+import { initPush } from "./push";
 import About from "./pages/About";
 import EditorialStandards from "./pages/EditorialStandards";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Home from "./pages/Home";
+import BlogList from "./pages/BlogList";
+import BlogPost from "./pages/BlogPost";
 import { Helmet } from "react-helmet-async";
+import { BLIND_DATE_LIVE } from "./config";
 
 import "./App.css";
 
-// Route-level code splitting: keep the main bundle lean for content pages
-// (mobile CWV) — chat/circles/stories code loads only when those routes open.
-// BlogList pulls in data/posts.ts (~80KB) so it must stay lazy too, or every
-// page — including Home — pays for it in the main bundle's parse/exec time.
-const BlogList = React.lazy(() => import("./pages/BlogList"));
+// Route-level code splitting keeps interactive product routes out of the
+// content bundle. Blog routes stay eager because this project hydrates
+// prerendered HTML: suspending while a blog chunk loads replaces the visible
+// article during hydration and creates a measurable layout shift.
 const Chat = React.lazy(() => import("./Chat"));
 const CirclesLocal = React.lazy(() => import("./pages/CirclesLocal"));
+const BlindDate = React.lazy(() => import("./pages/BlindDate"));
+const BlindDateOnboarding = React.lazy(() => import("./pages/BlindDateOnboarding"));
+const BlindDateChat = React.lazy(() => import("./pages/BlindDateChat"));
 const CirclesAdmin = React.lazy(() => import("./pages/CirclesAdmin"));
 const CohortRoom = React.lazy(() => import("./pages/CohortRoom"));
 const Auth = React.lazy(() => import("./pages/Auth"));
@@ -32,8 +39,6 @@ const Auth = React.lazy(() => import("./pages/Auth"));
 type Theme = "light" | "dark";
 
 /* ---------------- Pages (inline) ---------------- */
-
-const BlogPost = React.lazy(() => import("./pages/BlogPost"));
 
 // /blog/:slug is shared by category listing pages and individual post pages —
 // resolve which to render based on the param. Must cover every value in
@@ -47,7 +52,9 @@ function BlogRoute() {
   if (slug && BLOG_CATEGORY_SLUGS.has(slug.toLowerCase())) {
     return <BlogList />;
   }
-  return <BlogPost />;
+  // A key guarantees a fresh content state when navigating directly between
+  // articles in the SPA.
+  return <BlogPost key={slug} />;
 }
 
 function NotFound() {
@@ -70,9 +77,18 @@ function NotFound() {
 /* ---------------- Cookie Banner ---------------- */
 
 function CookieBanner() {
-  const [visible, setVisible] = useState(() => !localStorage.getItem("cookie_consent"));
+  // Default to visible: the prerendered HTML is always snapshotted from a
+  // fresh, no-consent-stored crawler session, so that's what's baked into the
+  // static file. Matching that on first client render avoids a hydration
+  // mismatch; returning visitors who already answered get it hidden right
+  // after mount instead.
+  const [visible, setVisible] = useState(true);
   const [showPrefs, setShowPrefs] = useState(false);
   const [analytics, setAnalytics] = useState(true);
+
+  useEffect(() => {
+    if (localStorage.getItem("cookie_consent")) setVisible(false);
+  }, []);
 
   if (!visible) return null;
 
@@ -98,8 +114,7 @@ function CookieBanner() {
           <>
             <div className="cookie-title">🍪 We use cookies</div>
             <p className="cookie-text">
-              Chatrio uses essential cookies to keep the platform running, and optional cookies for analytics and
-              advertising. You can accept all, choose your preferences, or decline optional ones. Your choice is saved for 12 months.{" "}
+              {"Chatrio uses essential cookies to keep the platform running, and optional cookies for analytics and advertising. You can accept all, choose your preferences, or decline optional ones. Your choice is saved for 12 months. "}
               <a href="/privacy" className="cookie-link">Privacy Policy</a>
             </p>
             <div className="cookie-actions">
@@ -144,16 +159,23 @@ function CookieBanner() {
 
 /* ---------------- App ---------------- */
 
-export default function App() {
-  const [theme, setTheme] = useState<Theme>(() => {
-    // First-time visitors default to dark mode; returning users keep their saved choice.
-    const saved = localStorage.getItem("theme") as Theme | null;
-    return saved ?? "dark";
-  });
+// Running inside the Capacitor-wrapped Android app: it ships Circles only,
+// so skip the marketing chrome (nav/blog/footer) and land straight on it.
+const isNative = Capacitor.isNativePlatform();
 
-  const [soundOn, setSoundOn] = useState<boolean>(
-    () => localStorage.getItem("soundOn") !== "off"
-  );
+export default function App() {
+  // Initial state must match the prerendered HTML (which always assumes a fresh
+  // visitor with no saved prefs) to avoid a hydration mismatch; any saved
+  // preference is applied right after mount instead, in the effect below.
+  const [theme, setTheme] = useState<Theme>("dark");
+  const [soundOn, setSoundOn] = useState<boolean>(true);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") as Theme | null;
+    if (savedTheme && savedTheme !== "dark") setTheme(savedTheme);
+    if (localStorage.getItem("soundOn") === "off") setSoundOn(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -165,6 +187,10 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("soundOn", soundOn ? "on" : "off");
   }, [soundOn]);
+
+  useEffect(() => {
+    if (isNative) initPush();
+  }, []);
 
   const [navOpen, setNavOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown
@@ -189,6 +215,16 @@ export default function App() {
   }, [navOpen]);
 
   const { pathname } = useLocation();
+  const usesLazyProductRoute =
+    pathname === "/chat" ||
+    pathname === "/circles" ||
+    pathname === "/blind-date" ||
+    pathname.startsWith("/blind-date/") ||
+    pathname === "/circles-admin" ||
+    pathname.startsWith("/circles/") ||
+    pathname === "/login" ||
+    pathname === "/signup";
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setNavOpen(false);
@@ -204,6 +240,8 @@ export default function App() {
 
   return (
     <div className="site">
+      {!isNative && (
+      <>
       <header className="site-header">
         <div className="site-wrap header">
           <NavLink to="/" className="brand" onClick={() => setNavOpen(false)}>
@@ -382,42 +420,59 @@ export default function App() {
       {navOpen && (
         <div className="drawer-backdrop" onClick={() => setNavOpen(false)} />
       )}
+      </>
+      )}
 
       {/* --------------------------- */}
 
       <main className="site-main">
         <div className="site-wrap">
-          <Suspense fallback={null}>
-          <Routes>
-            <Route path="/blog" element={<BlogList />} />
-            <Route path="/blog/:slug" element={<BlogRoute />} />
-
-            <Route path="/" element={<Home />} />
-            <Route path="/chat" element={<Chat theme={theme} setTheme={setTheme} soundOn={soundOn} setSoundOn={setSoundOn} />} />
-            <Route path="/circles" element={<CirclesLocal />} />
-            <Route path="/circles-admin" element={<CirclesAdmin />} />
-            <Route path="/nearby" element={<Navigate to="/circles" replace />} />
-            <Route path="/circles/:cohortId" element={<CohortRoom />} />
-            <Route path="/login" element={<Auth mode="login" />} />
-            <Route path="/signup" element={<Auth mode="signup" />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/editorial-standards" element={<EditorialStandards />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
-
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          </Suspense>
+          {usesLazyProductRoute ? (
+            <Suspense fallback={<div className="route-loading" role="status">Loading…</div>}>
+              <Routes>
+                <Route path="/chat" element={<Chat theme={theme} setTheme={setTheme} soundOn={soundOn} setSoundOn={setSoundOn} />} />
+                <Route path="/circles" element={<CirclesLocal />} />
+                <Route path="/blind-date" element={<BlindDate />} />
+                <Route
+                  path="/blind-date/onboarding"
+                  element={BLIND_DATE_LIVE ? <BlindDateOnboarding /> : <Navigate to="/blind-date" replace />}
+                />
+                <Route
+                  path="/blind-date/chat"
+                  element={BLIND_DATE_LIVE ? <BlindDateChat /> : <Navigate to="/blind-date" replace />}
+                />
+                <Route path="/circles-admin" element={<CirclesAdmin />} />
+                <Route path="/circles/:cohortId" element={<CohortRoom />} />
+                <Route path="/login" element={<Auth mode="login" />} />
+                <Route path="/signup" element={<Auth mode="signup" />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          ) : (
+            <Routes>
+              <Route path="/blog" element={<BlogList />} />
+              <Route path="/blog/:slug" element={<BlogRoute />} />
+              <Route path="/" element={isNative ? <Navigate to="/circles" replace /> : <Home />} />
+              <Route path="/nearby" element={<Navigate to="/circles" replace />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/editorial-standards" element={<EditorialStandards />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          )}
         </div>
       </main>
 
+      {!isNative && (
+      <>
       <CookieBanner />
 
       <footer className="site-footer">
         <div className="site-wrap footer-grid">
           <div className="footer-brand">
-            © {new Date().getFullYear()} Chatrio
+            {`© ${new Date().getFullYear()} Chatrio`}
           </div>
           <div
             className="footer-links"
@@ -435,6 +490,25 @@ export default function App() {
             <span style={{ opacity: 0.3 }}>|</span>
             <NavLink to="/privacy" className="footer-link">Privacy Policy</NavLink>
             <NavLink to="/terms" className="footer-link">Terms of Service</NavLink>
+            <span style={{ opacity: 0.3 }}>|</span>
+            <a
+              href="https://x.com/Chatrioapp1"
+              className="footer-link footer-social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow Chatrio on X (opens in a new tab)"
+            >
+              X
+            </a>
+            <a
+              href="https://discord.gg/289JDCJtRj"
+              className="footer-link footer-social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Join the Chatrio Discord (opens in a new tab)"
+            >
+              Discord
+            </a>
           </div>
           <div className="footer-badges" style={{ display: "flex", justifyContent: "center", marginTop: 12 }}>
             <a href="https://startupfa.me/s/chatrio?utm_source=chatrio.app" target="_blank" rel="noopener noreferrer">
@@ -448,6 +522,8 @@ export default function App() {
           </div>
         </div>
       </footer>
+      </>
+      )}
     </div>
   );
 }
