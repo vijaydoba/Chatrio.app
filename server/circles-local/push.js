@@ -13,9 +13,10 @@ try {
   const raw = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
   if (raw) {
     const admin = require("firebase-admin");
+    const { getMessaging } = require("firebase-admin/messaging");
     const serviceAccount = JSON.parse(raw);
-    admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
-    messaging = admin.messaging();
+    admin.initializeApp({ credential: admin.cert(serviceAccount) });
+    messaging = getMessaging();
   }
 } catch (e) {
   console.warn("FCM push disabled:", e.message);
