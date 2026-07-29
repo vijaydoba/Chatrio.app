@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none">
+  <defs>
+    <linearGradient id="chatrio-icon-gradient" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6d28d9"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="4" width="44" height="30" rx="12" fill="url(#chatrio-icon-gradient)"/>
+  <path d="M8 34 L4 44 L20 34Z" fill="url(#chatrio-icon-gradient)"/>
+  <circle cx="14" cy="19" r="3" fill="white"/>
+  <circle cx="24" cy="19" r="3" fill="white"/>
+  <circle cx="34" cy="19" r="3" fill="white"/>
+</svg>
