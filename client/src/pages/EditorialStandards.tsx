@@ -20,7 +20,7 @@ export default function EditorialStandards() {
           content="How Chatrio's articles are researched, written, reviewed, and kept accurate."
         />
         <meta property="og:url" content="https://chatrio.app/editorial-standards" />
-        <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png?v=2" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebPage",
@@ -31,7 +31,7 @@ export default function EditorialStandards() {
             "@type": "Organization",
             "name": "Chatrio",
             "url": "https://chatrio.app",
-            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png", "width": 512, "height": 512 }
+            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png?v=2", "width": 512, "height": 512 }
           }
         })}</script>
       </Helmet>

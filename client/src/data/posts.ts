@@ -1543,4 +1543,139 @@ export const POSTS: Post[] = [
     date: "2026-07-19",
     category: "Chat & Connection",
   },
+  {
+    slug: "voice-chat-with-strangers-guide-2026",
+    title: "Voice Chat with Strangers: Is It Better Than Text or Video in 2026?",
+    excerpt:
+      "Voice-only conversations with strangers hit differently than text or video ever will. Here's when voice chat actually works better, how it compares, and how to do it safely.",
+    thumbnail: "/images/hero-voice-chat-with-strangers-guide-2026.png",
+    date: "2026-07-22",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "what-is-a-situationship-signs-meaning-2026",
+    title: "What Is a Situationship? Signs, Meaning & How to Know Where You Stand (2026)",
+    excerpt:
+      "Not quite dating, not quite friends — situationships are the most common relationship status nobody has agreed to. Here's what the term actually means, the signs you're in one, and how to get real clarity.",
+    thumbnail: "/images/hero-what-is-a-situationship-signs-meaning-2026.png",
+    date: "2026-07-24",
+    category: "Dating",
+  },
+  {
+    slug: "what-is-love-bombing-signs-red-flags-2026",
+    title: "What Is Love Bombing? Signs, Examples & How to Protect Yourself (2026)",
+    excerpt:
+      "Intense compliments, nonstop messages, \"I've never felt this way before\" by day three — love bombing feels like romance until it isn't. Here's how to tell the difference and protect yourself.",
+    thumbnail: "/images/hero-what-is-love-bombing-signs-red-flags-2026.png",
+    date: "2026-07-24",
+    category: "Relationships",
+  },
+  {
+    slug: "what-is-a-parasocial-relationship-2026",
+    title: "What Is a Parasocial Relationship? Signs, Examples & Why Real Conversation Beats It (2026)",
+    excerpt:
+      "Feeling like you personally know a streamer, influencer, or AI chatbot is a parasocial relationship — a real psychological phenomenon with a name dating back to 1956. Here's what it is and why two-way conversation still wins.",
+    thumbnail: "/images/hero-what-is-a-parasocial-relationship-2026.png",
+    date: "2026-07-24",
+    category: "Mental Health",
+  },
+  {
+    slug: "what-is-a-social-battery-protect-yours-2026",
+    title: "What Is a Social Battery? How to Protect Yours in Online Chat and IRL (2026)",
+    excerpt:
+      "Some people can talk for hours; others need to recharge after twenty minutes. Here's what \"social battery\" actually means, how to spot yours running low, and how to protect it — online and off.",
+    thumbnail: "/images/hero-what-is-a-social-battery-protect-yours-2026.png",
+    date: "2026-07-24",
+    category: "Mental Health",
+  },
+  {
+    slug: "what-is-emotional-intimacy-how-to-build-it-2026",
+    title: "What Is Emotional Intimacy? How to Build It With Someone You Just Met Online (2026)",
+    excerpt:
+      "Emotional intimacy isn't about how long you've known someone — it's about how much you've actually let them see. Here's what it really means and how it can form faster than you'd expect in online chat.",
+    thumbnail: "/images/hero-what-is-emotional-intimacy-how-to-build-it-2026.png",
+    date: "2026-07-24",
+    category: "Relationships",
+  },
+  {
+    slug: "what-is-limerence-obsessive-infatuation-explained-2026",
+    title: "What Is Limerence? The Psychology of Obsessive Infatuation (2026)",
+    excerpt:
+      "Replaying every message for hidden meaning, unable to focus, your whole mood riding on whether they texted back — that's not just a crush. It has a name, a real definition, and it isn't the same thing as love.",
+    thumbnail: "/images/hero-what-is-limerence-obsessive-infatuation-explained-2026.png",
+    date: "2026-07-26",
+    category: "Mental Health",
+  },
+  {
+    slug: "avoidant-attachment-style-signs-online-chat-2026",
+    title: "Avoidant Attachment Style: Signs, Causes & How It Shows Up in Chat (2026)",
+    excerpt:
+      "Pulls away right when things get close, goes quiet after a good conversation, treats independence as non-negotiable — avoidant attachment has a clear pattern once you know what to look for, online and off.",
+    thumbnail: "/images/hero-avoidant-attachment-style-signs-online-chat-2026.png",
+    date: "2026-07-26",
+    category: "Relationships",
+  },
+  {
+    slug: "anxious-attachment-style-signs-how-to-cope-2026",
+    title: "Anxious Attachment Style: Signs, Causes & How to Feel More Secure (2026)",
+    excerpt:
+      "Reading a delayed reply as rejection, needing constant reassurance, feeling every relationship could end at any moment — anxious attachment is common, explainable, and workable. Here's what's actually going on.",
+    thumbnail: "/images/hero-anxious-attachment-style-signs-how-to-cope-2026.png",
+    date: "2026-07-26",
+    category: "Relationships",
+  },
+  {
+    slug: "why-people-ghost-psychology-of-being-ghosted-2026",
+    title: "Why People Ghost (and How to Handle Being Ghosted) in 2026",
+    excerpt:
+      "One in four people has been ghosted, and roughly as many admit to doing it themselves. Here's what the research actually says about why people disappear instead of just saying it's over — and how to deal with it when it happens to you.",
+    thumbnail: "/images/hero-why-people-ghost-psychology-of-being-ghosted-2026.png",
+    date: "2026-07-26",
+    category: "Dating",
+  },
+  {
+    slug: "what-is-breadcrumbing-signs-how-to-stop-accepting-it-2026",
+    title: "What Is Breadcrumbing? Signs You're Being Strung Along (2026)",
+    excerpt:
+      "The occasional text just when you were about to move on, never quite enough to call it a relationship — breadcrumbing runs on the same psychology as a slot machine. Here's how to recognize it and stop waiting for more.",
+    thumbnail: "/images/hero-what-is-breadcrumbing-signs-how-to-stop-accepting-it-2026.png",
+    date: "2026-07-26",
+    category: "Dating",
+  },
+  {
+    slug: "secure-attachment-style-signs-online-relationships-2026",
+    title: "Secure Attachment Style: 12 Signs in Online Relationships (2026)",
+    excerpt:
+      "Secure attachment is not constant texting or a conflict-free relationship. These 12 signs show what emotional safety, honest communication, and healthy independence look like online.",
+    thumbnail: "/images/hero-secure-attachment-style-signs-online-relationships-2026.png",
+    date: "2026-07-26",
+    category: "Relationships",
+  },
+  {
+    slug: "what-is-a-blind-date-app-how-it-works-2026",
+    title: "What Is a Blind Date App? How They Work in 2026",
+    excerpt:
+      "No swiping, no profile scrolling — just two people matched on compatibility, with names and photos hidden until you both choose to reveal. Here's how blind date apps actually work.",
+    thumbnail: "/images/hero-random-chat-vs-dating-apps-which-is-better.png",
+    date: "2026-07-27",
+    category: "Dating",
+  },
+  {
+    slug: "anonymous-dating-apps-guide-2026",
+    title: "Anonymous Dating Apps: What They Are and Why People Are Switching (2026)",
+    excerpt:
+      "78% of dating app users report burnout, according to a 2024 Forbes Health survey. Anonymous, profile-light dating apps are one response — here's what they actually offer and where they fall short.",
+    thumbnail: "/images/hero-gen-z-quitting-dating-apps-2026.png",
+    date: "2026-07-27",
+    category: "Dating",
+  },
+  {
+    slug: "virtual-dating-tips-video-dates-2026",
+    title: "Virtual Dating: How to Have a Great Video Date in 2026",
+    excerpt:
+      "Match's Singles in America survey found most people who tried a video date before meeting in person felt real chemistry. Here's how to make one actually work, and why text-first beats video-first.",
+    thumbnail: "/images/hero-is-video-chat-with-strangers-safe-2026.png",
+    date: "2026-07-27",
+    category: "Dating",
+  },
 ];

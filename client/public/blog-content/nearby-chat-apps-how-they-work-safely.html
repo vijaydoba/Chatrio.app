@@ -1,0 +1,114 @@
+
+      <figure class="post-figure">
+        <img src="/images/hero-nearby-chat-apps-how-they-work-safely.png" alt="Nearby chat apps — how they work and how to use them safely" />
+        <figcaption>Proximity is the feature. Here's what to check before you trust it with your safety.</figcaption>
+      </figure>
+
+      <p>
+        "Nearby chat" apps promise a simple thing: show you people close by so you can talk to them. Simple to promise, less simple to build responsibly — because the same feature that makes them useful (proximity) is also the one that makes them risky if it's built carelessly.
+      </p>
+
+      <div class="table-of-contents">
+        <h3>📋 What's Inside</h3>
+        <ul>
+          <li><a href="#how-they-work">How Nearby Chat Apps Actually Work</a></li>
+          <li><a href="#models">The Two Common Models</a></li>
+          <li><a href="#red-flags">Red Flags to Check Before You Trust One</a></li>
+          <li><a href="#safer-model">What a Safer Nearby Chat Looks Like</a></li>
+          <li><a href="#tips">Using Any Nearby Chat App Safely</a></li>
+          <li><a href="#faq">Frequently Asked Questions</a></li>
+        </ul>
+      </div>
+
+      <h2 id="how-they-work">How Nearby Chat Apps Actually Work</h2>
+      <p>
+        Underneath the interface, most nearby chat apps do the same three things: read your device's location, compare it to other users' locations, and surface anyone within a certain radius. The differences that actually matter are <em>how precisely</em> they store and show that location, and <em>how much identity</em> they require before you can talk to someone.
+      </p>
+
+      <h2 id="models">The Two Common Models</h2>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>How it works</th>
+            <th>The catch</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Map-pin apps</strong></td>
+            <td>Plot your exact GPS coordinates on a shared map</td>
+            <td>Anyone can see roughly where you live, work, or sleep</td>
+          </tr>
+          <tr>
+            <td><strong>Profile-first apps</strong></td>
+            <td>Require photos, full name, or social links before chat unlocks</td>
+            <td>You're exposed before you've decided if the other person is safe to talk to</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        A third, less common model — <strong>fuzzed-distance chat</strong> — shows a rough distance bucket instead of a pin, and lets you stay anonymous until you decide to share more. That's the model <a href="/circles">Circles</a> uses.
+      </p>
+
+      <h2 id="red-flags">Red Flags to Check Before You Trust One</h2>
+      <ul>
+        <li><strong>Exact coordinates or a live map pin</strong> shown to other users — this is the single biggest privacy risk in this category.</li>
+        <li><strong>No block-and-forget mechanism</strong> — if declining a message doesn't stop future messages, that's a harassment vector waiting to happen.</li>
+        <li><strong>No age gate</strong> before location or messaging unlocks.</li>
+        <li><strong>Required real name or photo</strong> just to browse who's around.</li>
+        <li><strong>Persistent chat history stored server-side</strong> with no way to see what's kept or delete it.</li>
+      </ul>
+
+      <div class="infobox">
+        <h4>🚩 The One Question to Ask</h4>
+        <p>
+          "If someone screenshotted my profile on this app right now, could they find my house?" If the honest answer is yes, the app's location model is too precise.
+        </p>
+      </div>
+
+      <h2 id="safer-model">What a Safer Nearby Chat Looks Like</h2>
+      <p>
+        A safer nearby chat app snaps your location to a coarse grid before comparing it to anyone else's, shows distance as a bucket ("very close" / "~3 km away") rather than a number or a pin, requires no persistent identity, gates messaging behind an 18+ check, and treats a declined message as an automatic block rather than an open invitation to try again. <a href="/circles">Circles</a> was built around exactly this model — see the full breakdown in <a href="/blog/introducing-circles-anonymous-local-chat-near-you">our Circles announcement</a>.
+      </p>
+
+      <h2 id="tips">Using Any Nearby Chat App Safely</h2>
+      <ol>
+        <li>Use a nickname, not your real name — on any app, safe-by-design or not.</li>
+        <li>Never share your exact address, workplace, or daily routine, even after a conversation feels friendly.</li>
+        <li>Report and block the moment something feels off — don't wait for it to get worse.</li>
+        <li>Keep video calls and in-person meetups off the table until you have real reasons to trust someone.</li>
+        <li>If you ever choose to meet up, do it in a public place and tell someone else your plans.</li>
+      </ol>
+
+      <div class="infobox">
+        <h4>🌐 Try a Nearby Chat Built This Way</h4>
+        <p>
+          <a href="/circles">Circles</a> shows fuzzed distance buckets, never a map pin, and auto-blocks anyone whose intro you decline. <a href="/circles">Open Circles →</a>
+        </p>
+      </div>
+
+      <h2 id="faq">Frequently Asked Questions</h2>
+
+      <h3>How do nearby chat apps know who's close to me?</h3>
+      <p>They compare your device's location to other users' locations and surface anyone within a set radius. How precisely that location is stored and shown varies a lot between apps — some show exact map pins, others show only a rough distance bucket.</p>
+
+      <h3>Are nearby chat apps safe?</h3>
+      <p>It depends entirely on the app's design. Ones that show exact coordinates or require a real name/photo upfront carry real privacy risk. Ones that fuzz location into distance buckets and let you stay anonymous are considerably safer.</p>
+
+      <h3>What should I avoid sharing on a nearby chat app?</h3>
+      <p>Your exact address, workplace, daily schedule, real full name, and financial details. Keep the conversation the only thing that's shared until you have a strong reason to trust someone.</p>
+
+      <h3>What's the difference between a nearby chat app and a dating app?</h3>
+      <p>Dating apps are built around romantic matching and usually require a detailed profile. Nearby chat apps like Circles are lighter-weight — no swiping, no required profile — and are meant for any kind of conversation with people close by, not just dating.</p>
+
+      <div class="post-related">
+        <h3>Related Reading</h3>
+        <ul>
+          <li><a href="/blog/introducing-circles-anonymous-local-chat-near-you">Introducing Circles: Anonymous Local Chat Near You</a></li>
+          <li><a href="/blog/how-to-meet-people-near-me-without-giving-up-privacy">How to Meet People Near Me Without Giving Up Your Privacy</a></li>
+          <li><a href="/blog/is-anonymous-chat-safe-guide-2026">Is Anonymous Chat Safe? An Honest Guide</a></li>
+          <li><a href="/circles">Open Circles →</a></li>
+        </ul>
+      </div>
+  

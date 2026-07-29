@@ -15,7 +15,7 @@ export default function About() {
         <meta property="og:title" content="About Chatrio – Anonymous Chat App" />
         <meta property="og:description" content="Chatrio connects strangers instantly without accounts or data storage. Anonymous, free, and privacy-first." />
         <meta property="og:url" content="https://chatrio.app/about" />
-        <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-icon-512-2026.png" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="About Chatrio – Anonymous Chat App" />
         <meta name="twitter:description" content="Chatrio connects strangers instantly without accounts or data storage." />
@@ -29,7 +29,7 @@ export default function About() {
             "@type": "Organization",
             "name": "Chatrio",
             "url": "https://chatrio.app",
-            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png", "width": 512, "height": 512 },
+            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-icon-512-2026.png", "width": 512, "height": 512 },
             "founder": { "@type": "Person", "name": "Vijay", "jobTitle": "Founder", "url": "https://chatrio.app/about" }
           },
           "mainEntity": {
@@ -157,7 +157,7 @@ export default function About() {
 
       <h2 id="vijay">🤝 Who Builds Chatrio</h2>
       <p>
-        Chatrio is an independent project founded and maintained by{" "}
+        {"Chatrio is an independent project founded and maintained by "}
         <strong>Vijay</strong>, who built the platform on a simple belief: the
         internet works best when it brings people together without demanding
         their data in return. Vijay writes and reviews the articles on this blog —
@@ -165,7 +165,7 @@ export default function About() {
         product improvements regularly based on user feedback.
       </p>
       <p>
-        Every article is written and reviewed against our{" "}
+        {"Every article is written and reviewed against our "}
         <a href="/editorial-standards">editorial standards</a>, so you know how
         the guidance here is researched and kept accurate.
       </p>
@@ -192,7 +192,7 @@ export default function About() {
         We're always looking to improve Chatrio based on user feedback. Have
         suggestions or questions?
         <br />
-        Email us at:{" "}
+        {"Email us at: "}
         <a href="mailto:chatrioapp@gmail.com">chatrioapp@gmail.com</a>
         <br />
         Response time: Within 24-48 hours

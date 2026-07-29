@@ -4,13 +4,13 @@
   "description": "Free anonymous random chat. No sign-up needed.",
   "icons": [
     {
-      "src": "/branding/chatrio-64.png",
-      "sizes": "64x64",
+      "src": "/branding/chatrio-icon-192-2026.png",
+      "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/branding/chatrio-512.png",
+      "src": "/branding/chatrio-icon-512-2026.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

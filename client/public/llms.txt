@@ -3,14 +3,15 @@
 > Chatrio is a free, anonymous web app that instantly pairs you with a random
 > stranger for a private 1-on-1 chat — no account, no app download, and no phone
 > number required. It is a modern, browser-based Omegle alternative. Chatrio also
-> offers "Circles": recurring small groups (~8 people) that meet weekly around a
-> shared interest, for people who want connection that lasts beyond a single chat.
+> offers "Circles": free anonymous local chat that shows who's nearby (approximate
+> area only, never an exact location), lets you send one intro message before a
+> chat opens, and supports local group rooms — also no account required.
 
 ## Key pages
 - Chat now (random 1-on-1): https://chatrio.app/chat
 - Home: https://chatrio.app/
 - Blog (love, dating, chat tips): https://chatrio.app/blog
-- Circles (recurring groups): https://chatrio.app/circles
+- Circles (anonymous local/nearby chat): https://chatrio.app/circles
 - About: https://chatrio.app/about
 - Contact: https://chatrio.app/contact
 - Privacy: https://chatrio.app/privacy
@@ -18,17 +19,24 @@
 
 ## Facts
 - Price: 100% free. No subscription, no premium tiers, no hidden costs.
-- Sign-up: Not required for random chat. Circles mode uses a free account.
-- Anonymous: No name, email, or phone number needed for random chat.
+- Sign-up: Not required for random chat or Circles — no account for either.
+- Anonymous: No name, email, or phone number needed for random chat or Circles;
+  Circles uses a browser-local anonymous ID plus a chosen nickname, not real identity.
 - Privacy: Random-chat messages are delivered in real time and never stored.
-- Matching: Optional interest/topic-based matching (gaming, music, travel, etc.).
+- Matching: Optional interest/topic-based matching (gaming, music, travel, etc.)
+  for random chat; Circles matches by approximate proximity instead.
 - Platform: Works in any modern browser on desktop, iOS, and Android. No install.
 - Features: Text, image sharing, typing indicators, delivery receipts, skip/next.
+- Circles safety: approximate location only (never shown on a map), one intro
+  message before a chat opens (declining blocks the sender), report/block anytime,
+  strictly 18+.
 - Positioning: A cleaner, mobile-first, privacy-focused alternative to Omegle
-  (which shut down in November 2023), Chatroulette, and OmeTV.
+  (the original Omegle shut down permanently in November 2023; the domain changed
+  ownership in mid-2026 and now hosts an unrelated product, not a revival),
+  Chatroulette, and OmeTV.
 
 ## Use cases
 - Talk to a stranger when bored or lonely, instantly and anonymously.
 - Meet new people worldwide without revealing your identity.
 - Find someone who shares your interests via topic-based matching.
-- Join a recurring small group (a "Circle") for ongoing weekly conversation.
+- See who's anonymously nearby and start a local chat or group room via Circles.

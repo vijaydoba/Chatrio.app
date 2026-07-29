@@ -37,21 +37,22 @@ Business Software,49,yes,medium,SaaS directory,https://www.business-software.com
 FiveTaco,47,yes,medium,SaaS directory,https://fivetaco.com,blocked,requires account creation (email+password)
 Promote Project,47,yes,medium,Launch directory,https://promoteproject.com,blocked,requires login
 Makerthrive,45,yes,medium,Startup directory,https://makerthrive.com,skipped,pivoted to paid sponsorship/media-kit only, no free listing option as of 2026-07-19
-StartupTracker,44,yes,medium,Startup directory,https://startuptracker.io,blocked,free multi-step form filled through Founder info + Company links; blocked at Company links step which requires an official Twitter/X handle (Chatrio has none) and a logo upload (not supported)
+StartupTracker,44,yes,medium,Startup directory,https://startuptracker.io,submitted,2026-07-26 submitted with @Chatrioapp1 handle + official chatrio-icon-512-2026.png logo; confirmation #G6PZJ; queued for manual verification (3-4 weeks unless verified via login)
 BusinessHunt,43,yes,medium,Startup directory,https://businesshunt.co,blocked,.com is parked/for-sale; working domain is .co; requires login to submit
 TrustMRR,40,yes,medium,Startup directory,https://trustmrr.com,skipped,bad fit - it's an MRR-based marketplace for buying/selling revenue-generating SaaS, not a general directory
 Uneed,40,yes,medium,Tool directory,https://www.uneed.best/submit-a-tool,blocked,auto-scrapes a good preview with no account needed, but saving/submitting requires account creation
 10words,40,yes,medium,Micro directory,https://10words.io,blocked,requires account creation with password
 Launched.io,40,yes,medium,Launch directory,https://launched.io,dead,domain does not resolve as of 2026-07-19
-SideProjectors,35,yes,low,Startup directory,https://www.sideprojectors.com,todo,
-Build Voyage,33,yes,low,Launch directory,https://buildvoyage.com,todo,
-AlphaDigits,32,yes,low,Startup directory,https://alphadigits.com,todo,
-Fazier,30,yes,low,Launch directory,https://fazier.com/submit,todo,
-Microlaunch,30,yes,low,Launch directory,https://microlaunch.net,todo,
-PitchWall,25,yes,low,Launch directory,https://pitchwall.co,todo,
-PeerPush,25,yes,low,Launch directory,https://peerpush.net,todo,
-OpenHunts,25,yes,low,Launch directory,https://openhunts.com,todo,
-What Launched Today,20,yes,low,Launch directory,https://whatlaunched.today,todo,
-Tiny Launch,20,yes,low,Launch directory,https://tinylaun.ch,todo,
-Listicle outreach batch (10 targets),40-70,yes,manual,Editorial outreach,manual outreach,todo,cold outreach to existing "best Omegle alternatives 2026" / "best random chat apps" posts on other sites
+SideProjectors,35,yes,low,Startup directory,https://www.sideprojectors.com,blocked,requires login/account creation (SSO or email+password) to submit a project - no anonymous submission path found 2026-07-21
+Build Voyage,33,yes,low,Launch directory,https://buildvoyage.com,blocked,Product Information + Tech Stack form fills in anonymously (React/Express.js tagged) but final step is "Submit & create account" - requires Google/X SSO or email+password signup to actually publish; data entered was lost 2026-07-21
+AlphaDigits,32,yes,low,Startup directory,https://alphadigits.com,skipped,bad fit - site only reviews iOS/Android apps and the form requires an App Store promo code or .APK; Chatrio is a web app with no app-store presence; also site's comment sections are spam-flooded (quality concern) 2026-07-21
+Fazier,30,yes,low,Launch directory,https://fazier.com/submit,blocked,even the free Basic tier requires login (Google or email) before the submit form appears; free tier also requires embedding a Fazier backlink badge on chatrio.app 2026-07-21
+Microlaunch,30,yes,low,Launch directory,https://microlaunch.net,skipped,pivoted to paid-only ($39/launch "Pro Launch"); no free submission tier found in New Launch flow or /submit page 2026-07-21
+PitchWall,25,yes,low,Launch directory,https://pitchwall.co,blocked,even the Free Launch plan requires login (Google/GitHub/Microsoft/Discord SSO) before reaching the submit form; also loose fit (site frames itself as AI products/tools directory) 2026-07-21
+PeerPush,25,yes,low,Launch directory,https://peerpush.net,blocked,/submit redirects to login - requires email one-time-code or Google sign-in 2026-07-21
+OpenHunts,25,yes,low,Launch directory,https://openhunts.com,blocked,Submit button redirects straight to sign-in (Google/GitHub/email+password) 2026-07-21
+What Launched Today,20,yes,low,Launch directory,https://whatlaunched.today,blocked,"Launch your startup" goes straight to Create Account (Google SSO or email+password) 2026-07-21
+Tiny Launch,20,yes,low,Launch directory,https://tinylaun.ch,blocked,Submit Product goes straight to login/signup wall (Google/GitHub/X or email) 2026-07-21
+Listicle outreach batch (10 targets),40-70,yes,manual,Editorial outreach,manual outreach,blocked,"2026-07-22: posted 4 of 5 Tier 1 Medium comments (Kunal Kashyap, Kevin Gabeci, Scott Bune, Entertainment News Guru), then Medium suspended the account for posting near-identical promo comments back-to-back - 5th (Sanjainpriyansh) not posted. Status of the 4 live comments unknown. Blocked until you review the suspension. 3 Tier 2 email pitches (Togwe/Moopes/Owebest) still not sent - Gmail MCP token expired, user's Chrome session was a different account. See marketing/listicle-outreach-targets.md."
 Reddit (r/omegle r/chatting r/MakeNewFriendsHere),N/A,no,manual,Community,https://reddit.com,todo,90/10 rule - genuine participation only, mention chatrio when organically relevant
+Listicle outreach Tier 3 (5 targets),N/A,yes,manual,Editorial outreach,manual outreach,done/mixed,"2026-07-26: researched via web search since Semrush Backlinks API is returning 400 errors on this account (broken, not domain-specific - tried chatrio.app + omegle.com too). 3 of 5 sent from chatrioapp@gmail.com: Yapping.me (hi@yapping.me), SoftCircles (hello@softcircles.com), Coherent Lab (business@coherentlab.com) - confirmed in Sent folder. 2 skipped after inspecting the actual submission channel: DatingAdvice.com's contact form explicitly bans 'guest posts, link exchanges, or other promotional content' (~219K traffic/mo, would've been the biggest prize but not worth violating stated policy); ZEGOCLOUD's only contact form is a B2B sales-qualification form (company/job title/phone required), not an editorial contact. Skipped outright: Cleveland Scene (same sponsored/adult-adjacent syndicate as LA Weekly/Washington City Paper), Wondershare Filmora (huge but no editorial contact), MetaPress/Octal Digital (too weak), RandomChat.io/Poqe.app/Komegle (near-zero real traffic). Full detail + pitches in marketing/listicle-outreach-targets.md."

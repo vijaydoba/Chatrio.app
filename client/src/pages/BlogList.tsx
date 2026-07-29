@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
+import { NavLink, useParams, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { POSTS, Post, getSlotImage } from "../data/posts";
+import { getPostKeywords } from "../data/blog-topics";
 
 function titleCase(s: string) {
   return s
@@ -22,14 +23,32 @@ function normalizeAssetPath(path?: string) {
   return `/${path}`;
 }
 
+const INITIAL_VISIBLE_POSTS = 20;
+const LOAD_MORE_POSTS = 20;
+
+function categoryPath(category: string) {
+  return `/blog/${encodeURIComponent(category.toLowerCase())}`;
+}
+
+function primaryPostKeyword(post: Post) {
+  return getPostKeywords(post)[0] || post.category;
+}
+
 export default function BlogList() {
   // Route param is named "slug" because /blog/:slug is shared with post pages
   // (see BlogRoute in App.tsx); for this component it always holds a category.
   const { slug: category } = useParams<{ slug?: string }>();
+  const [searchParams] = useSearchParams();
   const activeCategory = normalizeCategorySlug(category);
 
-  const [q, setQ] = useState("");
+  const searchQueryParam = searchParams.get("search") || "";
+  const [q, setQ] = useState(searchQueryParam);
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_POSTS);
   const query = q.toLowerCase().trim();
+
+  useEffect(() => {
+    setQ(searchQueryParam);
+  }, [searchQueryParam]);
 
   const pageTitle =
     activeCategory === "all"
@@ -45,13 +64,26 @@ export default function BlogList() {
       })
       .filter((p) => {
         if (!query) return true;
-        const hay = `${p.title} ${p.excerpt} ${p.category}`.toLowerCase();
+        const hay = `${p.title} ${p.excerpt} ${p.category} ${getPostKeywords(p).join(" ")}`.toLowerCase();
         return hay.includes(query);
       });
   }, [activeCategory, query]);
 
   const featured = filtered[0];
   const rest = featured ? filtered.slice(1) : filtered;
+  const visibleRest = rest.slice(
+    0,
+    Math.max(0, visibleCount - (featured ? 1 : 0))
+  );
+  const shownCount = Math.min(
+    filtered.length,
+    visibleRest.length + (featured ? 1 : 0)
+  );
+  const hasMore = shownCount < filtered.length;
+
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE_POSTS);
+  }, [activeCategory, query]);
 
   const categories = useMemo(() => {
     const all = Array.from(
@@ -59,13 +91,18 @@ export default function BlogList() {
     ) as Post["category"][];
 
     const preferred: Post["category"][] = [
+      "Chat & Connection",
+      "Relationships",
+      "Mental Health",
+      "Dating",
       "Love",
       "Romance",
-      "Chat & Connection",
-      "Dating",
     ];
 
-    return preferred.filter((c) => all.includes(c));
+    return [
+      ...preferred.filter((c) => all.includes(c)),
+      ...all.filter((c) => !preferred.includes(c)),
+    ];
   }, []);
 
   const counts = useMemo(() => {
@@ -76,17 +113,17 @@ export default function BlogList() {
     return m;
   }, []);
 
-  const popularPosts = useMemo(() => {
+  const latestPosts = useMemo(() => {
     return POSTS.slice()
       .sort((a, b) => (a.date < b.date ? 1 : -1))
       .slice(0, 3);
   }, []);
 
   const BLOG_ALL = "/blog";
-  const BLOG_LOVE = "/blog/love";
-  const BLOG_ROMANCE = "/blog/romance";
-  const BLOG_DATING = "/blog/dating";
-  const BLOG_CHAT = "/blog/chat%20%26%20connection";
+  const canonicalUrl =
+    activeCategory === "all"
+      ? "https://chatrio.app/blog"
+      : `https://chatrio.app${categoryPath(activeCategory)}`;
 
   const blogDesc = activeCategory === "all"
     ? "Read articles about love, romance, dating, and online connections on the Chatrio blog."
@@ -97,12 +134,12 @@ export default function BlogList() {
       <Helmet>
         <title>{activeCategory === "all" ? "Blog – Love, Dating & Chat Tips" : `${pageTitle} Blog`} | Chatrio</title>
         <meta name="description" content={blogDesc} />
-        <link rel="canonical" href={activeCategory === "all" ? "https://chatrio.app/blog" : `https://chatrio.app/blog/${activeCategory}`} />
+        <link rel="canonical" href={canonicalUrl} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={`${activeCategory === "all" ? "Chatrio Blog" : pageTitle} – Love, Dating & Chat`} />
         <meta property="og:description" content={blogDesc} />
-        <meta property="og:url" content={activeCategory === "all" ? "https://chatrio.app/blog" : `https://chatrio.app/blog/${activeCategory}`} />
-        <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-icon-512-2026.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`Chatrio Blog – ${pageTitle}`} />
         <meta name="twitter:description" content={blogDesc} />
@@ -112,7 +149,7 @@ export default function BlogList() {
           "url": "https://chatrio.app/blog",
           "name": "Chatrio Blog",
           "description": "Articles about love, dating, romance, and online connections.",
-          "publisher": { "@type": "Organization", "name": "Chatrio", "url": "https://chatrio.app", "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png", "width": 512, "height": 512 } }
+          "publisher": { "@type": "Organization", "name": "Chatrio", "url": "https://chatrio.app", "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-icon-512-2026.png", "width": 512, "height": 512 } }
         })}</script>
         {featured && (
           <link rel="preload" as="image" href={normalizeAssetPath(getSlotImage(featured.thumbnail, "featured"))} />
@@ -129,26 +166,20 @@ export default function BlogList() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder={`Search in ${pageTitle.toLowerCase()}...`}
+            aria-label={`Search ${pageTitle.toLowerCase()} articles`}
             className="blog-search"
           />
         </div>
 
         <div className="blog-pills">
-          <NavLink to={BLOG_ALL} className="blog-pill">
+          <NavLink to={BLOG_ALL} end className="blog-pill">
             All
           </NavLink>
-          <NavLink to={BLOG_LOVE} className="blog-pill">
-            Love
-          </NavLink>
-          <NavLink to={BLOG_ROMANCE} className="blog-pill">
-            Romance
-          </NavLink>
-          <NavLink to={BLOG_CHAT} className="blog-pill">
-            Chat
-          </NavLink>
-          <NavLink to={BLOG_DATING} className="blog-pill">
-            Dating
-          </NavLink>
+          {categories.map((c) => (
+            <NavLink key={c} to={categoryPath(c)} className="blog-pill">
+              {c.replace("Chat & Connection", "Chat")}
+            </NavLink>
+          ))}
         </div>
       </section>
 
@@ -166,20 +197,34 @@ export default function BlogList() {
               {featured && (
                 <article className="blog-featured">
                   <div className="blog-featured-media">
-                    <img
-                      src={normalizeAssetPath(getSlotImage(featured.thumbnail, "featured"))}
-                      alt={featured.title}
-                      fetchPriority="high"
-                      loading="eager"
-                      width={1200}
-                      height={630}
-                      className="blog-featured-img"
-                    />
+                    <NavLink
+                      to={`/blog/${featured.slug}`}
+                      className="blog-thumbnail-link blog-thumbnail-link--featured"
+                      aria-label={`Read ${featured.title}`}
+                    >
+                      <img
+                        src={normalizeAssetPath(getSlotImage(featured.thumbnail, "featured"))}
+                        alt={featured.title}
+                        fetchPriority="high"
+                        loading="eager"
+                        width={1200}
+                        height={630}
+                        className="blog-featured-img"
+                      />
+                      <span className="blog-thumbnail-overlay" aria-hidden="true">
+                        <span className="blog-thumbnail-keyword">
+                          {primaryPostKeyword(featured)}
+                        </span>
+                        <span className="blog-thumbnail-title">
+                          {featured.title}
+                        </span>
+                      </span>
+                    </NavLink>
                   </div>
 
                   <div className="blog-featured-body">
                     <div className="blog-meta">
-                      {featured.date} • {featured.category}
+                      {`${featured.date} • ${featured.category}`}
                     </div>
 
                     <h2 className="blog-featured-title">
@@ -206,28 +251,42 @@ export default function BlogList() {
               <h3 className="blog-section-title">Recent Articles</h3>
 
               <div className="blog-list">
-                {rest.map((p) => (
+                {visibleRest.map((p) => (
                   <article className="blog-card-row" key={p.slug}>
-                    <picture style={{ display: "block" }}>
-                      {/* Mobile (≤600px): card stacks vertically at 16:9 full-width; hero is 1200×630 ≈ 16:9 */}
-                      <source
-                        media="(max-width: 600px)"
-                        srcSet={normalizeAssetPath(getSlotImage(p.thumbnail, "featured"))}
-                      />
-                      {/* Desktop: fixed 140×95 slot; use the slot-exact card image */}
-                      <img
-                        className="blog-thumb"
-                        src={normalizeAssetPath(getSlotImage(p.thumbnail, "card"))}
-                        alt={p.title}
-                        loading="lazy"
-                        width={280}
-                        height={190}
-                      />
-                    </picture>
+                    <NavLink
+                      to={`/blog/${p.slug}`}
+                      className="blog-card-media"
+                      aria-label={`Read ${p.title}`}
+                    >
+                      <picture>
+                        {/* Mobile (≤600px): card stacks vertically at 16:9 full-width; hero is 1200×630 ≈ 16:9 */}
+                        <source
+                          media="(max-width: 600px)"
+                          srcSet={normalizeAssetPath(getSlotImage(p.thumbnail, "featured"))}
+                        />
+                        {/* Desktop: fixed 140×95 slot; use the slot-exact card image */}
+                        <img
+                          className="blog-thumb"
+                          src={normalizeAssetPath(getSlotImage(p.thumbnail, "card"))}
+                          alt={p.title}
+                          loading="lazy"
+                          width={280}
+                          height={190}
+                        />
+                      </picture>
+                      <span className="blog-thumbnail-overlay blog-thumbnail-overlay--card" aria-hidden="true">
+                        <span className="blog-thumbnail-keyword">
+                          {primaryPostKeyword(p)}
+                        </span>
+                        <span className="blog-thumbnail-title">
+                          {p.title}
+                        </span>
+                      </span>
+                    </NavLink>
 
                     <div className="blog-card-body">
                       <div className="blog-meta">
-                        {p.date} • {p.category}
+                        {`${p.date} • ${p.category}`}
                       </div>
 
                       <h3 className="blog-card-title">
@@ -244,33 +303,52 @@ export default function BlogList() {
                   </article>
                 ))}
               </div>
+
+              <div className="blog-results-status" aria-live="polite">
+                {`Showing ${shownCount} of ${filtered.length} articles`}
+              </div>
+
+              {hasMore && (
+                <button
+                  type="button"
+                  className="blog-load-more"
+                  onClick={() => setVisibleCount((count) => count + LOAD_MORE_POSTS)}
+                >
+                  Load more articles
+                </button>
+              )}
             </>
           )}
         </div>
 
         <aside className="blog-side">
           <div className="blog-side-card">
-            <div className="blog-side-title">Popular Posts</div>
+            <div className="blog-side-title">Latest Posts</div>
 
             <div className="blog-side-list">
-              {popularPosts.map((p) => (
+              {latestPosts.map((p) => (
                 <NavLink
                   key={p.slug}
                   to={`/blog/${p.slug}`}
                   className="blog-side-item"
                 >
-                  <img
-                    src={normalizeAssetPath(getSlotImage(p.thumbnail, "thumb"))}
-                    alt={p.title}
-                    loading="lazy"
-                    width={104}
-                    height={104}
-                    className="blog-side-thumb"
-                  />
+                  <span className="blog-side-thumb-wrap">
+                    <img
+                      src={normalizeAssetPath(getSlotImage(p.thumbnail, "thumb"))}
+                      alt={p.title}
+                      loading="lazy"
+                      width={104}
+                      height={104}
+                      className="blog-side-thumb"
+                    />
+                    <span className="blog-side-thumb-keyword" aria-hidden="true">
+                      {primaryPostKeyword(p)}
+                    </span>
+                  </span>
                   <div className="blog-side-text">
                     <div className="blog-side-item-title">{p.title}</div>
                     <div className="blog-side-item-meta">
-                      {p.date} • {p.category}
+                      {`${p.date} • ${p.category}`}
                     </div>
                   </div>
                 </NavLink>
@@ -282,18 +360,14 @@ export default function BlogList() {
             <div className="blog-side-title">Categories</div>
 
             <div className="blog-side-pills">
-              <NavLink to={BLOG_ALL} className="blog-side-pill">
+              <NavLink to={BLOG_ALL} end className="blog-side-pill">
                 All <span className="blog-count">{POSTS.length}</span>
               </NavLink>
 
               {categories.map((c) => {
-                const slug =
-                  c.toLowerCase() === "chat & connection"
-                    ? BLOG_CHAT
-                    : `/blog/${c.toLowerCase()}`;
                 return (
-                  <NavLink key={c} to={slug} className="blog-side-pill">
-                    {c.replace("Chat & Connection", "Chat")}
+                  <NavLink key={c} to={categoryPath(c)} className="blog-side-pill">
+                    {c}
                     <span className="blog-count">{counts.get(c) ?? 0}</span>
                   </NavLink>
                 );
