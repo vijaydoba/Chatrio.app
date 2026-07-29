@@ -38,7 +38,11 @@ const staticPages = [
   { loc: "/blog/love",    lastmod: TODAY, changefreq: "weekly",  priority: "0.7" },
   { loc: "/blog/romance", lastmod: TODAY, changefreq: "weekly",  priority: "0.7" },
   { loc: "/blog/dating",  lastmod: TODAY, changefreq: "weekly",  priority: "0.7" },
+  { loc: "/blog/chat%20%26%20connection", lastmod: TODAY, changefreq: "weekly", priority: "0.7" },
+  { loc: "/blog/relationships", lastmod: TODAY, changefreq: "weekly", priority: "0.7" },
+  { loc: "/blog/mental%20health", lastmod: TODAY, changefreq: "weekly", priority: "0.7" },
   { loc: "/circles",      lastmod: TODAY, changefreq: "weekly",  priority: "0.8" },
+  { loc: "/blind-date",   lastmod: TODAY, changefreq: "weekly",  priority: "0.8" },
   { loc: "/about",        lastmod: TODAY, changefreq: "monthly", priority: "0.6" },
   { loc: "/editorial-standards", lastmod: TODAY, changefreq: "monthly", priority: "0.5" },
   { loc: "/contact",      lastmod: TODAY, changefreq: "monthly", priority: "0.5" },
@@ -52,7 +56,9 @@ const postPages = slugs.map((slug, i) => ({
   lastmod: dates[i] || TODAY,
   changefreq: "monthly",
   priority: "0.8",
-  image: thumbnails[i] ? `${BASE_URL}/${thumbnails[i]}` : null,
+  image: thumbnails[i]
+    ? `${BASE_URL}/${thumbnails[i].replace(/^\/+/, "")}`
+    : null,
 }));
 
 /* ── Build sitemap XML ── */

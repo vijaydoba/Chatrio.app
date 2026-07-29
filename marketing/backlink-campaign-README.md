@@ -66,6 +66,17 @@ Net: nothing left in medium priority that Claude can push forward alone. See the
 - **WebWiki** — no working self-serve submission path found (old `/addurl.html` pattern 404s); domain search also 404s. Not pursued further; low priority (DR 60) so not worth more digging unless it resurfaces as valuable.
 - **Tech.co** — no self-serve submission form found; it's an editorial news site, not a directory. Would need a journalist pitch/outreach email instead — treat like the listicle outreach batch, not a quick form fill.
 
+## Low-priority sweep, 2026-07-21
+
+Went through all 10 low-priority sites. Result: every single one is blocked on account creation now - this batch is entirely composed of newer launch/directory sites (2024-2026 vintage) that all gate submission behind login, unlike the older directories from the medium-priority batch which mostly had genuine anonymous forms.
+
+- **Blocked on login/account creation** (Claude cannot create accounts - hard rule): SideProjectors, Fazier, PitchWall (even its free tier), PeerPush, OpenHunts, What Launched Today, Tiny Launch. All redirect straight to a Google/GitHub/X/email signup wall before or instead of a submission form.
+- **Build Voyage** - closest to working: the Product Information + Tech Stack steps are a genuine anonymous form (filled in Chatrio's info, tagged React/Express.js), but the final "Submit & create account" step requires signup to actually publish. Data entered was lost since there's no way to save a draft without an account.
+- **Skipped, bad fit**: AlphaDigits (only reviews iOS/Android apps via App Store promo code or .APK - Chatrio is a web app; also its comment sections are spam-flooded, a quality red flag).
+- **Skipped, paid-only**: Microlaunch (pivoted to $39/launch, no free tier left).
+
+Net: nothing left in low priority that Claude can push forward alone either. Full notes in the CSV.
+
 ## Remaining — todo (in priority order)
 
 High priority:
@@ -74,17 +85,33 @@ High priority:
 
 Medium priority: exhausted for now — see "Medium-priority sweep, 2026-07-19" above. Everything left needs you to either log in, submit with your own real email/name, or is a dead/bad-fit site not worth pursuing.
 
-Low priority:
-SideProjectors, Build Voyage, AlphaDigits, Fazier, Microlaunch, PitchWall, PeerPush, OpenHunts, What Launched Today, Tiny Launch.
+Low priority: exhausted as of 2026-07-21 — see "Low-priority sweep" above. All 10 sites need you to log in/sign up (SideProjectors, Build Voyage, Fazier, PitchWall, PeerPush, OpenHunts, What Launched Today, Tiny Launch) or are bad fit/paid-only (AlphaDigits, Microlaunch).
 
 Manual / not a form submission:
-- Listicle outreach batch (10 targets) — cold outreach to existing "best Omegle alternatives 2026" posts. Not started; needs target research + drafted pitch emails (agreed earlier as a separate deliverable, not yet done).
+- **Listicle outreach batch (10 targets) — Medium leg DEAD as of 2026-07-22/23.** Full detail in `marketing/listicle-outreach-targets.md`. Posted 4 of 5 Tier 1 Medium comments (Kunal Kashyap, Kevin Gabeci, Scott Bune, Entertainment News Guru) back-to-back in one session — Medium suspended the account before the 5th (Sanjainpriyansh) could be posted. Checked Medium's own Help Center ("Reasons for Suspensions or Restrictions"): this is a real ToS violation, not a false flag — "posting content primarily to drive traffic to... an external site" is explicitly listed as spam, and spam content is "immediately removed without notification," so the 4 posted comments are almost certainly already gone, not just the account restricted. Medium does offer an appeal form, but their own guidance is to bring the account into compliance first — appealing "it was legitimate outreach" won't work since the pattern matches their spam definition exactly. **Recommendation: treat Medium as closed for this link-drop approach; don't retry with this account.** If Medium is wanted again later, it'd need to be genuine participation (real posts/engagement over time), not outreach comments. The 3 Tier 2 email pitches (Togwe, Moopes, Owebest) are drafted but unsent — Gmail MCP connector token expired, and the Chrome browser session turned out to be logged into an unrelated personal Gmail account (divyeshdhanani525@gmail.com, not chatrioapp@gmail.com), so Claude stopped rather than use it.
 - Reddit (r/omegle, r/chatting, r/MakeNewFriendsHere) — genuine participation only, 90/10 rule, no bulk posting.
 
 ## Next session starting point
 
-High priority is down to Slashdot (LinkedIn on hold). Log into Slashdot, then say it's ready — Claude will fill in and submit using `directory-submission-copy.md`, then update the CSV.
+Slashdot skipped per your instruction (2026-07-22) — login process too long, not worth pursuing. LinkedIn remains on hold.
 
-Medium priority is exhausted — what's left needs you to log in, submit with your own name/email, or isn't worth pursuing (dead/bad-fit sites). Low priority (SideProjectors, Build Voyage, AlphaDigits, Fazier, Microlaunch, PitchWall, PeerPush, OpenHunts, What Launched Today, Tiny Launch) hasn't been attempted yet — worth a pass next.
+Medium and low priority are both exhausted as of 2026-07-21 — everything left in either tier needs you to log in/create an account, submit with your own name/email, or is dead/bad-fit/paid-only. There is no more directory-submission work Claude can push forward alone without your login.
+
+**Tier 2 listicle outreach emails — sent 2026-07-26.** Logged into chatrioapp@gmail.com in Chrome (account was already signed in, no password needed), sent all 3: Togwe (hello@togwe.com), Moopes (contact@moopes.com), Owebest (info@owebest.com). Confirmed in Sent folder. Full detail in `marketing/listicle-outreach-targets.md`. Check chatrioapp@gmail.com inbox in a few days for replies.
+
+**Reddit — closed 2026-07-26.** Checked rules before posting anything (per user instruction, learning from the Medium suspension): r/omegle Rule 5 explicitly bans self-promotion (posts) and Rule 1 bans spam (posts & comments) — a chatrio.app mention there is a direct rule violation. r/chatting has no posted rules but is a dead subreddit (newest visible posts are ~4 years old) — not worth pursuing. r/MakeNewFriendsHere's one allowed angle (comment in the pinned weekly meta-thread) was already done 2026-07-24. User decided to skip Reddit as a channel rather than pursue slow genuine participation or hunt for other subreddits.
+
+What's left:
+- **Listicle outreach — Medium leg** (5 targets) is dead, confirmed real ToS violation, don't retry (see above). No update on suspension status.
 
 Disavow and the Startup Fame badge deploy are both done — nothing outstanding on either.
+
+## New batch found, 2026-07-26: Listicle outreach Tier 3 (5 targets)
+
+Semrush's Backlinks API (`semrush_backlinks` / `semrush_backlinks_domains`) is returning 400 errors on this account — tried chatrio.app and even omegle.com, both fail, so it's an account/subscription-level issue (likely needs a separate Backlinks add-on beyond the Standard API plan), not domain-specific. Couldn't do a referring-domain gap analysis against competitors as a result; used targeted web search instead to find fresh 2026 "Omegle alternatives" roundups not already in Tier 1/2, then verified each with `semrush_domain_overview` (real organic traffic) to filter out weak/dead sites.
+
+Ranked by real traffic: **DatingAdvice.com** (~219K/mo, biggest prize, real editorial dating-media brand, contact form) > Yapping.me (~50K/mo) > SoftCircles (~37.6K/mo) > ZEGOCLOUD (~20K/mo, real B2B chat-API vendor) > Coherent Lab (~1.8K/mo). Skipped Cleveland Scene (same sponsored/adult-adjacent "Partner Corner" syndicate as LA Weekly/Washington City Paper) and Wondershare Filmora (huge but no real editorial contact route found).
+
+**Sent 2026-07-26** from chatrioapp@gmail.com (confirmed in Sent folder): Yapping.me, SoftCircles, Coherent Lab. **Skipped after inspecting the actual form**: DatingAdvice.com's contact form explicitly states it doesn't accept "guest posts, link exchanges, or other promotional content" — submitting anyway would violate their stated policy, same category of mistake as the Medium suspension. ZEGOCLOUD's only contact route is a B2B sales-qualification form (company name/job title/phone required) for people buying their chat API, not an editorial contact — no legitimate submission path found. Full detail in `marketing/listicle-outreach-targets.md` Tier 3 section.
+
+Next step: check chatrioapp@gmail.com inbox in a few days for replies to the 3 sent. DatingAdvice.com and ZEGOCLOUD remain open only if a real editorial/press contact route is found later (not the forms already checked).

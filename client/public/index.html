@@ -29,13 +29,17 @@
 
     <!-- Open Graph (static across all pages) -->
     <meta property="og:site_name" content="Chatrio" />
-    <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png" />
-    <meta property="og:image:width" content="512" />
-    <meta property="og:image:height" content="512" />
+    <meta property="og:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Chatrio — anonymous chat with strangers. Real talk, right now." />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://chatrio.app/branding/chatrio-512.png" />
+    <meta name="twitter:site" content="@Chatrioapp1" />
+    <meta name="twitter:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+    <meta name="twitter:image:alt" content="Chatrio — anonymous chat with strangers. Real talk, right now." />
 
     <!-- JSON-LD: WebSite + Organization (sitewide); WebApplication lives only on Home via Helmet -->
     <script type="application/ld+json">
@@ -63,9 +67,13 @@
           "@id": "https://chatrio.app/#org",
           "name": "Chatrio",
           "url": "https://chatrio.app/",
+          "sameAs": [
+            "https://x.com/Chatrioapp1",
+            "https://discord.gg/289JDCJtRj"
+          ],
           "logo": {
             "@type": "ImageObject",
-            "url": "https://chatrio.app/branding/chatrio-512.png",
+            "url": "https://chatrio.app/branding/chatrio-icon-512-2026.png",
             "width": 512,
             "height": 512
           },
@@ -79,12 +87,12 @@
     }
     </script>
 
-    <!-- Favicon: SVG for Chrome/Firefox (supports gradient), PNG fallback for Safari/Google -->
-    <link rel="icon" href="%PUBLIC_URL%/branding/chatrio-favicon.svg" type="image/svg+xml" />
-    <link rel="icon" type="image/png" sizes="512x512" href="%PUBLIC_URL%/branding/chatrio-512.png" />
-    <link rel="icon" type="image/png" sizes="64x64"  href="%PUBLIC_URL%/branding/chatrio-64.png" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/branding/chatrio-512.png" />
+    <!-- Versioned icons prevent search and link-preview caches from retaining an older logo. -->
+    <link rel="icon" href="%PUBLIC_URL%/branding/chatrio-favicon-2026.svg" type="image/svg+xml" />
+    <link rel="icon" type="image/png" sizes="48x48" href="%PUBLIC_URL%/branding/chatrio-icon-48-2026.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="%PUBLIC_URL%/branding/chatrio-icon-192-2026.png" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon-2026.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/branding/chatrio-icon-512-2026.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
     <title>Chatrio</title>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
@@ -148,12 +148,16 @@ export default function Home() {
         <meta property="og:title" content="Chatrio – Free Anonymous Chat with Strangers" />
         <meta property="og:description" content="Chat with strangers anonymously. No sign-up needed. Free, instant, private random chat." />
         <meta property="og:url" content="https://chatrio.app/" />
-        <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png" />
-        <meta property="og:image:width" content="512" />
-        <meta property="og:image:height" content="512" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Chatrio — anonymous chat with strangers. Real talk, right now." />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Chatrio – Free Anonymous Chat with Strangers" />
         <meta name="twitter:description" content="Chat with strangers anonymously. No sign-up needed. Free, instant, private random chat." />
+        <meta name="twitter:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta name="twitter:image:alt" content="Chatrio — anonymous chat with strangers. Real talk, right now." />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "HowTo",
@@ -219,6 +223,15 @@ export default function Home() {
             <span className="lp-live-dot" />
             Explore Circles
           </NavLink>
+          <a
+            href="https://discord.gg/289JDCJtRj"
+            className="lp-btn-discord"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Join the Chatrio Discord community (opens in a new tab)"
+          >
+            Join Discord
+          </a>
         </div>
 
         <div className="lp-trust-row lp-anim-fade-up" style={{ animationDelay: "320ms" }}>

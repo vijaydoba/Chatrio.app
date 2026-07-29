@@ -1,22 +1,34 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useParams, NavLink, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { POSTS, Post, POST_REDIRECTS } from "../data/posts";
-import { POST_CONTENT } from "../data/posts-content";
+import { getPostKeywords, relatedPostScore } from "../data/blog-topics";
 
 function readingTime(html: string): number {
   const words = html.replace(/<[^>]+>/g, " ").trim().split(/\s+/).length;
   return Math.max(1, Math.round(words / 200));
 }
 
-function seoTitle(title: string): string {
+export function seoTitle(title: string): string {
   const SUFFIX = " | Chatrio";
-  const MAX = 60;
-  if (title.length <= MAX) return title + SUFFIX;
-  const cut = title.slice(0, MAX).trimEnd();
+  const MAX_TOTAL_LENGTH = 60;
+  if ((title + SUFFIX).length <= MAX_TOTAL_LENGTH) return title + SUFFIX;
+
+  const available = MAX_TOTAL_LENGTH - SUFFIX.length - 1;
+  const cut = title.slice(0, available).trimEnd();
   const lastSpace = cut.lastIndexOf(" ");
-  const short = lastSpace > MAX * 0.6 ? cut.slice(0, lastSpace) : cut;
+  const short = lastSpace > available * 0.6 ? cut.slice(0, lastSpace) : cut;
   return short + "…" + SUFFIX;
+}
+
+export function seoDescription(description: string): string {
+  const MAX_LENGTH = 155;
+  const clean = description.replace(/\s+/g, " ").trim();
+  if (clean.length <= MAX_LENGTH) return clean;
+
+  const cut = clean.slice(0, MAX_LENGTH - 1).trimEnd();
+  const lastSpace = cut.lastIndexOf(" ");
+  return `${lastSpace > MAX_LENGTH * 0.7 ? cut.slice(0, lastSpace) : cut}…`;
 }
 
 type ImageDimensions = { width: number; height: number };
@@ -42,6 +54,7 @@ function articleImageDimensions(src: string): ImageDimensions | undefined {
   if (number === 13) return { width: 1024, height: 559 };
   if (number >= 14 && number <= 18) return { width: 1200, height: 630 };
   if (number >= 19 && number <= 22) return { width: 1600, height: 900 };
+  if (number === 23) return { width: 1059, height: 556 };
   return undefined;
 }
 
@@ -59,16 +72,71 @@ export function stabilizeArticleImages(html: string): string {
   });
 }
 
+function prerenderedArticleHtml(slug: string | undefined): string | null {
+  if (!slug || typeof document === "undefined") return null;
+  const existing = document.querySelector<HTMLElement>(
+    `.post-body[data-blog-slug="${slug}"]`
+  );
+  return existing?.innerHTML || null;
+}
+
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const post: Post | undefined = POSTS.find((p) => p.slug === slug);
+  // Production HTML already contains the article body. Seed the first client
+  // render from that markup so hydration does not replace a full article with
+  // "Loading article…" before the content asset is fetched again.
+  const [rawContentHtml, setRawContentHtml] = useState<string | null>(() =>
+    prerenderedArticleHtml(post?.slug)
+  );
+  const [contentError, setContentError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const postKeywords = useMemo(() => (post ? getPostKeywords(post) : []), [post]);
 
   const relatedPosts = useMemo(() => {
     if (!post) return [];
-    const sameCat = POSTS.filter((p) => p.slug !== post.slug && p.category === post.category).slice(0, 3);
-    const other = POSTS.filter((p) => p.slug !== post.slug && p.category !== post.category).slice(0, 3 - sameCat.length);
-    return [...sameCat, ...other];
+    return POSTS.filter((candidate) => candidate.slug !== post.slug)
+      .map((candidate) => ({
+        candidate,
+        score: relatedPostScore(post, candidate),
+      }))
+      .sort(
+        (a, b) =>
+          b.score - a.score ||
+          (a.candidate.date < b.candidate.date ? 1 : -1)
+      )
+      .slice(0, 3)
+      .map(({ candidate }) => candidate);
   }, [post]);
+
+  useEffect(() => {
+    if (!post) return;
+
+    const controller = new AbortController();
+    setContentError(false);
+
+    fetch(`/blog-content/${encodeURIComponent(post.slug)}.html`, {
+      signal: controller.signal,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Article content request failed: ${response.status}`);
+        }
+        return response.text();
+      })
+      .then((html) => setRawContentHtml(html))
+      .catch((error) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setContentError(true);
+      });
+
+    return () => controller.abort();
+  }, [post, retryCount]);
+
+  const contentHtml = useMemo(
+    () => stabilizeArticleImages(rawContentHtml || ""),
+    [rawContentHtml]
+  );
 
   // Consolidated duplicate posts: redirect old slugs to their canonical keeper.
   if (slug && POST_REDIRECTS[slug]) {
@@ -90,33 +158,34 @@ export default function BlogPost() {
     );
   }
 
-  const contentHtml = stabilizeArticleImages(POST_CONTENT[post.slug] || "");
   const canonicalUrl = `https://chatrio.app/blog/${post.slug}`;
-  const ogImage = post.thumbnail ? `https://chatrio.app/${String(post.thumbnail).replace(/^\/?/, "")}` : "https://chatrio.app/branding/chatrio-512.png";
-  const mins = readingTime(contentHtml);
+  const ogImage = post.thumbnail ? `https://chatrio.app/${String(post.thumbnail).replace(/^\/?/, "")}` : "https://chatrio.app/branding/chatrio-512.png?v=2";
+  const metaDescription = seoDescription(post.excerpt);
+  const mins = rawContentHtml ? readingTime(contentHtml) : null;
 
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", padding: 12 }}>
       <Helmet>
         <title>{seoTitle(post.title)}</title>
-        <meta name="description" content={post.excerpt} />
+        <meta name="description" content={metaDescription} />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:type" content="article" />
         <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.excerpt} />
+        <meta property="og:description" content={metaDescription} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:image" content={ogImage} />
         <meta property="article:published_time" content={post.date} />
         <meta property="article:section" content={post.category} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={post.excerpt} />
+        <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={ogImage} />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BlogPosting",
           "headline": post.title,
-          "description": post.excerpt,
+          "description": metaDescription,
+          "keywords": postKeywords.join(", "),
           "image": {
             "@type": "ImageObject",
             "url": ogImage,
@@ -138,7 +207,7 @@ export default function BlogPost() {
             "@type": "Organization",
             "name": "Chatrio",
             "url": "https://chatrio.app",
-            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png", "width": 512, "height": 512 }
+            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png?v=2", "width": 512, "height": 512 }
           },
           "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl }
         })}</script>
@@ -162,25 +231,55 @@ export default function BlogPost() {
         <span>{post.date}</span>
         <span>·</span>
         <span>{post.category}</span>
-        <span>·</span>
-        <span className="post-read-time">{mins} min read</span>
+        {mins !== null && (
+          <>
+            <span>·</span>
+            <span className="post-read-time">{`${mins} min read`}</span>
+          </>
+        )}
       </div>
 
-      <div
-        className="post-body google-anno-skip"
-        style={{ lineHeight: 1.8, opacity: 0.95 }}
-        dangerouslySetInnerHTML={{ __html: contentHtml }}
-      />
+      {postKeywords.length > 0 && (
+        <nav className="post-topic-tags" aria-label="Article topics">
+          <span className="post-topic-label">Explore topics:</span>
+          {postKeywords.map((keyword) => (
+            <NavLink
+              key={keyword}
+              to={`/blog?search=${encodeURIComponent(keyword)}`}
+              className="post-topic-chip"
+            >
+              {keyword}
+            </NavLink>
+          ))}
+        </nav>
+      )}
+
+      {contentError ? (
+        <div className="post-content-state" role="alert">
+          <p>The article body could not be loaded.</p>
+          <button type="button" onClick={() => setRetryCount((count) => count + 1)}>
+            Try again
+          </button>
+        </div>
+      ) : rawContentHtml === null ? (
+        <div className="post-content-state" role="status">
+          Loading article…
+        </div>
+      ) : (
+        <div
+          className="post-body google-anno-skip"
+          data-blog-slug={post.slug}
+          style={{ lineHeight: 1.8, opacity: 0.95 }}
+          dangerouslySetInnerHTML={{ __html: contentHtml }}
+        />
+      )}
 
       <aside className="post-author-box" aria-label="About the author">
         <div className="post-author-avatar" aria-hidden="true">V</div>
         <div>
           <div className="post-author-name">Vijay · Founder of Chatrio</div>
           <p className="post-author-bio">
-            Vijay is the founder of Chatrio. He built the platform to make anonymous,
-            judgment-free conversation with strangers simple and safe, and writes about
-            online connection, chat safety, and digital loneliness. Every article here is
-            written and reviewed against our{" "}
+            {"Vijay is the founder of Chatrio. He built the platform to make anonymous, judgment-free conversation with strangers simple and safe, and writes about online connection, chat safety, and digital loneliness. Every article here is written and reviewed against our "}
             <NavLink to="/editorial-standards">editorial standards</NavLink>.
           </p>
         </div>
@@ -188,16 +287,22 @@ export default function BlogPost() {
 
       {relatedPosts.length > 0 && (
         <nav aria-label="Related posts" style={{ marginTop: 48, borderTop: "1px solid var(--border, #e2e8f0)", paddingTop: 32 }}>
-          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: 16 }}>Related Articles</h2>
+          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: 16 }}>You May Also Like</h2>
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
-            {relatedPosts.map((p) => (
-              <li key={p.slug} style={{ border: "1px solid var(--border, #e2e8f0)", borderRadius: 8, padding: 16 }}>
-                <NavLink to={`/blog/${p.slug}`} style={{ textDecoration: "none", color: "inherit", display: "block" }}>
-                  <div style={{ fontSize: "0.75rem", color: "var(--muted, #64748b)", marginBottom: 6 }}>{p.category}</div>
-                  <div style={{ fontWeight: 600, lineHeight: 1.4 }}>{p.title}</div>
-                </NavLink>
-              </li>
-            ))}
+            {relatedPosts.map((p) => {
+              const sharedKeyword =
+                getPostKeywords(p).find((keyword) => postKeywords.includes(keyword)) ||
+                p.category;
+              return (
+                <li key={p.slug} className="post-related-card">
+                  <NavLink to={`/blog/${p.slug}`} style={{ textDecoration: "none", color: "inherit", display: "block" }}>
+                    <div className="post-related-topic">{sharedKeyword}</div>
+                    <div className="post-related-title">{p.title}</div>
+                    <p className="post-related-excerpt">{seoDescription(p.excerpt)}</p>
+                  </NavLink>
+                </li>
+              );
+            })}
           </ul>
         </nav>
       )}
