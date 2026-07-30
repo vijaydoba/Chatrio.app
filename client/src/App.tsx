@@ -10,6 +10,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { initPush } from "./push";
+import NativeSplash from "./NativeSplash";
 import About from "./pages/About";
 import EditorialStandards from "./pages/EditorialStandards";
 import Contact from "./pages/Contact";
@@ -240,6 +241,7 @@ export default function App() {
 
   return (
     <div className="site">
+      {isNative && <NativeSplash />}
       {!isNative && (
       <>
       <header className="site-header">
