@@ -1,12 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import ReactDOM from "react-dom";
 import { Helmet } from "react-helmet-async";
 import { NavLink } from "react-router-dom";
 import { Socket } from "socket.io-client";
+import { MapContainer, TileLayer, Circle, Marker, AttributionControl } from "react-leaflet";
+import L from "leaflet";
 import {
   circles, connectCirclesSocket, enableWebPush, resyncWebPush, webPushSupported,
   Me, NearbyUser, Incoming, Thread, DmMsg, Group, MyGroup, GroupMsg, BlockedUser, Gender,
 } from "../circlesApi";
 import { useKeyboardViewport } from "../useKeyboardViewport";
+import "leaflet/dist/leaflet.css";
 import "./circles-local.css";
 
 type Tab = "nearby" | "requests" | "chats" | "groups";
@@ -31,6 +35,23 @@ const avClass = (name: string) => {
   const n = hashStr(name || "?") % 6;
   return n === 0 ? "cl-avatar" : `cl-avatar cl-av-${n}`;
 };
+const meMapIcon = L.divIcon({
+  className: "cl-map-me-icon", html: "", iconSize: [16, 16], iconAnchor: [8, 8],
+});
+// Empty anchor divIcon — the real content (an <Av>, with its async avatar image
+// and "active now" dot) is portaled into this element's DOM node once Leaflet
+// creates it, so map markers look identical to the avatars used everywhere else.
+const avatarAnchorIcon = L.divIcon({ className: "cl-map-av-anchor", html: "", iconSize: [34, 34], iconAnchor: [17, 17] });
+function AvatarMapMarker({ position, onClick, children }: { position: [number, number]; onClick: () => void; children: React.ReactNode }) {
+  const markerRef = useRef<L.Marker>(null);
+  const [iconEl, setIconEl] = useState<HTMLElement | null>(null);
+  useEffect(() => { setIconEl(markerRef.current?.getElement() || null); }, []);
+  return (
+    <Marker ref={markerRef} position={position} icon={avatarAnchorIcon} eventHandlers={{ click: onClick }}>
+      {iconEl && ReactDOM.createPortal(children, iconEl)}
+    </Marker>
+  );
+}
 // Deterministic emoji per group (no backend field needed): keyword match first, hash fallback.
 const GROUP_EMOJI_KEYWORDS: Array<[RegExp, string]> = [
   [/coffee|cafe|café|tea|brunch/i, "☕"],
@@ -140,6 +161,18 @@ const parseKm = (d: string) => {
   if (mm) return parseFloat(mm[1]) / 1000;
   return 0.25; // "very close"
 };
+// A person's marker "wanders" within their already-fuzzed ~2.2km area every
+// ~45s instead of sitting at one fixed point — so even someone watching the
+// map for a while can't converge on a stable spot, only "somewhere in here."
+const jitterSeed = (n: number) => { const x = Math.sin(n) * 10000; return x - Math.floor(x); };
+const jitteredLatLng = (lat: number, lng: number, id: number, tick: number): [number, number] => {
+  const r1 = jitterSeed(id * 12.9898 + tick * 78.233);
+  const r2 = jitterSeed(id * 39.346 + tick * 11.135);
+  const angle = r1 * 2 * Math.PI;
+  const distDeg = r2 * 0.007; // up to ~750m wander, well inside the fuzzed cell
+  const latRad = (lat * Math.PI) / 180;
+  return [lat + distDeg * Math.sin(angle), lng + (distDeg * Math.cos(angle)) / Math.max(0.2, Math.cos(latRad))];
+};
 // Activate a non-button clickable element from the keyboard (Enter / Space).
 const keyActivate = (fn: () => void) => (e: React.KeyboardEvent) => {
   if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fn(); }
@@ -162,6 +195,7 @@ const Ic = {
   pin: svg(<><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></>, 26),
   bell: svg(<><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></>, 20),
   bellOff: svg(<><path d="M13.73 21a2 2 0 0 1-3.46 0" /><path d="M18.63 13A17.89 17.89 0 0 1 18 8" /><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14" /><path d="M18 8a6 6 0 0 0-9.33-5" /><line x1="1" y1="1" x2="23" y2="23" /></>, 20),
+  locate: svg(<><circle cx="12" cy="12" r="3.2" /><line x1="12" y1="2" x2="12" y2="5" /><line x1="12" y1="19" x2="12" y2="22" /><line x1="2" y1="12" x2="5" y2="12" /><line x1="19" y1="12" x2="22" y2="12" /></>, 19),
   // tab icons
   radar: svg(<><circle cx="12" cy="12" r="2.4" /><circle cx="12" cy="12" r="6.5" opacity="0.55" /><circle cx="12" cy="12" r="10" opacity="0.3" /></>, 17),
   users: svg(<><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>, 17),
@@ -194,21 +228,47 @@ export default function CirclesLocal() {
   const [locShared, setLocShared] = useState(false);
   const [locError, setLocError] = useState("");
   const [locDenied, setLocDenied] = useState(false);
+  // Coarse (~2.2km grid-snapped) coords for the user's own area — used only to
+  // pick a blurred map backdrop tile. Never anyone else's position, never precise.
+  const [myArea, setMyArea] = useState<{ lat: number; lng: number } | null>(null);
 
   const [tab, setTab] = useState<Tab>("nearby");
   const [nearby, setNearby] = useState<NearbyUser[]>([]);
-  const [radarZoom, setRadarZoom] = useState(1);
-  const RADAR_ZOOM_MIN = 1;
-  const RADAR_ZOOM_MAX = 2.6;
-  const zoomRadar = (delta: number) => setRadarZoom((z) => Math.min(RADAR_ZOOM_MAX, Math.max(RADAR_ZOOM_MIN, +(z + delta).toFixed(2))));
-  const radarFrameRef = useRef<HTMLDivElement>(null);
+  const [mapTick, setMapTick] = useState(() => Math.floor(Date.now() / 45000));
   useEffect(() => {
-    const el = radarFrameRef.current;
-    if (!el) return;
-    const offset = (190 * radarZoom - 190) / 2; // center the (known) enlarged content in the fixed 190px viewport
-    el.scrollLeft = offset;
-    el.scrollTop = offset;
-  }, [radarZoom]);
+    const id = setInterval(() => setMapTick(Math.floor(Date.now() / 45000)), 5000);
+    return () => clearInterval(id);
+  }, []);
+
+  const mapRef = useRef<L.Map | null>(null);
+  const recenterMap = () => {
+    if (myArea) mapRef.current?.setView([myArea.lat, myArea.lng], 13, { animate: true });
+  };
+
+  // Draggable nearby-list sheet over the map — peek / half / full snap points.
+  const SHEET_MIN = 128;
+  const sheetHalf = () => Math.round(window.innerHeight * 0.46);
+  const sheetMax = () => Math.round(window.innerHeight - 200);
+  const [sheetH, setSheetH] = useState(sheetHalf);
+  const [sheetDragging, setSheetDragging] = useState(false);
+  const sheetDragRef = useRef<{ startY: number; startH: number } | null>(null);
+  const onSheetPointerDown = (e: React.PointerEvent) => {
+    (e.currentTarget as Element).setPointerCapture(e.pointerId);
+    sheetDragRef.current = { startY: e.clientY, startH: sheetH };
+    setSheetDragging(true);
+  };
+  const onSheetPointerMove = (e: React.PointerEvent) => {
+    if (!sheetDragRef.current) return;
+    const dy = sheetDragRef.current.startY - e.clientY; // dragging up grows the sheet
+    setSheetH(Math.min(sheetMax(), Math.max(SHEET_MIN, sheetDragRef.current.startH + dy)));
+  };
+  const onSheetPointerUp = () => {
+    if (!sheetDragRef.current) return;
+    sheetDragRef.current = null;
+    setSheetDragging(false);
+    const breakpoints = [SHEET_MIN, sheetHalf(), sheetMax()];
+    setSheetH((h) => breakpoints.reduce((a, b) => (Math.abs(b - h) < Math.abs(a - h) ? b : a)));
+  };
   const [incoming, setIncoming] = useState<Incoming[]>([]);
   const [threads, setThreads] = useState<Thread[]>([]);
   const [notice, setNotice] = useState("");
@@ -289,13 +349,14 @@ export default function CirclesLocal() {
   }, []);
 
   // Fullscreen thread: hide the site chrome so there's nothing above the thread
-  // for the browser to scroll to when the keyboard opens.
+  // for the browser to scroll to when the keyboard opens. The Nearby map view
+  // uses the same trick to go edge-to-edge.
   useEffect(() => {
     const body = document.body;
-    if (active || activeGroup) body.classList.add("circles-fullscreen");
+    if (active || activeGroup || tab === "nearby") body.classList.add("circles-fullscreen");
     else body.classList.remove("circles-fullscreen");
     return () => body.classList.remove("circles-fullscreen");
-  }, [active, activeGroup]);
+  }, [active, activeGroup, tab]);
 
   // Lock body scroll on mobile while a thread is open — otherwise Android's
   // "scroll focused input into view" fights with the --kb-vh resize and the
@@ -423,7 +484,8 @@ export default function CirclesLocal() {
       async (pos) => {
         setLocDenied(false);
         try {
-          await circles.setLocation(pos.coords.latitude, pos.coords.longitude);
+          const res = await circles.setLocation(pos.coords.latitude, pos.coords.longitude);
+          setMyArea({ lat: res.lat, lng: res.lng });
           setLocShared(true);
           await refreshNearby();
         } catch (e) { setLocError(e instanceof Error ? e.message : "Failed"); }
@@ -911,25 +973,27 @@ export default function CirclesLocal() {
   // Main: tabs
   return Shell(
     <div className="cl-main">
-      <div className="cl-topbar">
-        <span className="cl-topbar-title">Circles</span>
-        <span className="cl-loc-chip">{Ic.pinSm} Approximate area</span>
-        <button className="cl-icon-btn cl-me-btn" aria-label="Your profile — change name or avatar" onClick={openProfile}>
-          <Av name={me.nickname} variant={me.avatar} gender={me.gender} small />
-        </button>
-        <button className="cl-icon-btn" aria-label="Blocked users" onClick={openBlocked}>{Ic.userX}</button>
-        <button className="cl-icon-btn" aria-label={muted ? "Unmute notification sound" : "Mute notification sound"}
-          aria-pressed={muted} onClick={() => setMuted((m) => !m)}>{muted ? Ic.bellOff : Ic.bell}</button>
-      </div>
+      {tab !== "nearby" && (
+        <div className="cl-topbar">
+          <span className="cl-topbar-title">Circles</span>
+          <span className="cl-loc-chip">{Ic.pinSm} Approximate area</span>
+          <button className="cl-icon-btn cl-me-btn" aria-label="Your profile — change name or avatar" onClick={openProfile}>
+            <Av name={me.nickname} variant={me.avatar} gender={me.gender} small />
+          </button>
+          <button className="cl-icon-btn" aria-label="Blocked users" onClick={openBlocked}>{Ic.userX}</button>
+          <button className="cl-icon-btn" aria-label={muted ? "Unmute notification sound" : "Mute notification sound"}
+            aria-pressed={muted} onClick={() => setMuted((m) => !m)}>{muted ? Ic.bellOff : Ic.bell}</button>
+        </div>
+      )}
       <div className="cl-tabs" role="tablist">
         <button role="tab" aria-selected={tab === "nearby"} className={tab === "nearby" ? "on" : ""} onClick={() => setTab("nearby")}>{Ic.radar}Nearby</button>
-        <button role="tab" aria-selected={tab === "groups"} className={tab === "groups" ? "on" : ""} onClick={() => setTab("groups")}>{Ic.users}Groups</button>
-        <button role="tab" aria-selected={tab === "requests"} className={tab === "requests" ? "on" : ""} onClick={() => setTab("requests")}>
-          {Ic.inbox}Requests{incoming.length ? <span className="cl-tab-badge">{incoming.length}</span> : null}
-        </button>
         <button role="tab" aria-selected={tab === "chats"} className={tab === "chats" ? "on" : ""} onClick={() => setTab("chats")}>
           {Ic.chat}Chats{totalUnread ? <span className="cl-tab-badge">{totalUnread}</span> : null}
         </button>
+        <button role="tab" aria-selected={tab === "requests"} className={tab === "requests" ? "on" : ""} onClick={() => setTab("requests")}>
+          {Ic.inbox}Requests{incoming.length ? <span className="cl-tab-badge">{incoming.length}</span> : null}
+        </button>
+        <button role="tab" aria-selected={tab === "groups"} className={tab === "groups" ? "on" : ""} onClick={() => setTab("groups")}>{Ic.users}Groups</button>
       </div>
 
       {pushOffer && (
@@ -945,67 +1009,104 @@ export default function CirclesLocal() {
       )}
 
       {tab === "nearby" && (
-        <div className="cl-list">
-          <div className="cl-radar-wrap">
-            <div className="cl-radar-zoom">
-              <button type="button" className="cl-zoom-btn" aria-label="Zoom out radar"
-                disabled={radarZoom <= RADAR_ZOOM_MIN} onClick={() => zoomRadar(-0.4)}>{Ic.minus}</button>
-              <button type="button" className="cl-zoom-btn" aria-label="Zoom in radar"
-                disabled={radarZoom >= RADAR_ZOOM_MAX} onClick={() => zoomRadar(0.4)}>{Ic.plus}</button>
-            </div>
-            <div className="cl-radar-frame" ref={radarFrameRef}>
-              <div className="cl-radar" style={{ width: `${190 * radarZoom}px`, height: `${190 * radarZoom}px` }}>
-                <span className="cl-ring" /><span className="cl-ring" /><span className="cl-ring" />
-                <span className="cl-sweep-mask"><span className="cl-sweep" /></span><span className="cl-me" />
-                {nearby.map((u, _, arr) => {
-                  const maxKm = Math.max(1, ...arr.map((x) => parseKm(x.distance)));
-                  const ang = ((hashStr(u.nickname) * 137.508) % 360) * (Math.PI / 180);
-                  const r = (0.2 + (parseKm(u.distance) / maxKm) * 0.72) * 50;
+        <div className="cl-nearby-split">
+          <div className="cl-map-full-wrap">
+            {myArea ? (
+              <MapContainer
+                ref={mapRef}
+                center={[myArea.lat, myArea.lng]}
+                zoom={13}
+                className="cl-leaflet-map"
+                attributionControl={false}
+              >
+                <TileLayer
+                  url={document.documentElement.classList.contains("dark")
+                    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                    : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"}
+                  attribution='&copy; OSM &copy; CARTO' />
+                <AttributionControl position="bottomright" prefix={false} />
+                {/* Approximate-area blobs only — coordinates are already grid-fuzzed to ~2.2km
+                    server-side (geo.js), and each blip's on-screen position within its blob
+                    additionally wanders every ~45s (jitteredLatLng) so it never sits at one
+                    stable, converge-able point. Never a precise pin. */}
+                <Circle center={[myArea.lat, myArea.lng]} radius={900}
+                  pathOptions={{ color: "#6d28d9", fillColor: "#6d28d9", fillOpacity: 0.28, weight: 2 }} />
+                <Marker position={[myArea.lat, myArea.lng]} icon={meMapIcon} />
+                {nearby.filter((u) => u.lat != null && u.lng != null).map((u) => {
+                  const openChat = () => { setComposeFor(u); setOpener(""); };
+                  const pos = jitteredLatLng(u.lat as number, u.lng as number, u.id, mapTick);
                   return (
-                    <button key={u.id} className="cl-blip"
-                      style={{ left: `${50 + r * Math.cos(ang)}%`, top: `${50 + r * Math.sin(ang)}%` }}
-                      aria-label={`Say hi to ${u.nickname}, ${u.distance}`}
-                      onClick={() => { setComposeFor(u); setOpener(""); }}>
-                      <Av name={u.nickname} variant={u.avatar} gender={u.gender} className="cl-blip-av" />
-                    </button>
+                    <React.Fragment key={u.id}>
+                      <Circle center={pos} radius={1100}
+                        pathOptions={{ color: "#06b6d4", fillColor: "#06b6d4", fillOpacity: 0.28, weight: 2 }}
+                        eventHandlers={{ click: openChat }} />
+                      <AvatarMapMarker position={pos} onClick={openChat}>
+                        <Av name={u.nickname} variant={u.avatar} gender={u.gender} dot={isActive(u.lastSeen)} className="cl-map-av" />
+                      </AvatarMapMarker>
+                    </React.Fragment>
                   );
                 })}
+              </MapContainer>
+            ) : (
+              <div className="cl-map-loading">Loading map…</div>
+            )}
+            <div className="cl-map-float-top">
+              <span className="cl-loc-chip cl-float-chip">{Ic.pinSm} Approximate area</span>
+              <div className="cl-float-btns">
+                <button className="cl-icon-btn cl-me-btn cl-float-btn" aria-label="Your profile — change name or avatar" onClick={openProfile}>
+                  <Av name={me.nickname} variant={me.avatar} gender={me.gender} small />
+                </button>
+                <button className="cl-icon-btn cl-float-btn" aria-label="Blocked users" onClick={openBlocked}>{Ic.userX}</button>
+                <button className="cl-icon-btn cl-float-btn" aria-label={muted ? "Unmute notification sound" : "Mute notification sound"}
+                  aria-pressed={muted} onClick={() => setMuted((m) => !m)}>{muted ? Ic.bellOff : Ic.bell}</button>
               </div>
             </div>
+            <button className={`cl-icon-btn cl-float-btn cl-locate-btn${sheetDragging ? " dragging" : ""}`} style={{ bottom: sheetH + 16 }}
+              aria-label="Re-center map on your area" onClick={recenterMap}>{Ic.locate}</button>
           </div>
-          {nearby.length > 0 && (
-            <div className="cl-live">
-              <span className="cl-pulse" aria-hidden="true" />
-              <span><b>{nearby.length} {nearby.length === 1 ? "person" : "people"}</b> on your radar · tap a face to say hi</span>
+          <div className={`cl-sheet${sheetDragging ? " dragging" : ""}`} style={{ height: `${sheetH}px` }}>
+            <div className="cl-sheet-handle-hit"
+              onPointerDown={onSheetPointerDown} onPointerMove={onSheetPointerMove}
+              onPointerUp={onSheetPointerUp} onPointerCancel={onSheetPointerUp}>
+              <span className="cl-sheet-handle" />
+            </div>
+            <div className="cl-sheet-title-row">
+              <span className="cl-sheet-title">
+                {nearby.length > 0
+                  ? `${nearby.length} ${nearby.length === 1 ? "person" : "people"} nearby · nearest first`
+                  : "Scanning your area…"}
+              </span>
               <button className="cl-refresh" aria-label="Refresh now" onClick={refreshNearby}>{Ic.refresh}</button>
             </div>
-          )}
-          {nearby.length === 0 && (
-            <div className="cl-empty">
-              <b>Scanning your area…</b>
-              <p>You're the first one here right now. We keep looking — new people show up all the time.</p>
-              <button className="cl-btn cl-sm" onClick={() => { setTab("groups"); setShowCreate(true); setGName(""); setGTopic(""); }}>Start a local group instead</button>
-            </div>
-          )}
-          {nearby.map((u) => (
-            <div className="cl-row" key={u.id}>
-              <div className="cl-row-main">
-                <Av name={u.nickname} variant={u.avatar} gender={u.gender} dot={isActive(u.lastSeen)} />
-                <div className="cl-row-text">
-                  <div className="cl-row-name"><span className="cl-nm">{u.nickname}</span></div>
-                  <div className="cl-row-meta cl-meta-flex">
-                    <span className="cl-dist">{Ic.distPin}{u.distance}</span>
-                    <span className="cl-meta-txt">
-                      {isActive(u.lastSeen)
-                        ? <span className="cl-active">Active now{!!u.sessionMin && u.sessionMin > 0 ? ` · ${u.sessionMin}m` : ""}</span>
-                        : u.lastSeen ? `Active ${timeAgo(u.lastSeen)}` : "Around your area"}
-                    </span>
-                  </div>
+            <div className="cl-sheet-body">
+              {nearby.length === 0 && (
+                <div className="cl-empty">
+                  <b>Scanning your area…</b>
+                  <p>You're the first one here right now. We keep looking — new people show up all the time.</p>
+                  <button className="cl-btn cl-sm" onClick={() => { setTab("groups"); setShowCreate(true); setGName(""); setGTopic(""); }}>Start a local group instead</button>
                 </div>
-              </div>
-              <button className="cl-btn cl-sm" onClick={() => { setComposeFor(u); setOpener(""); }}>👋 Say hi</button>
+              )}
+              {[...nearby].sort((a, b) => parseKm(a.distance) - parseKm(b.distance)).map((u) => (
+                <div className="cl-row" key={u.id}>
+                  <div className="cl-row-main">
+                    <Av name={u.nickname} variant={u.avatar} gender={u.gender} dot={isActive(u.lastSeen)} />
+                    <div className="cl-row-text">
+                      <div className="cl-row-name"><span className="cl-nm">{u.nickname}</span></div>
+                      <div className="cl-row-meta cl-meta-flex">
+                        <span className="cl-dist">{Ic.distPin}{u.distance}</span>
+                        <span className="cl-meta-txt">
+                          {isActive(u.lastSeen)
+                            ? <span className="cl-active">Active now{!!u.sessionMin && u.sessionMin > 0 ? ` · ${u.sessionMin}m` : ""}</span>
+                            : u.lastSeen ? `Active ${timeAgo(u.lastSeen)}` : "Around your area"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <button className="cl-btn cl-sm" onClick={() => { setComposeFor(u); setOpener(""); }}>👋 Say hi</button>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       )}
 

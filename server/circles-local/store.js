@@ -92,7 +92,7 @@ function setLocation(userId, lat, lng) {
      VALUES (?, ?, ?, 1, ?)
      ON CONFLICT(user_id) DO UPDATE SET lat=excluded.lat, lng=excluded.lng, is_visible=1, updated_at=excluded.updated_at`
   ).run(userId, f.lat, f.lng, now());
-  return { ok: true };
+  return { ok: true, lat: f.lat, lng: f.lng };
 }
 
 function setVisibility(userId, visible) {
@@ -131,6 +131,8 @@ function nearby(userId, radiusMeters) {
       nickname: r.nickname,
       avatar: r.avatar || 0,
       gender: r.gender || "",
+      lat: r.lat,
+      lng: r.lng,
       lastSeen: r.last_seen,
       meters: distanceMeters(me.lat, me.lng, r.lat, r.lng),
       active: nowTs - r.last_seen < ACTIVE_WINDOW_MS,
@@ -152,6 +154,10 @@ function nearby(userId, radiusMeters) {
       avatar: r.avatar,
       gender: r.gender,
       distance: distanceLabel(r.meters),
+      // Already grid-fuzzed to ~2.2km (see geo.js) — an approximate-area blob,
+      // never a precise pin.
+      lat: r.lat,
+      lng: r.lng,
       lastSeen: Math.floor(r.lastSeen / 60000) * 60000,
       sessionMin: r.active ? Math.floor(r.sessionMs / 60000) : undefined,
     }));

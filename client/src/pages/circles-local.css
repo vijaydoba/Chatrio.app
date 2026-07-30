@@ -266,11 +266,18 @@ body.circles-fullscreen .cl-toast-wrap { padding: 8px 16px 0; }
   padding: 5px 11px; border-radius: 999px; white-space: nowrap;
 }
 
-/* tabs — icon + label, gradient active pill, floating badges */
+/* tabs — floating bottom nav (Instagram/Snapchat-style), icon + label,
+   gradient active pill, floating badges */
 .cl-tabs {
-  display: flex; gap: 4px; background: var(--card); border: 1px solid var(--border);
-  border-radius: 16px; padding: 4px; margin-bottom: 14px;
+  position: fixed; left: 50%; bottom: 14px; transform: translateX(-50%);
+  width: min(calc(100% - 24px), 528px); z-index: 40;
+  display: flex; gap: 4px;
+  background: color-mix(in srgb, var(--card-solid) 88%, transparent);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  border: 1px solid var(--border); border-radius: 20px; padding: 5px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
 }
+.cl-main { padding-bottom: 88px; }
 .cl-tabs button {
   flex: 1; min-height: 52px; padding: 7px 2px; border: none; background: transparent;
   color: var(--text); opacity: 0.62; font-weight: 700; border-radius: 12px; cursor: pointer;
@@ -291,16 +298,6 @@ body.circles-fullscreen .cl-toast-wrap { padding: 8px 16px 0; }
   background: #f43f5e; color: #fff; font-size: 0.64rem; font-weight: 800;
   border: 2px solid var(--card-solid);
 }
-
-/* live count line (replaces the manual Refresh button) */
-.cl-live { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; opacity: 0.78; margin: 2px 4px 12px; min-height: 32px; }
-.cl-live b { font-weight: 800; }
-.cl-live .cl-refresh { margin: 0 0 0 auto; padding: 0 8px; min-height: 32px; }
-.cl-pulse {
-  width: 8px; height: 8px; border-radius: 50%; background: #10b981; flex-shrink: 0;
-  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); animation: clPulse 2s infinite;
-}
-@keyframes clPulse { 70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
 
 .cl-list { display: flex; flex-direction: column; gap: 9px; }
 .cl-row {
@@ -350,56 +347,76 @@ body.circles-fullscreen .cl-toast-wrap { padding: 8px 16px 0; }
 
 /* radar — pure CSS; nearby people appear as tappable blips on distance rings */
 .cl-empty { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 10px 12px 10px; }
-.cl-radar-wrap { position: relative; display: flex; flex-direction: column; align-items: center; padding: 10px 0 4px; }
-.cl-radar-zoom { position: absolute; top: 4px; right: 4px; z-index: 3; display: flex; gap: 4px; }
-.cl-zoom-btn {
-  width: 28px; height: 28px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--primary-2) 35%, transparent);
-  background: var(--card-solid); color: var(--text); display: flex; align-items: center; justify-content: center;
-  cursor: pointer; opacity: 0.85;
+/* Nearby: full-bleed map with a draggable sheet over it (Uber/Google Maps
+   pattern) — fills the viewport since body.circles-fullscreen hides site chrome. */
+.cl-nearby-split { position: fixed; inset: 0; z-index: 5; }
+.cl-map-full-wrap { position: absolute; inset: 0; }
+.cl-leaflet-map { width: 100%; height: 100%; border-radius: 0; z-index: 0; }
+.cl-map-loading {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; opacity: 0.6;
 }
-.cl-zoom-btn:hover:not(:disabled) { opacity: 1; }
-.cl-zoom-btn:disabled { opacity: 0.35; cursor: default; }
-/* fixed-size circular viewport: zooming enlarges the content inside it (scrollable/pannable),
-   never the viewport's own footprint — so zoom never reflows the surrounding page. */
-.cl-radar-frame {
-  position: relative; width: 190px; height: 190px; margin-bottom: 6px;
-  border-radius: 50%; overflow: auto; scrollbar-width: none; -ms-overflow-style: none;
-  -webkit-overflow-scrolling: touch; touch-action: pan-x pan-y;
+.cl-map-av-anchor { cursor: pointer; }
+/* smooths the periodic jitter move instead of a hard teleport */
+.cl-leaflet-map .leaflet-marker-icon { transition: transform 1.2s ease; }
+.cl-map-av.cl-avatar {
+  width: 34px; height: 34px; font-size: 0.65rem;
+  border: 2px solid var(--card-solid); box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
 }
-.cl-radar-frame::-webkit-scrollbar { display: none; }
-.cl-radar { position: relative; width: 190px; height: 190px; }
-.cl-blip {
-  position: absolute; transform: translate(-50%, -50%);
-  width: 34px; height: 34px; padding: 0; border: none; background: transparent;
-  cursor: pointer; z-index: 2; animation: clBlipIn 0.35s ease;
+.cl-map-me-icon { position: relative; width: 16px; height: 16px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-2)); box-shadow: 0 0 0 5px color-mix(in srgb, var(--primary) 22%, transparent); }
+.cl-map-me-icon::after {
+  content: ""; position: absolute; inset: -8px; border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--primary) 55%, transparent);
+  animation: clMePulse 2.4s ease-out infinite;
 }
-.cl-blip .cl-avatar {
-  width: 32px; height: 32px; font-size: 0.62rem;
-  border: 2px solid var(--card-solid);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
-  transition: transform 0.15s ease;
+@keyframes clMePulse { 0% { transform: scale(0.6); opacity: 0.8; } 100% { transform: scale(2.2); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .cl-map-me-icon::after { animation: none; } }
+/* Leaflet's own attribution control, kept small/subtle — required copyright
+   text stays (OSM/CARTO license terms), only the "Leaflet" library credit is dropped. */
+.cl-leaflet-map .leaflet-control-attribution {
+  font-size: 9px; opacity: 0.6; background: color-mix(in srgb, var(--card-solid) 70%, transparent);
+  padding: 1px 5px; border-radius: 6px 0 0 0;
 }
-.cl-blip:hover .cl-avatar { transform: scale(1.15); }
-.cl-blip:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 50%; }
-@keyframes clBlipIn { from { opacity: 0; transform: translate(-50%, -50%) scale(0.4); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
-.cl-radar .cl-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--primary-2) 30%, transparent); }
-.cl-radar .cl-ring:nth-child(2) { inset: 13.7%; border-color: color-mix(in srgb, var(--primary-2) 38%, transparent); }
-.cl-radar .cl-ring:nth-child(3) { inset: 27.4%; border-color: color-mix(in srgb, var(--primary-2) 46%, transparent); }
-/* mask clips the sweep's rotation-inflated bounding box locally, so it can't
-   balloon the scrollable .cl-radar's scrollWidth/scrollHeight while spinning */
-.cl-radar .cl-sweep-mask { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; }
-.cl-radar .cl-sweep {
-  position: absolute; inset: 0; border-radius: 50%;
-  background: conic-gradient(from 0deg, color-mix(in srgb, var(--primary-2) 40%, transparent), transparent 22%);
-  animation: clSweep 3.2s linear infinite;
+
+/* floating top chips over the map */
+.cl-map-float-top {
+  position: absolute; top: max(14px, env(safe-area-inset-top)); left: 14px; right: 14px; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
 }
-@keyframes clSweep { to { transform: rotate(360deg); } }
-.cl-radar .cl-me {
-  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  width: 14px; height: 14px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--primary-2));
-  box-shadow: 0 0 0 5px color-mix(in srgb, var(--primary) 22%, transparent);
+.cl-float-chip {
+  margin-left: 0; background: color-mix(in srgb, var(--card-solid) 82%, transparent);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
+.cl-float-btns { display: flex; gap: 8px; }
+.cl-float-btn {
+  background: color-mix(in srgb, var(--card-solid) 82%, transparent);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+/* recenter-on-map button — floats just above the sheet, wherever it's dragged to */
+.cl-locate-btn {
+  position: absolute; right: 14px; z-index: 9;
+  transition: bottom 0.28s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.cl-locate-btn.dragging { transition: none; }
+
+/* draggable sheet */
+.cl-sheet {
+  position: absolute; left: 0; right: 0; bottom: 80px; z-index: 8;
+  background: var(--card-solid); border-top-left-radius: 22px; border-top-right-radius: 22px;
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.3);
+  display: flex; flex-direction: column; overflow: hidden;
+  transition: height 0.28s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.cl-sheet.dragging { transition: none; }
+.cl-sheet-handle-hit { display: flex; justify-content: center; padding: 9px 0 4px; cursor: grab; touch-action: none; }
+.cl-sheet-handle-hit:active { cursor: grabbing; }
+.cl-sheet-handle { width: 36px; height: 4px; border-radius: 3px; background: var(--border); }
+.cl-sheet-title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 2px 16px 10px; }
+.cl-sheet-title { font-size: 0.82rem; font-weight: 700; opacity: 0.85; }
+.cl-sheet-body { flex: 1; overflow-y: auto; padding: 0 16px 16px; -webkit-overflow-scrolling: touch; }
 .cl-empty b { font-size: 1rem; }
 .cl-empty p { font-size: 0.85rem; opacity: 0.7; margin: 5px 0 16px; max-width: 260px; line-height: 1.5; }
 
@@ -512,8 +529,7 @@ body.circles-fullscreen .cl-composer {
 .cl-send:disabled { opacity: 0.4; cursor: default; box-shadow: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .cl-toast, .cl-msg, .cl-modal, .cl-modal-card, .cl-dots i,
-  .cl-radar .cl-sweep, .cl-pulse, .cl-blip { animation: none; }
+  .cl-toast, .cl-msg, .cl-modal, .cl-modal-card, .cl-dots i { animation: none; }
   .cl-btn, .cl-icon-btn, .cl-row, .cl-click, .cl-fab { transition: none; }
 }
 
@@ -527,6 +543,9 @@ body.circles-fullscreen .cl-composer {
   border-radius: 14px;
   background: color-mix(in srgb, var(--primary) 10%, var(--card-solid));
   border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+  /* stacks above the full-bleed nearby map (position: fixed) despite coming
+     earlier in the DOM — both are direct children of .cl-main. */
+  position: relative; z-index: 50;
   animation: clPushIn 0.35s ease both;
 }
 @keyframes clPushIn {
