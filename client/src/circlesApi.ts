@@ -27,7 +27,7 @@ async function req(path: string, opts: RequestInit = {}) {
 
 export type Gender = "male" | "female" | "trans" | "other" | "";
 export type Me = { id: number; nickname: string; ageOk: boolean; avatar?: number; gender?: Gender };
-export type NearbyUser = { id: number; nickname: string; distance: string; lastSeen?: number; avatar?: number; gender?: Gender; sessionMin?: number };
+export type NearbyUser = { id: number; nickname: string; distance: string; lastSeen?: number; avatar?: number; gender?: Gender; sessionMin?: number; lat?: number; lng?: number };
 export type Incoming = { id: number; opener: string; created_at: number; from_id: number; from_nick: string; from_avatar?: number; from_gender?: Gender };
 export type Thread = { otherId: number; nickname: string; lastText: string; lastAt: number; avatar?: number; gender?: Gender };
 export type DmMsg = { id: number; from_user: number; text: string; created_at: number; read_at?: number | null };
@@ -40,7 +40,7 @@ export const circles = {
   getMe: (): Promise<Me> => req("/me"),
   setMe: (body: { nickname?: string; ageOk?: boolean; avatar?: number; gender?: Gender }): Promise<Me> =>
     req("/me", { method: "POST", body: JSON.stringify(body) }),
-  setLocation: (lat: number, lng: number) =>
+  setLocation: (lat: number, lng: number): Promise<{ ok: true; lat: number; lng: number }> =>
     req("/location", { method: "POST", body: JSON.stringify({ lat, lng }) }),
   nearby: (radius = 10000): Promise<NearbyUser[]> => req(`/nearby?radius=${radius}`),
   sendRequest: (toUserId: number, text: string) =>
