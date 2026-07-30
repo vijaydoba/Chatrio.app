@@ -401,6 +401,64 @@ body.circles-fullscreen .cl-toast-wrap { padding: 8px 16px 0; }
 }
 .cl-locate-btn.dragging { transition: none; }
 
+/* map ↔ cards mode toggle, floating between the location chip and profile icons */
+.cl-mode-toggle {
+  display: flex; gap: 2px; padding: 3px;
+  background: color-mix(in srgb, var(--card-solid) 82%, transparent);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-radius: 100px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+.cl-mode-toggle button {
+  display: flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border: none; border-radius: 50%; cursor: pointer;
+  background: transparent; color: var(--text); opacity: 0.6;
+}
+.cl-mode-toggle button.on { opacity: 1; background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #fff; }
+/* dims the map behind the card stack so cards read as the foreground */
+.cl-map-dim { position: absolute; inset: 0; z-index: 6; background: rgba(6, 9, 13, 0.55); pointer-events: none; }
+
+/* swipe-card stack */
+.cl-cards-wrap { position: absolute; inset: 0; z-index: 8; pointer-events: none; }
+.cl-cards-empty { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: auto; padding: 0 24px; }
+.cl-card-stack { position: absolute; left: 20px; right: 20px; bottom: 130px; top: 90px; }
+.cl-swipe-card {
+  position: absolute; inset: 0; border-radius: 26px; overflow: hidden; pointer-events: auto;
+  background: var(--card-solid); border: 1px solid var(--border);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.4);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  cursor: grab; touch-action: none; user-select: none;
+}
+.cl-swipe-card:active { cursor: grabbing; }
+.cl-swipe-card.behind1 { transform: scale(0.94) translateY(10px); opacity: 0.75; z-index: -1; cursor: default; }
+.cl-swipe-card.behind2 { transform: scale(0.88) translateY(20px); opacity: 0.45; z-index: -2; cursor: default; }
+.cl-swipe-stamp {
+  position: absolute; top: 22px; z-index: 3; font-size: 1rem; font-weight: 900; letter-spacing: 1.5px;
+  padding: 6px 14px; border-radius: 8px; border: 3px solid; pointer-events: none;
+  transform: rotate(-14deg);
+}
+.cl-swipe-stamp-hi { left: 18px; color: var(--primary-2); border-color: var(--primary-2); }
+.cl-swipe-stamp-skip { right: 18px; color: #f43f5e; border-color: #f43f5e; transform: rotate(14deg); }
+.cl-swipe-av { position: absolute; inset: 0; }
+.cl-swipe-av-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cl-swipe-av-fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; font-weight: 800; color: #fff; }
+.cl-swipe-info {
+  position: relative; z-index: 2; padding: 16px;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.75) 65%);
+}
+.cl-swipe-name { font-size: 1.2rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 7px; }
+.cl-swipe-live { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3); }
+.cl-swipe-meta { font-size: 0.8rem; font-weight: 600; color: rgba(255, 255, 255, 0.85); margin-top: 2px; }
+.cl-swipe-actions { position: absolute; left: 0; right: 0; bottom: 78px; z-index: 9; display: flex; justify-content: center; gap: 20px; pointer-events: auto; }
+.cl-swipe-btn {
+  width: 52px; height: 52px; border-radius: 50%; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4); transition: transform 0.12s ease;
+}
+.cl-swipe-btn:active { transform: scale(0.9); }
+.cl-swipe-skip { background: var(--card-solid); border: 1px solid var(--border); color: var(--text); }
+.cl-swipe-hi { background: linear-gradient(135deg, var(--primary), var(--primary-2)); font-size: 1.3rem; }
+
 /* draggable sheet */
 .cl-sheet {
   position: absolute; left: 0; right: 0; bottom: 80px; z-index: 8;
@@ -411,10 +469,14 @@ body.circles-fullscreen .cl-toast-wrap { padding: 8px 16px 0; }
   transition: height 0.28s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 .cl-sheet.dragging { transition: none; }
-.cl-sheet-handle-hit { display: flex; justify-content: center; padding: 9px 0 4px; cursor: grab; touch-action: none; }
-.cl-sheet-handle-hit:active { cursor: grabbing; }
+/* the whole header (handle + title bar) is draggable, not just the thin
+   handle bar — much easier to grab; the refresh button opts itself out */
+.cl-sheet-header { cursor: grab; touch-action: none; }
+.cl-sheet-header:active { cursor: grabbing; }
+.cl-sheet-handle-hit { display: flex; justify-content: center; padding: 9px 0 4px; }
 .cl-sheet-handle { width: 36px; height: 4px; border-radius: 3px; background: var(--border); }
 .cl-sheet-title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 2px 16px 10px; }
+.cl-sheet-title-row .cl-refresh { touch-action: auto; }
 .cl-sheet-title { font-size: 0.82rem; font-weight: 700; opacity: 0.85; }
 .cl-sheet-body { flex: 1; overflow-y: auto; padding: 0 16px 16px; -webkit-overflow-scrolling: touch; }
 .cl-empty b { font-size: 1rem; }

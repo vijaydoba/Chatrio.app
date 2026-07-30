@@ -5,6 +5,8 @@ import { NavLink } from "react-router-dom";
 import { Socket } from "socket.io-client";
 import { MapContainer, TileLayer, Circle, Marker, AttributionControl } from "react-leaflet";
 import L from "leaflet";
+import { Capacitor } from "@capacitor/core";
+import { App as CapacitorApp } from "@capacitor/app";
 import {
   circles, connectCirclesSocket, enableWebPush, resyncWebPush, webPushSupported,
   Me, NearbyUser, Incoming, Thread, DmMsg, Group, MyGroup, GroupMsg, BlockedUser, Gender,
@@ -13,7 +15,7 @@ import { useKeyboardViewport } from "../useKeyboardViewport";
 import "leaflet/dist/leaflet.css";
 import "./circles-local.css";
 
-type Tab = "nearby" | "requests" | "chats" | "groups";
+type Tab = "nearby" | "cards" | "requests" | "chats" | "groups";
 type Active = { otherId: number; nickname: string; avatar?: number; gender?: Gender } | null;
 type ActiveGroup = { id: number; name: string; emoji: string } | null;
 
@@ -102,16 +104,15 @@ const GENDER_OPTIONS: { value: Gender; label: string }[] = [
   { value: "other", label: "Other" },
 ];
 
-// ── anime avatars (DiceBear, generated in the browser — no network, seeded by nickname) ──
-// Hairstyle pools from @dicebear/adventurer's own option set (schema.d.ts): short01-19, long01-26.
-const MALE_HAIR = Array.from({ length: 19 }, (_, i) => `short${String(i + 1).padStart(2, "0")}`);
-const FEMALE_HAIR = Array.from({ length: 26 }, (_, i) => `long${String(i + 1).padStart(2, "0")}`);
-
-// Bias the generated look toward the chosen gender (hairstyle pool, earrings, facial
-// hair) — "trans"/"other"/unset gets the full unrestricted pool (today's default look).
+// ── illustrated avatars (DiceBear "notionists" style, generated in the
+// browser — no network, seeded by nickname) ──
+// notionists' own option set (schema.d.ts) exposes beardProbability as the
+// clearest gendered signal; hair stays the full unrestricted pool for
+// everyone since its 63 variants aren't labeled by gender the way
+// adventurer's short*/long* pool was.
 function avatarOptionsForGender(gender?: Gender) {
-  if (gender === "male") return { hair: MALE_HAIR, earringsProbability: 0, features: ["mustache", "blush", "birthmark", "freckles"] };
-  if (gender === "female") return { hair: FEMALE_HAIR, earringsProbability: 40, features: ["blush", "birthmark", "freckles"] };
+  if (gender === "male") return { beardProbability: 55 };
+  if (gender === "female") return { beardProbability: 0 };
   return {};
 }
 
@@ -131,7 +132,7 @@ function useAnimeAvatar(seed: string, gender?: Gender): string {
     let alive = true;
     loadDicebear()
       .then(([core, coll]) => {
-        const u = core.createAvatar(coll.adventurer, { seed, ...(avatarOptionsForGender(gender) as any) }).toDataUri();
+        const u = core.createAvatar(coll.notionists, { seed, ...(avatarOptionsForGender(gender) as any) }).toDataUri();
         avatarUriCache.set(cacheKey, u);
         if (alive) setUri(u);
       })
@@ -150,6 +151,29 @@ function Av({ name, variant, gender, small, dot, className = "" }: { name: strin
       {uri ? <img className="cl-avatar-img" src={uri} alt="" /> : initials(name)}
       {dot && <span className="cl-on-dot" />}
     </span>
+  );
+}
+
+// Same 6-gradient set as avClass()/.cl-av-1..5, but applied standalone — the
+// swipe card needs the color without also inheriting .cl-avatar's fixed
+// 44px circular badge size.
+const AVATAR_GRADIENTS: Record<number, string> = {
+  0: "linear-gradient(135deg, #6d28d9, #06b6d4)",
+  1: "linear-gradient(135deg, #7c3aed, #c084fc)",
+  2: "linear-gradient(135deg, #0891b2, #22d3ee)",
+  3: "linear-gradient(135deg, #db2777, #f472b6)",
+  4: "linear-gradient(135deg, #d97706, #fbbf24)",
+  5: "linear-gradient(135deg, #059669, #34d399)",
+};
+// Big hero portrait for the swipe-card stack — same avatar art as everywhere
+// else, just filling the whole card instead of the small circular badge.
+function SwipeCardAvatar({ name, variant, gender }: { name: string; variant?: number; gender?: Gender }) {
+  const uri = useAnimeAvatar(variant ? `${name}#${variant}` : name, gender);
+  const gradient = AVATAR_GRADIENTS[hashStr(name || "?") % 6];
+  return (
+    <div className="cl-swipe-av" style={{ background: gradient }}>
+      {uri ? <img className="cl-swipe-av-img" src={uri} alt="" /> : <span className="cl-swipe-av-fallback">{initials(name)}</span>}
+    </div>
   );
 }
 
@@ -196,6 +220,8 @@ const Ic = {
   bell: svg(<><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></>, 20),
   bellOff: svg(<><path d="M13.73 21a2 2 0 0 1-3.46 0" /><path d="M18.63 13A17.89 17.89 0 0 1 18 8" /><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14" /><path d="M18 8a6 6 0 0 0-9.33-5" /><line x1="1" y1="1" x2="23" y2="23" /></>, 20),
   locate: svg(<><circle cx="12" cy="12" r="3.2" /><line x1="12" y1="2" x2="12" y2="5" /><line x1="12" y1="19" x2="12" y2="22" /><line x1="2" y1="12" x2="5" y2="12" /><line x1="19" y1="12" x2="22" y2="12" /></>, 19),
+  close: svg(<><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>, 20),
+  cards: svg(<><rect x="4" y="7" width="13" height="15" rx="2.5" /><path d="M8 7V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2h-2" opacity="0.55" /></>, 17),
   // tab icons
   radar: svg(<><circle cx="12" cy="12" r="2.4" /><circle cx="12" cy="12" r="6.5" opacity="0.55" /><circle cx="12" cy="12" r="10" opacity="0.3" /></>, 17),
   users: svg(<><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>, 17),
@@ -240,6 +266,49 @@ export default function CirclesLocal() {
     return () => clearInterval(id);
   }, []);
 
+  // Cards tab: swipe-card stack over a dimmed map.
+  const [cardIndex, setCardIndex] = useState(0);
+  const sortedNearby = useMemo(() => [...nearby].sort((a, b) => parseKm(a.distance) - parseKm(b.distance)), [nearby]);
+
+  // Drag-to-swipe on the top card — dragging left/right (past a threshold)
+  // does exactly what the ✕ / 👋 buttons do; both paths go through commitCard
+  // so the fly-off animation is consistent either way.
+  const [cardDragX, setCardDragX] = useState(0);
+  const [cardDragging, setCardDragging] = useState(false);
+  const [cardExitDir, setCardExitDir] = useState<"left" | "right" | null>(null);
+  const cardDragRef = useRef<{ startX: number } | null>(null);
+  const commitCard = useCallback((direction: "left" | "right") => {
+    setCardExitDir(direction);
+    if (direction === "right") {
+      const u = sortedNearby[cardIndex];
+      if (u) { setComposeFor(u); setOpener(""); }
+    }
+    setTimeout(() => {
+      setCardIndex((i) => i + 1);
+      setCardDragX(0);
+      setCardExitDir(null);
+    }, 240);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortedNearby, cardIndex]);
+  const CARD_SWIPE_THRESHOLD = 90;
+  const onCardPointerDown = (e: React.PointerEvent) => {
+    (e.currentTarget as Element).setPointerCapture(e.pointerId);
+    cardDragRef.current = { startX: e.clientX };
+    setCardDragging(true);
+  };
+  const onCardPointerMove = (e: React.PointerEvent) => {
+    if (!cardDragRef.current) return;
+    setCardDragX(e.clientX - cardDragRef.current.startX);
+  };
+  const onCardPointerUp = () => {
+    if (!cardDragRef.current) return;
+    cardDragRef.current = null;
+    setCardDragging(false);
+    if (cardDragX > CARD_SWIPE_THRESHOLD) commitCard("right");
+    else if (cardDragX < -CARD_SWIPE_THRESHOLD) commitCard("left");
+    else setCardDragX(0);
+  };
+
   const mapRef = useRef<L.Map | null>(null);
   const recenterMap = () => {
     if (myArea) mapRef.current?.setView([myArea.lat, myArea.lng], 13, { animate: true });
@@ -253,6 +322,7 @@ export default function CirclesLocal() {
   const [sheetDragging, setSheetDragging] = useState(false);
   const sheetDragRef = useRef<{ startY: number; startH: number } | null>(null);
   const onSheetPointerDown = (e: React.PointerEvent) => {
+    if ((e.target as HTMLElement).closest(".cl-refresh")) return; // let the refresh button's own click through
     (e.currentTarget as Element).setPointerCapture(e.pointerId);
     sheetDragRef.current = { startY: e.clientY, startH: sheetH };
     setSheetDragging(true);
@@ -353,10 +423,37 @@ export default function CirclesLocal() {
   // uses the same trick to go edge-to-edge.
   useEffect(() => {
     const body = document.body;
-    if (active || activeGroup || tab === "nearby") body.classList.add("circles-fullscreen");
+    if (active || activeGroup || tab === "nearby" || tab === "cards") body.classList.add("circles-fullscreen");
     else body.classList.remove("circles-fullscreen");
     return () => body.classList.remove("circles-fullscreen");
   }, [active, activeGroup, tab]);
+
+  // Android hardware back button: without this, Capacitor's default behavior
+  // is to fall back to WebView history (which this single-page app doesn't
+  // use) and just exit the app immediately, regardless of what's open. Wire
+  // it to close the topmost thing first — thread, modal, or tab — and only
+  // exit once we're already at the Nearby home tab with nothing open.
+  const backStateRef = useRef({ active, activeGroup, confirmBlock, showBlocked, showProfile, composeFor, showCreate, tab });
+  useEffect(() => {
+    backStateRef.current = { active, activeGroup, confirmBlock, showBlocked, showProfile, composeFor, showCreate, tab };
+  });
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    const handlePromise = CapacitorApp.addListener("backButton", () => {
+      const s = backStateRef.current;
+      if (s.activeGroup) return setActiveGroup(null);
+      if (s.active) return setActive(null);
+      if (s.confirmBlock) return setConfirmBlock(false);
+      if (s.showBlocked) return setShowBlocked(false);
+      if (s.showProfile) return setShowProfile(false);
+      if (s.composeFor) return setComposeFor(null);
+      if (s.showCreate) return setShowCreate(false);
+      if (s.tab !== "nearby") return setTab("nearby");
+      CapacitorApp.exitApp();
+    });
+    return () => { handlePromise.then((h) => h.remove()); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Lock body scroll on mobile while a thread is open — otherwise Android's
   // "scroll focused input into view" fights with the --kb-vh resize and the
@@ -566,7 +663,7 @@ export default function CirclesLocal() {
 
   useEffect(() => {
     if (!me || !locShared) return;
-    if (tab === "nearby") refreshNearby();
+    if (tab === "nearby" || tab === "cards") refreshNearby();
     if (tab === "requests") refreshRequests();
     if (tab === "chats") refreshThreads();
     if (tab === "groups") refreshGroups();
@@ -584,7 +681,7 @@ export default function CirclesLocal() {
     if (!me || !locShared || active || activeGroup) return;
     const id = setInterval(() => {
       if (document.hidden) return;
-      if (tabRef.current === "nearby") refreshNearby();
+      if (tabRef.current === "nearby" || tabRef.current === "cards") refreshNearby();
       if (tabRef.current === "groups") refreshGroups();
     }, 30000);
     return () => clearInterval(id);
@@ -990,6 +1087,7 @@ export default function CirclesLocal() {
         <button role="tab" aria-selected={tab === "chats"} className={tab === "chats" ? "on" : ""} onClick={() => setTab("chats")}>
           {Ic.chat}Chats{totalUnread ? <span className="cl-tab-badge">{totalUnread}</span> : null}
         </button>
+        <button role="tab" aria-selected={tab === "cards"} className={tab === "cards" ? "on" : ""} onClick={() => { setTab("cards"); setCardIndex(0); }}>{Ic.cards}Cards</button>
         <button role="tab" aria-selected={tab === "requests"} className={tab === "requests" ? "on" : ""} onClick={() => setTab("requests")}>
           {Ic.inbox}Requests{incoming.length ? <span className="cl-tab-badge">{incoming.length}</span> : null}
         </button>
@@ -1018,6 +1116,7 @@ export default function CirclesLocal() {
                 zoom={13}
                 className="cl-leaflet-map"
                 attributionControl={false}
+                zoomControl={false}
               >
                 <TileLayer
                   url={document.documentElement.classList.contains("dark")
@@ -1065,18 +1164,18 @@ export default function CirclesLocal() {
               aria-label="Re-center map on your area" onClick={recenterMap}>{Ic.locate}</button>
           </div>
           <div className={`cl-sheet${sheetDragging ? " dragging" : ""}`} style={{ height: `${sheetH}px` }}>
-            <div className="cl-sheet-handle-hit"
+            <div className="cl-sheet-header"
               onPointerDown={onSheetPointerDown} onPointerMove={onSheetPointerMove}
               onPointerUp={onSheetPointerUp} onPointerCancel={onSheetPointerUp}>
-              <span className="cl-sheet-handle" />
-            </div>
-            <div className="cl-sheet-title-row">
-              <span className="cl-sheet-title">
-                {nearby.length > 0
-                  ? `${nearby.length} ${nearby.length === 1 ? "person" : "people"} nearby · nearest first`
-                  : "Scanning your area…"}
-              </span>
-              <button className="cl-refresh" aria-label="Refresh now" onClick={refreshNearby}>{Ic.refresh}</button>
+              <div className="cl-sheet-handle-hit"><span className="cl-sheet-handle" /></div>
+              <div className="cl-sheet-title-row">
+                <span className="cl-sheet-title">
+                  {nearby.length > 0
+                    ? `${nearby.length} ${nearby.length === 1 ? "person" : "people"} nearby · nearest first`
+                    : "Scanning your area…"}
+                </span>
+                <button className="cl-refresh" aria-label="Refresh now" onClick={refreshNearby}>{Ic.refresh}</button>
+              </div>
             </div>
             <div className="cl-sheet-body">
               {nearby.length === 0 && (
@@ -1086,7 +1185,7 @@ export default function CirclesLocal() {
                   <button className="cl-btn cl-sm" onClick={() => { setTab("groups"); setShowCreate(true); setGName(""); setGTopic(""); }}>Start a local group instead</button>
                 </div>
               )}
-              {[...nearby].sort((a, b) => parseKm(a.distance) - parseKm(b.distance)).map((u) => (
+              {sortedNearby.map((u) => (
                 <div className="cl-row" key={u.id}>
                   <div className="cl-row-main">
                     <Av name={u.nickname} variant={u.avatar} gender={u.gender} dot={isActive(u.lastSeen)} />
@@ -1106,6 +1205,104 @@ export default function CirclesLocal() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      )}
+
+      {tab === "cards" && (
+        <div className="cl-nearby-split">
+          <div className="cl-map-full-wrap">
+            {myArea ? (
+              <MapContainer
+                center={[myArea.lat, myArea.lng]}
+                zoom={13}
+                className="cl-leaflet-map"
+                attributionControl={false}
+                zoomControl={false}
+                dragging={false}
+                scrollWheelZoom={false}
+                doubleClickZoom={false}
+              >
+                <TileLayer
+                  url={document.documentElement.classList.contains("dark")
+                    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                    : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"}
+                  attribution='&copy; OSM &copy; CARTO' />
+                <Circle center={[myArea.lat, myArea.lng]} radius={900}
+                  pathOptions={{ color: "#6d28d9", fillColor: "#6d28d9", fillOpacity: 0.28, weight: 2 }} />
+                <Marker position={[myArea.lat, myArea.lng]} icon={meMapIcon} />
+              </MapContainer>
+            ) : (
+              <div className="cl-map-loading">Loading map…</div>
+            )}
+            <div className="cl-map-dim" />
+            <div className="cl-map-float-top">
+              <span className="cl-loc-chip cl-float-chip">{Ic.pinSm} Approximate area</span>
+              <div className="cl-float-btns">
+                <button className="cl-icon-btn cl-me-btn cl-float-btn" aria-label="Your profile — change name or avatar" onClick={openProfile}>
+                  <Av name={me.nickname} variant={me.avatar} gender={me.gender} small />
+                </button>
+                <button className="cl-icon-btn cl-float-btn" aria-label="Blocked users" onClick={openBlocked}>{Ic.userX}</button>
+              </div>
+            </div>
+          </div>
+          <div className="cl-cards-wrap">
+            {sortedNearby.length === 0 ? (
+              <div className="cl-empty cl-cards-empty">
+                <b>Scanning your area…</b>
+                <p>You're the first one here right now. We keep looking — new people show up all the time.</p>
+              </div>
+            ) : cardIndex >= sortedNearby.length ? (
+              <div className="cl-empty cl-cards-empty">
+                <b>That's everyone nearby</b>
+                <p>Check back soon, or browse the map instead.</p>
+                <button className="cl-btn cl-sm" onClick={() => setCardIndex(0)}>Start over</button>
+              </div>
+            ) : (
+              <>
+                <div className="cl-card-stack">
+                  {sortedNearby.slice(cardIndex, cardIndex + 3).map((u, i) => {
+                    const isTop = i === 0;
+                    const dragged = isTop ? (cardExitDir ? (cardExitDir === "left" ? -520 : 520) : cardDragX) : 0;
+                    const topStyle: React.CSSProperties | undefined = isTop ? {
+                      transform: `translateX(${dragged}px) rotate(${dragged / 16}deg)`,
+                      opacity: cardExitDir ? 0 : 1,
+                      transition: cardDragging ? "none" : "transform 0.24s ease, opacity 0.24s ease",
+                    } : undefined;
+                    return (
+                      <div key={u.id} className={`cl-swipe-card${i === 1 ? " behind1" : i === 2 ? " behind2" : ""}`}
+                        style={topStyle}
+                        onPointerDown={isTop ? onCardPointerDown : undefined}
+                        onPointerMove={isTop ? onCardPointerMove : undefined}
+                        onPointerUp={isTop ? onCardPointerUp : undefined}
+                        onPointerCancel={isTop ? onCardPointerUp : undefined}>
+                        <SwipeCardAvatar name={u.nickname} variant={u.avatar} gender={u.gender} />
+                        {isTop && (
+                          <>
+                            <span className="cl-swipe-stamp cl-swipe-stamp-hi" style={{ opacity: Math.max(0, Math.min(1, cardDragX / CARD_SWIPE_THRESHOLD)) }}>SAY HI</span>
+                            <span className="cl-swipe-stamp cl-swipe-stamp-skip" style={{ opacity: Math.max(0, Math.min(1, -cardDragX / CARD_SWIPE_THRESHOLD)) }}>SKIP</span>
+                          </>
+                        )}
+                        <div className="cl-swipe-info">
+                          <div className="cl-swipe-name">{u.nickname}{isActive(u.lastSeen) && <span className="cl-swipe-live" />}</div>
+                          <div className="cl-swipe-meta">
+                            {u.distance} · {isActive(u.lastSeen)
+                              ? `Active now${!!u.sessionMin && u.sessionMin > 0 ? ` · ${u.sessionMin}m` : ""}`
+                              : u.lastSeen ? `Active ${timeAgo(u.lastSeen)}` : "Around your area"}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="cl-swipe-actions">
+                  <button className="cl-swipe-btn cl-swipe-skip" aria-label={`Skip ${sortedNearby[cardIndex].nickname}`}
+                    onClick={() => commitCard("left")}>{Ic.close}</button>
+                  <button className="cl-swipe-btn cl-swipe-hi" aria-label={`Say hi to ${sortedNearby[cardIndex].nickname}`}
+                    onClick={() => commitCard("right")}>👋</button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
