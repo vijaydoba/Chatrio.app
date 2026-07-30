@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Chatrio Circles</string>
-    <string name="title_activity_main">Chatrio Circles</string>
+    <string name="app_name">Circles</string>
+    <string name="title_activity_main">Circles</string>
     <string name="package_name">app.chatrio.circles</string>
     <string name="custom_url_scheme">app.chatrio.circles</string>
 </resources>

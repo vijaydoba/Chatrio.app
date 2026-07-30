@@ -134,14 +134,17 @@ body.circles-fullscreen .cl-toast-wrap { padding: 8px 16px 0; }
 .cl-howto-row > b { color: var(--primary); font-size: 0.8rem; }
 .cl-howto-row > span { opacity: 0.85; }
 
-/* safety disclosure (Phase 3 copy) */
-.cl-safety { margin-top: 16px; text-align: left; border-top: 1px solid var(--border); padding-top: 12px; }
-.cl-safety summary { cursor: pointer; font-size: 0.86rem; font-weight: 600; color: var(--primary); list-style: none; padding: 6px 0; min-height: 24px; }
-.cl-safety summary::-webkit-details-marker { display: none; }
-.cl-safety summary::after { content: "›"; float: right; transition: transform 0.2s ease; opacity: 0.6; }
-.cl-safety[open] summary::after { transform: rotate(90deg); }
-.cl-safety ul { margin: 8px 0 0; padding-left: 18px; }
-.cl-safety li { font-size: 0.82rem; line-height: 1.5; opacity: 0.85; margin-bottom: 8px; }
+/* onboarding: back button (step 2) + privacy link (both steps) */
+.cl-ob-back {
+  display: inline-flex; align-items: center; gap: 4px; margin-bottom: 8px;
+  background: none; border: none; cursor: pointer; padding: 4px 0;
+  font-size: 0.82rem; font-weight: 700; color: var(--text); opacity: 0.65;
+}
+.cl-ob-back:hover { opacity: 1; }
+.cl-privacy-link {
+  display: block; text-align: center; margin-top: 14px;
+  font-size: 0.78rem; font-weight: 700; color: var(--primary-2); text-decoration: underline;
+}
 .cl-dim { opacity: 0.7; text-align: center; padding: 30px 10px; }
 
 /* SEO copy under the onboarding card (prerendered, indexable) */

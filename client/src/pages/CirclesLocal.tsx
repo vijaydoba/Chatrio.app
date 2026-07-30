@@ -246,6 +246,7 @@ export default function CirclesLocal() {
   const [nickIdeas] = useState<string[]>(() => [...NICK_IDEAS].sort(() => Math.random() - 0.5).slice(0, 3));
   const [gender, setGender] = useState<Gender>("");
   const [avVar, setAvVar] = useState(0); // onboarding avatar shuffle
+  const [obStep, setObStep] = useState<1 | 2>(1); // onboarding: 1 = identity, 2 = consent
   const [showProfile, setShowProfile] = useState(false);
   const [profNick, setProfNick] = useState("");
   const [profAv, setProfAv] = useState(0);
@@ -848,60 +849,64 @@ export default function CirclesLocal() {
     return Shell(
       <>
         <div className="cl-card cl-onboard">
-          <span className="cl-badge">Beta · 18+</span>
-          <h1 className="cl-h1">Circles</h1>
-          <p className="cl-sub">Anonymous <strong>nearby chat</strong> — meet people near you. No account. No exact location. No history.</p>
-          <div className="cl-steps" aria-hidden="true"><i className="on" /><i /></div>
-          <label className="cl-field">
-            <span className="cl-label">Nickname</span>
-            <input className="cl-input" placeholder="e.g. Sam" value={nick} maxLength={20}
-              autoComplete="off" onChange={(e) => setNick(e.target.value)} />
-          </label>
-          <div className="cl-sugg" aria-label="Nickname suggestions">
-            {nickIdeas.map((n) => (
-              <button key={n} type="button" onClick={() => setNick(n)}>{Ic.dice} {n}</button>
-            ))}
-          </div>
-          <div className="cl-field">
-            <span className="cl-label">You are</span>
-            <div className="cl-gender-row" role="radiogroup" aria-label="Your gender">
-              {GENDER_OPTIONS.map((g) => (
-                <button key={g.value} type="button" role="radio" aria-checked={gender === g.value}
-                  className={`cl-gender-pill${gender === g.value ? " on" : ""}`}
-                  onClick={() => setGender(g.value)}>{g.label}</button>
-              ))}
-            </div>
-          </div>
-          {nick.trim().length >= 2 && gender && (
-            <div className="cl-me-preview-wrap">
-              <Av name={nick.trim()} variant={avVar} gender={gender} className="cl-me-preview" />
-              <button type="button" className="cl-shuffle" onClick={() => shuffleAv(setAvVar)}>{Ic.dice} Shuffle my look</button>
-            </div>
+          {obStep === 1 ? (
+            <>
+              <span className="cl-badge">Beta · 18+</span>
+              <h1 className="cl-h1">Pick a name</h1>
+              <p className="cl-sub">This is what nearby people will see. No email, no phone.</p>
+              <div className="cl-steps" aria-hidden="true"><i className="on" /><i /></div>
+              <label className="cl-field">
+                <span className="cl-label">Nickname</span>
+                <input className="cl-input" placeholder="e.g. Sam" value={nick} maxLength={20}
+                  autoComplete="off" onChange={(e) => setNick(e.target.value)} />
+              </label>
+              <div className="cl-sugg" aria-label="Nickname suggestions">
+                {nickIdeas.map((n) => (
+                  <button key={n} type="button" onClick={() => setNick(n)}>{Ic.dice} {n}</button>
+                ))}
+              </div>
+              {nick.trim().length >= 2 && (
+                <div className="cl-me-preview-wrap">
+                  <Av name={nick.trim()} variant={avVar} gender={gender} className="cl-me-preview" />
+                  <button type="button" className="cl-shuffle" onClick={() => shuffleAv(setAvVar)}>{Ic.dice} Shuffle my look</button>
+                </div>
+              )}
+              <button className="cl-btn" disabled={nick.trim().length < 2} onClick={() => setObStep(2)}>Next</button>
+              <NavLink to="/privacy" className="cl-privacy-link">Privacy Policy</NavLink>
+            </>
+          ) : (
+            <>
+              <button type="button" className="cl-ob-back" onClick={() => setObStep(1)}>{Ic.back} Back</button>
+              <h1 className="cl-h1">A few last things</h1>
+              <p className="cl-sub">You are, and confirming you're an adult.</p>
+              <div className="cl-steps" aria-hidden="true"><i className="on" /><i className="on" /></div>
+              <div className="cl-field">
+                <span className="cl-label">You are</span>
+                <div className="cl-gender-row" role="radiogroup" aria-label="Your gender">
+                  {GENDER_OPTIONS.map((g) => (
+                    <button key={g.value} type="button" role="radio" aria-checked={gender === g.value}
+                      className={`cl-gender-pill${gender === g.value ? " on" : ""}`}
+                      onClick={() => setGender(g.value)}>{g.label}</button>
+                  ))}
+                </div>
+              </div>
+              <label className="cl-check">
+                <input type="checkbox" checked={age} onChange={(e) => setAge(e.target.checked)} />
+                <span>I'm 18 or older</span>
+              </label>
+              <button className="cl-btn" disabled={busy || nick.trim().length < 2 || !age || !gender} onClick={startCircle}>
+                {busy ? "…" : "Start exploring"}
+              </button>
+              <div className="cl-trust">
+                <span className="cl-trust-item"><span className="cl-trust-ic">{Ic.pinSm}</span>Approximate area only</span>
+                <span className="cl-trust-item"><span className="cl-trust-ic">{Ic.lock}</span>No email or phone</span>
+                <span className="cl-trust-item"><span className="cl-trust-ic">{Ic.shield}</span>Block &amp; report anytime</span>
+              </div>
+              <NavLink to="/privacy" className="cl-privacy-link">Privacy Policy</NavLink>
+            </>
           )}
-          <label className="cl-check">
-            <input type="checkbox" checked={age} onChange={(e) => setAge(e.target.checked)} />
-            <span>I'm 18 or older</span>
-          </label>
-          <button className="cl-btn" disabled={busy || nick.trim().length < 2 || !age || !gender} onClick={startCircle}>
-            {busy ? "…" : "Continue"}
-          </button>
-          <div className="cl-trust">
-            <span className="cl-trust-item"><span className="cl-trust-ic">{Ic.pinSm}</span>Approximate area only</span>
-            <span className="cl-trust-item"><span className="cl-trust-ic">{Ic.lock}</span>No email or phone</span>
-            <span className="cl-trust-item"><span className="cl-trust-ic">{Ic.shield}</span>Block &amp; report anytime</span>
-          </div>
-          <details className="cl-safety">
-            <summary>How Circles keeps you safe</summary>
-            <ul>
-              <li><strong>Approximate location only.</strong> Your position is snapped to a coarse area — never your exact spot, and never shown on a map.</li>
-              <li><strong>You stay anonymous.</strong> No email or phone number — just a nickname you choose.</li>
-              <li><strong>How we know it's you without an account:</strong> your browser gets a random anonymous ID stored only on your device. Your nickname and avatar are attached to that ID — clear your browser data and the identity is gone for good.</li>
-              <li><strong>You control who reaches you.</strong> People can send one intro message; you accept or decline. Declining blocks them.</li>
-              <li><strong>Report &amp; block anytime.</strong> Reporting also blocks the person and alerts our moderators.</li>
-              <li><strong>Adults only.</strong> Circles is strictly 18+.</li>
-            </ul>
-          </details>
         </div>
+        {!Capacitor.isNativePlatform() && (
         <section className="cl-seo">
           <h2>A local chat app that stays anonymous</h2>
           <p>Circles is a free local chat app for meeting people near you without giving up your privacy. There's no sign-up — pick a nickname, share an approximate location, and see who's around. You send one intro message; if the other person accepts, the chat opens. If they decline, they never hear from you again.</p>
@@ -918,6 +923,7 @@ export default function CirclesLocal() {
             <li><NavLink to="/blog/make-friends-nearby-without-dating-apps">Best ways to make friends nearby without dating apps</NavLink></li>
           </ul>
         </section>
+        )}
       </>
     );
   }
