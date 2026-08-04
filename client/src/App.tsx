@@ -16,6 +16,7 @@ import EditorialStandards from "./pages/EditorialStandards";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import ChildSafety from "./pages/ChildSafety";
 import Home from "./pages/Home";
 import BlogList from "./pages/BlogList";
 import BlogPost from "./pages/BlogPost";
@@ -389,6 +390,7 @@ export default function App() {
 
           <NavLink className="m-link m-link-muted" to="/privacy" onClick={() => setNavOpen(false)}>Privacy</NavLink>
           <NavLink className="m-link m-link-muted" to="/terms" onClick={() => setNavOpen(false)}>Terms</NavLink>
+          <NavLink className="m-link m-link-muted" to="/child-safety" onClick={() => setNavOpen(false)}>Child Safety</NavLink>
         </nav>
 
         {/* Footer icon buttons */}
@@ -461,6 +463,7 @@ export default function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
+              <Route path="/child-safety" element={<ChildSafety />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           )}
@@ -492,6 +495,7 @@ export default function App() {
             <span style={{ opacity: 0.3 }}>|</span>
             <NavLink to="/privacy" className="footer-link">Privacy Policy</NavLink>
             <NavLink to="/terms" className="footer-link">Terms of Service</NavLink>
+            <NavLink to="/child-safety" className="footer-link">Child Safety</NavLink>
             <span style={{ opacity: 0.3 }}>|</span>
             <a
               href="https://x.com/Chatrioapp1"

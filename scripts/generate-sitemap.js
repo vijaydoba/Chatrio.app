@@ -48,6 +48,7 @@ const staticPages = [
   { loc: "/contact",      lastmod: TODAY, changefreq: "monthly", priority: "0.5" },
   { loc: "/privacy",      lastmod: TODAY, changefreq: "yearly",  priority: "0.4" },
   { loc: "/terms",        lastmod: TODAY, changefreq: "yearly",  priority: "0.4" },
+  { loc: "/child-safety", lastmod: TODAY, changefreq: "yearly",  priority: "0.4" },
 ];
 
 /* ── Blog posts ── */
