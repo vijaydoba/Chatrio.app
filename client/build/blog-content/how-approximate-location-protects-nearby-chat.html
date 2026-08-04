@@ -1,0 +1,109 @@
+
+    <figure class="post-figure">
+      <img src="/images/hero-how-approximate-location-protects-nearby-chat.png" alt="Approximate location grid and rough distance rings protecting people in nearby chat" />
+      <figcaption>Nearby discovery needs enough location to create context—not enough to identify a doorstep.</figcaption>
+    </figure>
+
+    <p>
+      A nearby chat app cannot work with no location context at all. The privacy question is how much precision it keeps and how much it gives back to other people. Exact latitude and longitude can be useful for navigation; they are usually unnecessary for deciding whether someone is in your broader area and worth talking with.
+    </p>
+    <p>
+      <a href="/circles">Circles</a> uses approximate location and rough distance labels for that reason. This guide explains the model in plain language, including its limits.
+    </p>
+
+    <div class="table-of-contents">
+      <h3>In This Explainer</h3>
+      <ul>
+        <li><a href="#exact-vs-approximate">Exact vs approximate location</a></li>
+        <li><a href="#coarse-area">How a coarse area works</a></li>
+        <li><a href="#buckets">Why distance buckets are safer than precise numbers</a></li>
+        <li><a href="#limits">What approximation does not solve</a></li>
+        <li><a href="#habits">Privacy habits that still matter</a></li>
+      </ul>
+    </div>
+
+    <h2 id="exact-vs-approximate">Exact vs Approximate Location</h2>
+    <table class="comparison-table">
+      <thead><tr><th>Exact location</th><th>Approximate location</th></tr></thead>
+      <tbody>
+        <tr><td>A specific coordinate or moving pin</td><td>A broader cell or area</td></tr>
+        <tr><td>Useful for turn-by-turn navigation</td><td>Useful for “who is generally nearby?”</td></tr>
+        <tr><td>Can reveal a building or repeated route</td><td>Blends multiple streets and buildings together</td></tr>
+        <tr><td>May update continuously</td><td>Can refresh only when local discovery needs it</td></tr>
+        <tr><td>Often displayed as a map marker</td><td>Can be displayed as a rough distance label</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="coarse-area">How a Coarse Area Works</h2>
+    <p>
+      Imagine laying a grid over a city. Your phone may know a more precise position, but the nearby-chat service converts it to a larger cell before using it for discovery. Several homes, shops, paths, and streets fall inside the same cell. The service can compare broad areas without presenting another user with the coordinate your phone originally measured.
+    </p>
+    <p>
+      This is sometimes called location fuzzing, snapping, rounding, or coarsening. The exact technique can differ, but the product goal is the same: preserve enough local relevance while discarding house-level certainty.
+    </p>
+    <div class="infobox">
+      <h4>Approximate does not mean random</h4>
+      <p>The app is not pretending you are in a completely different city. It is reducing resolution: useful enough to say “nearby,” deliberately too broad to say “this doorway.”</p>
+    </div>
+
+    <h2 id="buckets">Why Distance Buckets Beat Precise Numbers</h2>
+    <p>
+      A label such as “very close” or “a few kilometres away” answers the social question: is this person plausibly in my area? A precise number that changes as either person moves answers more than the conversation needs. Repeated precise measurements can make it easier to narrow down where somebody spends time.
+    </p>
+    <p>
+      Distance buckets also set better expectations. A rough label is a discovery hint, not a promise that the other person is still standing at the same point. People move, phone accuracy changes, and location can become stale between refreshes.
+    </p>
+
+    <h2>What Circles Shows</h2>
+    <p>
+      In Circles, people nearby appear with a nickname, a stylized avatar, and a rough distance category. There is no shared live map. Group rooms are also attached to an approximate area rather than a member's private address. Users can turn off nearby visibility when they do not want to appear in discovery.
+    </p>
+    <p>
+      Location is only one layer of the privacy model. One-shot intro requests stop a stranger from gaining an open messaging channel before you accept, while block and report controls provide an exit after a conversation begins. Read the <a href="/blog/circles-app-anonymous-nearby-chat-guide">complete Circles app guide</a> for the full flow.
+    </p>
+
+    <h2 id="limits">What Approximate Location Does Not Solve</h2>
+    <ul>
+      <li><strong>Your own disclosures:</strong> naming your building, employer, class schedule, or daily route can undo the protection.</li>
+      <li><strong>Very sparse areas:</strong> a broad cell may still contain few people, so “approximate” can be more revealing outside a dense area.</li>
+      <li><strong>Repeated context clues:</strong> room names, photos, weather details, and timing can combine into a clearer picture.</li>
+      <li><strong>Offline safety:</strong> a private discovery system cannot guarantee that a person you meet will behave safely in real life.</li>
+      <li><strong>Device permissions:</strong> your operating system still controls whether the browser may access location at all.</li>
+    </ul>
+    <p>
+      Approximation reduces a specific class of risk; it does not create total anonymity. A responsible app should say that clearly instead of presenting one shield icon as a complete safety guarantee.
+    </p>
+
+    <h2 id="habits">Privacy Habits That Still Matter</h2>
+    <ol>
+      <li>Use a nickname unrelated to your public social handles.</li>
+      <li>Do not name the exact building, street, workplace, or school closest to you.</li>
+      <li>Turn off nearby visibility when you are at home, at work, or simply done meeting new people.</li>
+      <li>Avoid posting a predictable routine such as “here every weekday at 6.”</li>
+      <li>Move to an offline meetup only after trust, and choose a busy public venue.</li>
+      <li>Block early when someone pushes for precise details after you decline to share them.</li>
+    </ol>
+
+    <h2>Frequently Asked Questions</h2>
+    <h3>Can a nearby chat app work if location permission is off?</h3>
+    <p>It cannot accurately discover people in your current area without some location input. A privacy-first design should request permission in context, explain why, minimize the precision it keeps, and let you stop visibility later.</p>
+
+    <h3>Does approximate location make me completely anonymous?</h3>
+    <p>No. It reduces location precision, but your messages and other clues can still identify you. Treat it as one privacy layer alongside a nickname, limited contact permissions, careful sharing, and blocking.</p>
+
+    <h3>Why not show an exact distance but hide the map?</h3>
+    <p>A changing exact distance can still reveal movement and help narrow down a position. A bucket communicates the useful social fact—rough proximity—without handing over the same level of detail.</p>
+
+    <h3>Can I pause discovery in Circles?</h3>
+    <p>Yes. Circles includes a visibility control so you can stop appearing to nearby users without continuing to broadcast your presence.</p>
+
+    <div class="post-related">
+      <h3>Related Guides</h3>
+      <ul>
+        <li><a href="/blog/community-app-privacy-safety-checklist">Community App Privacy: 10 Checks Before You Join</a></li>
+        <li><a href="/blog/circles-app-anonymous-nearby-chat-guide">Circles App: Anonymous Nearby Chat Without Oversharing</a></li>
+        <li><a href="/blog/how-to-meet-people-near-me-without-giving-up-privacy">Meet People Near Me Without Giving Up Privacy</a></li>
+        <li><a href="/circles">Open Circles →</a></li>
+      </ul>
+    </div>
+  
