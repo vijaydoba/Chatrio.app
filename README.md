@@ -1,6 +1,6 @@
 # Chatrio
 
-**Chatrio** is an anonymous 1‑on‑1 random chat web app — talk to strangers instantly, no sign‑up required. It pairs two online users in real time over WebSockets, with optional topic‑based matching, and ships a full SEO content layer (176 blog posts) under the same domain.
+**Chatrio** is an anonymous 1‑on‑1 random chat web app — talk to strangers instantly, no sign‑up required. It pairs two online users in real time over WebSockets, with optional topic‑based matching, and ships a full SEO content layer (184 blog posts) under the same domain.
 
 🌐 **Live:** [chatrio.app](https://chatrio.app)
 
@@ -14,11 +14,13 @@
 - **Real‑time messaging** — text, images, typing indicators, and delivery receipts over Socket.IO.
 - **Topic‑based matching** — users sharing at least one topic are matched first; otherwise anyone is paired.
 - **Skip / Next** — instantly leave the current partner and find a new one.
-- **Circles** — anonymous local chat: proximity‑based rooms for talking to people nearby without revealing identity (`/circles`, backed by the `server/circles-local` service).
-- **Circles Android app** — a Capacitor‑wrapped native build of Circles (push notifications, no marketing chrome). See [`MOBILE-APP.md`](./MOBILE-APP.md).
+- **Circles** — anonymous local chat: proximity‑based rooms for talking to people nearby without revealing identity (`/circles`, backed by the `server/circles-local` service). Coarse-area matching only (never exact location), no account — identity is an anonymous on-device token.
+- **Circles Android app** — a Capacitor‑wrapped native build of Circles (push notifications, no marketing chrome). Live on the Play Console Internal testing track; a Closed testing release (the required 12‑tester/14‑day step before public release) has been submitted to Google for review as of 2026‑08‑04 — 3 of 12 testers recruited so far, opt‑in link not yet functional pending approval. See [`MOBILE-APP.md`](./MOBILE-APP.md).
+- **Blind Date** — profile‑matched 1:1 chat (`/blind-date`): personality/compatibility matching instead of proximity, names and photos stay hidden until both sides opt to reveal (or after 10 minutes). Requires a real chatrio account, unlike Circles. Gated behind a `BLIND_DATE_LIVE` flag in `client/src/config.ts` — currently `false` (coming‑soon waitlist page) while still in beta; flip to `true` to restore the live matching flow at `/blind-date/chat`.
+- **Waitlist capture** — both Circles and Blind Date fall back to a "coming soon" email‑capture page when their live flag is off. Signups land in a `waitlist` table (`email`, `source`, timestamp) and can be pulled anytime via `GET /waitlist` on the main API, authenticated with `ADMIN_TOKEN` as a bearer token or `?key=` query param.
 - **Live online & waiting counts** — broadcast to all connected clients.
 - **Smart fallback bot** — if no human is available within a few seconds, a placeholder partner is connected so the user is never left waiting, and leaves shortly after.
-- **SEO content layer** — a React blog (176 posts) at `/blog/{slug}` with category pages, all pre‑rendered to static HTML for search engines. Includes geo landing posts (e.g. "Chat With Strangers in Canada/Philippines/Pakistan"), Omegle/OmeTV/Chatroulette/etc. alternative comparison pages, and a relationship-psychology cluster (situationships, love bombing, secure/anxious/avoidant attachment, limerence, ghosting, breadcrumbing) — each with its own hero image and distinct structure (no shared templates, per a July 2026 AdSense scaled‑content fix).
+- **SEO content layer** — a React blog (184 posts) at `/blog/{slug}` with category pages, all pre‑rendered to static HTML for search engines. Includes geo landing posts (e.g. "Chat With Strangers in Canada/Philippines/Pakistan"), Omegle/OmeTV/Chatroulette/etc. alternative comparison pages, relationship psychology, and two Circles/local-community clusters — each with its own hero image and distinct structure (no shared templates, per a July 2026 AdSense scaled‑content fix).
 - **AI-search visibility** — `robots.txt` explicitly allows AI crawlers (ChatGPT-User, ClaudeBot, PerplexityBot, Google-Extended, etc.) and `client/public/llms.txt` gives AI assistants a structured, accurate summary of the product — keep it in sync when a feature's behavior changes (e.g. Circles).
 - **Web manifest + dark/light theme.** There is no active service worker — a broken `/custom-sw.js` registration that pointed at a `.ts` file (never compiled by CRA, so it 404'd on every page load) was removed in July 2026. Re-adding offline/PWA support would need a real, compiled service worker, not just re-registering that path.
 
@@ -42,6 +44,7 @@
 - SQLite (`chatrio.db`) for persistence
 - Groq SDK (`groq-sdk`) + `dotenv`
 - `server/circles-local/` — the Circles proximity‑chat service
+- In production, deployed as 4 separate pm2 services rather than one process: `chatrio-api` (this legacy random‑chat server, also serves `/waitlist`), `chatrio-circles-api`, `chatrio-auth-api`, and `chatrio-blind-date-api` — each with its own `.env` and SQLite file on the VPS.
 
 **Tooling** (`scripts/`)
 - Sitemap generation, IndexNow submission (`notify-google.js` — submits to participating engines; Google discovers via the sitemap/Search Console), banner/portrait generators, and SEO research helpers.
@@ -128,11 +131,47 @@ Posts are data‑driven, not per‑file:
 5. Rebuild — the sitemap regenerates automatically via `prebuild`.
 6. After content changes, refresh the reference-only backup with `node scripts/generate-blog-backup.js`.
 
-Current production snapshot (2026‑07‑26): **176 posts**. The newest article is
-[`Secure Attachment Style: 12 Signs in Online Relationships (2026)`](https://chatrio.app/blog/secure-attachment-style-signs-online-relationships-2026).
-It completes the secure/anxious/avoidant attachment cluster and was deployed with
-its full article asset, 1,200×630 hero, card/thumbnail variants, canonical metadata,
-structured data, internal links, and sitemap entry.
+### Current blog snapshot
+
+- **189 posts** in source as of **2026‑08‑04**.
+- **204 routes** in the production prerender (blog posts plus site pages).
+- The latest release is deployed and its five canonical URLs return HTTP 200.
+- `sitemap.xml`, the blog feed, post backup, and static article HTML are generated from the same post data.
+
+### Circles launch cluster (2026‑08‑02)
+
+| Article | Primary search intent | Production URL |
+| --- | --- | --- |
+| Circles App: Anonymous Nearby Chat Guide | Branded app guide / anonymous nearby chat | [circles-app-anonymous-nearby-chat-guide](https://chatrio.app/blog/circles-app-anonymous-nearby-chat-guide) |
+| Community App Privacy: 10 Checks Before You Join | Community-app privacy and safety | [community-app-privacy-safety-checklist](https://chatrio.app/blog/community-app-privacy-safety-checklist) |
+| 25 Local Group Chat Ideas to Meet People Nearby | Local group-chat ideas | [local-group-chat-ideas-for-meeting-people](https://chatrio.app/blog/local-group-chat-ideas-for-meeting-people) |
+| How Approximate Location Protects Nearby Chat | Approximate-location privacy | [how-approximate-location-protects-nearby-chat](https://chatrio.app/blog/how-approximate-location-protects-nearby-chat) |
+| 30 Conversation Starters for Someone Nearby | First-message conversation starters | [first-message-to-someone-nearby-conversation-starters](https://chatrio.app/blog/first-message-to-someone-nearby-conversation-starters) |
+
+The cluster was selected after Semrush US keyword research. Useful demand signals included **community app** (1,300 monthly searches, KD 19), **anonymous chat app** (1,000, KD 50), **group chat app** (390, KD 39), and **conversation starters** (49,500, KD 38). Treat these values as the dated 2026‑08‑02 research snapshot, not permanent metrics.
+
+Each article:
+
+- has an original 1200×630 hero plus 280×190 card and 104×104 thumbnail variants under `client/public/images/`;
+- links naturally to the other Circles articles and the `/circles` landing page;
+- is linked directly from the Circles landing page so it is not an orphan;
+- extends the existing Circles coverage without duplicating its search intent.
+
+Circles-release validation: the 184-post content audit passed, all 199 routes prerendered, hydration CLS measured **0.000**, aliases returned 301, and missing routes returned 404. Yandex accepted the IndexNow submission (202); Bing's IndexNow endpoints returned 403 even though the ownership key files were publicly reachable, so Google discovery continues through the live sitemap/Search Console rather than IndexNow.
+
+### Community-app comparison cluster (2026‑08‑04)
+
+| Article | Primary search intent | Production URL |
+| --- | --- | --- |
+| 7 Best Community Apps to Meet People Nearby | Community-app comparison | [best-community-apps-to-meet-people-nearby-2026](https://chatrio.app/blog/best-community-apps-to-meet-people-nearby-2026) |
+| 7 Best Nextdoor Alternatives for Neighbors | Nextdoor alternatives | [best-nextdoor-alternatives-neighborhood-apps-2026](https://chatrio.app/blog/best-nextdoor-alternatives-neighborhood-apps-2026) |
+| 7 Best Yik Yak Alternatives for Local Chat | Yik Yak alternatives | [best-yik-yak-alternatives-anonymous-local-chat-2026](https://chatrio.app/blog/best-yik-yak-alternatives-anonymous-local-chat-2026) |
+| 7 Best Meetup Alternatives to Meet People | Meetup alternatives | [best-meetup-alternatives-make-friends-nearby-2026](https://chatrio.app/blog/best-meetup-alternatives-make-friends-nearby-2026) |
+| 7 Best Group Chat Apps for Communities | Group-chat app comparison | [best-group-chat-apps-for-local-communities-2026](https://chatrio.app/blog/best-group-chat-apps-for-local-communities-2026) |
+
+This cluster extends the dated Semrush demand signals above and the Search Console opportunity around platonic local connection without creating new pages for queries whose canonical URLs are still consolidating. Each article is 800–930 words, includes current product-source links, cross-links the cluster, and has original hero, card, and thumbnail artwork.
+
+Latest-release validation: the 189-post content audit passed, all 204 routes prerendered, hydration CLS measured **0.000**, all five new canonical URLs and the new hashed JavaScript bundle returned 200, a historical alias returned 301, and a missing article returned 404.
 
 ---
 
@@ -155,7 +194,7 @@ cd client && CI=false npx react-scripts build && cd ..
 node scripts/prerender-all-stable.js
 ```
 
-After it finishes, verify the log shows every route crawled with no thrown errors (currently `crawled 191 out of 191`: 176 posts plus 15 static/category routes), followed by successful hydration checks for `/`, `/blog`, a representative article, and `/about`. The hydration checks fail the build on React hydration errors, missing content, or lab CLS above `0.05`. Also confirm that no empty shells remain in the output:
+After it finishes, verify the log shows every route crawled with no thrown errors (currently `crawled 199 out of 199`: 184 posts plus 15 static/category routes), followed by successful hydration checks for `/`, `/blog`, a representative article, and `/about`. The hydration checks fail the build on React hydration errors, missing content, or lab CLS above `0.05`. Also confirm that no empty shells remain in the output:
 
 ```bash
 rg -l '<div id="root"></div>' client/build   # should print nothing
