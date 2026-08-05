@@ -72,6 +72,147 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── QUESTIONS / CONVERSATION-STARTERS CLUSTER (2026-08-04) ──────
+  {
+    slug: "questions-to-ask-to-get-to-know-someone",
+    title: "115 Questions to Ask to Get to Know Someone (2026)",
+    excerpt:
+      "A graduated list of 115 questions—from easy icebreakers to deep, revealing ones—that take any conversation from strangers to genuinely knowing each other.",
+    thumbnail: "/images/hero-questions-to-ask-to-get-to-know-someone.png",
+    date: "2026-08-04",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "deep-questions-to-ask-your-partner",
+    title: "50 Deep Questions to Ask Your Partner (2026)",
+    excerpt:
+      "Fifty deep questions to reconnect with your partner—about their inner world, your relationship, the past, and the future—plus how to ask without it feeling like a quiz.",
+    thumbnail: "/images/hero-deep-questions-to-ask-your-partner.png",
+    date: "2026-08-04",
+    category: "Relationships",
+  },
+  {
+    slug: "conversation-starters-for-couples",
+    title: "70 Conversation Starters for Couples (2026)",
+    excerpt:
+      "Seventy conversation starters for couples, organized by moment—date night, texting, long distance, road trips, and reconnecting after a rough patch.",
+    thumbnail: "/images/hero-conversation-starters-for-couples.png",
+    date: "2026-08-04",
+    category: "Romance",
+  },
+  {
+    slug: "questions-to-ask-friends",
+    title: "90 Fun & Deep Questions to Ask Friends (2026)",
+    excerpt:
+      "Ninety questions to ask your friends—from hilarious and nostalgic to genuinely deep—to turn an ordinary hangout into one that actually counts.",
+    thumbnail: "/images/hero-questions-to-ask-friends.png",
+    date: "2026-08-04",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "random-questions-to-ask",
+    title: "115 Random Questions to Ask Anyone (2026)",
+    excerpt:
+      "115 random questions to ask anyone—this-or-that, would-you-rather, funny, and surprisingly deep—to instantly reset a stalled conversation.",
+    thumbnail: "/images/hero-random-questions-to-ask.png",
+    date: "2026-08-04",
+    category: "Chat & Connection",
+  },
+
+  // ── COMMUNITY APP BUYER-INTENT CLUSTER (2026-08-04) ──────
+  {
+    slug: "best-community-apps-to-meet-people-nearby-2026",
+    title: "7 Best Community Apps to Meet People Nearby (2026)",
+    excerpt:
+      "Compare seven community apps for local chat, neighborhood updates, events, and group discovery—plus the privacy questions to ask before joining.",
+    thumbnail: "/images/hero-best-community-apps-to-meet-people-nearby-2026.png",
+    date: "2026-08-04",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "best-nextdoor-alternatives-neighborhood-apps-2026",
+    title: "7 Best Nextdoor Alternatives for Neighbors (2026)",
+    excerpt:
+      "Looking beyond Nextdoor? Compare seven neighborhood and local-community apps for private chat, events, recommendations, groups, and nearby discovery.",
+    thumbnail: "/images/hero-best-nextdoor-alternatives-neighborhood-apps-2026.png",
+    date: "2026-08-04",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "best-yik-yak-alternatives-anonymous-local-chat-2026",
+    title: "7 Best Yik Yak Alternatives for Local Chat (2026)",
+    excerpt:
+      "Compare seven Yik Yak alternatives for anonymous campus posts, hyperlocal conversations, nearby chat, and interest-based communities in 2026.",
+    thumbnail: "/images/hero-best-yik-yak-alternatives-anonymous-local-chat-2026.png",
+    date: "2026-08-04",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "best-meetup-alternatives-make-friends-nearby-2026",
+    title: "7 Best Meetup Alternatives to Meet People (2026)",
+    excerpt:
+      "Compare seven Meetup alternatives for discovering events, running local groups, planning casual gatherings, and making platonic friends nearby.",
+    thumbnail: "/images/hero-best-meetup-alternatives-make-friends-nearby-2026.png",
+    date: "2026-08-04",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "best-group-chat-apps-for-local-communities-2026",
+    title: "7 Best Group Chat Apps for Communities (2026)",
+    excerpt:
+      "Compare seven group chat apps for clubs, neighborhoods, local communities, and recurring events—from simple messaging to full community management.",
+    thumbnail: "/images/hero-best-group-chat-apps-for-local-communities-2026.png",
+    date: "2026-08-04",
+    category: "Chat & Connection",
+  },
+
+  // ── CIRCLES EDITORIAL LAUNCH CLUSTER (2026-08-02) ─────────
+  {
+    slug: "circles-app-anonymous-nearby-chat-guide",
+    title: "Circles App: Anonymous Nearby Chat Guide",
+    excerpt:
+      "Circles helps you discover people nearby without publishing your exact location, real name, or photo. See how approximate distance, one-shot intros, and local rooms work.",
+    thumbnail: "/images/hero-circles-app-anonymous-nearby-chat-guide.png",
+    date: "2026-08-02",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "community-app-privacy-safety-checklist",
+    title: "Community App Privacy: 10 Checks Before You Join",
+    excerpt:
+      "A community app can help you meet people close by, but it should not make your home or identity easy to trace. Use these 10 privacy and safety checks before joining.",
+    thumbnail: "/images/hero-community-app-privacy-safety-checklist.png",
+    date: "2026-08-02",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "local-group-chat-ideas-for-meeting-people",
+    title: "25 Local Group Chat Ideas to Meet People Nearby",
+    excerpt:
+      "From coffee walks and language swaps to study rooms and late-night talks, these 25 local group chat ideas make it easier to turn people nearby into familiar faces.",
+    thumbnail: "/images/hero-local-group-chat-ideas-for-meeting-people.png",
+    date: "2026-08-02",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "how-approximate-location-protects-nearby-chat",
+    title: "How Approximate Location Protects Nearby Chat",
+    excerpt:
+      "Nearby chat needs location context, not your exact GPS pin. Learn how coarse areas and distance buckets help people connect while reducing the risk of being tracked.",
+    thumbnail: "/images/hero-how-approximate-location-protects-nearby-chat.png",
+    date: "2026-08-02",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "first-message-to-someone-nearby-conversation-starters",
+    title: "30 Conversation Starters for Someone Nearby",
+    excerpt:
+      "The best first message feels local, specific, and easy to answer. Try 30 respectful conversation starters for people nearby, plus the openers that are better left unsent.",
+    thumbnail: "/images/hero-first-message-to-someone-nearby-conversation-starters.png",
+    date: "2026-08-02",
+    category: "Chat & Connection",
+  },
+
   // ── FRESH 2026 POSTS ───────────────────────────────────────
   {
     slug: "36-questions-to-feel-close-to-a-stranger-online",
@@ -330,11 +471,11 @@ export const POSTS: Post[] = [
 
   {
     slug: "why-omegle-shut-down-and-what-to-use-instead",
-    title: "What Happened to Omegle? Why It Shut Down, Is It Coming Back — and What to Use Instead (2026)",
+    title: "Is Omegle Back? What Happened to Omegle (2026)",
     excerpt:
-      "Omegle shut down in November 2023 — but in 2026 the omegle.com domain changed hands and a relaunch is brewing. Here's what actually happened, whether Omegle is back, and the best alternatives right now.",
+      "Is Omegle back in 2026? No—the original service remains shut down. Learn what happened to Omegle, why it closed, and which safer alternatives work now.",
     thumbnail: "/images/hero-why-omegle-shut-down-and-what-to-use-instead.png",
-    date: "2026-07-11",
+    date: "2026-08-02",
     category: "Chat & Connection",
   },
 
@@ -1656,7 +1797,7 @@ export const POSTS: Post[] = [
     title: "What Is a Blind Date App? How They Work in 2026",
     excerpt:
       "No swiping, no profile scrolling — just two people matched on compatibility, with names and photos hidden until you both choose to reveal. Here's how blind date apps actually work.",
-    thumbnail: "/images/hero-random-chat-vs-dating-apps-which-is-better.png",
+    thumbnail: "/images/hero-what-is-a-blind-date-app-how-it-works-2026.png",
     date: "2026-07-27",
     category: "Dating",
   },
@@ -1665,7 +1806,7 @@ export const POSTS: Post[] = [
     title: "Anonymous Dating Apps: What They Are and Why People Are Switching (2026)",
     excerpt:
       "78% of dating app users report burnout, according to a 2024 Forbes Health survey. Anonymous, profile-light dating apps are one response — here's what they actually offer and where they fall short.",
-    thumbnail: "/images/hero-gen-z-quitting-dating-apps-2026.png",
+    thumbnail: "/images/hero-anonymous-dating-apps-guide-2026.png",
     date: "2026-07-27",
     category: "Dating",
   },
@@ -1674,8 +1815,17 @@ export const POSTS: Post[] = [
     title: "Virtual Dating: How to Have a Great Video Date in 2026",
     excerpt:
       "Match's Singles in America survey found most people who tried a video date before meeting in person felt real chemistry. Here's how to make one actually work, and why text-first beats video-first.",
-    thumbnail: "/images/hero-is-video-chat-with-strangers-safe-2026.png",
+    thumbnail: "/images/hero-virtual-dating-tips-video-dates-2026.png",
     date: "2026-07-27",
     category: "Dating",
+  },
+  {
+    slug: "conversation-starters-that-reveal-hidden-agendas",
+    title: "How 10 Conversation Starters Reveal Hidden Agendas",
+    excerpt:
+      "A first message is rarely random. From the classic 'wrong number' text to instant over-the-top flattery, here are 10 openers that can signal an ulterior motive — and how to tell a hidden agenda from plain awkwardness.",
+    thumbnail: "/images/hero-conversation-starters-that-reveal-hidden-agendas.png",
+    date: "2026-08-04",
+    category: "Chat & Connection",
   },
 ];
