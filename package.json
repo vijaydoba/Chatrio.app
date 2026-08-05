@@ -19,6 +19,7 @@
   "homepage": "https://github.com/vijaydoba/Chatrio.app#readme",
   "dependencies": {
     "apify-client": "^2.23.4",
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "google-auth-library": "^9.15.1"
   }
 }
