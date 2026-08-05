@@ -36,7 +36,9 @@ const HYDRATION_CHECK_ROUTES = process.env.PRERENDER_HYDRATION_ROUTES
   : ["/", "/blog", ARTICLE_ROUTES.at(-1), "/about"].filter(Boolean);
 const PORT = Number(process.env.PRERENDER_PORT || 45999);
 const ROUTES_PER_BROWSER = 10;
-const CHROME_PATH = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+const CHROME_PATH =
+  process.env.PRERENDER_CHROME_PATH ||
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
 const mimeTypes = {
   ".css": "text/css",
