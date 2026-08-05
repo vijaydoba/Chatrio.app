@@ -10,7 +10,7 @@ const fs = require("fs");
 const http = require("http");
 const path = require("path");
 const url = require("url");
-const puppeteer = require("../client/node_modules/puppeteer");
+const puppeteer = require("puppeteer");
 
 const BUILD_DIR = process.env.PRERENDER_BUILD_DIR
   ? path.resolve(process.env.PRERENDER_BUILD_DIR)
