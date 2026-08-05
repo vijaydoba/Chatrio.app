@@ -217,12 +217,16 @@ async function verifyHydration(browser, route) {
     });
     await delay(500);
 
-    const result = await page.evaluate(() => ({
-      cls: (window.__chatrioLayoutShifts || []).reduce((sum, value) => sum + value, 0),
-      hasHeading: Boolean(document.querySelector("h1")),
-      hasLoadingArticle: /Loading article/i.test(document.querySelector("#root")?.textContent || ""),
-      rootTextLength: document.querySelector("#root")?.textContent?.trim().length || 0,
-    }));
+    const result = await page.evaluate(() => {
+      const rootEl = document.querySelector("#root");
+      const rootText = rootEl && rootEl.textContent ? rootEl.textContent : "";
+      return {
+        cls: (window.__chatrioLayoutShifts || []).reduce((sum, value) => sum + value, 0),
+        hasHeading: Boolean(document.querySelector("h1")),
+        hasLoadingArticle: /Loading article/i.test(rootText),
+        rootTextLength: rootText.trim().length,
+      };
+    });
 
     if (hydrationErrors.length) {
       throw new Error(`${route} hydration failed: ${hydrationErrors.join("; ")}`);
