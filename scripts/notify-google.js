@@ -1,6 +1,8 @@
 /**
- * Notifies Google, Bing, and Yandex via IndexNow when new content is published.
- * No service account or OAuth needed — just an API key file.
+ * Notifies IndexNow-participating search engines when new content is published.
+ * Google does not consume IndexNow; it discovers these URLs through the sitemap
+ * and Google Search Console. No service account or OAuth is needed here — just
+ * an IndexNow API key file.
  *
  * SETUP (one-time):
  *   node scripts/notify-google.js --setup
@@ -109,13 +111,13 @@ function post(hostname, urlPath, body) {
           } else {
             console.log(`  ⚠️   ${hostname} → ${res.statusCode} ${raw.slice(0, 120)}`);
           }
-          resolve();
+          resolve({ hostname, accepted: res.statusCode === 200 || res.statusCode === 202, status: res.statusCode });
         });
       }
     );
     req.on("error", (e) => {
       console.log(`  ❌  ${hostname} → ${e.message}`);
-      resolve();
+      resolve({ hostname, accepted: false, status: 0 });
     });
     req.write(data);
     req.end();
@@ -133,18 +135,19 @@ async function main() {
     urlList: urls,
   };
 
-  // Google
-  await post("api.indexnow.org", "/indexnow", payload);
+  const results = [];
+  results.push(await post("api.indexnow.org", "/indexnow", payload));
+  results.push(await post("www.bing.com", "/indexnow", payload));
+  results.push(await post("yandex.com", "/indexnow", payload));
 
-  // Bing
-  await post("www.bing.com", "/indexnow", payload);
-
-  // Yandex
-  await post("yandex.com", "/indexnow", payload);
+  const accepted = results.filter((result) => result.accepted).map((result) => result.hostname);
+  const rejected = results.filter((result) => !result.accepted).map((result) => `${result.hostname} (${result.status || "network error"})`);
 
   console.log(`
-🎉  Done! URLs submitted to Google, Bing, and Yandex.
-    Google typically crawls within a few hours.
+📬  IndexNow submission finished.
+    Accepted by: ${accepted.length ? accepted.join(", ") : "none"}
+    Not accepted: ${rejected.length ? rejected.join(", ") : "none"}
+    Google is not an IndexNow participant; keep the sitemap in Search Console.
 
 URLs submitted (${urls.length} total):`);
   urls.forEach((u) => console.log(`  • ${u}`));
