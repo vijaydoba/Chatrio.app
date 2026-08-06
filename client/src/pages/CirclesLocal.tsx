@@ -916,6 +916,11 @@ export default function CirclesLocal() {
           <p>When you first use Circles, your browser generates a random anonymous ID that never leaves your device except to identify your session. Your nickname, anime avatar, and chats are linked to that ID — not to an email, phone number, or real name. Come back on the same device and browser and Circles recognizes you; clear your browser data and that identity is erased permanently.</p>
           <h2>Learn more about Circles</h2>
           <ul className="cl-seo-links">
+            <li><NavLink to="/blog/circles-app-anonymous-nearby-chat-guide">Circles app: anonymous nearby chat without oversharing</NavLink></li>
+            <li><NavLink to="/blog/community-app-privacy-safety-checklist">Community app privacy: 10 checks before you join</NavLink></li>
+            <li><NavLink to="/blog/local-group-chat-ideas-for-meeting-people">25 local group chat ideas for meeting people nearby</NavLink></li>
+            <li><NavLink to="/blog/how-approximate-location-protects-nearby-chat">How approximate location protects you in nearby chat</NavLink></li>
+            <li><NavLink to="/blog/first-message-to-someone-nearby-conversation-starters">First message to someone nearby: 30 conversation starters</NavLink></li>
             <li><NavLink to="/blog/introducing-circles-anonymous-local-chat-near-you">Introducing Circles: anonymous local chat to meet people near you</NavLink></li>
             <li><NavLink to="/blog/nearby-chat-apps-how-they-work-safely">Nearby chat apps: how they work and how to use them safely</NavLink></li>
             <li><NavLink to="/blog/local-anonymous-chat-talk-to-people-in-your-area">Local anonymous chat: talk to people in your area without sharing your identity</NavLink></li>
