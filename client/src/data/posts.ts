@@ -1828,4 +1828,68 @@ export const POSTS: Post[] = [
     date: "2026-08-04",
     category: "Chat & Connection",
   },
+  // ── PSYCHOLOGY / "WHAT IS X" CLUSTER (2026-08-06) ──────
+  {
+    slug: "what-is-the-talking-stage-signs-meaning-2026",
+    title: "What Is the Talking Stage? Signs, Meaning & How to Move Past It (2026)",
+    excerpt:
+      "Not officially dating, not just friends — the talking stage is where most connections start. Here's what it means and how to move through it.",
+    thumbnail: "/images/hero-what-is-a-situationship-signs-meaning-2026.png",
+    date: "2026-08-06",
+    category: "Dating",
+  },
+  {
+    slug: "what-is-a-trauma-bond-signs-how-to-break-free-2026",
+    title: "What Is a Trauma Bond? Signs, Causes & How to Break Free (2026)",
+    excerpt:
+      "Trauma bonds don't feel like danger from the inside — they feel like love that's unusually hard to leave. Here's what's happening and how to break free.",
+    thumbnail: "/images/hero-what-is-limerence-obsessive-infatuation-explained-2026.png",
+    date: "2026-08-06",
+    category: "Mental Health",
+  },
+  {
+    slug: "five-love-languages-explained-2026",
+    title: "The 5 Love Languages, Explained — And Does the Theory Actually Hold Up? (2026)",
+    excerpt:
+      "Gary Chapman's five love languages became shorthand for showing love. Here's what they are, and what relationship science actually says about them.",
+    thumbnail: "/images/hero-how-to-make-someone-feel-special-in-online-chat.png",
+    date: "2026-08-06",
+    category: "Love",
+  },
+  {
+    slug: "what-is-fearful-avoidant-attachment-style-2026",
+    title: "What Is Fearful-Avoidant Attachment? Signs & How It Shows Up in Chat (2026)",
+    excerpt:
+      "Wanting closeness and fearing it at the same time isn't a contradiction — it's fearful-avoidant attachment. Here's what it looks like online and off.",
+    thumbnail: "/images/hero-avoidant-attachment-style-signs-online-chat-2026.png",
+    date: "2026-08-06",
+    category: "Relationships",
+  },
+  {
+    slug: "what-is-orbiting-dating-trend-explained-2026",
+    title: "What Is Orbiting? The Dating Trend Worse Than Ghosting (2026)",
+    excerpt:
+      "They stopped replying, but they're still watching every story you post. Here's what orbiting is, why it happens, and how to stop waiting on it.",
+    thumbnail: "/images/hero-what-is-breadcrumbing-signs-how-to-stop-accepting-it-2026.png",
+    date: "2026-08-06",
+    category: "Dating",
+  },
+  {
+    slug: "what-is-codependency-signs-healthier-bonds-2026",
+    title: "What Is Codependency? Signs, Causes & How to Build Healthier Bonds (2026)",
+    excerpt:
+      "Codependency can look like devotion from the outside. Here's how to tell caring too much from losing yourself, and how to build more balanced bonds.",
+    thumbnail: "/images/hero-why-we-crave-validation-online-and-how-to-handle-it.png",
+    date: "2026-08-06",
+    category: "Mental Health",
+  },
+  {
+    slug: "what-is-a-rebound-relationship-signs-2026",
+    title: "What Is a Rebound Relationship? Signs, Science & Is It Ever a Good Idea (2026)",
+    excerpt:
+      "Jumping into someone new right after a breakup gets a bad reputation. Here's what the research actually found, and how to tell if you're ready.",
+    thumbnail: "/images/hero-psychology-of-falling-in-love-online.png",
+    date: "2026-08-06",
+    category: "Romance",
+  },
 ];
