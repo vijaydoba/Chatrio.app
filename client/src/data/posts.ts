@@ -1892,4 +1892,68 @@ export const POSTS: Post[] = [
     date: "2026-08-06",
     category: "Romance",
   },
+  // ── COMMUNICATION PATTERNS CLUSTER (2026-08-07) ──────
+  {
+    slug: "what-is-gaslighting-signs-how-to-respond-2026",
+    title: "What Is Gaslighting? Signs, Examples & How to Respond (2026)",
+    excerpt:
+      "Gaslighting makes you doubt your own memory and judgment until someone else's version of events feels safer than your own. Here's how to recognize it.",
+    thumbnail: "/images/hero-what-is-a-parasocial-relationship-2026.png",
+    date: "2026-08-07",
+    category: "Mental Health",
+  },
+  {
+    slug: "what-is-stonewalling-signs-how-to-break-the-pattern-2026",
+    title: "What Is Stonewalling? Signs & How to Break the Pattern (2026)",
+    excerpt:
+      "Going quiet mid-conflict isn't the same as staying calm. Here's what stonewalling actually is, why it happens, and how couples break the cycle.",
+    thumbnail: "/images/hero-what-is-emotional-intimacy-how-to-build-it-2026.png",
+    date: "2026-08-07",
+    category: "Relationships",
+  },
+  {
+    slug: "what-is-the-slow-fade-signs-someone-is-losing-interest-2026",
+    title: "What Is the Slow Fade? Signs Someone Is Losing Interest (2026)",
+    excerpt:
+      "Replies get shorter, plans get vaguer, and nothing ever officially ends. Here's how to spot a slow fade before you've spent months waiting on it.",
+    thumbnail: "/images/hero-what-is-a-situationship-signs-meaning-2026.png",
+    date: "2026-08-07",
+    category: "Dating",
+  },
+  {
+    slug: "what-is-zombieing-dating-trend-after-ghosting-2026",
+    title: "What Is Zombieing? The Dating Trend That Follows Ghosting (2026)",
+    excerpt:
+      "They vanished, then messaged you months later like nothing happened. Here's what zombieing is, why it keeps happening, and how to respond.",
+    thumbnail: "/images/hero-anonymous-dating-apps-guide-2026.png",
+    date: "2026-08-07",
+    category: "Dating",
+  },
+  {
+    slug: "what-is-future-faking-signs-why-it-works-2026",
+    title: "What Is Future Faking? Signs, Why It Works & How to Spot It (2026)",
+    excerpt:
+      "Big promises about a shared future can feel like commitment when they're actually a shortcut around it. Here's how to tell the difference early.",
+    thumbnail: "/images/hero-text-chemistry-how-to-create-attraction-in-online-chat.png",
+    date: "2026-08-07",
+    category: "Romance",
+  },
+  {
+    slug: "what-is-micro-cheating-signs-youve-crossed-a-line-2026",
+    title: "What Is Micro-Cheating? Signs You've Crossed a Line (2026)",
+    excerpt:
+      "No physical contact, no confession-worthy secret — just a pattern of small emotional or flirtatious moments kept from a partner. Here's the line.",
+    thumbnail: "/images/hero-what-is-love-bombing-signs-red-flags-2026.png",
+    date: "2026-08-07",
+    category: "Relationships",
+  },
+  {
+    slug: "what-is-text-anxiety-why-waiting-for-a-reply-feels-so-bad-2026",
+    title: "What Is Text Anxiety? Why Waiting for a Reply Feels So Bad (2026)",
+    excerpt:
+      "Checking your phone for a reply that hasn't come is its own specific kind of uncomfortable. Here's what's actually happening and how to ease it.",
+    thumbnail: "/images/hero-voice-chat-with-strangers-guide-2026.png",
+    date: "2026-08-07",
+    category: "Chat & Connection",
+  },
 ];
