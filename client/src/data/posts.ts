@@ -1956,4 +1956,68 @@ export const POSTS: Post[] = [
     date: "2026-08-07",
     category: "Chat & Connection",
   },
+  // ── PSYCHOLOGY / "WHAT IS X" CLUSTER (2026-08-08) ──────
+  {
+    slug: "what-is-catfishing-signs-how-to-spot-it-2026",
+    title: "What Is Catfishing? Signs, Why People Do It & How to Spot It (2026)",
+    excerpt:
+      "A catfish isn't just a stolen photo — it's a whole fake identity built to keep you invested. Here's how to spot one before you're in too deep.",
+    thumbnail: "/images/hero-how-to-date-someone-you-met-online-safely.png",
+    date: "2026-08-08",
+    category: "Dating",
+  },
+  {
+    slug: "what-is-the-ick-why-it-happens-what-to-do-2026",
+    title: "What Is 'The Ick'? Why It Happens & What to Do About It (2026)",
+    excerpt:
+      "One small moment and the attraction just vanishes. Here's the psychology behind the ick, and whether it's ever worth pushing past.",
+    thumbnail: "/images/hero-romantic-conversations-that-build-connection.png",
+    date: "2026-08-08",
+    category: "Romance",
+  },
+  {
+    slug: "what-is-negging-signs-how-to-shut-it-down-2026",
+    title: "What Is Negging? Signs, Examples & How to Shut It Down (2026)",
+    excerpt:
+      "A backhanded compliment dressed up as playful teasing is still designed to make you chase approval. Here's how to spot negging and respond.",
+    thumbnail: "/images/hero-how-to-manage-your-emotions-during-a-difficult-online-conversation.png",
+    date: "2026-08-08",
+    category: "Mental Health",
+  },
+  {
+    slug: "what-is-hoovering-signs-an-ex-is-pulling-you-back-2026",
+    title: "What Is Hoovering? Signs an Ex Is Pulling You Back In (2026)",
+    excerpt:
+      "A sudden apology or \"I miss you\" text after silence isn't always closure — sometimes it's hoovering. Here's how to recognize the pattern.",
+    thumbnail: "/images/hero-how-to-build-trust-with-someone-you-met-online.png",
+    date: "2026-08-08",
+    category: "Relationships",
+  },
+  {
+    slug: "what-is-cuffing-season-why-it-happens-2026",
+    title: "What Is Cuffing Season? Why It Happens & What It Means (2026)",
+    excerpt:
+      "Relationships that start right as it gets cold and end right as it warms up aren't a coincidence. Here's what's actually driving cuffing season.",
+    thumbnail: "/images/hero-anonymous-dating-apps-guide-2026.png",
+    date: "2026-08-08",
+    category: "Dating",
+  },
+  {
+    slug: "what-is-compersion-the-opposite-of-jealousy-2026",
+    title: "What Is Compersion? The Opposite of Jealousy, Explained (2026)",
+    excerpt:
+      "Feeling genuine joy at a partner's happiness with someone else sounds impossible to some and obvious to others. Here's what compersion actually is.",
+    thumbnail: "/images/hero-love-is-built-not-found-real-love-in-modern-relationships.png",
+    date: "2026-08-08",
+    category: "Love",
+  },
+  {
+    slug: "what-is-curving-signs-of-a-soft-rejection-2026",
+    title: "What Is Curving? Signs of a Soft Rejection in Chat (2026)",
+    excerpt:
+      "A vague \"maybe\" or a joke instead of a straight answer can be a rejection dressed up as ambiguity. Here's how to recognize curving in chat.",
+    thumbnail: "/images/hero-what-your-texting-habits-reveal-about-your-personality.png",
+    date: "2026-08-08",
+    category: "Chat & Connection",
+  },
 ];
