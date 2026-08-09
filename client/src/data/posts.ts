@@ -2020,4 +2020,68 @@ export const POSTS: Post[] = [
     date: "2026-08-08",
     category: "Chat & Connection",
   },
+  // ── PSYCHOLOGY / "WHAT IS X" CLUSTER (2026-08-09) ──────
+  {
+    slug: "what-is-benching-signs-someone-is-keeping-you-as-a-backup-2026",
+    title: "What Is Benching? Signs Someone Is Keeping You as a Backup (2026)",
+    excerpt:
+      "Just enough contact to keep you interested, never enough to actually commit. Here's how to recognize benching before you waste months on it.",
+    thumbnail: "/images/hero-what-is-a-blind-date-app-how-it-works-2026.png",
+    date: "2026-08-09",
+    category: "Dating",
+  },
+  {
+    slug: "what-is-kitten-fishing-signs-of-a-slightly-misleading-profile-2026",
+    title: "What Is Kitten Fishing? Signs of a Slightly Misleading Profile (2026)",
+    excerpt:
+      "Not a fake identity — just an old photo, a shaved-off age, or a heavily filtered life. Here's how kitten fishing differs from catfishing.",
+    thumbnail: "/images/hero-virtual-dating-tips-video-dates-2026.png",
+    date: "2026-08-09",
+    category: "Dating",
+  },
+  {
+    slug: "what-is-dtr-how-to-have-the-define-the-relationship-talk-2026",
+    title: "What Is DTR? How to Have the Define-the-Relationship Talk (2026)",
+    excerpt:
+      "\"So what are we?\" is a short question that can feel enormous. Here's what DTR means and how to actually get through the conversation.",
+    thumbnail: "/images/hero-how-to-know-when-an-online-connection-is-worth-pursuing.png",
+    date: "2026-08-09",
+    category: "Relationships",
+  },
+  {
+    slug: "what-is-a-beige-flag-in-dating-examples-2026",
+    title: "What Is a Beige Flag? Quirky-Not-Bad Dating Habits, Explained (2026)",
+    excerpt:
+      "Not a red flag, not really a green one either — just an oddly specific habit that says more \"huh\" than dealbreaker. Here's what counts.",
+    thumbnail: "/images/hero-conversation-starters-that-reveal-hidden-agendas.png",
+    date: "2026-08-09",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "what-is-triangulation-signs-of-this-manipulation-tactic-2026",
+    title: "What Is Triangulation? Signs of This Manipulation Tactic (2026)",
+    excerpt:
+      "Pulling a third person into a conflict that isn't theirs is rarely accidental. Here's how triangulation works and how to respond to it.",
+    thumbnail: "/images/hero-why-we-crave-validation-online-and-how-to-handle-it.png",
+    date: "2026-08-09",
+    category: "Mental Health",
+  },
+  {
+    slug: "what-is-weaponized-incompetence-signs-examples-2026",
+    title: "What Is Weaponized Incompetence? Signs & Examples (2026)",
+    excerpt:
+      "\"I just wasn't very good at it\" can be a real skill gap — or a convenient way to never have to do something again. Here's the difference.",
+    thumbnail: "/images/hero-why-people-are-more-honest-with-strangers-than-friends.png",
+    date: "2026-08-09",
+    category: "Relationships",
+  },
+  {
+    slug: "what-is-gray-rocking-how-this-response-tactic-works-2026",
+    title: "What Is Gray Rocking? How This Response Tactic Works (2026)",
+    excerpt:
+      "Going deliberately flat and boring is a defensive strategy some people use to stop feeding a manipulator's reaction. Here's how it works.",
+    thumbnail: "/images/hero-psychology-of-anonymity-why-we-act-differently-online.png",
+    date: "2026-08-09",
+    category: "Mental Health",
+  },
 ];
