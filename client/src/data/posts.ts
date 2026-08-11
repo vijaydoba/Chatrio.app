@@ -2084,4 +2084,13 @@ export const POSTS: Post[] = [
     date: "2026-08-09",
     category: "Mental Health",
   },
+  {
+    slug: "what-is-fawn-response-signs-of-people-pleasing-trauma-2026",
+    title: "What Is Fawn Response? Signs of People-Pleasing Trauma Response (2026)",
+    excerpt:
+      "When someone's automatic reaction to conflict is to agree, accommodate, and make themselves smaller—that's the fawn response at work. Here's what it is and why it happens in relationships.",
+    thumbnail: "/images/hero-how-to-set-healthy-boundaries-in-online-relationships.png",
+    date: "2026-08-11",
+    category: "Mental Health",
+  },
 ];
