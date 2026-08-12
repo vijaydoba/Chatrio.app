@@ -2093,4 +2093,13 @@ export const POSTS: Post[] = [
     date: "2026-08-11",
     category: "Mental Health",
   },
+  {
+    slug: "anxious-attachment-in-online-dating-why-you-overanalyze-messages-2026",
+    title: "Anxious Attachment in Online Dating: Why You Overanalyze Every Message (2026)",
+    excerpt:
+      "You replay their last message in your head. You notice they took 2 hours to reply when they usually text back in 5 minutes. You wonder if something's wrong. That's anxious attachment at work—and online dating amplifies it in ways real-life relationships don't.",
+    thumbnail: "/images/hero-science-of-attraction-in-online-chat.png",
+    date: "2026-08-12",
+    category: "Mental Health",
+  },
 ];
