@@ -16,10 +16,8 @@ const contentSourcePath = path.join(
 const postsSourcePath = path.join(projectRoot, "client/src/data/posts.ts");
 const outputDir = path.join(projectRoot, "client/public/blog-content");
 
-const typescriptPath = require.resolve("typescript", {
-  paths: [path.join(projectRoot, "client")],
-});
-const ts = require(typescriptPath);
+// Use root typescript to avoid version.cjs in client
+const ts = require("typescript");
 
 function loadPostContent() {
   const source = fs.readFileSync(contentSourcePath, "utf8");
