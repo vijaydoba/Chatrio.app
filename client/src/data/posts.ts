@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-13) ─────────────────────────────────
+  {
+    slug: "the-power-of-true-listening-in-online-chat",
+    title: "The Power of True Listening in Online Chat",
+    excerpt:
+      "Most people come to chat to be heard, not to listen. But when someone truly listens, everything changes. Here's why listening is the most underrated skill online.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-13",
+    category: "Mental Health",
+  },
+
   // ── QUESTIONS / CONVERSATION-STARTERS CLUSTER (2026-08-04) ──────
   {
     slug: "questions-to-ask-to-get-to-know-someone",
