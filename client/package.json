@@ -29,7 +29,6 @@
     "react-scripts": "5.0.1",
     "react-snap": "^1.23.0",
     "socket.io-client": "^4.8.1",
-    "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -97,6 +96,7 @@
       "/privacy",
       "/terms",
       "/child-safety",
+      "/blog/the-power-of-true-listening-in-online-chat",
       "/blog/questions-to-ask-to-get-to-know-someone",
       "/blog/deep-questions-to-ask-your-partner",
       "/blog/conversation-starters-for-couples",
@@ -328,6 +328,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/assets": "^3.0.5"
+    "@capacitor/assets": "^3.0.5",
+    "typescript": "^7.0.2"
   }
 }
