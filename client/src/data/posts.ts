@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-14) ─────────────────────────────────
+  {
+    slug: "why-vulnerability-creates-deeper-online-connections",
+    title: "Why Vulnerability Creates Deeper Connections in Online Chat",
+    excerpt:
+      "The safest conversations happen when someone goes first—shows their cracks, admits confusion, or admits what they're really thinking. Here's why being real opens more doors.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-14",
+    category: "Mental Health",
+  },
+
   // ── NEW POSTS (2026-08-13) ─────────────────────────────────
   {
     slug: "the-power-of-true-listening-in-online-chat",
