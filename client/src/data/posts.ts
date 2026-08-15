@@ -2124,4 +2124,13 @@ export const POSTS: Post[] = [
     date: "2026-08-12",
     category: "Mental Health",
   },
+  {
+    slug: "how-to-ask-for-contact-info-after-online-chat",
+    title: "How to Ask for Contact Info After a Great Online Chat (Without Being Awkward)",
+    excerpt:
+      "The conversation is clicking, the chemistry is real, but you're still strangers on an anonymous chat. Here's how to ask for their number or social media without killing the momentum.",
+    thumbnail: "/images/hero-how-to-keep-a-conversation-going-with-someone-online.png",
+    date: "2026-08-15",
+    category: "Chat & Connection",
+  },
 ];
