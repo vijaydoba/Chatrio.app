@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-16) ─────────────────────────────────
+  {
+    slug: "the-silence-between-messages-deeper-connection",
+    title: "The Silence Between Messages: Why Waiting Creates Deeper Connection",
+    excerpt:
+      "In a world of instant replies, the person who waits—who reads slowly, thinks carefully, and responds deliberately—creates something rare. Here's the psychology of meaningful delay.",
+    thumbnail: "/images/hero-why-text-is-sometimes-better-than-talking.png",
+    date: "2026-08-16",
+    category: "Chat & Connection",
+  },
+
   // ── NEW POSTS (2026-08-14) ─────────────────────────────────
   {
     slug: "why-vulnerability-creates-deeper-online-connections",
