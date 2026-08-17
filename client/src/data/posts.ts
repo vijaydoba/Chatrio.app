@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-17) ─────────────────────────────────
+  {
+    slug: "chat-burnout-conversation-fatigue-when-to-take-breaks",
+    title: "Chat Burnout Is Real: How to Recognize and Recover From Conversation Fatigue",
+    excerpt:
+      "Talking to strangers feels good—until it doesn't. Here's how to spot conversation fatigue, understand why it happens, and take breaks before you burn out.",
+    thumbnail: "/images/hero-how-to-overcome-social-anxiety-through-online-chat.png",
+    date: "2026-08-17",
+    category: "Mental Health",
+  },
+
   // ── NEW POSTS (2026-08-16) ─────────────────────────────────
   {
     slug: "the-silence-between-messages-deeper-connection",
