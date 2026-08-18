@@ -35,7 +35,7 @@
 - React Router 7
 - Socket.IO client
 - `react-helmet-async` for per‑page meta/SEO
-- Static pre‑rendering of routes via `scripts/prerender-all-stable.js` (a custom puppeteer‑based prerenderer — see [Build & Deploy](#build--deploy); the `react-snap` devDependency is still installed but its `postbuild` hook is unreliable and should not be used)
+- Static pre‑rendering of routes via `scripts/prerender-all-stable.js` (a custom puppeteer‑based prerenderer — see [Build & Deploy](#build--deploy); `react-snap` itself was removed 2026-08-18, its bundled ancient puppeteer's Chromium download was breaking deploys and its `postbuild` hook was already unused/unreliable)
 - Capacitor (Android) wraps the same `client/` build for the native Circles app — see [`MOBILE-APP.md`](./MOBILE-APP.md)
 
 **Backend** (`server/`)
@@ -177,7 +177,7 @@ Latest-release validation: the 189-post content audit passed, all 204 routes pre
 
 ## Build & Deploy
 
-> ⚠️ **Do not use `npm run build`.** Its `postbuild` hook runs `react-snap`, which is unreliable on this project — its headless crawl can crash outright partway through (a Suspense/lazy‑route hydration race that reliably reproduces, at a different page each run) instead of just producing empty shells. Use the recipe below instead, which replaces `react-snap`'s crawl step with `scripts/prerender-all-stable.js`, a custom puppeteer‑based prerenderer that waits for real rendered content (not just network‑idle) before snapshotting each page.
+> ⚠️ Use the recipe below, not a plain `npm run build`. `react-snap` (formerly wired up via a `postbuild` hook) was removed 2026-08-18 — its headless crawl used to crash outright partway through (a Suspense/lazy‑route hydration race that reliably reproduced, at a different page each run) instead of just producing empty shells, and its bundled ancient puppeteer's Chromium download was also breaking `npm ci` on the VPS. The recipe below replaces that crawl step with `scripts/prerender-all-stable.js`, a custom puppeteer‑based prerenderer that waits for real rendered content (not just network‑idle) before snapshotting each page.
 
 ```bash
 # 1. Quit Google Chrome fully first — required, or the prerender step
@@ -187,7 +187,7 @@ osascript -e 'quit app "Google Chrome"'
 # 2. Regenerate the sitemap + route list
 node scripts/generate-sitemap.js
 
-# 3. Production webpack build only — skips react-snap's postbuild hook
+# 3. Production webpack build only
 cd client && CI=false npx react-scripts build && cd ..
 
 # 4. Prerender every route to static HTML
