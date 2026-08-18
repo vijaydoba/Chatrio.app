@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-18) ─────────────────────────────────
+  {
+    slug: "when-to-exchange-contact-after-anonymous-chat",
+    title: "When to Exchange Contact Info After Anonymous Chat (And How to Do It Right)",
+    excerpt:
+      "You had an amazing chat with a stranger. Now they want your number. Should you give it? Here's how to decide and do it safely when taking chat connections further.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-18",
+    category: "Relationships",
+  },
+
   // ── NEW POSTS (2026-08-17) ─────────────────────────────────
   {
     slug: "chat-burnout-conversation-fatigue-when-to-take-breaks",
