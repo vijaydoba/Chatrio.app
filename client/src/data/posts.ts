@@ -2166,4 +2166,13 @@ export const POSTS: Post[] = [
     date: "2026-08-15",
     category: "Chat & Connection",
   },
+  {
+    slug: "how-to-apologize-in-online-chat-after-saying-something-wrong",
+    title: "How to Apologize Effectively in Online Chat After Saying Something Wrong",
+    excerpt:
+      "Everyone says something awkward in chat. Here's how to apologize authentically, recover, and turn the moment into an even stronger connection.",
+    thumbnail: "/images/hero-how-to-overcome-social-anxiety-through-online-chat.png",
+    date: "2026-08-19",
+    category: "Chat & Connection",
+  },
 ];
