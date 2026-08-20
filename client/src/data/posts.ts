@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-20) ─────────────────────────────────
+  {
+    slug: "vulnerability-hangover-regret-after-sharing-online",
+    title: "The Vulnerability Hangover: When You've Shared Too Much and Feel Regret",
+    excerpt:
+      "You opened up, felt truly connected, then felt exposed. Here's why shame follows real conversation, how to recover, and when to reconnect.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-20",
+    category: "Mental Health",
+  },
+
   // ── NEW POSTS (2026-08-18) ─────────────────────────────────
   {
     slug: "when-to-exchange-contact-after-anonymous-chat",
