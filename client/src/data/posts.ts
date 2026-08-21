@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-21) ─────────────────────────────────
+  {
+    slug: "why-you-send-messages-you-immediately-regret",
+    title: "Why You Send Messages You Immediately Regret (And How to Stop)",
+    excerpt:
+      "You hit send, and within seconds you know it was a mistake. Here's why impulse sends happen, what they reveal about you, and how to slow down before it's too late.",
+    thumbnail: "/images/hero-why-late-night-online-chats-feel-so-different.png",
+    date: "2026-08-21",
+    category: "Mental Health",
+  },
+
   // ── NEW POSTS (2026-08-20) ─────────────────────────────────
   {
     slug: "vulnerability-hangover-regret-after-sharing-online",
