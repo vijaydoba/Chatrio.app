@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-22) ─────────────────────────────────
+  {
+    slug: "when-a-good-chat-suddenly-ends-the-empty-feeling-after",
+    title: "When a Good Chat Suddenly Stops: Why the Empty Feeling Lingers",
+    excerpt:
+      "You had the best chat. Real, connected, understood. And then they're gone. Here's why it feels like abandonment, what that feeling means, and how to sit with it without spiraling.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-22",
+    category: "Mental Health",
+  },
+
   // ── NEW POSTS (2026-08-21) ─────────────────────────────────
   {
     slug: "why-you-send-messages-you-immediately-regret",
