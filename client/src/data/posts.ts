@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-23) ─────────────────────────────────
+  {
+    slug: "reading-silence-what-delays-in-chat-actually-mean",
+    title: "Reading Silence: What Delays and Pauses in Chat Actually Mean",
+    excerpt:
+      "A message takes 10 minutes to reply. Then 2 hours. And suddenly you're spiraling: are they losing interest? Did I say something wrong? Here's what delays actually signal—and when they mean nothing.",
+    thumbnail: "/images/hero-why-text-is-sometimes-better-than-talking.png",
+    date: "2026-08-23",
+    category: "Mental Health",
+  },
+
   // ── NEW POSTS (2026-08-22) ─────────────────────────────────
   {
     slug: "when-a-good-chat-suddenly-ends-the-empty-feeling-after",
