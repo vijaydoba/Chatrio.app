@@ -48,6 +48,16 @@ app.get("/waitlist", (req, res) => {
   res.json(circles.listWaitlist());
 });
 
+// --- Abuse reports: admin-only moderation queue for random text/video chat ---
+app.get("/reports", (req, res) => {
+  const adminToken = process.env.ADMIN_TOKEN;
+  const provided = (req.headers.authorization || "").replace(/^Bearer\s+/i, "") || req.query.key;
+  if (!adminToken || provided !== adminToken) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  res.json(circles.listReports());
+});
+
 app.post("/auth/signup", handle((req) => circles.signup(req.body || {})));
 app.post("/auth/login", handle((req) => circles.login(req.body || {})));
 app.get("/auth/me", authMiddleware, handle((req) => circles.publicUser(req.user)));
@@ -78,92 +88,39 @@ const state = {
   username: new Map(),
   topics: new Map(),
   waitingSince: new Map(),
+  blocked: new Map(), // socketId -> Set of socketIds it must never be rematched with (post-report)
 };
 
-// --- BOT CONFIG ---
-const BOT_WAIT_MS = 3000;  // connect bot after 3s of waiting
-const BOT_STAY_MS = 5000;  // bot leaves after 5s
-
-const GIRL_NAMES = [
-  "Priya", "Anjali", "Neha", "Pooja", "Riya", "Divya", "Shreya", "Meera",
-  "Ananya", "Kavya", "Nisha", "Simran", "Komal", "Deepa", "Sonal", "Pallavi",
-  "Aisha", "Zara", "Ishita", "Sneha", "Tanvi", "Aditi", "Rhea", "Tanya",
-  "Emma", "Sophia", "Olivia", "Isabella", "Mia", "Emily", "Charlotte",
-  "Amelia", "Ava", "Luna", "Chloe", "Lily", "Zoe", "Grace", "Hannah",
-  "Ella", "Aria", "Scarlett", "Victoria", "Aurora", "Stella", "Nora",
-  "Yuki", "Sakura", "Mei", "Lin", "Yuna", "Hana", "Rin", "Sora",
-  "Fatima", "Layla", "Nour", "Sara", "Yasmin", "Rania", "Lina",
-  "Amara", "Nia", "Zuri", "Imani", "Sofia", "Valentina", "Camila", "Natalia",
-];
-
-function randomBotName() {
-  const rand = Math.random();
-  if (rand < 0.30) {
-    // 30% — girl name
-    return GIRL_NAMES[Math.floor(Math.random() * GIRL_NAMES.length)];
-  } else if (rand < 0.80) {
-    // 50% — Stranger (no age)
-    return "Stranger";
-  } else {
-    // 20% — male with random age 18–32
-    const age = Math.floor(Math.random() * 15) + 18;
-    return `m ${age}`;
-  }
-}
-
-// socketId -> wait timer (before bot connects)
-const botWaitTimers = new Map();
-// socketId -> stay timer (bot leave countdown)
-const botStayTimers = new Map();
-
-function clearBotTimers(socketId) {
-  const wt = botWaitTimers.get(socketId);
-  if (wt) { clearTimeout(wt); botWaitTimers.delete(socketId); }
-  const st = botStayTimers.get(socketId);
-  if (st) { clearTimeout(st); botStayTimers.delete(socketId); }
-}
-
-function scheduleBotMatch(socket) {
-  clearBotTimers(socket.id);
-
-  const timer = setTimeout(() => {
-    botWaitTimers.delete(socket.id);
-    if (state.waiting.has(socket.id)) connectBot(socket);
-  }, BOT_WAIT_MS);
-
-  botWaitTimers.set(socket.id, timer);
-}
-
-function connectBot(socket) {
-  if (!state.waiting.has(socket.id)) return;
-
-  const name = randomBotName();
-  const botId = "bot_" + Math.random().toString(36).slice(2, 9);
-
-  state.waiting.delete(socket.id);
-  state.waitingSince.delete(socket.id);
-  state.partner.set(socket.id, botId);
-
-  socket.emit("partner_found", { partner: name });
-  emitCounts();
-
-  // Bot leaves after BOT_STAY_MS with no conversation
-  const stayTimer = setTimeout(() => {
-    botStayTimers.delete(socket.id);
-    if (state.partner.get(socket.id) === botId) {
-      state.partner.delete(socket.id);
-      socket.emit("friend_left");
-      emitCounts();
-    }
-  }, BOT_STAY_MS);
-
-  botStayTimers.set(socket.id, stayTimer);
-}
+// --- Random Video Chat: separate matching pool from text chat, so video and
+// text matching never cross-pair with each other.
+const vc = {
+  waiting: new Set(),
+  partner: new Map(),
+  waitingSince: new Map(),
+};
 
 // --- HELPERS ---
 function emitCounts() {
   io.emit("online", state.online.size);
   io.emit("waiting_count", state.waiting.size);
+}
+
+// Random chat has no login yet, so IP is the only durable signal for
+// repeat-offender detection. Prefer X-Forwarded-For (set by the nginx
+// reverse proxy in production) over the raw socket address.
+function getClientIp(socket) {
+  const forwarded = socket.handshake.headers["x-forwarded-for"];
+  if (forwarded) return String(forwarded).split(",")[0].trim();
+  return socket.handshake.address;
+}
+
+// Permanently (for the lifetime of both sessions) prevents a and b from
+// being rematched with each other, e.g. after one reports the other.
+function blockPair(a, b) {
+  if (!state.blocked.has(a)) state.blocked.set(a, new Set());
+  if (!state.blocked.has(b)) state.blocked.set(b, new Set());
+  state.blocked.get(a).add(b);
+  state.blocked.get(b).add(a);
 }
 
 function clearPair(a, reason = "friend_left") {
@@ -174,10 +131,12 @@ function clearPair(a, reason = "friend_left") {
   state.partner.delete(b);
 
   io.to(a).emit(reason);
-  if (!b.startsWith("bot_")) io.to(b).emit(reason);
+  io.to(b).emit(reason);
 }
 
 function canMatch(a, b) {
+  if (state.blocked.get(a)?.has(b)) return false;
+
   const ta = state.topics.get(a) || [];
   const tb = state.topics.get(b) || [];
   if (ta.length === 0 || tb.length === 0) return true;
@@ -201,14 +160,11 @@ function tryMatch() {
       state.waitingSince.delete(a);
       state.waitingSince.delete(b);
 
-      clearBotTimers(a);
-      clearBotTimers(b);
-
       state.partner.set(a, b);
       state.partner.set(b, a);
 
-      io.to(a).emit("partner_found", { partner: state.username.get(b) || "Stranger" });
-      io.to(b).emit("partner_found", { partner: state.username.get(a) || "Stranger" });
+      io.to(a).emit("partner_found", { partner: state.username.get(b) || "Stranger", partnerId: b });
+      io.to(b).emit("partner_found", { partner: state.username.get(a) || "Stranger", partnerId: a });
 
       emitCounts();
       return;
@@ -216,6 +172,50 @@ function tryMatch() {
   }
 
   emitCounts();
+}
+
+function emitVcCounts() {
+  io.emit("vc_waiting_count", vc.waiting.size);
+}
+
+function clearVcPair(a, reason = "vc_friend_left") {
+  const b = vc.partner.get(a);
+  if (!b) return;
+
+  vc.partner.delete(a);
+  vc.partner.delete(b);
+
+  io.to(a).emit(reason);
+  io.to(b).emit(reason);
+}
+
+function tryVcMatch() {
+  const ids = Array.from(vc.waiting);
+
+  for (let i = 0; i < ids.length; i++) {
+    for (let j = i + 1; j < ids.length; j++) {
+      const a = ids[i];
+      const b = ids[j];
+
+      if (vc.partner.has(a) || vc.partner.has(b)) continue;
+
+      vc.waiting.delete(a);
+      vc.waiting.delete(b);
+      vc.waitingSince.delete(a);
+      vc.waitingSince.delete(b);
+
+      vc.partner.set(a, b);
+      vc.partner.set(b, a);
+
+      io.to(a).emit("vc_partner_found", { partner: "Stranger", partnerId: b });
+      io.to(b).emit("vc_partner_found", { partner: "Stranger", partnerId: a });
+
+      emitVcCounts();
+      return;
+    }
+  }
+
+  emitVcCounts();
 }
 
 // --- SOCKET.IO ---
@@ -245,12 +245,9 @@ io.on("connection", (socket) => {
     emitCounts();
 
     tryMatch();
-
-    if (state.waiting.has(socket.id)) scheduleBotMatch(socket);
   });
 
   socket.on("next", () => {
-    clearBotTimers(socket.id);
     clearPair(socket.id, "friend_left");
 
     state.waiting.add(socket.id);
@@ -259,12 +256,23 @@ io.on("connection", (socket) => {
     emitCounts();
 
     tryMatch();
+  });
 
-    if (state.waiting.has(socket.id)) scheduleBotMatch(socket);
+  socket.on("report_partner", () => {
+    const b = state.partner.get(socket.id);
+    if (!b) return;
+
+    blockPair(socket.id, b);
+
+    const reportedSocket = io.sockets.sockets.get(b);
+    circles.saveReport({
+      mode: "text",
+      reporterIp: getClientIp(socket),
+      reportedIp: reportedSocket ? getClientIp(reportedSocket) : null,
+    });
   });
 
   socket.on("disconnect_request", () => {
-    clearBotTimers(socket.id);
     clearPair(socket.id, "friend_left");
     state.waiting.delete(socket.id);
     state.waitingSince.delete(socket.id);
@@ -274,19 +282,13 @@ io.on("connection", (socket) => {
 
   socket.on("typing", ({ typing }) => {
     const b = state.partner.get(socket.id);
-    if (!b || b.startsWith("bot_")) return;
+    if (!b) return;
     io.to(b).emit("partner_typing", { typing: !!typing });
   });
 
   socket.on("message", ({ msgId, text }) => {
     const b = state.partner.get(socket.id);
     if (!b) return;
-
-    // Bot is silent — just acknowledge send, no reply
-    if (b.startsWith("bot_")) {
-      socket.emit("msg_sent", { msgId });
-      return;
-    }
 
     io.to(b).emit("message", {
       msgId,
@@ -302,11 +304,6 @@ io.on("connection", (socket) => {
     const b = state.partner.get(socket.id);
     if (!b) return;
 
-    if (b.startsWith("bot_")) {
-      socket.emit("msg_sent", { msgId });
-      return;
-    }
-
     io.to(b).emit("image", {
       msgId,
       author: state.username.get(socket.id) || "Stranger",
@@ -319,8 +316,88 @@ io.on("connection", (socket) => {
 
   socket.on("delivered", ({ msgId }) => {
     const b = state.partner.get(socket.id);
-    if (!b || b.startsWith("bot_")) return;
+    if (!b) return;
     io.to(b).emit("msg_delivered", { msgId });
+  });
+
+  // --- Video chat: pure signaling relay between the current pair.
+  const VIDEO_RELAY_EVENTS = [
+    "video_invite", "video_accept", "video_decline", "video_cancel",
+    "video_offer", "video_answer", "video_ice_candidate", "video_end",
+  ];
+  VIDEO_RELAY_EVENTS.forEach((event) => {
+    socket.on(event, (payload) => {
+      const b = state.partner.get(socket.id);
+      if (!b) return;
+      io.to(b).emit(event, payload || {});
+    });
+  });
+
+  // --- Random Video Chat: dedicated auto-start video matching, separate
+  // pool/state from text random chat (see `vc` above).
+  socket.on("vc_ready_to_chat", () => {
+    if (vc.partner.has(socket.id)) return;
+
+    vc.waiting.add(socket.id);
+    vc.waitingSince.set(socket.id, Date.now());
+    socket.emit("vc_waiting");
+    emitVcCounts();
+
+    tryVcMatch();
+  });
+
+  socket.on("vc_next", () => {
+    clearVcPair(socket.id, "vc_friend_left");
+
+    vc.waiting.add(socket.id);
+    vc.waitingSince.set(socket.id, Date.now());
+    socket.emit("vc_waiting");
+    emitVcCounts();
+
+    tryVcMatch();
+  });
+
+  socket.on("vc_disconnect_request", () => {
+    clearVcPair(socket.id, "vc_friend_left");
+    vc.waiting.delete(socket.id);
+    vc.waitingSince.delete(socket.id);
+    socket.emit("vc_idle");
+    emitVcCounts();
+  });
+
+  const VC_RELAY_EVENTS = ["vc_offer", "vc_answer", "vc_ice_candidate", "vc_end"];
+  VC_RELAY_EVENTS.forEach((event) => {
+    socket.on(event, (payload) => {
+      const b = vc.partner.get(socket.id);
+      if (!b) return;
+      io.to(b).emit(event, payload || {});
+    });
+  });
+
+  // --- Random Video Chat: text side-channel alongside the video call.
+  socket.on("vc_typing", ({ typing }) => {
+    const b = vc.partner.get(socket.id);
+    if (!b) return;
+    io.to(b).emit("vc_partner_typing", { typing: !!typing });
+  });
+
+  socket.on("vc_message", ({ msgId, text }) => {
+    const b = vc.partner.get(socket.id);
+    if (!b) return;
+
+    io.to(b).emit("vc_message", {
+      msgId,
+      text: String(text || "").slice(0, 2000),
+      fromId: socket.id,
+      ts: Date.now(),
+    });
+    socket.emit("vc_msg_sent", { msgId });
+  });
+
+  socket.on("vc_delivered", ({ msgId }) => {
+    const b = vc.partner.get(socket.id);
+    if (!b) return;
+    io.to(b).emit("vc_msg_delivered", { msgId });
   });
 
   // --- Circles: authenticated group cohort rooms (separate from random chat) ---
@@ -367,7 +444,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    clearBotTimers(socket.id);
     clearPair(socket.id, "friend_left");
     state.waiting.delete(socket.id);
     state.waitingSince.delete(socket.id);
@@ -375,7 +451,13 @@ io.on("connection", (socket) => {
     state.username.delete(socket.id);
     state.topics.delete(socket.id);
     state.online.delete(socket.id);
+    state.blocked.delete(socket.id);
     emitCounts();
+
+    clearVcPair(socket.id, "vc_friend_left");
+    vc.waiting.delete(socket.id);
+    vc.waitingSince.delete(socket.id);
+    emitVcCounts();
   });
 });
 

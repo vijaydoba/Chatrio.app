@@ -2155,4 +2155,22 @@ export const POSTS: Post[] = [
     date: "2026-08-15",
     category: "Chat & Connection",
   },
+  {
+    slug: "video-calling-in-chat-how-it-works",
+    title: "Video Calling in Chat: How to Start a Video Call With Your Match",
+    excerpt:
+      "Texting is great, but sometimes you want to actually see the person you're talking to. Here's how to escalate any Chatrio text conversation to a live video call, and what happens on both sides when you do.",
+    thumbnail: "/images/hero-video-calling-in-chat-how-it-works.png",
+    date: "2026-08-20",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "random-video-chat-guide",
+    title: "Random Video Chat: Meet Strangers Face-to-Face Instantly",
+    excerpt:
+      "No typing, no waiting for a reply — Random Video Chat pairs you with a real stranger and starts the call the moment you're matched, with a live text panel alongside it. Here's how it works.",
+    thumbnail: "/images/hero-random-video-chat-guide.png",
+    date: "2026-08-20",
+    category: "Chat & Connection",
+  },
 ];

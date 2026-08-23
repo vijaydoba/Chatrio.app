@@ -63,6 +63,18 @@ CREATE TABLE IF NOT EXISTS waitlist (
   created_at INTEGER NOT NULL,
   UNIQUE(email, source)
 );
+
+-- Abuse reports from random text/video chat. Random chat has no login yet,
+-- so IP is the only durable signal for repeat-offender detection.
+CREATE TABLE IF NOT EXISTS reports (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  mode        TEXT NOT NULL,   -- 'text' | 'video'
+  reporter_ip TEXT,
+  reported_ip TEXT,
+  created_at  INTEGER NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_reports_reported_ip ON reports(reported_ip);
 `);
 
 // --- Seed a couple of curated Circles so cohorts can actually fill. ---
