@@ -72,6 +72,61 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-23) ─────────────────────────────────
+  {
+    slug: "reading-silence-what-delays-in-chat-actually-mean",
+    title: "Reading Silence: What Delays and Pauses in Chat Actually Mean",
+    excerpt:
+      "A message takes 10 minutes to reply. Then 2 hours. And suddenly you're spiraling: are they losing interest? Did I say something wrong? Here's what delays actually signal—and when they mean nothing.",
+    thumbnail: "/images/hero-why-text-is-sometimes-better-than-talking.png",
+    date: "2026-08-23",
+    category: "Mental Health",
+  },
+
+  // ── NEW POSTS (2026-08-22) ─────────────────────────────────
+  {
+    slug: "when-a-good-chat-suddenly-ends-the-empty-feeling-after",
+    title: "When a Good Chat Suddenly Stops: Why the Empty Feeling Lingers",
+    excerpt:
+      "You had the best chat. Real, connected, understood. And then they're gone. Here's why it feels like abandonment, what that feeling means, and how to sit with it without spiraling.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-22",
+    category: "Mental Health",
+  },
+
+  // ── NEW POSTS (2026-08-21) ─────────────────────────────────
+  {
+    slug: "why-you-send-messages-you-immediately-regret",
+    title: "Why You Send Messages You Immediately Regret (And How to Stop)",
+    excerpt:
+      "You hit send, and within seconds you know it was a mistake. Here's why impulse sends happen, what they reveal about you, and how to slow down before it's too late.",
+    thumbnail: "/images/hero-why-late-night-online-chats-feel-so-different.png",
+    date: "2026-08-21",
+    category: "Mental Health",
+  },
+
+  // ── NEW POSTS (2026-08-20) ─────────────────────────────────
+  {
+    slug: "vulnerability-hangover-regret-after-sharing-online",
+    title: "The Vulnerability Hangover: When You've Shared Too Much and Feel Regret",
+    excerpt:
+      "You opened up, felt truly connected, then felt exposed. Here's why shame follows real conversation, how to recover, and when to reconnect.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-20",
+    category: "Mental Health",
+  },
+
+  // ── NEW POSTS (2026-08-18) ─────────────────────────────────
+  {
+    slug: "when-to-exchange-contact-after-anonymous-chat",
+    title: "When to Exchange Contact Info After Anonymous Chat (And How to Do It Right)",
+    excerpt:
+      "You had an amazing chat with a stranger. Now they want your number. Should you give it? Here's how to decide and do it safely when taking chat connections further.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-18",
+    category: "Relationships",
+  },
+
   // ── NEW POSTS (2026-08-17) ─────────────────────────────────
   {
     slug: "chat-burnout-conversation-fatigue-when-to-take-breaks",
@@ -2153,6 +2208,15 @@ export const POSTS: Post[] = [
       "The conversation is clicking, the chemistry is real, but you're still strangers on an anonymous chat. Here's how to ask for their number or social media without killing the momentum.",
     thumbnail: "/images/hero-how-to-keep-a-conversation-going-with-someone-online.png",
     date: "2026-08-15",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "how-to-apologize-in-online-chat-after-saying-something-wrong",
+    title: "How to Apologize Effectively in Online Chat After Saying Something Wrong",
+    excerpt:
+      "Everyone says something awkward in chat. Here's how to apologize authentically, recover, and turn the moment into an even stronger connection.",
+    thumbnail: "/images/hero-how-to-overcome-social-anxiety-through-online-chat.png",
+    date: "2026-08-19",
     category: "Chat & Connection",
   },
   {
