@@ -28282,4 +28282,189 @@ prove that.
       </ul>
     </div>
   `,
+  "video-calling-in-chat-how-it-works": `
+    <figure class="post-figure">
+      <img src="/images/hero-video-calling-in-chat-how-it-works.png" alt="Two chat bubbles turning into a live video call icon, representing escalating a text chat to video" width="1200" height="630" />
+      <figcaption>Start with text. Switch to video the moment you both want to.</figcaption>
+    </figure>
+
+    <div class="table-of-contents">
+      <h3>📋 What's Inside</h3>
+      <ul>
+        <li><a href="#what-is">What Is In-Chat Video Calling?</a></li>
+        <li><a href="#how-to-start">How to Start a Video Call</a></li>
+        <li><a href="#what-your-partner-sees">What Your Match Sees</a></li>
+        <li><a href="#controls">Controls: Mute, Camera, and Ending the Call</a></li>
+        <li><a href="#text-still-there">You Can Still Text During the Call</a></li>
+        <li><a href="#privacy">Privacy: What Actually Happens Behind the Scenes</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <p>
+      Anonymous text chat is great for easing into a conversation — no pressure, no camera, just words. But every so often a conversation clicks hard enough that typing starts to feel like a wall between you and the other person. That's what in-chat video calling is for: a one-tap way to go from text to face-to-face, without leaving the conversation you're already having.
+    </p>
+
+    <h2 id="what-is">What Is In-Chat Video Calling?</h2>
+    <p>
+      It's a video call layered directly on top of your existing <a href="/chat">Chatrio text chat</a> — not a separate mode, not a new match. You're still talking to the same stranger you were texting a second ago. Either person can start the call at any point during the conversation, and it ends automatically the moment either side skips, disconnects, or leaves.
+    </p>
+    <p>
+      This is different from <a href="/blog/random-video-chat-guide">Random Video Chat</a>, Chatrio's dedicated video-first matching mode. In-chat video calling doesn't match you with anyone new — it just adds a camera to the conversation you already started.
+    </p>
+
+    <h2 id="how-to-start">How to Start a Video Call</h2>
+    <p>
+      Once you're connected with someone on <a href="/chat">/chat</a>, look for the camera icon at the top of the conversation, next to the more-options menu. Tap it and Chatrio sends your match a video call invite instantly.
+    </p>
+    <div class="infobox">
+      <h4>🎥 Quick steps</h4>
+      <ol>
+        <li>Get matched and start chatting as normal.</li>
+        <li>Tap the camera icon in the top bar.</li>
+        <li>Your match sees "wants to start a video call" with Accept or Decline.</li>
+        <li>Once accepted, your camera streams live — no page reload, no leaving the chat.</li>
+      </ol>
+    </div>
+    <p>
+      While you're waiting for them to respond, you'll see a "Calling…" screen with your own camera preview in the corner, plus a button to cancel the invite if you change your mind.
+    </p>
+
+    <h2 id="what-your-partner-sees">What Your Match Sees</h2>
+    <p>
+      Your match gets a banner across the top of their chat: your name (or "Stranger") wants to start a video call, with two buttons — Accept and Decline. Nothing opens automatically. Nobody's camera turns on without them explicitly tapping Accept. If they decline, you're simply back in the text conversation like nothing happened.
+    </p>
+
+    <h2 id="controls">Controls: Mute, Camera, and Ending the Call</h2>
+    <p>
+      Once the call is live, you get three controls docked at the bottom of the video: a mute toggle, a camera on/off toggle, and an End Call button. Turning your camera off keeps the audio call running — useful if you want to step away from the screen for a second without hanging up entirely. Muting works the same way in reverse.
+    </p>
+    <p>
+      Ending the call is always one tap, and it never ends the underlying text conversation — you'll land right back in the chat, message history intact.
+    </p>
+
+    <h2 id="text-still-there">You Can Still Text During the Call</h2>
+    <p>
+      A lot of video chat products force you to choose between seeing someone and talking to them in text. Chatrio doesn't. While the video call is active, your message history and the message box are docked to the side of the video, so you can send a link, a laugh-out-loud reaction, or a quick note without interrupting the call. There's also a chat-visibility toggle next to mute/camera if you'd rather have the video take up the full screen for a moment.
+    </p>
+
+    <h2 id="privacy">Privacy: What Actually Happens Behind the Scenes</h2>
+    <p>
+      The video and audio streams connect peer-to-peer between your browser and your match's browser using WebRTC — Chatrio's server only relays the initial connection setup (the "signaling"), not your actual video or audio. There's still no account required to use video calling, and just like text chat, nothing about the call is recorded or stored. When the call ends, it's gone.
+    </p>
+
+    <h2 id="faq">Frequently Asked Questions</h2>
+
+    <h3>Do I need to create an account to use video calling?</h3>
+    <p>No. Video calling works the same way the rest of Chatrio does — anonymous, no sign-up, no email required.</p>
+
+    <h3>What happens if I skip to a new chat partner during a video call?</h3>
+    <p>The video call ends immediately and automatically, along with the text conversation. You're moved to a fresh match with nobody's camera on until you both choose to start again.</p>
+
+    <h3>Can my match record the call?</h3>
+    <p>Chatrio doesn't provide any built-in recording feature, and streams aren't stored on our servers. As with any video call on any platform, we can't control what happens on someone else's device, so use the same judgment you would on any video call with a stranger.</p>
+
+    <h3>Why can't I see a video icon when I'm chatting?</h3>
+    <p>The camera icon only appears once you're actively paired with a match — it won't show up while you're still waiting to be connected.</p>
+
+    <h3>Is this the same as Random Video Chat?</h3>
+    <p>No — in-chat video calling escalates a text conversation you're already in. <a href="/blog/random-video-chat-guide">Random Video Chat</a> is a separate mode where video starts the instant you're matched, with no text-first step.</p>
+
+    <p>
+      <strong>Related articles:</strong> <a href="/blog/random-video-chat-guide">Random Video Chat: Meet Strangers Face-to-Face Instantly</a> • <a href="/blog/how-to-talk-to-a-stranger-online-tips-2026">How to Talk to a Stranger Online</a> • <a href="/blog/talk-to-strangers-online-free-no-registration-2026">Talk to Strangers Online Free</a>
+    </p>
+  `,
+  "random-video-chat-guide": `
+    <figure class="post-figure">
+      <img src="/images/hero-random-video-chat-guide.png" alt="Two video call windows connecting instantly, representing Chatrio's Random Video Chat matching two strangers face-to-face" width="1200" height="630" />
+      <figcaption>No typing required — Random Video Chat connects you camera-first.</figcaption>
+    </figure>
+
+    <div class="table-of-contents">
+      <h3>📋 What's Inside</h3>
+      <ul>
+        <li><a href="#what-is">What Is Random Video Chat?</a></li>
+        <li><a href="#how-it-works">How Matching Works</a></li>
+        <li><a href="#getting-started">Getting Started</a></li>
+        <li><a href="#the-chat-panel">The Text Panel Alongside Video</a></li>
+        <li><a href="#skip-and-end">Skip and End</a></li>
+        <li><a href="#vs-in-chat">How This Differs From In-Chat Video Calling</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <p>
+      Some days you don't want to warm up with a few text messages first — you just want to talk to someone, right now, face-to-face. That's what <a href="/video-chat">Random Video Chat</a> is: a dedicated Chatrio mode where you're paired with a real stranger and the video starts the second you're matched, no invite step required.
+    </p>
+
+    <h2 id="what-is">What Is Random Video Chat?</h2>
+    <p>
+      It's a separate matching pool from regular text chat — when you join Random Video Chat, you're only ever matched with someone else who's also looking for video, not with someone waiting in the text queue. The moment two people are paired, both cameras go live automatically. There's no "wants to start a call" step like there is with in-chat video calling, because video is the whole point of this mode.
+    </p>
+
+    <h2 id="how-it-works">How Matching Works</h2>
+    <p>
+      Random Video Chat uses its own waiting pool on Chatrio's servers, entirely separate from the text-chat matching queue and from in-chat video calls. That separation matters: it means people who just want to text never accidentally get pulled into a video match, and people looking for video never sit waiting behind the text queue. As soon as two people in the video pool are free, they're connected.
+    </p>
+    <p>
+      Like every matching mode on Chatrio, there's no fallback partner. If nobody else is in the video queue when you join, you simply wait for a real person — never a bot.
+    </p>
+
+    <h2 id="getting-started">Getting Started</h2>
+    <div class="infobox">
+      <h4>🎥 Quick steps</h4>
+      <ol>
+        <li>Go to <a href="/video-chat">/video-chat</a> or tap "Video Chat" in the top navigation.</li>
+        <li>Allow camera and microphone access when your browser asks.</li>
+        <li>You're placed in the queue — video starts automatically once you're matched.</li>
+        <li>Use the on-screen controls to mute, turn your camera off, skip, or end the call.</li>
+      </ol>
+    </div>
+    <p>
+      You'll see your own camera preview in a small corner window while you wait, so you can double check your framing and lighting before anyone else sees you.
+    </p>
+
+    <h2 id="the-chat-panel">The Text Panel Alongside Video</h2>
+    <p>
+      Even though video is front and center, Random Video Chat ships with its own lightweight text side-channel — a chat panel you can open alongside the call to send messages, share a link, or just say hi before you unmute. It has its own typing indicator and delivery ticks, independent from regular text chat. You can toggle the panel open or closed at any time without affecting the call.
+    </p>
+
+    <h2 id="skip-and-end">Skip and End</h2>
+    <p>
+      Two buttons handle moving on: <strong>Skip</strong> ends the current call and immediately puts you back in the queue for a new match, while <strong>End</strong> ends the call and returns you to the lobby, releasing your camera until you're ready to go again. Either action on either side ends the call instantly for both people — there's no lingering or waiting for the other person to confirm.
+    </p>
+
+    <h2 id="vs-in-chat">How This Differs From In-Chat Video Calling</h2>
+    <p>
+      Chatrio actually has two separate ways to video chat, and they solve different moments:
+    </p>
+    <ul>
+      <li><strong>Random Video Chat</strong> (this page) — video-first from the very first second. Best when you already know you want to see someone, not type first.</li>
+      <li><strong><a href="/blog/video-calling-in-chat-how-it-works">In-chat video calling</a></strong> — starts as a normal text chat, and either person can escalate to video whenever the conversation calls for it.</li>
+    </ul>
+    <p>
+      They're powered by completely separate matching pools too, so starting one never interrupts or crosses over with the other.
+    </p>
+
+    <h2 id="faq">Frequently Asked Questions</h2>
+
+    <h3>Do I need an account for Random Video Chat?</h3>
+    <p>No. It works exactly like the rest of Chatrio — anonymous, free, no sign-up.</p>
+
+    <h3>What if I don't want my camera on the whole time?</h3>
+    <p>You can toggle your camera off mid-call while staying on audio, using the camera control at the bottom of the screen. Your match will see a placeholder instead of your feed until you turn it back on.</p>
+
+    <h3>Will I ever get matched with a bot if nobody's online?</h3>
+    <p>No. Chatrio never uses a fallback bot in any matching mode, including Random Video Chat. If no one else is waiting, you'll simply wait for a real match.</p>
+
+    <h3>Can I send messages before I turn my mic on?</h3>
+    <p>Yes — the text panel works independently of your audio and video, so you can type a quick "hey" the moment you're matched.</p>
+
+    <h3>Is this the same thing as the video button inside regular chat?</h3>
+    <p>No. That's a different, separate feature — <a href="/blog/video-calling-in-chat-how-it-works">in-chat video calling</a> lets you escalate an existing text conversation to video, while Random Video Chat matches you into a video call from the start.</p>
+
+    <p>
+      <strong>Related articles:</strong> <a href="/blog/video-calling-in-chat-how-it-works">Video Calling in Chat: How to Start a Video Call With Your Match</a> • <a href="/blog/talk-to-strangers-online-free-no-registration-2026">Talk to Strangers Online Free</a> • <a href="/blog/voice-chat-with-strangers-guide-2026">Voice Chat With Strangers: A Complete Guide</a>
+    </p>
+  `,
 };

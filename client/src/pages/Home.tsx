@@ -112,6 +112,10 @@ const faqs = [
     q: "What is Circles?",
     a: "Circles is Chatrio's newest feature — an anonymous local chat to meet people near you. Your location is only ever shared approximately (never exact), you send one intro message before a chat opens, and you can join local group rooms too. No account required.",
   },
+  {
+    q: "Can I video chat on Chatrio?",
+    a: "Yes — two ways. Escalate any text chat to a live video call with one tap using the camera icon, or go straight to Random Video Chat for a match where video starts the instant you're connected. No account needed for either.",
+  },
 ];
 
 export default function Home() {
@@ -216,6 +220,13 @@ export default function Home() {
         </p>
 
         <div className="lp-cta-row lp-anim-fade-up" style={{ animationDelay: "240ms" }}>
+          <NavLink to="/video-chat" className="lp-btn-video">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="23 7 16 12 23 17 23 7" />
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+            </svg>
+            Start Video Chat
+          </NavLink>
           <NavLink to="/chat" className="lp-btn-primary">
             Start Chatting
           </NavLink>
@@ -238,6 +249,47 @@ export default function Home() {
           <span>No account</span>
           <span>No message logs</span>
           <span>Free forever</span>
+        </div>
+      </section>
+
+      {/* ── VIDEO CHAT PROMO ── */}
+      <section className="lp-video-promo lp-reveal">
+        <div className="lp-video-inner">
+          <div className="lp-video-copy">
+            <span className="lp-video-tag">
+              <span className="lp-live-dot" />
+              New on Chatrio
+            </span>
+            <h2 className="lp-video-title">Now with video chat</h2>
+            <p className="lp-video-desc">
+              See who you're talking to. Start a text chat and escalate to video anytime
+              with one tap, or skip straight to <NavLink to="/video-chat">Random Video Chat</NavLink> for
+              a face-to-face match from the very first second — camera on, no waiting.
+            </p>
+            <ul className="lp-video-list">
+              <li>Start with text, add video anytime — either side can invite</li>
+              <li>Or jump straight into Random Video Chat, matched instantly</li>
+              <li>Mute, camera toggle, and instant end — you're always in control</li>
+            </ul>
+            <div className="lp-video-cta-row">
+              <NavLink to="/video-chat" className="lp-btn-primary">
+                Try Video Chat
+              </NavLink>
+              <NavLink to="/chat" className="lp-btn-ghost">
+                Start with text instead
+              </NavLink>
+            </div>
+          </div>
+          <div className="lp-video-visual" aria-hidden="true">
+            <div className="lp-video-ring lp-video-ring-1" />
+            <div className="lp-video-ring lp-video-ring-2" />
+            <div className="lp-video-center">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="23 7 16 12 23 17 23 7" />
+                <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+              </svg>
+            </div>
+          </div>
         </div>
       </section>
 

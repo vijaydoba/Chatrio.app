@@ -1,10 +1,12 @@
 # Chatrio
 
-**Chatrio** is an anonymous 1‑on‑1 random chat web app — talk to strangers instantly, no sign‑up required. It pairs two online users in real time over WebSockets, with optional topic‑based matching, and ships a full SEO content layer (184 blog posts) under the same domain.
+**Chatrio** is an anonymous 1‑on‑1 random chat web app — talk to strangers instantly, no sign‑up required, by text or video. It pairs two online users in real time over WebSockets, with optional topic‑based matching for text chat, WebRTC video (both as an in-chat escalation and as its own dedicated Random Video Chat mode), and ships a full SEO content layer (184 blog posts) under the same domain.
 
 🌐 **Live:** [chatrio.app](https://chatrio.app)
 
 📘 **Discord setup:** [Server name, channels, announcements, and roadmap](./discord/README.md)
+
+> **Pending verification (2026‑08‑20):** the in-chat video escalation and Random Video Chat (`/video-chat`) features described below have been implemented and are not yet deployed to production. Locally: two-real-user matching, live video, mute/camera toggle, the chat panel, and Skip/End have all been confirmed working end-to-end. The no-bot-fallback behavior was re-confirmed live for text chat (waits indefinitely, no bot after 3s+); the same re-check for `/video-chat` is still outstanding — a browser-automation camera-permission hang blocked the last attempt, unrelated to the code itself (the removal was verified by full-repo grep + `tsc`/`node --check`, and the video-chat matching code path is structurally identical to the just-verified text-chat one). Re-run that one live check before considering this fully done.
 
 ---
 
@@ -19,7 +21,9 @@
 - **Blind Date** — profile‑matched 1:1 chat (`/blind-date`): personality/compatibility matching instead of proximity, names and photos stay hidden until both sides opt to reveal (or after 10 minutes). Requires a real chatrio account, unlike Circles. Gated behind a `BLIND_DATE_LIVE` flag in `client/src/config.ts` — currently `false` (coming‑soon waitlist page) while still in beta; flip to `true` to restore the live matching flow at `/blind-date/chat`.
 - **Waitlist capture** — both Circles and Blind Date fall back to a "coming soon" email‑capture page when their live flag is off. Signups land in a `waitlist` table (`email`, `source`, timestamp) and can be pulled anytime via `GET /waitlist` on the main API, authenticated with `ADMIN_TOKEN` as a bearer token or `?key=` query param.
 - **Live online & waiting counts** — broadcast to all connected clients.
-- **Smart fallback bot** — if no human is available within a few seconds, a placeholder partner is connected so the user is never left waiting, and leaves shortly after.
+- **Real matches only** — there is no fallback/placeholder partner anywhere in the product (text chat, video escalation, or Random Video Chat). If no one else is online, the user waits until a real stranger joins. A synthetic fallback bot existed on both the text-chat and Random Video Chat matching pools through 2026‑08‑19 and was removed 2026‑08‑20 at the product owner's request — do not re‑add it without asking first.
+- **Video call escalation (in-chat)** — from an active `/chat` text conversation, either side can start a WebRTC video call with their current partner (camera/mic toggle, decline/cancel, hang up). Signaling is a thin Socket.IO relay in `server/index.js` scoped to the existing text-chat pairing; the peer-connection logic lives in `client/src/videoChat.ts`. The call tears down automatically on skip/leave/disconnect.
+- **Random Video Chat (`/video-chat`)** — a separate, dedicated random-matching pool from text chat. Video starts immediately the moment two real users are paired (no invite/accept step, unlike the in-chat escalation above), and includes its own live text chat panel alongside the video (message bubbles, typing indicator, delivery ticks). Mute, camera toggle, Skip, and End are all supported. Matching state and signaling relay live in `server/index.js` (the `vc` state and `vc_*` events); the client is `client/src/randomVideoCall.ts` (peer-connection controller) and `client/src/pages/VideoChat.tsx` (page/UI).
 - **SEO content layer** — a React blog (184 posts) at `/blog/{slug}` with category pages, all pre‑rendered to static HTML for search engines. Includes geo landing posts (e.g. "Chat With Strangers in Canada/Philippines/Pakistan"), Omegle/OmeTV/Chatroulette/etc. alternative comparison pages, relationship psychology, and two Circles/local-community clusters — each with its own hero image and distinct structure (no shared templates, per a July 2026 AdSense scaled‑content fix).
 - **AI-search visibility** — `robots.txt` explicitly allows AI crawlers (ChatGPT-User, ClaudeBot, PerplexityBot, Google-Extended, etc.) and `client/public/llms.txt` gives AI assistants a structured, accurate summary of the product — keep it in sync when a feature's behavior changes (e.g. Circles).
 - **Web manifest + dark/light theme.** There is no active service worker — a broken `/custom-sw.js` registration that pointed at a `.ts` file (never compiled by CRA, so it 404'd on every page load) was removed in July 2026. Re-adding offline/PWA support would need a real, compiled service worker, not just re-registering that path.
@@ -34,6 +38,7 @@
 - React 19 + TypeScript (Create React App)
 - React Router 7
 - Socket.IO client
+- WebRTC (`RTCPeerConnection`, STUN only — no TURN server) for in-chat video escalation and Random Video Chat, signaled over the existing Socket.IO connection
 - `react-helmet-async` for per‑page meta/SEO
 - Static pre‑rendering of routes via `scripts/prerender-all-stable.js` (a custom puppeteer‑based prerenderer — see [Build & Deploy](#build--deploy); `react-snap` itself was removed 2026-08-18, its bundled ancient puppeteer's Chromium download was breaking deploys and its `postbuild` hook was already unused/unreliable)
 - Capacitor (Android) wraps the same `client/` build for the native Circles app — see [`MOBILE-APP.md`](./MOBILE-APP.md)
@@ -60,16 +65,18 @@ chatrio/
 │   │   └── images/portraits/   # country portrait art (geo post posters)
 │   ├── src/
 │   │   ├── App.tsx         # App shell, routing, blog/SEO pages; native-app chrome gate
-│   │   ├── Chat.tsx        # Real-time chat UI + Socket.IO client
+│   │   ├── Chat.tsx        # Real-time text chat UI + Socket.IO client + in-chat video escalation
+│   │   ├── videoChat.ts    # WebRTC controller for the in-chat video escalation (invite/accept flow)
+│   │   ├── randomVideoCall.ts  # WebRTC controller for Random Video Chat (auto-start, no invite step)
 │   │   ├── push.ts         # Native push-notification registration (Android app only)
-│   │   ├── pages/          # About, Contact, Privacy, Terms, News, Circles, etc.
+│   │   ├── pages/          # About, Contact, Privacy, Terms, News, Circles, VideoChat.tsx (/video-chat), etc.
 │   │   └── data/           # posts.ts (blog metadata), posts-content.ts (post bodies)
 │   ├── android/             # Generated Capacitor Android project — see MOBILE-APP.md
 │   ├── assets/              # Icon/splash source for `npx capacitor-assets generate`
 │   ├── capacitor.config.ts
 │   └── build/              # Pre-rendered production output
 ├── server/                 # Express + Socket.IO backend
-│   ├── index.js            # Matching engine, fallback bot, socket events
+│   ├── index.js            # Text-chat matching engine + in-chat video signaling relay, plus the separate Random Video Chat matching pool (`vc`) and its own signaling/text relay
 │   └── circles-local/      # Circles proximity-chat service (+ push.js for FCM sends)
 ├── scripts/                # Sitemap generator, prerender-all-stable.js, IndexNow notifier, SEO helpers
 ├── marketing/              # Directory-submission / backlink plan + tracker (not deployed)
@@ -116,7 +123,7 @@ npm install
 npm start          # runs on http://localhost:3000
 ```
 
-> **Note:** The client currently connects to the production socket server at `https://api.chatrio.app` (see `client/src/Chat.tsx`). To test against your local backend, point that URL at `http://localhost:5050`.
+> **Note:** `Chat.tsx` (text chat) hardcodes the production socket server `https://api.chatrio.app` — edit that URL directly to test against your local backend. `pages/VideoChat.tsx` (Random Video Chat) instead reads `process.env.REACT_APP_API_BASE` (falling back to the same production URL), so `REACT_APP_API_BASE=http://localhost:5050 npm start` is enough to point *that* page at a local backend without editing source. The two are inconsistent on purpose for now — video calling depends on server-side signaling code that only exists locally/on newer deploys, so this env var was added to make that page testable without touching `Chat.tsx`.
 
 ---
 
@@ -252,12 +259,24 @@ The first four expected statuses are `200`, `200`, `301`, and `404`; the actual 
 
 ## How Matching Works
 
-The matching engine lives in `server/index.js` and keeps all state in memory:
+Both matching engines live in `server/index.js` and keep all state in memory. There is no fallback/bot partner in either — a user waits until a real match is found (removed 2026‑08‑20; see Features above).
 
-1. A user emits `ready_to_chat` and joins the **waiting** pool.
+### Text chat (`/chat`)
+
+1. A user emits `ready_to_chat` and joins the **waiting** pool (`state.waiting`).
 2. `tryMatch()` pairs two waiting users who share a topic (or any two users if no topics are set).
-3. If still waiting after `BOT_WAIT_MS` (3s), a **fallback partner** is connected so the user isn't stuck, and it disconnects after `BOT_STAY_MS` (5s).
-4. `next` leaves the current partner and re‑enters the queue; `disconnect_request` returns the user to idle.
+3. `next` leaves the current partner and re‑enters the queue; `disconnect_request` returns the user to idle.
+4. Once paired, either side can additionally emit `video_invite` to escalate the existing text conversation to a WebRTC video call (see the `video_*` events below) — this is optional and separate from Random Video Chat.
+
+### Random Video Chat (`/video-chat`)
+
+A second, independent matching pool (`vc` in `server/index.js`) so video and text matching never cross-pair:
+
+1. A user emits `vc_ready_to_chat` (after the browser grants camera/mic access) and joins `vc.waiting`.
+2. `tryVcMatch()` pairs two waiting users — there's no topic filter here.
+3. Video starts immediately on match; there is no invite/accept step, unlike the in-chat escalation.
+4. `vc_next` (Skip) leaves the current partner and re‑enters the queue; `vc_disconnect_request` (End) returns the user to the lobby and releases the camera.
+5. A lightweight text side-channel (`vc_message`/`vc_typing`/`vc_delivered`) rides alongside the video call, rendered in `VideoChat.tsx`'s chat panel.
 
 ### Key Socket.IO events
 
@@ -267,6 +286,10 @@ The matching engine lives in `server/index.js` and keeps all state in memory:
 | `ready_to_chat`, `next` | `waiting`, `partner_found`, `idle` |
 | `message`, `image`, `typing` | `message`, `image`, `partner_typing` |
 | `delivered`, `disconnect_request` | `msg_sent`, `msg_delivered`, `friend_left` |
+| `video_invite/accept/decline/cancel`, `video_offer/answer/ice_candidate`, `video_end` | same names relayed to the partner — in-chat video escalation, scoped to `state.partner` |
+| `vc_ready_to_chat`, `vc_next`, `vc_disconnect_request` | `vc_waiting`, `vc_partner_found`, `vc_idle`, `vc_waiting_count`, `vc_friend_left` |
+| `vc_offer/answer/ice_candidate`, `vc_end` | same names relayed to the partner — Random Video Chat signaling, scoped to `vc.partner` |
+| `vc_message`, `vc_typing`, `vc_delivered` | `vc_message`, `vc_partner_typing`, `vc_msg_sent`, `vc_msg_delivered` — Random Video Chat's text side-channel |
 
 ---
 
@@ -277,6 +300,7 @@ The matching engine lives in `server/index.js` and keeps all state in memory:
 | `PORT` | server | Port the Express/Socket.IO server listens on |
 | `FRONTEND_ORIGIN` | server | Allowed CORS origin for the frontend |
 | `GROQ_API_KEY` | server | Groq API key (keep secret — never commit) |
+| `REACT_APP_API_BASE` | client | Overrides the socket server URL for `pages/VideoChat.tsx` only (defaults to `https://api.chatrio.app`); see the note under Getting Started — `Chat.tsx` does not read this var |
 
 ---
 

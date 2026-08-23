@@ -251,6 +251,19 @@ function listWaitlist() {
     .all();
 }
 
+// --- Abuse reports (random text/video chat) ---
+function saveReport({ mode, reporterIp, reportedIp }) {
+  db.prepare(
+    "INSERT INTO reports (mode, reporter_ip, reported_ip, created_at) VALUES (?, ?, ?, ?)"
+  ).run(mode, reporterIp || null, reportedIp || null, Date.now());
+}
+
+function listReports(limit = 200) {
+  return db
+    .prepare("SELECT * FROM reports ORDER BY created_at DESC LIMIT ?")
+    .all(limit);
+}
+
 module.exports = {
   signToken,
   verifyToken,
@@ -267,4 +280,6 @@ module.exports = {
   saveMessage,
   joinWaitlist,
   listWaitlist,
+  saveReport,
+  listReports,
 };

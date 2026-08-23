@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { io, Socket } from "socket.io-client";
 import DynamicIsland from "./DynamicIsland";
 import { useKeyboardViewport } from "./useKeyboardViewport";
+import { createVideoCall, VideoCallController, VideoState } from "./videoChat";
 import "./App.css";
 
 type MsgStatus = "sending" | "sent" | "delivered";
@@ -24,6 +25,11 @@ type Message = {
 const ALL_TOPICS = [
   "music", "gaming", "coding", "movies", "sports",
   "travel", "food", "books", "art", "fitness",
+];
+
+const VIDEO_SIGNAL_EVENTS = [
+  "video_invite", "video_accept", "video_decline", "video_cancel",
+  "video_offer", "video_answer", "video_ice_candidate", "video_end",
 ];
 
 const TOPIC_EMOJIS: Record<string, string> = {
@@ -47,7 +53,15 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
   const [input, setInput] = useState("");
   const [myId, setMyId] = useState<string>("");
   const [partnerName, setPartnerName] = useState("Stranger");
+  const [partnerId, setPartnerId] = useState<string>("");
   const [partnerTyping, setPartnerTyping] = useState(false);
+  const [videoState, setVideoState] = useState<VideoState>("off");
+  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+  const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
+  const [videoNotice, setVideoNotice] = useState<string>("");
+  const [muted, setMuted] = useState(false);
+  const [cameraOff, setCameraOff] = useState(false);
+  const [videoChatOpen, setVideoChatOpen] = useState(true);
   const [online, setOnline] = useState(1);
   const [waitingCount, setWaitingCount] = useState(0);
   const [notice, setNotice] = useState<string>("");
@@ -67,6 +81,10 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const socketRef = useRef<Socket | null>(null);
+  const myIdRef = useRef<string>("");
+  const videoCallRef = useRef<VideoCallController | null>(null);
+  const localVideoRef = useRef<HTMLVideoElement | null>(null);
+  const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const chatScrollRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -228,6 +246,7 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
     socketRef.current = socket;
 
     socket.on("connect", () => {
+      myIdRef.current = socket.id || "";
       setMyId(socket.id || "");
       socket.emit("set_username", username);
       socket.emit("set_topics", { topics: selectedTopics });
@@ -239,9 +258,10 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
     socket.on("idle", () => resetChat("idle"));
     socket.on("waiting", () => resetChat("waiting"));
 
-    socket.on("partner_found", ({ partner }) => {
+    socket.on("partner_found", ({ partner, partnerId: pid }) => {
       const name = partner || "Stranger";
       setPartnerName(name);
+      setPartnerId(pid || "");
       setHadChat(true);
       setMessages([]);
       setPartnerTyping(false);
@@ -258,6 +278,7 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
 
     socket.on("friend_left", () => {
       setPartnerTyping(false);
+      setPartnerId("");
       pushSystem("Your friend left. Finding someone new…");
       setTimeout(() => {
         setMessages([]);
@@ -274,10 +295,56 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
     socket.on("msg_sent", ({ msgId }) => updateStatus(msgId, "sent"));
     socket.on("msg_delivered", ({ msgId }) => updateStatus(msgId, "delivered"));
 
+    VIDEO_SIGNAL_EVENTS.forEach((event) => {
+      socket.on(event, (payload) => videoCallRef.current?.handleSignal(event, payload));
+    });
+
     return () => {
       socket.disconnect();
     };
   }, []);
+
+  // One video call controller per pairing — created once we know who the
+  // partner is, torn down (hanging up any in-progress call) the moment the
+  // pairing ends. Deliberately keyed on partnerId alone (myId read from a
+  // ref) so an unrelated myId state update mid-call can't tear down and
+  // recreate the controller under a live peer connection.
+  useEffect(() => {
+    const socket = socketRef.current;
+    if (!socket || !partnerId) {
+      videoCallRef.current = null;
+      return;
+    }
+    const call = createVideoCall({
+      socket,
+      myId: myIdRef.current,
+      partnerId,
+      onLocalStream: setLocalStream,
+      onRemoteStream: setRemoteStream,
+      onState: setVideoState,
+      onError: (msg) => {
+        setVideoNotice(msg);
+        setTimeout(() => setVideoNotice(""), 3000);
+      },
+    });
+    videoCallRef.current = call;
+    return () => {
+      call.teardown();
+      videoCallRef.current = null;
+    };
+  }, [partnerId]);
+
+  useEffect(() => {
+    if (localVideoRef.current) localVideoRef.current.srcObject = localStream;
+    if (!localStream) {
+      setMuted(false);
+      setCameraOff(false);
+    }
+  }, [localStream]);
+
+  useEffect(() => {
+    if (remoteVideoRef.current) remoteVideoRef.current.srcObject = remoteStream;
+  }, [remoteStream]);
 
   const resetChat = (newMode: Mode) => {
     if (matchTimerRef.current) {
@@ -288,16 +355,12 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
     setMode(newMode);
     setMessages([]);
     setPartnerTyping(false);
+    setPartnerId("");
   };
 
   const handleIncoming = (msg: Message) => {
     addMessage({ ...msg, kind: "user" });
     socketRef.current?.emit("delivered", { msgId: msg.msgId });
-    if (msg.fromId?.startsWith("bot_")) {
-      setMessages((prev) =>
-        prev.map((m) => m.status ? { ...m, status: "delivered" } : m)
-      );
-    }
     soundReceived();
   };
 
@@ -472,6 +535,28 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
 
   const openFilePicker = () => fileInputRef.current?.click();
 
+  const handleVideoButtonClick = () => {
+    const call = videoCallRef.current;
+    if (!call) return;
+    if (videoState === "off") call.invite();
+    else if (videoState === "inviting") call.cancel();
+    else call.hangUp();
+  };
+
+  const toggleMute = () => {
+    if (!localStream) return;
+    const next = !muted;
+    localStream.getAudioTracks().forEach((t) => (t.enabled = !next));
+    setMuted(next);
+  };
+
+  const toggleCamera = () => {
+    if (!localStream) return;
+    const next = !cameraOff;
+    localStream.getVideoTracks().forEach((t) => (t.enabled = !next));
+    setCameraOff(next);
+  };
+
   const bubble = (m: Message, i: number) => {
     if (m.kind === "system") {
       return (
@@ -562,7 +647,9 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
 
   return (
     <div
-      className={`chat-container ${mode} ${mode === "connected" ? "tg" : ""}`}
+      className={`chat-container ${mode} ${mode === "connected" ? "tg" : ""} ${
+        (videoState === "active" || videoState === "inviting") && videoChatOpen ? "video-chat-split" : ""
+      }`}
     >
       <Helmet>
         <title>Free Random Chat – Talk to Strangers | Chatrio</title>
@@ -599,6 +686,27 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
           </div>
 
           <div className="tg-actions">
+            {partnerId && (
+              <button
+                className={`icon-btn${videoState !== "off" ? " danger" : ""}`}
+                onClick={handleVideoButtonClick}
+                aria-label={videoState === "off" ? "Start video call" : "End video call"}
+                title={videoState === "off" ? "Start video call" : "End video call"}
+              >
+                {videoState === "off" ? (
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="23 7 16 12 23 17 23 7" />
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M23 7l-7 5 7 5V7z" />
+                    <path d="M1 5h13v14H1z" />
+                    <line x1="1" y1="1" x2="23" y2="23" />
+                  </svg>
+                )}
+              </button>
+            )}
             <div className="tg-menu-wrap" ref={menuRef}>
               <button
                 className="icon-btn"
@@ -795,6 +903,54 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
       {/* ── CONNECTED: full-screen chat ── */}
       {mode === "connected" && (
         <>
+          {videoState === "incoming" && (
+            <div className="video-incoming-banner">
+              <span className="video-incoming-text">{partnerName} wants to start a video call</span>
+              <div className="video-incoming-actions">
+                <button className="video-decline-btn" onClick={() => videoCallRef.current?.decline()}>Decline</button>
+                <button className="video-accept-btn" onClick={() => videoCallRef.current?.accept()}>Accept</button>
+              </div>
+            </div>
+          )}
+
+          {(videoState === "active" || videoState === "inviting") && (
+            <div className="video-call-overlay">
+              <video ref={remoteVideoRef} className="video-remote" autoPlay playsInline />
+              {videoState === "inviting" && (
+                <div className="video-calling-label">Calling {partnerName}…</div>
+              )}
+              {videoState === "active" && !remoteStream && (
+                <div className="video-calling-label">Connecting…</div>
+              )}
+              <video ref={localVideoRef} className="video-local" autoPlay playsInline muted />
+              <div className="video-call-controls">
+                {videoState === "active" && (
+                  <>
+                    <button className="video-ctrl-btn" onClick={toggleMute} aria-label={muted ? "Unmute" : "Mute"} title={muted ? "Unmute" : "Mute"}>
+                      {muted ? "🔇" : "🎙️"}
+                    </button>
+                    <button className="video-ctrl-btn" onClick={toggleCamera} aria-label={cameraOff ? "Turn camera on" : "Turn camera off"} title={cameraOff ? "Turn camera on" : "Turn camera off"}>
+                      {cameraOff ? "📷" : "🎥"}
+                    </button>
+                    <button
+                      className={`video-ctrl-btn${videoChatOpen ? " video-ctrl-active" : ""}`}
+                      onClick={() => setVideoChatOpen((v) => !v)}
+                      aria-label={videoChatOpen ? "Hide chat" : "Show chat"}
+                      title={videoChatOpen ? "Hide chat" : "Show chat"}
+                    >
+                      💬
+                    </button>
+                  </>
+                )}
+                <button className="video-hangup-btn" onClick={() => videoCallRef.current?.hangUp()} aria-label="End call" title="End call">
+                  End call
+                </button>
+              </div>
+            </div>
+          )}
+
+          {!!videoNotice && <div className="banner warning">{videoNotice}</div>}
+
           <div className={`chat tg-chat tg-bg-${chatBg}`} ref={chatScrollRef} role="log" aria-live="polite">
             {messages.map(bubble)}
             {partnerTyping && (

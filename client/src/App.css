@@ -1551,6 +1551,163 @@ body.chat-fullscreen [id^="fc-"]{display:none !important;}
 }
 .mobile-nav a:hover,.mobile-nav button:hover{background:rgba(0,0,0,0.06);}
 
+/* ===================== VIDEO CALL (main random chat) ===================== */
+.video-incoming-banner{
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(124,58,237,.92);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+}
+.video-incoming-actions{ display: flex; gap: 8px; flex-shrink: 0; }
+.video-accept-btn, .video-decline-btn{
+  border: none;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.video-accept-btn{ background: #22c55e; color: #052e12; }
+.video-decline-btn{ background: rgba(255,255,255,0.16); color: #ffffff; }
+
+.video-call-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #05070b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.video-remote{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #05070b;
+}
+.video-local{
+  position: absolute;
+  right: 16px;
+  bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  width: 110px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 2px solid rgba(255,255,255,0.25);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  background: #111827;
+  transform: scaleX(-1);
+}
+.video-calling-label{
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 15px;
+  background: rgba(0,0,0,0.35);
+  padding: 8px 16px;
+  border-radius: 999px;
+}
+.video-call-controls{
+  position: absolute;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.video-ctrl-btn{
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.10);
+  color: #ffffff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.video-hangup-btn{
+  height: 52px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: none;
+  background: #ef4444;
+  color: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+}
+.video-ctrl-active{
+  background: rgba(124,58,237,0.35);
+  border-color: rgba(124,58,237,0.55);
+}
+
+/* Dock the existing text chat + composer as a side panel while a video call is active */
+.video-chat-split .video-call-overlay{
+  right: 320px;
+}
+.video-chat-split .tg-chat{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 74px;
+  width: 320px;
+  z-index: 55;
+  background: rgba(10,14,22,0.97);
+  border-left: 1px solid rgba(255,255,255,0.08);
+}
+.video-chat-split .composer{
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 320px;
+  z-index: 55;
+  background: rgba(10,14,22,0.97);
+  border-left: 1px solid rgba(255,255,255,0.08);
+  box-sizing: border-box;
+}
+@media (max-width: 900px){
+  .video-chat-split .video-call-overlay{
+    right: 0;
+    bottom: 45vh;
+  }
+  .video-chat-split .tg-chat{
+    top: auto;
+    bottom: calc(74px + 45vh);
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 45vh;
+    border-left: none;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .video-chat-split .composer{
+    left: 0;
+    right: 0;
+    width: auto;
+    border-left: none;
+  }
+}
+@media (max-width: 900px){
+  .video-local{
+    width: 84px;
+    height: 116px;
+    right: 12px;
+  }
+}
+
 /* ===================== LIGHT MODE FIX: CONNECTED (TG) CHAT READABILITY ===================== */
 /* When NOT in .dark, make TG chat bubbles + input readable */
 html:not(.dark) .tg-topbar{
@@ -2045,11 +2202,35 @@ html {
   box-shadow: 0 14px 36px rgba(109,40,217,.45);
 }
 
+.lp-btn-video {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #db2777, #2563eb);
+  color: #fff !important;
+  border: none;
+  border-radius: 999px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 8px 28px rgba(219,39,119,.35);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lp-btn-video:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(219,39,119,.45);
+}
+
 /* Visible keyboard focus ring (UX: focus-states, High) */
 .lp-btn-primary:focus-visible,
 .lp-btn-ghost:focus-visible,
 .lp-btn-circles:focus-visible,
-.lp-btn-discord:focus-visible {
+.lp-btn-discord:focus-visible,
+.lp-btn-video:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--bg, #fff), 0 0 0 6px #6d28d9;
 }
@@ -2304,6 +2485,149 @@ html {
 }
 
 /* Circles promo */
+.lp-video-promo {
+  padding: 8px 0 12px;
+}
+
+.lp-video-inner {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 40px;
+  align-items: center;
+  padding: 40px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(219,39,119,.08), rgba(37,99,235,.06));
+  border: 1px solid rgba(219,39,119,.18);
+}
+
+.lp-video-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(219,39,119,.12);
+  border: 1px solid rgba(219,39,119,.28);
+  color: #db2777;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.dark .lp-video-tag { color: #f472b6; }
+
+.lp-video-title {
+  font-size: clamp(24px, 3.4vw, 34px);
+  font-weight: 900;
+  margin: 0 0 14px;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.lp-video-desc {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.65;
+  margin: 0 0 18px;
+  max-width: 480px;
+}
+.lp-video-desc a { color: #db2777; font-weight: 700; text-decoration: none; }
+.dark .lp-video-desc a { color: #f472b6; }
+.lp-video-desc a:hover { text-decoration: underline; }
+
+.lp-video-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lp-video-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.lp-video-list li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #db2777, #2563eb);
+  flex-shrink: 0;
+}
+
+.lp-video-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.lp-video-visual {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+.lp-video-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(219,39,119,.25);
+  animation: lp-video-pulse 2.6s ease-out infinite;
+}
+.lp-video-ring-1 { width: 100%; height: 100%; }
+.lp-video-ring-2 { width: 62%; height: 62%; animation-delay: .5s; }
+
+.lp-video-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #db2777, #2563eb);
+  box-shadow: 0 0 0 10px rgba(219,39,119,.12);
+}
+
+@keyframes lp-video-pulse {
+  0%   { opacity: .9; transform: translate(-50%, -50%) scale(0.94); }
+  70%  { opacity: 0; transform: translate(-50%, -50%) scale(1.08); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-video-ring { animation: none; }
+}
+
+@media (max-width: 700px) {
+  .lp-video-inner {
+    grid-template-columns: 1fr;
+    padding: 28px 20px;
+    gap: 22px;
+    text-align: center;
+  }
+  .lp-video-desc { margin-left: auto; margin-right: auto; }
+  .lp-video-list { align-items: center; }
+  .lp-video-cta-row { justify-content: center; }
+  .lp-video-visual { max-width: 200px; order: -1; }
+}
+
 .lp-circles-promo {
   padding: 8px 0 12px;
 }
@@ -2483,7 +2807,7 @@ html {
 @media (max-width: 480px) {
   .lp-features-grid { grid-template-columns: 1fr; }
   .lp-cta-row { flex-direction: column; align-items: center; }
-  .lp-btn-primary, .lp-btn-ghost, .lp-btn-circles { width: 100%; justify-content: center; }
+  .lp-btn-primary, .lp-btn-ghost, .lp-btn-circles, .lp-btn-video { width: 100%; justify-content: center; }
   .lp-trust-row { gap: 12px; flex-direction: column; align-items: center; }
 }
 

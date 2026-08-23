@@ -30,6 +30,7 @@ import "./App.css";
 // prerendered HTML: suspending while a blog chunk loads replaces the visible
 // article during hydration and creates a measurable layout shift.
 const Chat = React.lazy(() => import("./Chat"));
+const VideoChat = React.lazy(() => import("./pages/VideoChat"));
 const CirclesLocal = React.lazy(() => import("./pages/CirclesLocal"));
 const BlindDate = React.lazy(() => import("./pages/BlindDate"));
 const BlindDateOnboarding = React.lazy(() => import("./pages/BlindDateOnboarding"));
@@ -219,6 +220,7 @@ export default function App() {
   const { pathname } = useLocation();
   const usesLazyProductRoute =
     pathname === "/chat" ||
+    pathname === "/video-chat" ||
     pathname === "/circles" ||
     pathname === "/blind-date" ||
     pathname.startsWith("/blind-date/") ||
@@ -270,6 +272,7 @@ export default function App() {
           <div className="site-header-right desktop-only">
             <nav className="nav" aria-label="Primary">
               <NavLink className="nav-link nav-link-cta" to="/chat">Chat</NavLink>
+              <NavLink className="nav-link" to="/video-chat">Video Chat</NavLink>
               <NavLink className="nav-link" to="/circles">Circles</NavLink>
 
               <div
@@ -359,6 +362,7 @@ export default function App() {
           <NavLink className="m-link m-link-cta" to="/chat" onClick={() => setNavOpen(false)}>
             Chat
           </NavLink>
+          <NavLink className="m-link" to="/video-chat" onClick={() => setNavOpen(false)}>Video Chat</NavLink>
           <NavLink className="m-link" to="/circles" onClick={() => setNavOpen(false)}>Circles</NavLink>
 
           <div className="mob-blog-group">
@@ -435,6 +439,7 @@ export default function App() {
             <Suspense fallback={<div className="route-loading" role="status">Loading…</div>}>
               <Routes>
                 <Route path="/chat" element={<Chat theme={theme} setTheme={setTheme} soundOn={soundOn} setSoundOn={setSoundOn} />} />
+                <Route path="/video-chat" element={<VideoChat />} />
                 <Route path="/circles" element={<CirclesLocal />} />
                 <Route path="/blind-date" element={<BlindDate />} />
                 <Route
