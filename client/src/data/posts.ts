@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-24) ─────────────────────────────────
+  {
+    slug: "why-effort-in-conversation-matters-more-than-you-think",
+    title: "Why Effort in Conversation Matters More Than You Think",
+    excerpt:
+      "Most conversations fail because people treat them like a game to win instead of a dance to participate in. Here's why showing up matters—and how it changes everything.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-24",
+    category: "Chat & Connection",
+  },
+
   // ── NEW POSTS (2026-08-23) ─────────────────────────────────
   {
     slug: "reading-silence-what-delays-in-chat-actually-mean",
