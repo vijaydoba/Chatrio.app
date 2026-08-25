@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-25) ─────────────────────────────────
+  {
+    slug: "accidental-therapist-when-chat-becomes-venting-session",
+    title: "The Accidental Therapist: When Your Chat Becomes Someone's Venting Session",
+    excerpt:
+      "You join a chat to connect, and they immediately start venting about their entire life. Here's why this happens, when to stay engaged, and how to set boundaries without being cold.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-25",
+    category: "Mental Health",
+  },
+
   // ── NEW POSTS (2026-08-24) ─────────────────────────────────
   {
     slug: "why-effort-in-conversation-matters-more-than-you-think",
