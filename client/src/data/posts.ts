@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-26) ─────────────────────────────────
+  {
+    slug: "dopamine-cycle-anonymous-chat-why-you-keep-coming-back",
+    title: "The Dopamine Cycle of Anonymous Chat: Why You Keep Coming Back",
+    excerpt:
+      "Anonymous chat is a hit of connection without investment. Here's how your brain's reward system works with strangers—and why it's hard to stop.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-26",
+    category: "Mental Health",
+  },
+
   // ── NEW POSTS (2026-08-25) ─────────────────────────────────
   {
     slug: "accidental-therapist-when-chat-becomes-venting-session",
