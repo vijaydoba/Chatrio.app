@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-27) ─────────────────────────────────
+  {
+    slug: "why-you-are-more-authentic-with-strangers-than-friends",
+    title: "Why You Can Be Yourself With Strangers (But Not With Friends)",
+    excerpt:
+      "You tell a stranger something you've never told your best friend. Why? Because they can't judge you tomorrow. Here's the psychology of why anonymity unlocks authenticity.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-27",
+    category: "Chat & Connection",
+  },
+
   // ── NEW POSTS (2026-08-26) ─────────────────────────────────
   {
     slug: "dopamine-cycle-anonymous-chat-why-you-keep-coming-back",
