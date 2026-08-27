@@ -2,6 +2,248 @@
 // via dynamic import so the main JS bundle stays small.
 
 export const POST_CONTENT: Record<string, string> = {
+  "why-you-are-more-authentic-with-strangers-than-friends": `
+    <figure class="post-figure">
+      <img src="/images/hero-benefits-of-talking-to-strangers-for-mental-health.png" alt="A person looking relaxed while messaging on their phone, feeling free to be authentic" width="1200" height="630" />
+      <figcaption>Anonymity removes the cost of judgment. That's why you're yourself here.</figcaption>
+    </figure>
+
+    <div class="table-of-contents">
+      <h3>📋 What's Inside</h3>
+      <ul>
+        <li><a href="#the-paradox">The Paradox: Closest With People You'll Never See</a></li>
+        <li><a href="#why-friends-judge">Why Friends Feel Like An Audience (And Strangers Don't)</a></li>
+        <li><a href="#reputation-cost">The Reputation Cost of Authenticity</a></li>
+        <li><a href="#anonymity-freedom">How Anonymity Changes What You'll Say</a></li>
+        <li><a href="#mask-performance">The Masks We Wear (And Why)</a></li>
+        <li><a href="#stranger-safety">Why Strangers Feel Safer Than Friends</a></li>
+        <li><a href="#is-this-real">Is This Real Authenticity or an Illusion?</a></li>
+        <li><a href="#healthy-balance">Creating Authenticity With People Who Know You</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <p>
+      You're in a chat with someone you just met. A complete stranger. And somehow, you're telling them something you've kept from your closest friends. Something vulnerable. Something real. Something that matters.
+    </p>
+
+    <p>
+      And it feels safe. It feels easier. It feels like you can finally be yourself.
+    </p>
+
+    <p>
+      But why? Why do strangers often get the realest version of you, while the people closest to you get a carefully edited version? The answer isn't that you're two different people. It's that one audience has the power to hurt you, and the other doesn't.
+    </p>
+
+    <h2 id="the-paradox">The Paradox: Closest With People You'll Never See</h2>
+
+    <p>
+      There's a strange inversion in human connection. You can share your deepest fears with a stranger on the internet and feel relieved. But share that same fear with your best friend of 10 years, and you feel exposed.
+    </p>
+
+    <p>
+      This isn't because the stranger is a better listener. It's because they don't matter.
+    </p>
+
+    <p>
+      Not in a cruel way. What I mean is: they can't form a permanent judgment of you. They won't bring it up in six months. They won't add it to a mental file labeled "things to worry about with this person." They won't change how they see you, because they don't see you at all—they only see this moment.
+    </p>
+
+    <p>
+      A friend, by contrast, has years of context. They know you through multiple seasons. They have opinions. Expectations. History. When you reveal something vulnerable to them, you're not just sharing information—you're potentially updating their entire mental model of who you are. And that stakes makes you guard yourself.
+    </p>
+
+    <h2 id="why-friends-judge">Why Friends Feel Like An Audience (And Strangers Don't)</h2>
+
+    <p>
+      Psychologists call this "audience effect." When someone is watching (or could be watching), you perform. You moderate. You present a version of yourself you think will be received well.
+    </p>
+
+    <p>
+      This isn't shallow. It's human. We all do it.
+    </p>
+
+    <p>
+      With a stranger, the audience effect collapses. There's no relationship to maintain. No reputation to protect. No feedback mechanism that will haunt you. You can say something weird, or sad, or angry, and the stranger won't bring it up next week. They won't integrate it into how they understand you.
+    </p>
+
+    <p>
+      With friends, every word is on the record. Your insecurity today might become their gentle joke tomorrow. Your confession might shift how they relate to you. Your vulnerability might make them cautious around you. None of this is intentional—it's just how memory and relationship dynamics work.
+    </p>
+
+    <p>
+      A stranger offers something friends can't: <strong>judgment without consequence.</strong> They might judge you right now, in this moment. But that judgment evaporates when the chat ends. It doesn't follow you into tomorrow.
+    </p>
+
+    <h2 id="reputation-cost">The Reputation Cost of Authenticity</h2>
+
+    <p>
+      Authenticity has a cost in relationships where you need to show up repeatedly. That cost is: revision. Confusion. Having to manage the story of who you are.
+    </p>
+
+    <p>
+      Imagine you tell your best friend something that contradicts how you've always seemed. You tell them you're scared, when they thought you were brave. You tell them you're struggling, when they thought you had it together. Now they have to reconcile these two versions of you. And so do you.
+    </p>
+
+    <p>
+      There's friction in that revision. Awkwardness. Questions. "Wait, so when you said you were fine...were you actually not fine?" "Does this mean you don't trust me?" "Why didn't you tell me sooner?"
+    </p>
+
+    <p>
+      With a stranger, there's no old version to contradict. There's just: this is who I am right now. No history. No expectations. No gap between the mask and the real thing.
+    </p>
+
+    <div class="infobox">
+      <h4>🎭 Why Authenticity Costs More With Friends</h4>
+      <ul>
+        <li><strong>History exists.</strong> Your friend has seen you before. A confession conflicts with prior moments.</li>
+        <li><strong>Future is guaranteed.</strong> You have to see them again. That shapes what you say.</li>
+        <li><strong>Relationship risk.</strong> Being fully yourself might change how they see you (and that matters to you).</li>
+        <li><strong>The story of you.</strong> They hold a narrative about who you are. Authenticity means rewriting it together.</li>
+        <li><strong>No opt-out.</strong> With a stranger, you can disappear. With a friend, you stay.</li>
+      </ul>
+    </div>
+
+    <h2 id="anonymity-freedom">How Anonymity Changes What You'll Say</h2>
+
+    <p>
+      Research on online behavior shows something clear: anonymity doesn't just make people more aggressive (that's the toxic version). It also makes them more honest.
+    </p>
+
+    <p>
+      Humans self-edit based on audience. We filter based on who's listening. But when no one who knows us is listening, the filter weakens. We tell truths we wouldn't say out loud. We admit fears. We ask questions we'd never ask in person. We reveal preferences and doubts we keep private in our regular lives.
+    </p>
+
+    <p>
+      This is why people with anonymous chat feel like they can finally be themselves. Not because they're becoming a different person. But because they're dropping the self-editing that comes with an audience that knows them.
+    </p>
+
+    <p>
+      The irony: this unfiltered version is often truer than the edited version your friends know.
+    </p>
+
+    <h2 id="mask-performance">The Masks We Wear (And Why)</h2>
+
+    <p>
+      Everyone wears masks. That's not a flaw—it's survival. We present ourselves differently at work than at home. Differently around parents than around friends. Differently with people who might judge us than with people who won't.
+    </p>
+
+    <p>
+      The masks usually serve a purpose. They protect you. They smooth social interactions. They reduce friction.
+    </p>
+
+    <p>
+      But masks also isolate. Because if people only know the mask, then no one truly knows you. Not even your close friends. You feel understood by a stranger because the stranger is meeting the real you—the unmasked version. Your friends never get that because you've been edited around them for years.
+    </p>
+
+    <p>
+      With a stranger, you have the freedom to drop the mask immediately. With a friend, that mask became part of the relationship. Dropping it now would feel like a betrayal of who they thought you were.
+    </p>
+
+    <h2 id="stranger-safety">Why Strangers Feel Safer Than Friends</h2>
+
+    <p>
+      This feels backwards. Shouldn't friends feel safer? They know you. They theoretically care about you.
+    </p>
+
+    <p>
+      But safety isn't just about trust. It's about powerlessness.
+    </p>
+
+    <p>
+      A friend has power over you. They know things about you. They can repeat your confessions. They can factor your vulnerability into future interactions. They can withdraw their friendship. Their judgment can hurt because you care about it.
+    </p>
+
+    <p>
+      A stranger has no power. They don't know your name. They can't find you tomorrow. Their rejection doesn't cost you anything. Their judgment is meaningless because it's untethered from your real life.
+    </p>
+
+    <p>
+      That powerlessness is freedom. That's why a stranger's acceptance feels safer than a friend's, even though it's actually more superficial. You're not risking anything with the stranger. So you can be fully yourself.
+    </p>
+
+    <h2 id="is-this-real">Is This Real Authenticity or an Illusion?</h2>
+
+    <p>
+      Here's where it gets complicated.
+    </p>
+
+    <p>
+      Yes, you're being more authentic with the stranger. Yes, you're more yourself. But that version of you only exists in that moment, in that context, with that lack of consequence.
+    </p>
+
+    <p>
+      The version of you your friends know is also real. It's you adapting to relationship, to history, to ongoing connection. That's not fakeness—that's how humans work. We're different in different contexts. That's healthy.
+    </p>
+
+    <p>
+      So when you feel like the stranger "really gets you," what's happening is: they're meeting you without the adaptation that comes from ongoing relationship. That feels like they see the real you. But the real you in a world with no consequences is different from the real you in a world with relationships that matter.
+    </p>
+
+    <p>
+      Both versions are authentic. They're just authentic in different ways.
+    </p>
+
+    <h2 id="healthy-balance">Creating Authenticity With People Who Know You</h2>
+
+    <p>
+      The best relationships—the ones that actually sustain us—happen when we can be authentic AND stay connected. When the person knows us fully and sticks around.
+    </p>
+
+    <p>
+      That's rare. It's also harder. Because you have to risk the mask-drop. You have to revise the story together. You have to let someone update their understanding of who you are.
+    </p>
+
+    <p>
+      But it's possible. It starts with:
+    </p>
+
+    <ul>
+      <li><strong>Being willing to contradict yourself.</strong> "I know I've always seemed confident, but I'm actually struggling right now."</li>
+      <li><strong>Trusting that contradiction won't end the relationship.</strong> It might change it. But a real friend will adjust.</li>
+      <li><strong>Giving people grace to do the same.</strong> When they reveal something that doesn't match your old story of them, accept the new information.</li>
+      <li><strong>Choosing friends who can handle growth.</strong> Not everyone can. Some people need you to stay consistent so their understanding of you stays simple. That's not their fault—it's just incompatibility.</li>
+    </ul>
+
+    <p>
+      The stranger-chat will always feel easier because there's no ongoing relationship to navigate. But the friendship that survives your full authenticity—that's the rare thing. That's what actually heals.
+    </p>
+
+    <h2 id="faq">FAQ</h2>
+
+    <p>
+      <strong>Q: Does this mean I shouldn't chat with strangers?</strong>
+    </p>
+
+    <p>
+      No. Stranger chats can be genuinely helpful. They let you practice authenticity. They remind you what it feels like to be fully yourself. That's valuable. But if you only feel authentic with strangers, that's a signal that you might need to build deeper friendships where you can also drop the mask.
+    </p>
+
+    <p>
+      <strong>Q: Can I apply this to online friends I've had for years?</strong>
+    </p>
+
+    <p>
+      Absolutely. Even if you met them online, if the relationship is ongoing, it functions like any other relationship. You'll eventually develop masks. History. Expectations. The anonymity only protects you at the beginning.
+    </p>
+
+    <p>
+      <strong>Q: Is it bad that I feel more authentic with strangers?</strong>
+    </p>
+
+    <p>
+      It's not bad. It's a signal. It's telling you: "I'm self-editing around the people I know." That might be appropriate (sometimes we should edit). But if it's preventing real connection, then it's worth examining why you feel unsafe being fully yourself with people who supposedly care about you.
+    </p>
+
+    <p>
+      <strong>Q: How do I bring this authenticity into my real relationships?</strong>
+    </p>
+
+    <p>
+      Start small. Share something you wouldn't normally share. Not your biggest secret—just something real. See how your friend responds. Most of the time, they'll actually appreciate knowing the real you better. And that opens the door to more authenticity over time. The friendship deepens because you're now known more fully.
+    </p>
+  `,
+
   "dopamine-cycle-anonymous-chat-why-you-keep-coming-back": `
     <figure class="post-figure">
       <img src="/images/hero-benefits-of-talking-to-strangers-for-mental-health.png" alt="A person holding a phone, looking hopeful as they wait for a new chat match" width="1200" height="630" />
