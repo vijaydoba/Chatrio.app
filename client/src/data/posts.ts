@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-28) ─────────────────────────────────
+  {
+    slug: "the-expectation-trap-why-chats-disappoint",
+    title: "The Expectation Trap: Why Your Imagined Chat Never Matches Reality",
+    excerpt:
+      "You expect depth but get small talk. You hope for connection but find indifference. Here's why the chat in your head is always better—and how to close that gap.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-28",
+    category: "Mental Health",
+  },
+
   // ── NEW POSTS (2026-08-27) ─────────────────────────────────
   {
     slug: "why-you-are-more-authentic-with-strangers-than-friends",
