@@ -2,6 +2,229 @@
 // via dynamic import so the main JS bundle stays small.
 
 export const POST_CONTENT: Record<string, string> = {
+  "fear-of-meeting-in-person-after-online-chat": `
+    <figure class="post-figure">
+      <img src="/images/hero-benefits-of-talking-to-strangers-for-mental-health.png" alt="A person at a table, phone down, looking nervous before meeting someone in person" width="1200" height="630" />
+      <figcaption>The leap from text to reality is where all the anxiety lives.</figcaption>
+    </figure>
+
+    <div class="table-of-contents">
+      <h3>📋 What's Inside</h3>
+      <ul>
+        <li><a href="#the-safety-trap">The Safety Trap: Why Text Feels Bulletproof</a></li>
+        <li><a href="#why-text-hides">What Text Chat Actually Hides From You</a></li>
+        <li><a href="#the-vulnerability-shift">The Vulnerability Shift: From Anonymous to Visible</a></li>
+        <li><a href="#rejection-fears">Real Rejection Anxiety: It Stings Differently in Person</a></li>
+        <li><a href="#expectation-crash">The Expectation Crash All Over Again</a></li>
+        <li><a href="#body-language">Your Body Language Becomes the Conversation</a></li>
+        <li><a href="#what-helps">What Actually Helps You Take That Step</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <p>
+      You've been texting for two weeks. It's been the best texting you've ever experienced. They get your humor. They ask real questions. They remember things you said three days ago. There's genuine chemistry here—you can feel it through the screen.
+    </p>
+
+    <p>
+      Then they suggest meeting up.
+    </p>
+
+    <p>
+      And suddenly you're paralyzed. All those hours of great conversation don't matter anymore. Your stomach tightens. Your mind spins. You want to say yes, but something is stopping you. You're not ready, you tell yourself. But you're not even sure what "ready" would look like.
+    </p>
+
+    <p>
+      This is where text stops being a gift and becomes a prison.
+    </p>
+
+    <h2 id="the-safety-trap">The Safety Trap: Why Text Feels Bulletproof</h2>
+
+    <p>
+      Text chat is the safest way to connect with someone because you control literally everything about the interaction.
+    </p>
+
+    <p>
+      You choose what to share. You edit your words before sending. You can end the conversation whenever you want—just close the app. If they say something weird, you take ten minutes before replying. If they're boring, you match their energy from a distance. And when it gets uncomfortable, you have an exit button. No eye contact. No awkwardness. No tension you have to sit in.
+    </p>
+
+    <p>
+      Text chat is like a conversation in a video game where you control the camera. You only show what you want to show. You face the direction you choose.
+    </p>
+
+    <p>
+      In-person? You can't control the camera. The camera is everywhere. They see your full face, your posture, the way you move. They see you nervous. They see you bored. They see all the things you didn't intend to communicate.
+    </p>
+
+    <p>
+      This is the core fear: <strong>loss of control.</strong>
+    </p>
+
+    <h2 id="why-text-hides">What Text Chat Actually Hides From You</h2>
+
+    <p>
+      You've built a version of this person in your head. Based on their words, their humor, their patterns, you've constructed a full human. You've imagined their voice, their laugh, how they move. You probably got some of it right and some of it wrong—but you don't know that yet.
+    </p>
+
+    <p>
+      Text hides incompatibilities that would be obvious in five minutes in person. Some examples:
+    </p>
+
+    <ul>
+      <li><strong>Energy mismatch:</strong> They type fast and clever. In person, they're quiet and reserved. You expected quick banter. Instead, there are awkward silences.</li>
+      <li><strong>Physical attraction:</strong> You had chemistry in words. In person, there's no spark. It's not about looks—it's about energy, presence, the way their body takes up space.</li>
+      <li><strong>Pace differences:</strong> They responded to texts thoughtfully. In conversation, they either barrel ahead or shut down. The rhythm is completely different.</li>
+      <li><strong>Nervousness displays:</strong> What you thought was their personality might be them trying really hard. Without that effort, they're different.</li>
+      <li><strong>Shared context:</strong> Text conversation is isolated. In the real world, you're in a coffee shop, on the street, in a specific place. Everything changes.</li>
+    </ul>
+
+    <p>
+      Text is an edited version of a person. Reality is the raw version. And you're afraid the raw version won't match.
+    </p>
+
+    <div class="infobox">
+      <h4>🎯 The Text vs. Reality Gap</h4>
+      <p><strong>Text version:</strong> Thoughtful, controlled, edited, strategic, witty on demand, can take breaks, no awkward silences (you can choose when to reply).</p>
+      <p><strong>Real version:</strong> More honest but less polished, awkward sometimes, reactive, spontaneous, can't edit, has to sit with tension, nervous body language.</p>
+      <p>The gap is usually bigger than you think.</p>
+    </div>
+
+    <h2 id="the-vulnerability-shift">The Vulnerability Shift: From Anonymous to Visible</h2>
+
+    <p>
+      When you chat with a stranger online, you're anonymous. You might not share your name. You definitely don't share your location, your work, your friends, your full story. You share a version of yourself—the version you want to present.
+    </p>
+
+    <p>
+      This is freeing. You can be more yourself because there are no real-world consequences. They don't know your coworkers. They don't know where to find you. If it goes wrong, you disappear.
+    </p>
+
+    <p>
+      But meeting in person shatters that anonymity. Suddenly they know where you live (or at least the neighborhood). They can see your car, your phone, hear your actual voice. They have access to real information about you.
+    </p>
+
+    <p>
+      And that means they can reject the <em>real</em> you, not the edited version. They can judge your actual looks, your actual energy, your actual life. And that judgment stings.
+    </p>
+
+    <p>
+      This is the vulnerability paradox: the better the text connection, the more you have to lose by meeting. Because if they love the text version and hate the real version, that's rejection on a personal level. That's not "we weren't compatible"—that's "they liked who I was pretending to be, not who I actually am."
+    </p>
+
+    <h2 id="rejection-fears">Real Rejection Anxiety: It Stings Differently in Person</h2>
+
+    <p>
+      Text rejection is easy to handle. They stop replying, you feel sad for an hour, then you move on. You didn't expose anything real. You didn't risk anything actual.
+    </p>
+
+    <p>
+      But in-person rejection hits different. Because you're sitting across from them while it happens. You have to watch their face change. You have to keep breathing through the awkwardness. You can't just close the app.
+    </p>
+
+    <p>
+      The physical proximity makes rejection feel more real, more personal, more <em>true</em>. It's not just "they didn't feel chemistry"—it's "they felt chemistry end the moment they saw me." You're present for every second of it.
+    </p>
+
+    <p>
+      And this fear is rational. In-person rejection genuinely hurts more than text rejection. We feel more shame and vulnerability when rejected face-to-face than digitally. Your nervous system knows this is different. It's bracing for impact.
+    </p>
+
+    <h2 id="expectation-crash">The Expectation Crash All Over Again</h2>
+
+    <p>
+      Remember the expectation gap from your text chat? The gap between who you imagined them to be and who they actually are?
+    </p>
+
+    <p>
+      That gap gets bigger in person. Not always, but usually. Because text is controlled and in-person is raw.
+    </p>
+
+    <p>
+      You've built them up in your head. Not intentionally—your brain just does this automatically. You filled in the blanks with optimism. You imagined their laugh. You imagined how they'd look at you. You imagined chemistry and effortless conversation.
+    </p>
+
+    <p>
+      Then you meet, and reality has its own ideas.
+    </p>
+
+    <p>
+      Maybe they're shorter than you imagined. Maybe their energy is different. Maybe they're nervous and that nervousness kills the vibe. Maybe you're nervous and it shows in ways you hate. Maybe there's no spark. Maybe there is, but it's a different kind of spark than you expected.
+    </p>
+
+    <p>
+      The gap between text-version and real-version is almost always there. And stepping into that gap is terrifying because you know it's coming. You've been through this before. You know it's going to hurt a little.
+    </p>
+
+    <h2 id="body-language">Your Body Language Becomes the Conversation</h2>
+
+    <p>
+      In text, you control the narrative. You can steer the conversation. You can be funny when you need to be. You can choose vulnerability at exactly the right moment.
+    </p>
+
+    <p>
+      In person, your body is talking whether you want it to or not. If you're nervous, it shows. If you're bored, it shows. If you're attracted to them, it shows. You can't edit in real-time.
+    </p>
+
+    <p>
+      This is what really scares people. Not rejection, but being <em>known</em>. Being transparent without meaning to be. Having your internal state visible on your face.
+    </p>
+
+    <p>
+      And this fear is especially strong for people who love text chat—because in text, you're fluent. You're clever. You're in control. But in person, you might stumble. You might get awkward. You might not be what your words promised.
+    </p>
+
+    <p>
+      The fear is: "Who I am in real life might not be as good as who I am in writing."
+    </p>
+
+    <h2 id="what-helps">What Actually Helps You Take That Step</h2>
+
+    <p>
+      The good news: none of this fear goes away by waiting. It gets worse. The longer you text someone before meeting, the more you build them up. The more the expectation gap grows.
+    </p>
+
+    <p>
+      So if you want to take that step, here's what actually helps:
+    </p>
+
+    <p>
+      <strong>1. Meet sooner rather than later.</strong> People who meet in the first few days of chatting generally have better outcomes than people who text for weeks. Why? Because you haven't built up a false version of them yet. You haven't filled in too many blanks. The gap is smaller.
+    </p>
+
+    <p>
+      <strong>2. Lower the stakes deliberately.</strong> Don't meet for a big dinner date as your first meeting. Meet for coffee. Walk in a park. Grab lunch. Something low-pressure where awkwardness is allowed and even expected. Tell yourself: "This is just to see if we vibe in person. No expectations."
+    </p>
+
+    <p>
+      <strong>3. Accept the nervous feeling.</strong> You're going to be nervous. They're probably going to be nervous. Nervousness is information that this matters to you, not information that something is wrong. Sit with it.
+    </p>
+
+    <p>
+      <strong>4. Remember you're not risking as much as you think.</strong> The worst case: you meet, there's no chemistry, you leave. You spend 45 minutes together and never see them again. That's not a tragedy. That's just information.
+    </p>
+
+    <p>
+      <strong>5. Focus on conversation, not evaluation.</strong> When you meet, don't spend the whole time evaluating whether they match the text version. Just have a conversation. Let it be awkward. Let it be whatever it is. The evaluation happens naturally—you'll either want to see them again or you won't.
+    </p>
+
+    <h2 id="faq">FAQ</h2>
+
+    <p><strong>Q: How long should I text before meeting in person?</strong><br/>
+    A: Ideally, 3-7 days is a good window. This is long enough to know they're real and not a bot, but short enough that you haven't built an unrealistic version of them. Beyond two weeks of consistent texting, the expectation gap usually becomes too big.</p>
+
+    <p><strong>Q: What if they seem perfect in text? Should I still be scared to meet?</strong><br/>
+    A: Yes. Actually, the more perfect they seem in text, the more you should expect reality to be different. Perfect text is usually carefully edited. Nobody is as witty, thoughtful, and available in real life as they are in a text conversation they've been typing for five minutes.</p>
+
+    <p><strong>Q: Is it normal to want to text forever instead of meeting?</strong><br/>
+    A: Yes, but it's also a sign you might be using text as a safety blanket. The anxiety you're feeling about meeting is normal—but letting it stop you from ever meeting means you're choosing the safe version of connection over the real version.</p>
+
+    <p><strong>Q: What if I meet them and there's no chemistry?</strong><br/>
+    A: That's actually a good outcome. You learned something. You got to practice meeting. You got data. It wasn't a waste—it was information. And maybe more importantly: you survived the rejection and it wasn't as bad as you feared.</p>
+
+    <p><strong>Q: Should I be honest about being nervous?</strong><br/>
+    A: Yes. Saying "I'm a little nervous" or "I've been texting people online but this is my first time meeting someone" is actually endearing. It's human. It gives them permission to be nervous too.</p>
+  `,
+
   "the-expectation-trap-why-chats-disappoint": `
     <figure class="post-figure">
       <img src="/images/hero-benefits-of-talking-to-strangers-for-mental-health.png" alt="A person looking at their phone with a mix of disappointment and reflection" width="1200" height="630" />
