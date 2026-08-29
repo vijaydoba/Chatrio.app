@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-29) ─────────────────────────────────
+  {
+    slug: "fear-of-meeting-in-person-after-online-chat",
+    title: "Why You Never Feel 'Ready' to Meet Someone in Person (After Online Chat)",
+    excerpt:
+      "You had an amazing chat. They want to meet up. But suddenly you're paralyzed. Here's why the transition from text to real life triggers anxiety—and how to take that step.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-29",
+    category: "Mental Health",
+  },
+
   // ── NEW POSTS (2026-08-28) ─────────────────────────────────
   {
     slug: "the-expectation-trap-why-chats-disappoint",
