@@ -2,6 +2,258 @@
 // via dynamic import so the main JS bundle stays small.
 
 export const POST_CONTENT: Record<string, string> = {
+  "why-you-overthink-after-an-amazing-chat": `
+    <figure class="post-figure">
+      <img src="/images/hero-benefits-of-talking-to-strangers-for-mental-health.png" alt="A person alone late at night, phone in hand, replaying a conversation in their mind" width="1200" height="630" />
+      <figcaption>The best chats often come with the loudest mental aftermath.</figcaption>
+    </figure>
+
+    <div class="table-of-contents">
+      <h3>📋 What's Inside</h3>
+      <ul>
+        <li><a href="#the-analysis-spiral">The Analysis Spiral: Why Your Brain Won't Stop</a></li>
+        <li><a href="#why-amazing-chats-trigger-it">Why Amazing Chats Trigger Overthinking (Not Bad Ones)</a></li>
+        <li><a href="#the-significance-signal">The Significance Signal: Your Brain Flagging What Matters</a></li>
+        <li><a href="#regret-revisited">Regret Revisited: Replaying Every Word</a></li>
+        <li><a href="#attachment-too-fast">Attachment Too Fast: The Bonding Problem</a></li>
+        <li><a href="#uncertainty-anxiety">The Uncertainty Anxiety: What Happens Next?</a></li>
+        <li><a href="#comparison-trap">The Comparison Trap: Measuring Against Other Chats</a></li>
+        <li><a href="#what-actually-helps">What Actually Helps You Stop</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <p>
+      The chat was good. Really good. You talked for an hour and neither of you wanted to stop. They said something that made you feel truly seen. You laughed at something that was funny and also true. You shared something vulnerable and they didn't make it weird. There was rhythm to the conversation. There was real understanding.
+    </p>
+
+    <p>
+      Then it ended—or they had to go, or you ran out of energy, or the moment naturally closed. You said goodbye. And now you're alone.
+    </p>
+
+    <p>
+      And your brain won't stop.
+    </p>
+
+    <p>
+      It's been three hours and you're still replaying it. What did they mean by that comment? Were they actually interested or just being polite? Did you say something that sounded weird in retrospect? Are they thinking about the chat right now or have they already moved on? Should you message them? If you do, what would you say? If you don't, does that mean they're more interested? Will they message you? Should you wait for them to reach out first?
+    </p>
+
+    <p>
+      This is the overthinking spiral. And it's especially intense after amazing chats.
+    </p>
+
+    <h2 id="the-analysis-spiral">The Analysis Spiral: Why Your Brain Won't Stop</h2>
+
+    <p>
+      When something matters to your brain, it doesn't just file it away. It marks it as important and then keeps spinning through it, looking for patterns, predictions, and answers.
+    </p>
+
+    <p>
+      This is usually useful. If something significant happened—a conversation with a friend, a near-miss in traffic, a decision you need to make—your brain staying with it helps you integrate the experience, learn from it, and prepare for similar situations.
+    </p>
+
+    <p>
+      But with amazing chats, this useful process becomes exhausting. Because the conversation is over. There's nothing to do. No action to take. No threat to prepare for. Your brain is just running an infinite loop, examining every detail from every angle, looking for something you've already extracted.
+    </p>
+
+    <p>
+      The spin continues because your brain hasn't filed the experience away yet. It's still processing. It's still checking. It's still trying to figure out what this means.
+    </p>
+
+    <h2 id="why-amazing-chats-trigger-it">Why Amazing Chats Trigger Overthinking (Not Bad Ones)</h2>
+
+    <p>
+      Here's something counterintuitive: you don't usually overthink bad chats. If a chat is boring or awkward or disappointing, your brain quickly categorizes it and moves on. <em>Boring. Moving on. Next.</em>
+    </p>
+
+    <p>
+      But amazing chats? Your brain can't let them go. Because amazing chats are rare. They're unpredictable. They're significant. And your brain wants to understand them.
+    </p>
+
+    <p>
+      A bad chat is easy to explain: they were boring, or I was tired, or we didn't connect. Done. But a good chat? It raises questions:
+    </p>
+
+    <ul>
+      <li>How did this happen? (I want to replicate this.)</li>
+      <li>Will this happen again? (I want to know if I can count on it.)</li>
+      <li>What does this mean? (I want to understand the significance.)</li>
+      <li>What should I do now? (I want to not waste this.)</li>
+    </ul>
+
+    <p>
+      These questions drive the overthinking. Your brain is trying to solve something that can't be solved—not yet, anyway. The outcome is still uncertain. So it keeps working.
+    </p>
+
+    <div class="infobox">
+      <h4>🎯 The Overthinking Pattern</h4>
+      <p><strong>Bad chat:</strong> Quick judgment, quick filing, quick move-on. Minimal replay.</p>
+      <p><strong>Good chat:</strong> Marked as significant, examined from multiple angles, unclear outcome, endless replay.</p>
+      <p>The better the chat, the more your brain insists on understanding it.</p>
+    </div>
+
+    <h2 id="the-significance-signal">The Significance Signal: Your Brain Flagging What Matters</h2>
+
+    <p>
+      Your brain is basically saying: <em>This thing you just experienced? It mattered. Don't forget about it. Figure it out.</em>
+    </p>
+
+    <p>
+      This signal is useful in relationships that have continuity—friendships, family, romantic partners. You interact again, you get more data, you eventually figure it out.
+    </p>
+
+    <p>
+      But with a stranger from anonymous chat? The data stream stops. You experienced this one amazing interaction and now you're back to silence. Your brain is trying to prepare for the next interaction, but there's nothing to prepare for yet. The conversation is sealed off. Complete. Over.
+    </p>
+
+    <p>
+      So your brain spins. It examines the closed conversation like a puzzle looking for a missing piece. It plays through different scenarios: <em>What if I had said X instead? What if they were feeling Y? What if this means Z?</em> It's trying to build a model of who this person is and what they might do next—but it only has one data point.
+    </p>
+
+    <h2 id="regret-revisited">Regret Revisited: Replaying Every Word</h2>
+
+    <p>
+      Part of the overthinking is searching for regret. Did you say something weird? Did you overshare? Did you reveal too much too quickly? Did you reveal too little?
+    </p>
+
+    <p>
+      This is especially true if you were vulnerable in the chat. If you opened up about something real—your fears, your loneliness, your actual dreams—your brain will replay those moments a hundred times over. Not because you regret sharing, but because you're uncertain if it was safe to share.
+    </p>
+
+    <p>
+      In the moment, vulnerability felt good. It felt mutual. It felt like they received it well. But now, alone, your brain is second-guessing. <em>Was that too much? Did they judge me? Will they use this against me?</em>
+    </p>
+
+    <p>
+      This is a form of social anxiety in retrospect. The vulnerability hangover. Your brain is running through every vulnerable moment, checking for danger, looking for signs that you made a mistake.
+    </p>
+
+    <p>
+      Usually it finds nothing. You replay the moment, remember that they responded kindly, and move on... until your brain picks another moment to examine.
+    </p>
+
+    <h2 id="attachment-too-fast">Attachment Too Fast: The Bonding Problem</h2>
+
+    <p>
+      Here's the hard truth: amazing chats create a form of attachment very quickly. Within an hour, your brain has started to bond. You've shared, they've shared, there's been real connection. Your neural pathways are lighting up as if this person matters to you.
+    </p>
+
+    <p>
+      And then you lose them. The chat ends. You don't know if you'll ever talk to them again. There's no way to continue. The relationship—if you can even call it that—is suddenly frozen.
+    </p>
+
+    <p>
+      So your brain is literally grieving. Not in a huge way. But in a way that's real. You bonded quickly, and now the bond is severed. Your brain wants to understand this loss. It wants to know if the connection was real, if it mattered, if there's a chance it could happen again.
+    </p>
+
+    <p>
+      The overthinking is your attachment system saying: <em>Wait, this mattered. Don't let this go without understanding it.</em>
+    </p>
+
+    <h2 id="uncertainty-anxiety">The Uncertainty Anxiety: What Happens Next?</h2>
+
+    <p>
+      The biggest driver of overthinking is simple: you don't know what comes next.
+    </p>
+
+    <p>
+      With a person in your regular life, you know you'll see them again. You can wait. You can move on and return to the relationship later. Closure isn't urgent because there's no time pressure.
+    </p>
+
+    <p>
+      But with an anonymous chat partner? There's radical uncertainty. Will they message you? Will you message them? Is this the only conversation you'll ever have? Is there a future here or was this a one-time beautiful thing?
+    </p>
+
+    <p>
+      Your brain hates uncertainty. It wants to predict outcomes, prepare for scenarios, know what's coming. When it can't, it starts spinning through possibilities. Maybe they'll reach out tomorrow. Maybe you should reach out first. Maybe they've forgotten about you already. Maybe they're thinking about you right now.
+    </p>
+
+    <p>
+      This uncertainty is actually worse than a bad outcome. Because at least a bad outcome is certain. You can accept it and move on. But uncertainty? Your brain will chase it forever.
+    </p>
+
+    <h2 id="comparison-trap">The Comparison Trap: Measuring Against Other Chats</h2>
+
+    <p>
+      Your brain is also comparing this chat to every other chat you've had. Was this better than that time? Did I feel more connected? Did they put in more effort? Is this one going somewhere or is it a dead end like the others?
+    </p>
+
+    <p>
+      This comparison is exhausting because it's trying to predict whether this chat is "worth" your emotional investment. It's trying to figure out if you should hope or protect yourself.
+    </p>
+
+    <p>
+      The truth is: you can't know yet. You need more data. But your brain is trying to make a prediction with incomplete information.
+    </p>
+
+    <h2 id="what-actually-helps">What Actually Helps You Stop</h2>
+
+    <p>
+      The first thing to understand: you can't think your way out of this. Logic won't help. Telling yourself "it was just a chat" won't make your brain stop processing it.
+    </p>
+
+    <p>
+      So here's what actually helps:
+    </p>
+
+    <p>
+      <strong>1. Accept that you're going to overthink for a bit.</strong> Don't fight it. Don't try to "get over it" immediately. Your brain marked this as significant. That's okay. You experienced something good. Of course you're thinking about it. Give yourself permission to replay it for a few hours without judgment.
+    </p>
+
+    <p>
+      <strong>2. Set a boundary on the overthinking.</strong> You can think about it—just not indefinitely. Maybe give yourself two hours to replay and analyze. After that, deliberately move to something else. Physical activity is especially good here. Your brain stops spinning when your body is engaged.
+    </p>
+
+    <p>
+      <strong>3. Write it down if it helps.</strong> Sometimes externalizing the thoughts—getting them out of your head and onto paper—helps your brain feel like it's been heard. Your brain stops spinning once it feels acknowledged.
+    </p>
+
+    <p>
+      <strong>4. Redirect curiosity toward what you learned, not what might happen next.</strong> Instead of "will they message me," ask yourself "what did I learn about what I actually want in a conversation?" Instead of "did I say the right things," ask "what topics make me feel most alive?" The curiosity is the same, but the direction is different. You're processing what happened rather than predicting what will.
+    </p>
+
+    <p>
+      <strong>5. Sit with the attachment feeling without acting on it.</strong> You feel bonded to this person. That's real. That's not something to fix immediately. But it also doesn't require you to do anything. You can hold both: "This was real and meaningful" and "I probably won't hear from them again" at the same time. The discomfort of that contradiction will fade.
+    </p>
+
+    <p>
+      <strong>6. Resist the urge to follow up too quickly.</strong> If you're thinking about messaging them, wait at least 24 hours. Let your brain settle. After the overthinking spiral passes, you'll have a clearer sense of what you actually want to say versus what your anxiety is pushing you to do.
+    </p>
+
+    <h2 id="faq">FAQ</h2>
+
+    <p>
+      <strong>Q: Is it normal to overthink after a great chat?</strong><br/>
+      A: Yes, completely. The better the chat, the more your brain will process it. This is especially true if you felt genuinely connected or vulnerable. It's not a sign that something is wrong with you or that the chat meant too much—it's just how your brain handles significant experiences.
+    </p>
+
+    <p>
+      <strong>Q: How long does the overthinking usually last?</strong><br/>
+      A: For most people, the intense spinning lasts a few hours to a day. After that, it usually settles into a gentle background hum—you think about it occasionally but not obsessively. If it's still dominating your thoughts a week later, it might be worth asking yourself what emotional need this chat was filling that isn't being met elsewhere.
+    </p>
+
+    <p>
+      <strong>Q: Should I message them first if I'm overthinking?</strong><br/>
+      A: Not immediately. Wait until the overthinking spiral has settled. Message them because you have something genuine to say, not because anxiety is pushing you to fill the silence. If you wait 24 hours and you still want to reach out, go for it. If the urge fades, that's also information.
+    </p>
+
+    <p>
+      <strong>Q: What if they're not thinking about the chat at all?</strong><br/>
+      A: That's possible. And it doesn't mean the chat wasn't real or meaningful. People process experiences at different speeds. They might think about it later, or not at all, or years from now. That asymmetry is part of anonymous chat. You had a meaningful experience. That's enough, even if it meant something different to them.
+    </p>
+
+    <p>
+      <strong>Q: Is overthinking a sign that I'm too attached too fast?</strong><br/>
+      A: Not necessarily. Overthinking is a sign that your brain is processing something significant. Attachment is separate—though they often go together. You can think deeply about an interaction without being unhealthily attached to the outcome. The key is whether you can hold the experience as meaningful while staying flexible about what happens next.
+    </p>
+
+    <p>
+      <strong>Q: How do I stop comparing this chat to others?</strong><br/>
+      A: Notice the comparison without fighting it. Your brain is trying to understand where this fits in the landscape of your experiences. That's okay. But then redirect: instead of "is this the best chat I've ever had," ask "what made this specific chat feel good?" The answer is usually about the other person or the specific dynamic—not about it being "better" or "worse" than other chats. It was just different.
+    </p>
+  `,
+
   "fear-of-meeting-in-person-after-online-chat": `
     <figure class="post-figure">
       <img src="/images/hero-benefits-of-talking-to-strangers-for-mental-health.png" alt="A person at a table, phone down, looking nervous before meeting someone in person" width="1200" height="630" />
