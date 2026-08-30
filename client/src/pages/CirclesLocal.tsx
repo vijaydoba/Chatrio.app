@@ -3,8 +3,9 @@ import ReactDOM from "react-dom";
 import { Helmet } from "react-helmet-async";
 import { NavLink } from "react-router-dom";
 import { Socket } from "socket.io-client";
-import { MapContainer, TileLayer, Circle, Marker, AttributionControl } from "react-leaflet";
+import { MapContainer, Circle, Marker, AttributionControl, useMap } from "react-leaflet";
 import L from "leaflet";
+import "@maplibre/maplibre-gl-leaflet";
 import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
 import {
@@ -13,7 +14,24 @@ import {
 } from "../circlesApi";
 import { useKeyboardViewport } from "../useKeyboardViewport";
 import "leaflet/dist/leaflet.css";
+import "maplibre-gl/dist/maplibre-gl.css";
 import "./circles-local.css";
+
+// OpenFreeMap vector basemap (openfreemap.org) — free, keyless, no rate limit;
+// bridged into Leaflet via maplibre-gl-leaflet since it's vector, not XYZ raster tiles.
+const OFM_ATTRIBUTION =
+  '<a href="https://openfreemap.org" target="_blank">OpenFreeMap</a> ' +
+  '<a href="https://www.openmaptiles.org/" target="_blank">&copy; OpenMapTiles</a> ' +
+  'Data from <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>';
+
+function GLBasemap() {
+  const map = useMap();
+  useEffect(() => {
+    const gl = (L as any).maplibreGL({ style: "https://tiles.openfreemap.org/styles/dark", attribution: OFM_ATTRIBUTION }).addTo(map);
+    return () => { map.removeLayer(gl); };
+  }, [map]);
+  return null;
+}
 
 type Tab = "nearby" | "cards" | "requests" | "chats" | "groups";
 type Active = { otherId: number; nickname: string; avatar?: number; gender?: Gender } | null;
@@ -1129,11 +1147,7 @@ export default function CirclesLocal() {
                 attributionControl={false}
                 zoomControl={false}
               >
-                <TileLayer
-                  url={document.documentElement.classList.contains("dark")
-                    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                    : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"}
-                  attribution='&copy; OSM &copy; CARTO' />
+                <GLBasemap />
                 <AttributionControl position="bottomright" prefix={false} />
                 {/* Approximate-area blobs only — coordinates are already grid-fuzzed to ~2.2km
                     server-side (geo.js), and each blip's on-screen position within its blob
@@ -1234,11 +1248,7 @@ export default function CirclesLocal() {
                 scrollWheelZoom={false}
                 doubleClickZoom={false}
               >
-                <TileLayer
-                  url={document.documentElement.classList.contains("dark")
-                    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                    : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"}
-                  attribution='&copy; OSM &copy; CARTO' />
+                <GLBasemap />
                 <Circle center={[myArea.lat, myArea.lng]} radius={900}
                   pathOptions={{ color: "#6d28d9", fillColor: "#6d28d9", fillOpacity: 0.28, weight: 2 }} />
                 <Marker position={[myArea.lat, myArea.lng]} icon={meMapIcon} />
