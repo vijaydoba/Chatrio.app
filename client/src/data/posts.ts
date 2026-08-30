@@ -72,6 +72,17 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  // ── NEW POSTS (2026-08-30) ─────────────────────────────────
+  {
+    slug: "why-you-overthink-after-an-amazing-chat",
+    title: "Why You Overthink After an Amazing Chat (And How to Stop)",
+    excerpt:
+      "The chat was incredible. Real, connected, mutual. Then it ends and your mind spirals. Here's why that happens—and how to sit with the feeling without letting it destroy the memory.",
+    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    date: "2026-08-30",
+    category: "Mental Health",
+  },
+
   // ── NEW POSTS (2026-08-29) ─────────────────────────────────
   {
     slug: "fear-of-meeting-in-person-after-online-chat",
