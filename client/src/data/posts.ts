@@ -33,6 +33,56 @@ export function getSlotImage(thumbnail: string, slot: "featured" | "card" | "thu
 // Permanent redirects for removed/consolidated duplicate posts.
 // Key = old removed slug, value = canonical keeper slug.
 export const POST_REDIRECTS: Record<string, string> = {
+  "best-chatroulette-alternatives-2026": "omegle-alternatives-2026-free-anonymous-chat",
+  "chatrio-vs-omegle-best-free-alternative-2026": "omegle-alternatives-2026-free-anonymous-chat",
+  "ometv-alternative-2026-free-no-app": "omegle-alternatives-2026-free-anonymous-chat",
+  "emerald-chat-alternative-2026-free-anonymous": "omegle-alternatives-2026-free-anonymous-chat",
+  "chatspin-alternative-2026-free-no-sign-up": "omegle-alternatives-2026-free-anonymous-chat",
+  "chatib-alternative-2026-free-anonymous-chat": "omegle-alternatives-2026-free-anonymous-chat",
+  "chatiw-alternative-2026-free-no-sign-up": "omegle-alternatives-2026-free-anonymous-chat",
+  "umingle-alternative-2026-free-anonymous-chat": "omegle-alternatives-2026-free-anonymous-chat",
+  "azar-alternative-2026-free-no-sign-up": "omegle-alternatives-2026-free-anonymous-chat",
+  "shagle-alternative-2026-free-anonymous-chat": "omegle-alternatives-2026-free-anonymous-chat",
+  "chatrandom-alternative-2026-free-no-sign-up": "omegle-alternatives-2026-free-anonymous-chat",
+  "bazoocam-alternative-2026-free-anonymous-chat": "omegle-alternatives-2026-free-anonymous-chat",
+  "joingy-alternative-2026-free-anonymous-chat": "omegle-alternatives-2026-free-anonymous-chat",
+  "camsurf-alternative-2026-free-anonymous-chat": "omegle-alternatives-2026-free-anonymous-chat",
+  "tinychat-alternative-2026-free-anonymous-chat": "omegle-alternatives-2026-free-anonymous-chat",
+  "monkey-app-alternative-2026-free-no-sign-up": "omegle-alternatives-2026-free-anonymous-chat",
+  "coomeet-alternative-2026-free-no-per-minute-fees": "omegle-alternatives-2026-free-anonymous-chat",
+  "flingster-alternative-2026-free-no-sign-up": "omegle-alternatives-2026-free-anonymous-chat",
+  "thundr-alternative-2026-free-no-sign-up": "omegle-alternatives-2026-free-anonymous-chat",
+  "uhmegle-alternative-2026-free-no-sign-up": "omegle-alternatives-2026-free-anonymous-chat",
+  "chathub-alternative-2026-free-no-sign-up": "omegle-alternatives-2026-free-anonymous-chat",
+  "what-is-a-beige-flag-in-dating-examples-2026": "dating-chat-slang-glossary-2026",
+  "what-is-a-blind-date-app-how-it-works-2026": "dating-chat-slang-glossary-2026",
+  "what-is-a-parasocial-relationship-2026": "dating-chat-slang-glossary-2026",
+  "what-is-a-rebound-relationship-signs-2026": "dating-chat-slang-glossary-2026",
+  "what-is-a-situationship-signs-meaning-2026": "dating-chat-slang-glossary-2026",
+  "what-is-a-social-battery-protect-yours-2026": "dating-chat-slang-glossary-2026",
+  "what-is-a-trauma-bond-signs-how-to-break-free-2026": "dating-chat-slang-glossary-2026",
+  "what-is-benching-signs-someone-is-keeping-you-as-a-backup-2026": "dating-chat-slang-glossary-2026",
+  "what-is-codependency-signs-healthier-bonds-2026": "dating-chat-slang-glossary-2026",
+  "what-is-compersion-the-opposite-of-jealousy-2026": "dating-chat-slang-glossary-2026",
+  "what-is-cuffing-season-why-it-happens-2026": "dating-chat-slang-glossary-2026",
+  "what-is-curving-signs-of-a-soft-rejection-2026": "dating-chat-slang-glossary-2026",
+  "what-is-dtr-how-to-have-the-define-the-relationship-talk-2026": "dating-chat-slang-glossary-2026",
+  "what-is-emotional-intimacy-how-to-build-it-2026": "dating-chat-slang-glossary-2026",
+  "what-is-fawn-response-signs-of-people-pleasing-trauma-2026": "dating-chat-slang-glossary-2026",
+  "what-is-future-faking-signs-why-it-works-2026": "dating-chat-slang-glossary-2026",
+  "what-is-gaslighting-signs-how-to-respond-2026": "dating-chat-slang-glossary-2026",
+  "what-is-gray-rocking-how-this-response-tactic-works-2026": "dating-chat-slang-glossary-2026",
+  "what-is-hoovering-signs-an-ex-is-pulling-you-back-2026": "dating-chat-slang-glossary-2026",
+  "what-is-kitten-fishing-signs-of-a-slightly-misleading-profile-2026": "dating-chat-slang-glossary-2026",
+  "what-is-limerence-obsessive-infatuation-explained-2026": "dating-chat-slang-glossary-2026",
+  "what-is-micro-cheating-signs-youve-crossed-a-line-2026": "dating-chat-slang-glossary-2026",
+  "what-is-negging-signs-how-to-shut-it-down-2026": "dating-chat-slang-glossary-2026",
+  "what-is-orbiting-dating-trend-explained-2026": "dating-chat-slang-glossary-2026",
+  "what-is-stonewalling-signs-how-to-break-the-pattern-2026": "dating-chat-slang-glossary-2026",
+  "what-is-the-ick-why-it-happens-what-to-do-2026": "dating-chat-slang-glossary-2026",
+  "what-is-the-slow-fade-signs-someone-is-losing-interest-2026": "dating-chat-slang-glossary-2026",
+  "what-is-the-talking-stage-signs-meaning-2026": "dating-chat-slang-glossary-2026",
+  "what-is-weaponized-incompetence-signs-examples-2026": "dating-chat-slang-glossary-2026",
   // Legacy/incorrect internal slugs. Keep these aliases so old links and search
   // results resolve to a real article instead of becoming soft 404s.
   "are-online-chat-connections-real": "online-friendships-are-real-friendships-heres-the-proof",
@@ -72,6 +122,15 @@ export const POST_REDIRECTS: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  {
+    slug: "dating-chat-slang-glossary-2026",
+    title: "Modern Dating & Chat Slang Glossary (2026)",
+    excerpt:
+      "Situationship, benching, the ick, gaslighting and more—plain-English definitions of the modern dating and online-chat slang people actually use.",
+    thumbnail: "/images/hero-questions-to-ask-to-get-to-know-someone.png",
+    date: "2026-08-31",
+    category: "Dating",
+  },
   // ── NEW POSTS (2026-08-30) ─────────────────────────────────
   {
     slug: "why-you-overthink-after-an-amazing-chat",
@@ -1328,14 +1387,6 @@ export const POSTS: Post[] = [
     category: "Chat & Connection",
   },
 
-  {
-    slug: "best-chatroulette-alternatives-2026",
-    title: "Best Chatroulette Alternatives in 2026 (Safer, Free, No Sign-Up)",
-    excerpt: "Tired of bots and awkward video roulette? Here are the best Chatroulette alternatives in 2026 — free, anonymous, and built for real conversations instead of random cameras.",
-    thumbnail: "/images/hero-best-chatroulette-alternatives-2026.png",
-    date: "2026-06-26",
-    category: "Chat & Connection",
-  },
 
   {
     slug: "chat-with-strangers-uk-free-2026",
@@ -1457,32 +1508,8 @@ export const POSTS: Post[] = [
     category: "Chat & Connection",
   },
 
-  {
-    slug: "chatrio-vs-omegle-best-free-alternative-2026",
-    title: "Chatrio vs Omegle: The Best Free Omegle Alternative (2026)",
-    excerpt: "Omegle shut down in November 2023. Here's an honest Chatrio vs Omegle comparison — and why Chatrio is the closest free, anonymous, no-sign-up replacement in 2026.",
-    thumbnail: "/images/hero-chatrio-vs-omegle-best-free-alternative-2026.png",
-    date: "2026-06-28",
-    category: "Chat & Connection",
-  },
 
-  {
-    slug: "ometv-alternative-2026-free-no-app",
-    title: "OmeTV Alternative 2026 — Free Stranger Chat, No App, No Phone Number",
-    excerpt: "Looking for an OmeTV alternative without phone verification or paywalls? Here are the best free, anonymous ways to chat with strangers in 2026 — no app, no number, no sign-up.",
-    thumbnail: "/images/hero-ometv-alternative-2026-free-no-app.png",
-    date: "2026-06-28",
-    category: "Chat & Connection",
-  },
 
-  {
-    slug: "emerald-chat-alternative-2026-free-anonymous",
-    title: "Emerald Chat Alternative 2026 — Free, Anonymous, No Account",
-    excerpt: "Want an Emerald Chat alternative that doesn't push you toward an account? Here are the best free, anonymous ways to talk to strangers in 2026 — no sign-up, no app, fully private.",
-    thumbnail: "/images/hero-emerald-chat-alternative-2026-free-anonymous.png",
-    date: "2026-06-28",
-    category: "Chat & Connection",
-  },
 
   {
     slug: "chat-with-strangers-in-the-philippines-free-2026",
@@ -1600,55 +1627,7 @@ export const POSTS: Post[] = [
     category: "Romance",
   },
 
-  {
-    slug: "chatspin-alternative-2026-free-no-sign-up",
-    title: "Best ChatSpin Alternative 2026 — Free, No Sign-Up",
-    excerpt: "ChatSpin pushes you toward paywalls fast. Here are the best free alternatives in 2026 — including one that's completely anonymous, browser-based, and costs nothing.",
-    thumbnail: "/images/hero-chatspin-alternative-2026-free-no-sign-up.png",
-    date: "2026-06-30",
-    category: "Chat & Connection",
-  },
 
-  {
-    slug: "chatib-alternative-2026-free-anonymous-chat",
-    title: "Chatib Alternative 2026 — Free, No Ads, Actually Anonymous",
-    excerpt: "Chatib buries every chat room in ads and bots. Here are the best Chatib alternatives in 2026 — including a free, ad-free option that connects you in seconds.",
-    thumbnail: "/images/hero-chatib-alternative-2026-free-anonymous-chat.png",
-    date: "2026-07-04",
-    category: "Chat & Connection",
-  },
-  {
-    slug: "chatiw-alternative-2026-free-no-sign-up",
-    title: "Chatiw Alternative 2026 — Free, Ad-Free, No Sign-Up",
-    excerpt: "Chatiw's chat rooms are packed with ads, bots, and dead conversations. Here are the best Chatiw alternatives in 2026 for real, ad-free conversation.",
-    thumbnail: "/images/hero-chatiw-alternative-2026-free-no-sign-up.png",
-    date: "2026-07-04",
-    category: "Chat & Connection",
-  },
-  {
-    slug: "umingle-alternative-2026-free-anonymous-chat",
-    title: "Umingle Alternative 2026 — Free Video & Text Chat",
-    excerpt: "Umingle locks basic filters behind a paywall and leans hard on unmoderated video. Here are the best Umingle alternatives in 2026 — including a free, text-first option.",
-    thumbnail: "/images/hero-umingle-alternative-2026-free-anonymous-chat.png",
-    date: "2026-07-04",
-    category: "Chat & Connection",
-  },
-  {
-    slug: "azar-alternative-2026-free-no-sign-up",
-    title: "Azar Alternative 2026 — Free, No App, No Gems",
-    excerpt: "Azar's best features hide behind paid 'Gems' and a mandatory app download. Here are the best Azar alternatives in 2026 that work free, in your browser.",
-    thumbnail: "/images/hero-azar-alternative-2026-free-no-sign-up.png",
-    date: "2026-07-04",
-    category: "Chat & Connection",
-  },
-  {
-    slug: "shagle-alternative-2026-free-anonymous-chat",
-    title: "Shagle Alternative 2026 — Free, No VIP Required",
-    excerpt: "Shagle puts gender and country filters behind a VIP subscription. Here are the best Shagle alternatives in 2026 that are genuinely free, no upgrade needed.",
-    thumbnail: "/images/hero-shagle-alternative-2026-free-anonymous-chat.png",
-    date: "2026-07-04",
-    category: "Chat & Connection",
-  },
 
   {
     slug: "what-to-do-when-someone-makes-you-uncomfortable-online",
@@ -1762,105 +1741,6 @@ export const POSTS: Post[] = [
   },
 
   {
-    slug: "chatrandom-alternative-2026-free-no-sign-up",
-    title: "Chatrandom Alternative 2026 — Free, No Sign-Up",
-    excerpt:
-      "Chatrandom pushes premium filters and gender selection behind a paywall fast. Here are the best Chatrandom alternatives in 2026 — including one that's completely free, no account needed.",
-    thumbnail: "/images/hero-chatrandom-alternative-2026-free-no-sign-up.png",
-    date: "2026-07-05",
-    category: "Chat & Connection",
-  },
-  {
-    slug: "bazoocam-alternative-2026-free-anonymous-chat",
-    title: "Bazoocam Alternative 2026 — Free, No Download",
-    excerpt:
-      "Bazoocam's games and group rooms are fun, but the video-first format and inconsistent moderation send a lot of people looking elsewhere. Here are the best Bazoocam alternatives in 2026.",
-    thumbnail: "/images/hero-bazoocam-alternative-2026-free-anonymous-chat.png",
-    date: "2026-07-05",
-    category: "Chat & Connection",
-  },
-  {
-    slug: "joingy-alternative-2026-free-anonymous-chat",
-    title: "Joingy Alternative 2026 — Free, Text or Video, No Sign-Up",
-    excerpt:
-      "Joingy's video roulette leans heavily on webcam matching, and quieter hours mean long waits or bot traffic. Here are the best Joingy alternatives in 2026 for real, instant conversation.",
-    thumbnail: "/images/hero-joingy-alternative-2026-free-anonymous-chat.png",
-    date: "2026-07-05",
-    category: "Chat & Connection",
-  },
-  {
-    slug: "camsurf-alternative-2026-free-anonymous-chat",
-    title: "Camsurf Alternative 2026 — Free, Safer Video Chat",
-    excerpt:
-      "Camsurf is a cleaner video-roulette option, but it's still video-only and moderation reports can go unanswered for hours. Here are the best Camsurf alternatives in 2026.",
-    thumbnail: "/images/hero-camsurf-alternative-2026-free-anonymous-chat.png",
-    date: "2026-07-05",
-    category: "Chat & Connection",
-  },
-  {
-    slug: "tinychat-alternative-2026-free-anonymous-chat",
-    title: "Tinychat Alternative 2026 — Free 1-on-1 Chat, No Rooms to Manage",
-    excerpt:
-      "Tinychat is built for group video rooms, which means moderating your own space and dealing with drop-in strangers. Here are the best Tinychat alternatives in 2026 for simple 1-on-1 chat.",
-    thumbnail: "/images/hero-tinychat-alternative-2026-free-anonymous-chat.png",
-    date: "2026-07-05",
-    category: "Chat & Connection",
-  },
-  {
-    slug: "monkey-app-alternative-2026-free-no-sign-up",
-    title: "Monkey App Alternative 2026 — Free, No 15-Second Timer",
-    excerpt:
-      "Monkey cuts every video chat off after 15 seconds unless you add the other person on Snapchat. Here are the best Monkey app alternatives in 2026 for conversation that doesn't run out the clock.",
-    thumbnail: "/images/hero-monkey-app-alternative-2026-free-no-sign-up.png",
-    date: "2026-07-11",
-    category: "Chat & Connection",
-  },
-  {
-    slug: "coomeet-alternative-2026-free-no-per-minute-fees",
-    title: "CooMeet Alternative 2026 — Free, No Per-Minute Charges",
-    excerpt:
-      "CooMeet gives men a short free trial, then charges roughly $1–2 per minute to keep talking. Here are the best CooMeet alternatives in 2026 that don't bill you by the minute.",
-    thumbnail: "/images/hero-coomeet-alternative-2026-free-no-per-minute-fees.png",
-    date: "2026-07-11",
-    category: "Chat & Connection",
-  },
-  {
-    slug: "flingster-alternative-2026-free-no-sign-up",
-    title: "Flingster Alternative 2026 — Free, No Filters Paywall",
-    excerpt:
-      "Flingster's gender and location filters, verified badge, and ad-free chat all sit behind a paid plan starting at $6.99/week. Here are the best Flingster alternatives in 2026 that are free by default.",
-    thumbnail: "/images/hero-flingster-alternative-2026-free-no-sign-up.png",
-    date: "2026-07-11",
-    category: "Chat & Connection",
-  },
-  {
-    slug: "thundr-alternative-2026-free-no-sign-up",
-    title: "Thundr Alternative 2026 — Free Chat, No Camera Needed",
-    excerpt:
-      "Thundr swaps in a new face every few seconds on camera — fun to browse, hard for a real conversation. Here are the best Thundr alternatives in 2026 for actual talk, no camera required.",
-    thumbnail: "/images/hero-thundr-alternative-2026-free-no-sign-up.png",
-    date: "2026-07-19",
-    category: "Chat & Connection",
-  },
-  {
-    slug: "uhmegle-alternative-2026-free-no-sign-up",
-    title: "Uhmegle Alternative 2026 — Free Anonymous Chat, No Camera",
-    excerpt:
-      "Uhmegle rebuilds the Omegle video experience, camera and all. Here are the best Uhmegle alternatives in 2026 that keep the anonymity but drop the on-camera exposure.",
-    thumbnail: "/images/hero-uhmegle-alternative-2026-free-no-sign-up.png",
-    date: "2026-07-19",
-    category: "Chat & Connection",
-  },
-  {
-    slug: "chathub-alternative-2026-free-no-sign-up",
-    title: "ChatHub Alternative 2026 — Free Matching, No Paywall",
-    excerpt:
-      "ChatHub puts its gender and country filters behind a premium plan and runs ads on the free tier. Here are the best ChatHub alternatives in 2026 with real interest matching, free.",
-    thumbnail: "/images/hero-chathub-alternative-2026-free-no-sign-up.png",
-    date: "2026-07-19",
-    category: "Chat & Connection",
-  },
-  {
     slug: "voice-chat-with-strangers-guide-2026",
     title: "Voice Chat with Strangers: Is It Better Than Text or Video in 2026?",
     excerpt:
@@ -1870,15 +1750,6 @@ export const POSTS: Post[] = [
     category: "Chat & Connection",
   },
   {
-    slug: "what-is-a-situationship-signs-meaning-2026",
-    title: "What Is a Situationship? Signs, Meaning & How to Know Where You Stand (2026)",
-    excerpt:
-      "Not quite dating, not quite friends — situationships are the most common relationship status nobody has agreed to. Here's what the term actually means, the signs you're in one, and how to get real clarity.",
-    thumbnail: "/images/hero-what-is-a-situationship-signs-meaning-2026.png",
-    date: "2026-07-24",
-    category: "Dating",
-  },
-  {
     slug: "what-is-love-bombing-signs-red-flags-2026",
     title: "What Is Love Bombing? Signs, Examples & How to Protect Yourself (2026)",
     excerpt:
@@ -1886,42 +1757,6 @@ export const POSTS: Post[] = [
     thumbnail: "/images/hero-what-is-love-bombing-signs-red-flags-2026.png",
     date: "2026-07-24",
     category: "Relationships",
-  },
-  {
-    slug: "what-is-a-parasocial-relationship-2026",
-    title: "What Is a Parasocial Relationship? Signs, Examples & Why Real Conversation Beats It (2026)",
-    excerpt:
-      "Feeling like you personally know a streamer, influencer, or AI chatbot is a parasocial relationship — a real psychological phenomenon with a name dating back to 1956. Here's what it is and why two-way conversation still wins.",
-    thumbnail: "/images/hero-what-is-a-parasocial-relationship-2026.png",
-    date: "2026-07-24",
-    category: "Mental Health",
-  },
-  {
-    slug: "what-is-a-social-battery-protect-yours-2026",
-    title: "What Is a Social Battery? How to Protect Yours in Online Chat and IRL (2026)",
-    excerpt:
-      "Some people can talk for hours; others need to recharge after twenty minutes. Here's what \"social battery\" actually means, how to spot yours running low, and how to protect it — online and off.",
-    thumbnail: "/images/hero-what-is-a-social-battery-protect-yours-2026.png",
-    date: "2026-07-24",
-    category: "Mental Health",
-  },
-  {
-    slug: "what-is-emotional-intimacy-how-to-build-it-2026",
-    title: "What Is Emotional Intimacy? How to Build It With Someone You Just Met Online (2026)",
-    excerpt:
-      "Emotional intimacy isn't about how long you've known someone — it's about how much you've actually let them see. Here's what it really means and how it can form faster than you'd expect in online chat.",
-    thumbnail: "/images/hero-what-is-emotional-intimacy-how-to-build-it-2026.png",
-    date: "2026-07-24",
-    category: "Relationships",
-  },
-  {
-    slug: "what-is-limerence-obsessive-infatuation-explained-2026",
-    title: "What Is Limerence? The Psychology of Obsessive Infatuation (2026)",
-    excerpt:
-      "Replaying every message for hidden meaning, unable to focus, your whole mood riding on whether they texted back — that's not just a crush. It has a name, a real definition, and it isn't the same thing as love.",
-    thumbnail: "/images/hero-what-is-limerence-obsessive-infatuation-explained-2026.png",
-    date: "2026-07-26",
-    category: "Mental Health",
   },
   {
     slug: "avoidant-attachment-style-signs-online-chat-2026",
@@ -1969,15 +1804,6 @@ export const POSTS: Post[] = [
     category: "Relationships",
   },
   {
-    slug: "what-is-a-blind-date-app-how-it-works-2026",
-    title: "What Is a Blind Date App? How They Work in 2026",
-    excerpt:
-      "No swiping, no profile scrolling — just two people matched on compatibility, with names and photos hidden until you both choose to reveal. Here's how blind date apps actually work.",
-    thumbnail: "/images/hero-what-is-a-blind-date-app-how-it-works-2026.png",
-    date: "2026-07-27",
-    category: "Dating",
-  },
-  {
     slug: "anonymous-dating-apps-guide-2026",
     title: "Anonymous Dating Apps: What They Are and Why People Are Switching (2026)",
     excerpt:
@@ -2006,24 +1832,6 @@ export const POSTS: Post[] = [
   },
   // ── PSYCHOLOGY / "WHAT IS X" CLUSTER (2026-08-06) ──────
   {
-    slug: "what-is-the-talking-stage-signs-meaning-2026",
-    title: "What Is the Talking Stage? Signs, Meaning & How to Move Past It (2026)",
-    excerpt:
-      "Not officially dating, not just friends — the talking stage is where most connections start. Here's what it means and how to move through it.",
-    thumbnail: "/images/hero-what-is-a-situationship-signs-meaning-2026.png",
-    date: "2026-08-06",
-    category: "Dating",
-  },
-  {
-    slug: "what-is-a-trauma-bond-signs-how-to-break-free-2026",
-    title: "What Is a Trauma Bond? Signs, Causes & How to Break Free (2026)",
-    excerpt:
-      "Trauma bonds don't feel like danger from the inside — they feel like love that's unusually hard to leave. Here's what's happening and how to break free.",
-    thumbnail: "/images/hero-what-is-limerence-obsessive-infatuation-explained-2026.png",
-    date: "2026-08-06",
-    category: "Mental Health",
-  },
-  {
     slug: "five-love-languages-explained-2026",
     title: "The 5 Love Languages, Explained — And Does the Theory Actually Hold Up? (2026)",
     excerpt:
@@ -2041,61 +1849,7 @@ export const POSTS: Post[] = [
     date: "2026-08-06",
     category: "Relationships",
   },
-  {
-    slug: "what-is-orbiting-dating-trend-explained-2026",
-    title: "What Is Orbiting? The Dating Trend Worse Than Ghosting (2026)",
-    excerpt:
-      "They stopped replying, but they're still watching every story you post. Here's what orbiting is, why it happens, and how to stop waiting on it.",
-    thumbnail: "/images/hero-what-is-breadcrumbing-signs-how-to-stop-accepting-it-2026.png",
-    date: "2026-08-06",
-    category: "Dating",
-  },
-  {
-    slug: "what-is-codependency-signs-healthier-bonds-2026",
-    title: "What Is Codependency? Signs, Causes & How to Build Healthier Bonds (2026)",
-    excerpt:
-      "Codependency can look like devotion from the outside. Here's how to tell caring too much from losing yourself, and how to build more balanced bonds.",
-    thumbnail: "/images/hero-why-we-crave-validation-online-and-how-to-handle-it.png",
-    date: "2026-08-06",
-    category: "Mental Health",
-  },
-  {
-    slug: "what-is-a-rebound-relationship-signs-2026",
-    title: "What Is a Rebound Relationship? Signs, Science & Is It Ever a Good Idea (2026)",
-    excerpt:
-      "Jumping into someone new right after a breakup gets a bad reputation. Here's what the research actually found, and how to tell if you're ready.",
-    thumbnail: "/images/hero-psychology-of-falling-in-love-online.png",
-    date: "2026-08-06",
-    category: "Romance",
-  },
   // ── COMMUNICATION PATTERNS CLUSTER (2026-08-07) ──────
-  {
-    slug: "what-is-gaslighting-signs-how-to-respond-2026",
-    title: "What Is Gaslighting? Signs, Examples & How to Respond (2026)",
-    excerpt:
-      "Gaslighting makes you doubt your own memory and judgment until someone else's version of events feels safer than your own. Here's how to recognize it.",
-    thumbnail: "/images/hero-what-is-a-parasocial-relationship-2026.png",
-    date: "2026-08-07",
-    category: "Mental Health",
-  },
-  {
-    slug: "what-is-stonewalling-signs-how-to-break-the-pattern-2026",
-    title: "What Is Stonewalling? Signs & How to Break the Pattern (2026)",
-    excerpt:
-      "Going quiet mid-conflict isn't the same as staying calm. Here's what stonewalling actually is, why it happens, and how couples break the cycle.",
-    thumbnail: "/images/hero-what-is-emotional-intimacy-how-to-build-it-2026.png",
-    date: "2026-08-07",
-    category: "Relationships",
-  },
-  {
-    slug: "what-is-the-slow-fade-signs-someone-is-losing-interest-2026",
-    title: "What Is the Slow Fade? Signs Someone Is Losing Interest (2026)",
-    excerpt:
-      "Replies get shorter, plans get vaguer, and nothing ever officially ends. Here's how to spot a slow fade before you've spent months waiting on it.",
-    thumbnail: "/images/hero-what-is-a-situationship-signs-meaning-2026.png",
-    date: "2026-08-07",
-    category: "Dating",
-  },
   {
     slug: "what-is-zombieing-dating-trend-after-ghosting-2026",
     title: "What Is Zombieing? The Dating Trend That Follows Ghosting (2026)",
@@ -2104,24 +1858,6 @@ export const POSTS: Post[] = [
     thumbnail: "/images/hero-anonymous-dating-apps-guide-2026.png",
     date: "2026-08-07",
     category: "Dating",
-  },
-  {
-    slug: "what-is-future-faking-signs-why-it-works-2026",
-    title: "What Is Future Faking? Signs, Why It Works & How to Spot It (2026)",
-    excerpt:
-      "Big promises about a shared future can feel like commitment when they're actually a shortcut around it. Here's how to tell the difference early.",
-    thumbnail: "/images/hero-text-chemistry-how-to-create-attraction-in-online-chat.png",
-    date: "2026-08-07",
-    category: "Romance",
-  },
-  {
-    slug: "what-is-micro-cheating-signs-youve-crossed-a-line-2026",
-    title: "What Is Micro-Cheating? Signs You've Crossed a Line (2026)",
-    excerpt:
-      "No physical contact, no confession-worthy secret — just a pattern of small emotional or flirtatious moments kept from a partner. Here's the line.",
-    thumbnail: "/images/hero-what-is-love-bombing-signs-red-flags-2026.png",
-    date: "2026-08-07",
-    category: "Relationships",
   },
   {
     slug: "what-is-text-anxiety-why-waiting-for-a-reply-feels-so-bad-2026",
@@ -2142,97 +1878,7 @@ export const POSTS: Post[] = [
     date: "2026-08-08",
     category: "Dating",
   },
-  {
-    slug: "what-is-the-ick-why-it-happens-what-to-do-2026",
-    title: "What Is 'The Ick'? Why It Happens & What to Do About It (2026)",
-    excerpt:
-      "One small moment and the attraction just vanishes. Here's the psychology behind the ick, and whether it's ever worth pushing past.",
-    thumbnail: "/images/hero-romantic-conversations-that-build-connection.png",
-    date: "2026-08-08",
-    category: "Romance",
-  },
-  {
-    slug: "what-is-negging-signs-how-to-shut-it-down-2026",
-    title: "What Is Negging? Signs, Examples & How to Shut It Down (2026)",
-    excerpt:
-      "A backhanded compliment dressed up as playful teasing is still designed to make you chase approval. Here's how to spot negging and respond.",
-    thumbnail: "/images/hero-how-to-manage-your-emotions-during-a-difficult-online-conversation.png",
-    date: "2026-08-08",
-    category: "Mental Health",
-  },
-  {
-    slug: "what-is-hoovering-signs-an-ex-is-pulling-you-back-2026",
-    title: "What Is Hoovering? Signs an Ex Is Pulling You Back In (2026)",
-    excerpt:
-      "A sudden apology or \"I miss you\" text after silence isn't always closure — sometimes it's hoovering. Here's how to recognize the pattern.",
-    thumbnail: "/images/hero-how-to-build-trust-with-someone-you-met-online.png",
-    date: "2026-08-08",
-    category: "Relationships",
-  },
-  {
-    slug: "what-is-cuffing-season-why-it-happens-2026",
-    title: "What Is Cuffing Season? Why It Happens & What It Means (2026)",
-    excerpt:
-      "Relationships that start right as it gets cold and end right as it warms up aren't a coincidence. Here's what's actually driving cuffing season.",
-    thumbnail: "/images/hero-anonymous-dating-apps-guide-2026.png",
-    date: "2026-08-08",
-    category: "Dating",
-  },
-  {
-    slug: "what-is-compersion-the-opposite-of-jealousy-2026",
-    title: "What Is Compersion? The Opposite of Jealousy, Explained (2026)",
-    excerpt:
-      "Feeling genuine joy at a partner's happiness with someone else sounds impossible to some and obvious to others. Here's what compersion actually is.",
-    thumbnail: "/images/hero-love-is-built-not-found-real-love-in-modern-relationships.png",
-    date: "2026-08-08",
-    category: "Love",
-  },
-  {
-    slug: "what-is-curving-signs-of-a-soft-rejection-2026",
-    title: "What Is Curving? Signs of a Soft Rejection in Chat (2026)",
-    excerpt:
-      "A vague \"maybe\" or a joke instead of a straight answer can be a rejection dressed up as ambiguity. Here's how to recognize curving in chat.",
-    thumbnail: "/images/hero-what-your-texting-habits-reveal-about-your-personality.png",
-    date: "2026-08-08",
-    category: "Chat & Connection",
-  },
   // ── PSYCHOLOGY / "WHAT IS X" CLUSTER (2026-08-09) ──────
-  {
-    slug: "what-is-benching-signs-someone-is-keeping-you-as-a-backup-2026",
-    title: "What Is Benching? Signs Someone Is Keeping You as a Backup (2026)",
-    excerpt:
-      "Just enough contact to keep you interested, never enough to actually commit. Here's how to recognize benching before you waste months on it.",
-    thumbnail: "/images/hero-what-is-a-blind-date-app-how-it-works-2026.png",
-    date: "2026-08-09",
-    category: "Dating",
-  },
-  {
-    slug: "what-is-kitten-fishing-signs-of-a-slightly-misleading-profile-2026",
-    title: "What Is Kitten Fishing? Signs of a Slightly Misleading Profile (2026)",
-    excerpt:
-      "Not a fake identity — just an old photo, a shaved-off age, or a heavily filtered life. Here's how kitten fishing differs from catfishing.",
-    thumbnail: "/images/hero-virtual-dating-tips-video-dates-2026.png",
-    date: "2026-08-09",
-    category: "Dating",
-  },
-  {
-    slug: "what-is-dtr-how-to-have-the-define-the-relationship-talk-2026",
-    title: "What Is DTR? How to Have the Define-the-Relationship Talk (2026)",
-    excerpt:
-      "\"So what are we?\" is a short question that can feel enormous. Here's what DTR means and how to actually get through the conversation.",
-    thumbnail: "/images/hero-how-to-know-when-an-online-connection-is-worth-pursuing.png",
-    date: "2026-08-09",
-    category: "Relationships",
-  },
-  {
-    slug: "what-is-a-beige-flag-in-dating-examples-2026",
-    title: "What Is a Beige Flag? Quirky-Not-Bad Dating Habits, Explained (2026)",
-    excerpt:
-      "Not a red flag, not really a green one either — just an oddly specific habit that says more \"huh\" than dealbreaker. Here's what counts.",
-    thumbnail: "/images/hero-conversation-starters-that-reveal-hidden-agendas.png",
-    date: "2026-08-09",
-    category: "Chat & Connection",
-  },
   {
     slug: "what-is-triangulation-signs-of-this-manipulation-tactic-2026",
     title: "What Is Triangulation? Signs of This Manipulation Tactic (2026)",
@@ -2240,33 +1886,6 @@ export const POSTS: Post[] = [
       "Pulling a third person into a conflict that isn't theirs is rarely accidental. Here's how triangulation works and how to respond to it.",
     thumbnail: "/images/hero-why-we-crave-validation-online-and-how-to-handle-it.png",
     date: "2026-08-09",
-    category: "Mental Health",
-  },
-  {
-    slug: "what-is-weaponized-incompetence-signs-examples-2026",
-    title: "What Is Weaponized Incompetence? Signs & Examples (2026)",
-    excerpt:
-      "\"I just wasn't very good at it\" can be a real skill gap — or a convenient way to never have to do something again. Here's the difference.",
-    thumbnail: "/images/hero-why-people-are-more-honest-with-strangers-than-friends.png",
-    date: "2026-08-09",
-    category: "Relationships",
-  },
-  {
-    slug: "what-is-gray-rocking-how-this-response-tactic-works-2026",
-    title: "What Is Gray Rocking? How This Response Tactic Works (2026)",
-    excerpt:
-      "Going deliberately flat and boring is a defensive strategy some people use to stop feeding a manipulator's reaction. Here's how it works.",
-    thumbnail: "/images/hero-psychology-of-anonymity-why-we-act-differently-online.png",
-    date: "2026-08-09",
-    category: "Mental Health",
-  },
-  {
-    slug: "what-is-fawn-response-signs-of-people-pleasing-trauma-2026",
-    title: "What Is Fawn Response? Signs of People-Pleasing Trauma Response (2026)",
-    excerpt:
-      "When someone's automatic reaction to conflict is to agree, accommodate, and make themselves smaller—that's the fawn response at work. Here's what it is and why it happens in relationships.",
-    thumbnail: "/images/hero-how-to-set-healthy-boundaries-in-online-relationships.png",
-    date: "2026-08-11",
     category: "Mental Health",
   },
   {
