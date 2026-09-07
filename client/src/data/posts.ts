@@ -127,7 +127,7 @@ export const POSTS: Post[] = [
     title: "Modern Dating & Chat Slang Glossary (2026)",
     excerpt:
       "Situationship, benching, the ick, gaslighting and more—plain-English definitions of the modern dating and online-chat slang people actually use.",
-    thumbnail: "/images/hero-questions-to-ask-to-get-to-know-someone.png",
+    thumbnail: "/images/hero-dating-chat-slang-glossary-2026.png",
     date: "2026-08-31",
     category: "Dating",
   },
@@ -137,7 +137,7 @@ export const POSTS: Post[] = [
     title: "Why You Overthink After an Amazing Chat (And How to Stop)",
     excerpt:
       "The chat was incredible. Real, connected, mutual. Then it ends and your mind spirals. Here's why that happens—and how to sit with the feeling without letting it destroy the memory.",
-    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    thumbnail: "/images/hero-why-you-overthink-after-an-amazing-chat.png",
     date: "2026-08-30",
     category: "Mental Health",
   },
@@ -148,7 +148,7 @@ export const POSTS: Post[] = [
     title: "Why You Never Feel 'Ready' to Meet Someone in Person (After Online Chat)",
     excerpt:
       "You had an amazing chat. They want to meet up. But suddenly you're paralyzed. Here's why the transition from text to real life triggers anxiety—and how to take that step.",
-    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    thumbnail: "/images/hero-fear-of-meeting-in-person-after-online-chat.png",
     date: "2026-08-29",
     category: "Mental Health",
   },
@@ -159,7 +159,7 @@ export const POSTS: Post[] = [
     title: "The Expectation Trap: Why Your Imagined Chat Never Matches Reality",
     excerpt:
       "You expect depth but get small talk. You hope for connection but find indifference. Here's why the chat in your head is always better—and how to close that gap.",
-    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    thumbnail: "/images/hero-the-expectation-trap-why-chats-disappoint.png",
     date: "2026-08-28",
     category: "Mental Health",
   },
@@ -170,7 +170,7 @@ export const POSTS: Post[] = [
     title: "Why You Can Be Yourself With Strangers (But Not With Friends)",
     excerpt:
       "You tell a stranger something you've never told your best friend. Why? Because they can't judge you tomorrow. Here's the psychology of why anonymity unlocks authenticity.",
-    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    thumbnail: "/images/hero-why-you-are-more-authentic-with-strangers-than-friends.png",
     date: "2026-08-27",
     category: "Chat & Connection",
   },
@@ -181,7 +181,7 @@ export const POSTS: Post[] = [
     title: "The Dopamine Cycle of Anonymous Chat: Why You Keep Coming Back",
     excerpt:
       "Anonymous chat is a hit of connection without investment. Here's how your brain's reward system works with strangers—and why it's hard to stop.",
-    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    thumbnail: "/images/hero-dopamine-cycle-anonymous-chat-why-you-keep-coming-back.png",
     date: "2026-08-26",
     category: "Mental Health",
   },
@@ -192,7 +192,7 @@ export const POSTS: Post[] = [
     title: "The Accidental Therapist: When Your Chat Becomes Someone's Venting Session",
     excerpt:
       "You join a chat to connect, and they immediately start venting about their entire life. Here's why this happens, when to stay engaged, and how to set boundaries without being cold.",
-    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    thumbnail: "/images/hero-accidental-therapist-when-chat-becomes-venting-session.png",
     date: "2026-08-25",
     category: "Mental Health",
   },
@@ -203,7 +203,7 @@ export const POSTS: Post[] = [
     title: "Why Effort in Conversation Matters More Than You Think",
     excerpt:
       "Most conversations fail because people treat them like a game to win instead of a dance to participate in. Here's why showing up matters—and how it changes everything.",
-    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    thumbnail: "/images/hero-why-effort-in-conversation-matters-more-than-you-think.png",
     date: "2026-08-24",
     category: "Chat & Connection",
   },
@@ -214,7 +214,7 @@ export const POSTS: Post[] = [
     title: "Reading Silence: What Delays and Pauses in Chat Actually Mean",
     excerpt:
       "A message takes 10 minutes to reply. Then 2 hours. And suddenly you're spiraling: are they losing interest? Did I say something wrong? Here's what delays actually signal—and when they mean nothing.",
-    thumbnail: "/images/hero-why-text-is-sometimes-better-than-talking.png",
+    thumbnail: "/images/hero-reading-silence-what-delays-in-chat-actually-mean.png",
     date: "2026-08-23",
     category: "Mental Health",
   },
@@ -225,7 +225,7 @@ export const POSTS: Post[] = [
     title: "When a Good Chat Suddenly Stops: Why the Empty Feeling Lingers",
     excerpt:
       "You had the best chat. Real, connected, understood. And then they're gone. Here's why it feels like abandonment, what that feeling means, and how to sit with it without spiraling.",
-    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    thumbnail: "/images/hero-when-a-good-chat-suddenly-ends-the-empty-feeling-after.png",
     date: "2026-08-22",
     category: "Mental Health",
   },
@@ -236,7 +236,7 @@ export const POSTS: Post[] = [
     title: "Why You Send Messages You Immediately Regret (And How to Stop)",
     excerpt:
       "You hit send, and within seconds you know it was a mistake. Here's why impulse sends happen, what they reveal about you, and how to slow down before it's too late.",
-    thumbnail: "/images/hero-why-late-night-online-chats-feel-so-different.png",
+    thumbnail: "/images/hero-why-you-send-messages-you-immediately-regret.png",
     date: "2026-08-21",
     category: "Mental Health",
   },
@@ -247,7 +247,7 @@ export const POSTS: Post[] = [
     title: "The Vulnerability Hangover: When You've Shared Too Much and Feel Regret",
     excerpt:
       "You opened up, felt truly connected, then felt exposed. Here's why shame follows real conversation, how to recover, and when to reconnect.",
-    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    thumbnail: "/images/hero-vulnerability-hangover-regret-after-sharing-online.png",
     date: "2026-08-20",
     category: "Mental Health",
   },
@@ -258,7 +258,7 @@ export const POSTS: Post[] = [
     title: "When to Exchange Contact Info After Anonymous Chat (And How to Do It Right)",
     excerpt:
       "You had an amazing chat with a stranger. Now they want your number. Should you give it? Here's how to decide and do it safely when taking chat connections further.",
-    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    thumbnail: "/images/hero-when-to-exchange-contact-after-anonymous-chat.png",
     date: "2026-08-18",
     category: "Relationships",
   },
@@ -269,7 +269,7 @@ export const POSTS: Post[] = [
     title: "Chat Burnout Is Real: How to Recognize and Recover From Conversation Fatigue",
     excerpt:
       "Talking to strangers feels good—until it doesn't. Here's how to spot conversation fatigue, understand why it happens, and take breaks before you burn out.",
-    thumbnail: "/images/hero-how-to-overcome-social-anxiety-through-online-chat.png",
+    thumbnail: "/images/hero-chat-burnout-conversation-fatigue-when-to-take-breaks.png",
     date: "2026-08-17",
     category: "Mental Health",
   },
@@ -280,7 +280,7 @@ export const POSTS: Post[] = [
     title: "The Silence Between Messages: Why Waiting Creates Deeper Connection",
     excerpt:
       "In a world of instant replies, the person who waits—who reads slowly, thinks carefully, and responds deliberately—creates something rare. Here's the psychology of meaningful delay.",
-    thumbnail: "/images/hero-why-text-is-sometimes-better-than-talking.png",
+    thumbnail: "/images/hero-the-silence-between-messages-deeper-connection.png",
     date: "2026-08-16",
     category: "Chat & Connection",
   },
@@ -291,7 +291,7 @@ export const POSTS: Post[] = [
     title: "Why Vulnerability Creates Deeper Connections in Online Chat",
     excerpt:
       "The safest conversations happen when someone goes first—shows their cracks, admits confusion, or admits what they're really thinking. Here's why being real opens more doors.",
-    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    thumbnail: "/images/hero-why-vulnerability-creates-deeper-online-connections.png",
     date: "2026-08-14",
     category: "Mental Health",
   },
@@ -302,7 +302,7 @@ export const POSTS: Post[] = [
     title: "The Power of True Listening in Online Chat",
     excerpt:
       "Most people come to chat to be heard, not to listen. But when someone truly listens, everything changes. Here's why listening is the most underrated skill online.",
-    thumbnail: "/images/hero-benefits-of-talking-to-strangers-for-mental-health.png",
+    thumbnail: "/images/hero-the-power-of-true-listening-in-online-chat.png",
     date: "2026-08-13",
     category: "Mental Health",
   },
@@ -1836,7 +1836,7 @@ export const POSTS: Post[] = [
     title: "The 5 Love Languages, Explained — And Does the Theory Actually Hold Up? (2026)",
     excerpt:
       "Gary Chapman's five love languages became shorthand for showing love. Here's what they are, and what relationship science actually says about them.",
-    thumbnail: "/images/hero-how-to-make-someone-feel-special-in-online-chat.png",
+    thumbnail: "/images/hero-five-love-languages-explained-2026.png",
     date: "2026-08-06",
     category: "Love",
   },
@@ -1845,7 +1845,7 @@ export const POSTS: Post[] = [
     title: "What Is Fearful-Avoidant Attachment? Signs & How It Shows Up in Chat (2026)",
     excerpt:
       "Wanting closeness and fearing it at the same time isn't a contradiction — it's fearful-avoidant attachment. Here's what it looks like online and off.",
-    thumbnail: "/images/hero-avoidant-attachment-style-signs-online-chat-2026.png",
+    thumbnail: "/images/hero-what-is-fearful-avoidant-attachment-style-2026.png",
     date: "2026-08-06",
     category: "Relationships",
   },
@@ -1855,7 +1855,7 @@ export const POSTS: Post[] = [
     title: "What Is Zombieing? The Dating Trend That Follows Ghosting (2026)",
     excerpt:
       "They vanished, then messaged you months later like nothing happened. Here's what zombieing is, why it keeps happening, and how to respond.",
-    thumbnail: "/images/hero-anonymous-dating-apps-guide-2026.png",
+    thumbnail: "/images/hero-what-is-zombieing-dating-trend-after-ghosting-2026.png",
     date: "2026-08-07",
     category: "Dating",
   },
@@ -1864,7 +1864,7 @@ export const POSTS: Post[] = [
     title: "What Is Text Anxiety? Why Waiting for a Reply Feels So Bad (2026)",
     excerpt:
       "Checking your phone for a reply that hasn't come is its own specific kind of uncomfortable. Here's what's actually happening and how to ease it.",
-    thumbnail: "/images/hero-voice-chat-with-strangers-guide-2026.png",
+    thumbnail: "/images/hero-what-is-text-anxiety-why-waiting-for-a-reply-feels-so-bad-2026.png",
     date: "2026-08-07",
     category: "Chat & Connection",
   },
@@ -1874,7 +1874,7 @@ export const POSTS: Post[] = [
     title: "What Is Catfishing? Signs, Why People Do It & How to Spot It (2026)",
     excerpt:
       "A catfish isn't just a stolen photo — it's a whole fake identity built to keep you invested. Here's how to spot one before you're in too deep.",
-    thumbnail: "/images/hero-how-to-date-someone-you-met-online-safely.png",
+    thumbnail: "/images/hero-what-is-catfishing-signs-how-to-spot-it-2026.png",
     date: "2026-08-08",
     category: "Dating",
   },
@@ -1884,7 +1884,7 @@ export const POSTS: Post[] = [
     title: "What Is Triangulation? Signs of This Manipulation Tactic (2026)",
     excerpt:
       "Pulling a third person into a conflict that isn't theirs is rarely accidental. Here's how triangulation works and how to respond to it.",
-    thumbnail: "/images/hero-why-we-crave-validation-online-and-how-to-handle-it.png",
+    thumbnail: "/images/hero-what-is-triangulation-signs-of-this-manipulation-tactic-2026.png",
     date: "2026-08-09",
     category: "Mental Health",
   },
@@ -1893,7 +1893,7 @@ export const POSTS: Post[] = [
     title: "Anxious Attachment in Online Dating: Why You Overanalyze Every Message (2026)",
     excerpt:
       "You replay their last message in your head. You notice they took 2 hours to reply when they usually text back in 5 minutes. You wonder if something's wrong. That's anxious attachment at work—and online dating amplifies it in ways real-life relationships don't.",
-    thumbnail: "/images/hero-science-of-attraction-in-online-chat.png",
+    thumbnail: "/images/hero-anxious-attachment-in-online-dating-why-you-overanalyze-messages-2026.png",
     date: "2026-08-12",
     category: "Mental Health",
   },
@@ -1902,7 +1902,7 @@ export const POSTS: Post[] = [
     title: "How to Ask for Contact Info After a Great Online Chat (Without Being Awkward)",
     excerpt:
       "The conversation is clicking, the chemistry is real, but you're still strangers on an anonymous chat. Here's how to ask for their number or social media without killing the momentum.",
-    thumbnail: "/images/hero-how-to-keep-a-conversation-going-with-someone-online.png",
+    thumbnail: "/images/hero-how-to-ask-for-contact-info-after-online-chat.png",
     date: "2026-08-15",
     category: "Chat & Connection",
   },
@@ -1911,7 +1911,7 @@ export const POSTS: Post[] = [
     title: "How to Apologize Effectively in Online Chat After Saying Something Wrong",
     excerpt:
       "Everyone says something awkward in chat. Here's how to apologize authentically, recover, and turn the moment into an even stronger connection.",
-    thumbnail: "/images/hero-how-to-overcome-social-anxiety-through-online-chat.png",
+    thumbnail: "/images/hero-how-to-apologize-in-online-chat-after-saying-something-wrong.png",
     date: "2026-08-19",
     category: "Chat & Connection",
   },
@@ -1931,6 +1931,33 @@ export const POSTS: Post[] = [
       "No typing, no waiting for a reply — Random Video Chat pairs you with a real stranger and starts the call the moment you're matched, with a live text panel alongside it. Here's how it works.",
     thumbnail: "/images/hero-random-video-chat-guide.png",
     date: "2026-08-20",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "best-anonymous-chat-app-nigeria-2026",
+    title: "Best Anonymous Chat App in Nigeria 2026 (Free, No Sign-Up)",
+    excerpt:
+      "Looking for the best free anonymous chat app in Nigeria? Compare the top platforms for Lagos, Abuja, and Port Harcourt users — no account, no phone number, and how to avoid romance-scam red flags.",
+    thumbnail: "/images/hero-best-anonymous-chat-app-nigeria-2026.png",
+    date: "2026-09-07",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "best-anonymous-chat-app-bangladesh-2026",
+    title: "Best Anonymous Chat App in Bangladesh 2026 (Free, Low-Data)",
+    excerpt:
+      "The best free anonymous chat app for Bangladeshi users in 2026 — works on a limited data pack, needs no phone number, and connects you with real people from Dhaka to Chattogram in seconds.",
+    thumbnail: "/images/hero-best-anonymous-chat-app-bangladesh-2026.png",
+    date: "2026-09-07",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "best-anonymous-chat-app-brazil-2026",
+    title: "Best Anonymous Chat App in Brazil 2026 (Free, No Sign-Up)",
+    excerpt:
+      "O melhor chat anônimo gratuito do Brasil em 2026 — converse com desconhecidos sem cadastro. See why Brazilian users are switching to Chatrio and how it compares to the alternatives.",
+    thumbnail: "/images/hero-best-anonymous-chat-app-brazil-2026.png",
+    date: "2026-09-07",
     category: "Chat & Connection",
   },
 ];
