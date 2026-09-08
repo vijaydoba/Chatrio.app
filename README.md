@@ -1,12 +1,12 @@
 # Chatrio
 
-**Chatrio** is an anonymous 1‑on‑1 random chat web app — talk to strangers instantly, no sign‑up required, by text or video. It pairs two online users in real time over WebSockets, with optional topic‑based matching for text chat, WebRTC video (both as an in-chat escalation and as its own dedicated Random Video Chat mode), and ships a full SEO content layer (184 blog posts) under the same domain.
+**Chatrio** is a random chat web app — talk to strangers instantly by text or video. Text chat (`/chat`) stays fully anonymous with no sign‑up. Video chat (`/video-chat`) requires a lightweight account (email one‑time code or Google Sign‑In) so two people who hit it off can add each other as friends and reconnect directly later, instead of it being purely one‑off. It pairs two online users in real time over WebSockets, with optional topic‑based matching for text chat, WebRTC video (both as an in-chat escalation and as its own dedicated Random Video Chat mode), and ships a full SEO content layer (200 blog posts) under the same domain.
 
 🌐 **Live:** [chatrio.app](https://chatrio.app)
 
 📘 **Discord setup:** [Server name, channels, announcements, and roadmap](./discord/README.md)
 
-> **Pending verification (2026‑08‑20):** the in-chat video escalation and Random Video Chat (`/video-chat`) features described below have been implemented and are not yet deployed to production. Locally: two-real-user matching, live video, mute/camera toggle, the chat panel, and Skip/End have all been confirmed working end-to-end. The no-bot-fallback behavior was re-confirmed live for text chat (waits indefinitely, no bot after 3s+); the same re-check for `/video-chat` is still outstanding — a browser-automation camera-permission hang blocked the last attempt, unrelated to the code itself (the removal was verified by full-repo grep + `tsc`/`node --check`, and the video-chat matching code path is structurally identical to the just-verified text-chat one). Re-run that one live check before considering this fully done.
+> **2026‑09‑08/09:** Random Video Chat shipped to production for the first time, along with account‑gated features layered on top — a 15s "decide fast" match countdown, Add Friend, and direct reconnect with a friend later. This also surfaced (and fixed) a real production drift: `chatrio-api` (port 5050) — the process nginx had actually been routing general chat/video-chat traffic to — was a stale build that still had the old synthetic bot‑fallback for text chat, predating the 2026‑08‑20 removal below. Text chat in production was quietly matching some users with fake bots the whole time. That process has been retired; everything now runs on the up‑to‑date consolidated service (see Tech Stack and Build & Deploy below). Real matches only, confirmed live, for both text and video chat.
 
 ---
 
@@ -21,12 +21,14 @@
 - **Blind Date** — profile‑matched 1:1 chat (`/blind-date`): personality/compatibility matching instead of proximity, names and photos stay hidden until both sides opt to reveal (or after 10 minutes). Requires a real chatrio account, unlike Circles. Gated behind a `BLIND_DATE_LIVE` flag in `client/src/config.ts` — currently `false` (coming‑soon waitlist page) while still in beta; flip to `true` to restore the live matching flow at `/blind-date/chat`.
 - **Waitlist capture** — both Circles and Blind Date fall back to a "coming soon" email‑capture page when their live flag is off. Signups land in a `waitlist` table (`email`, `source`, timestamp) and can be pulled anytime via `GET /waitlist` on the main API, authenticated with `ADMIN_TOKEN` as a bearer token or `?key=` query param.
 - **Live online & waiting counts** — broadcast to all connected clients.
-- **Real matches only** — there is no fallback/placeholder partner anywhere in the product (text chat, video escalation, or Random Video Chat). If no one else is online, the user waits until a real stranger joins. A synthetic fallback bot existed on both the text-chat and Random Video Chat matching pools through 2026‑08‑19 and was removed 2026‑08‑20 at the product owner's request — do not re‑add it without asking first.
+- **Real matches only** — there is no fallback/placeholder partner anywhere in the product (text chat, video escalation, or Random Video Chat). If no one else is online, the user waits until a real stranger joins. A synthetic fallback bot existed on both the text-chat and Random Video Chat matching pools through 2026‑08‑19 and was removed 2026‑08‑20 at the product owner's request — do not re‑add it without asking first. (A stale, pre‑removal build was still quietly live in production for general chat traffic until 2026‑09‑09 due to an nginx/pm2 drift — see the banner above.)
 - **Video call escalation (in-chat)** — from an active `/chat` text conversation, either side can start a WebRTC video call with their current partner (camera/mic toggle, decline/cancel, hang up). Signaling is a thin Socket.IO relay in `server/index.js` scoped to the existing text-chat pairing; the peer-connection logic lives in `client/src/videoChat.ts`. The call tears down automatically on skip/leave/disconnect.
-- **Random Video Chat (`/video-chat`)** — a separate, dedicated random-matching pool from text chat. Video starts immediately the moment two real users are paired (no invite/accept step, unlike the in-chat escalation above), and includes its own live text chat panel alongside the video (message bubbles, typing indicator, delivery ticks). Mute, camera toggle, Skip, and End are all supported. Matching state and signaling relay live in `server/index.js` (the `vc` state and `vc_*` events); the client is `client/src/randomVideoCall.ts` (peer-connection controller) and `client/src/pages/VideoChat.tsx` (page/UI).
+- **Random Video Chat (`/video-chat`)** — a separate, dedicated random-matching pool from text chat, requiring a signed-in account (see Authentication below). Video starts immediately the moment two real users are paired (no invite/accept step, unlike the in-chat escalation above), and includes its own live text chat panel alongside the video (message bubbles, typing indicator, delivery ticks). Mute, camera toggle, Skip, and End are all supported. A 15-second countdown starts on every match — Monkey-app-style "decide fast" urgency — and clears automatically the moment WebRTC actually connects; if it runs out first, both sides are released back into the queue. Matching state and signaling relay live in `server/index.js` (the `vc` state and `vc_*` events); the client is `client/src/randomVideoCall.ts` (peer-connection controller) and `client/src/pages/VideoChat.tsx` (page/UI).
+- **Authentication (email code or Google)** — `/login` and `/signup` (`client/src/pages/Auth.tsx`) offer two paths: a 6-digit email one-time code (passwordless — the account is found-or-created on verify, so there's no separate "sign up" step for this path) or Google Sign-In (`@react-oauth/google`, verified server-side with `google-auth-library`). Both issue the same JWT used by the pre-existing password-based login. Logic lives in `server/auth.js`; codes are emailed via [Resend](https://resend.com) (`RESEND_API_KEY`) and fall back to logging the code to the server console if that key isn't set (dev-only). Text chat and Circles are unaffected — only Video Chat and Friends require this.
+- **Add Friend & Reconnect** — from the video-call controls (or right after), either side can add the other as a friend (`server/friends.js`, `friends` table). If you both add each other, it auto-accepts instantly; otherwise it's a pending request the other person can accept/decline later on `/friends`. Accepted friends get a "Reconnect" button that pairs you directly with them next time they're in the video chat lobby, bypassing the random queue entirely (`vc_direct_connect`).
 - **SEO content layer** — a React blog (184 posts) at `/blog/{slug}` with category pages, all pre‑rendered to static HTML for search engines. Includes geo landing posts (e.g. "Chat With Strangers in Canada/Philippines/Pakistan"), Omegle/OmeTV/Chatroulette/etc. alternative comparison pages, relationship psychology, and two Circles/local-community clusters — each with its own hero image and distinct structure (no shared templates, per a July 2026 AdSense scaled‑content fix).
 - **AI-search visibility** — `robots.txt` explicitly allows AI crawlers (ChatGPT-User, ClaudeBot, PerplexityBot, Google-Extended, etc.) and `client/public/llms.txt` gives AI assistants a structured, accurate summary of the product — keep it in sync when a feature's behavior changes (e.g. Circles).
-- **Web manifest + dark/light theme.** There is no active service worker — a broken `/custom-sw.js` registration that pointed at a `.ts` file (never compiled by CRA, so it 404'd on every page load) was removed in July 2026. Re-adding offline/PWA support would need a real, compiled service worker, not just re-registering that path.
+- **Web manifest + dark/light theme.** The only active service worker is `public/circles-push-sw.js`, registered from `circlesApi.ts` when a Circles user opts into browser push notifications — it's scoped to the whole origin but has no `fetch` handler, so it cannot cache or intercept page loads/navigation anywhere on the site, Circles or otherwise. `client/public/custom-sw.ts` is unrelated dead code — never registered by any code path, present only so it gets type-checked. There is no offline/PWA caching layer; adding one would mean writing and registering a real service worker, not resurrecting that file.
 
 > **Note:** the AMP web‑stories layer (455 generated stories) was retired entirely in July 2026 to resolve a Google AdSense "scaled content" flag. Old `/stories/*` and `/web-stories/*` URLs return 410; do not re‑add templated story content. Search Console prefix‑removal requests were also submitted for both paths on 2026‑07‑22 to speed up de‑indexing of the already‑410'd URLs.
 
@@ -48,8 +50,9 @@
 - Socket.IO server
 - SQLite (`chatrio.db`) for persistence
 - Groq SDK (`groq-sdk`) + `dotenv`
+- `bcryptjs` + `jsonwebtoken` (password/JWT auth), `google-auth-library` (Google Sign-In token verification), `resend` (email-code delivery)
 - `server/circles-local/` — the Circles proximity‑chat service
-- In production, deployed as 4 separate pm2 services rather than one process: `chatrio-api` (this legacy random‑chat server, also serves `/waitlist`), `chatrio-circles-api`, `chatrio-auth-api`, and `chatrio-blind-date-api` — each with its own `.env` and SQLite file on the VPS.
+- In production, deployed as 3 separate pm2 services on the VPS, each with its own `.env` and SQLite file: **`chatrio-auth-api`** (consolidated 2026‑09‑09 — text chat, Random Video Chat, in-chat video escalation, auth, Friends, and Circles' recurring-cohort mode all in one process, `server/index.js`; nginx routes both `api.chatrio.app/` and `api.chatrio.app/auth/` here), `chatrio-circles-api` (the separate proximity-chat service, `server/circles-local/`), and `chatrio-blind-date-api`. A 4th process, `chatrio-api` (a stale pre‑auth build that predated this consolidation), was retired 2026‑09‑09 — see the banner above.
 
 **Tooling** (`scripts/`)
 - Sitemap generation, IndexNow submission (`notify-google.js` — submits to participating engines; Google discovers via the sitemap/Search Console), banner/portrait generators, and SEO research helpers.
@@ -66,17 +69,21 @@ chatrio/
 │   ├── src/
 │   │   ├── App.tsx         # App shell, routing, blog/SEO pages; native-app chrome gate
 │   │   ├── Chat.tsx        # Real-time text chat UI + Socket.IO client + in-chat video escalation
+│   │   ├── auth.tsx        # AuthProvider/useAuth — password, email-code, and Google Sign-In, JWT in localStorage
 │   │   ├── videoChat.ts    # WebRTC controller for the in-chat video escalation (invite/accept flow)
 │   │   ├── randomVideoCall.ts  # WebRTC controller for Random Video Chat (auto-start, no invite step)
 │   │   ├── push.ts         # Native push-notification registration (Android app only)
-│   │   ├── pages/          # About, Contact, Privacy, Terms, News, Circles, VideoChat.tsx (/video-chat), etc.
+│   │   ├── pages/          # About, Contact, Privacy, Terms, News, Circles, VideoChat.tsx (/video-chat), Auth.tsx (/login, /signup), Friends.tsx (/friends), etc.
 │   │   └── data/           # posts.ts (blog metadata), posts-content.ts (post bodies)
 │   ├── android/             # Generated Capacitor Android project — see MOBILE-APP.md
 │   ├── assets/              # Icon/splash source for `npx capacitor-assets generate`
 │   ├── capacitor.config.ts
 │   └── build/              # Pre-rendered production output
 ├── server/                 # Express + Socket.IO backend
-│   ├── index.js            # Text-chat matching engine + in-chat video signaling relay, plus the separate Random Video Chat matching pool (`vc`) and its own signaling/text relay
+│   ├── index.js            # Text-chat matching engine + in-chat video signaling relay, the Random Video Chat matching pool (`vc`) incl. match countdown + friend-request/direct-connect events, plus Circles' recurring-cohort mode
+│   ├── auth.js             # Passwordless email-code + Google Sign-In (JWT shared with circles.js's password login)
+│   ├── friends.js          # Add Friend / accept / decline / list REST endpoints (`friends` table)
+│   ├── circles.js          # Password auth, recurring-cohort Circles logic (SQLite via db.js)
 │   └── circles-local/      # Circles proximity-chat service (+ push.js for FCM sends)
 ├── scripts/                # Sitemap generator, prerender-all-stable.js, IndexNow notifier, SEO helpers
 ├── marketing/              # Directory-submission / backlink plan + tracker (not deployed)
@@ -105,6 +112,9 @@ Create `server/.env` (this file is gitignored — never commit it):
 PORT=5050
 FRONTEND_ORIGIN=http://localhost:3000
 GROQ_API_KEY=your_groq_api_key_here
+JWT_SECRET=any_random_string          # shared by password, email-code, and Google auth
+GOOGLE_CLIENT_ID=your_google_oauth_client_id   # optional — Google Sign-In button hides itself without it
+RESEND_API_KEY=your_resend_api_key    # optional — without it, email codes just log to the server console
 ```
 
 Run the server:
@@ -124,6 +134,8 @@ npm start          # runs on http://localhost:3000
 ```
 
 > **Note:** `Chat.tsx` (text chat) hardcodes the production socket server `https://api.chatrio.app` — edit that URL directly to test against your local backend. `pages/VideoChat.tsx` (Random Video Chat) instead reads `process.env.REACT_APP_API_BASE` (falling back to the same production URL), so `REACT_APP_API_BASE=http://localhost:5050 npm start` is enough to point *that* page at a local backend without editing source. The two are inconsistent on purpose for now — video calling depends on server-side signaling code that only exists locally/on newer deploys, so this env var was added to make that page testable without touching `Chat.tsx`.
+>
+> To test Google Sign-In locally, create `client/.env` with `REACT_APP_GOOGLE_CLIENT_ID=your_google_oauth_client_id` (must match the server's `GOOGLE_CLIENT_ID`) and add `http://localhost:3000` as an authorized JavaScript origin on that OAuth Client ID in Google Cloud Console. CRA only reads `.env` at build/start time — restart `npm start` after changing it. Without it, the Google button just doesn't render; the email-code path works with zero setup beyond `JWT_SECRET`.
 
 ---
 
@@ -220,6 +232,23 @@ ssh root@185.190.142.158 'chmod 0755 /var/www/chatrio'
 
 The trailing slash on `client/build/` is intentional. The final `chmod` prevents nginx `403` responses if an isolated temporary build directory was created with mode `0700`. The production API is deployed separately as a pm2-managed Node service on the same VPS.
 
+### Backend deploy
+
+The consolidated `chatrio-auth-api` service (`server/index.js` + `circles.js`/`db.js`/`auth.js`/`friends.js`) lives at `/var/www/chatrio-auth-api` on the VPS — it is **not** a git checkout, just the plain files, so deploys are an explicit file-by-file rsync (not a whole-directory sync, to avoid pulling in the unrelated `blind-date/`/`circles-local/` subfolders that also live under `server/` locally):
+
+```bash
+cd server
+rsync -avz index.js circles.js db.js auth.js friends.js package.json package-lock.json \
+  root@185.190.142.158:/var/www/chatrio-auth-api/
+ssh root@185.190.142.158 'cd /var/www/chatrio-auth-api && npm install --omit=dev && pm2 restart chatrio-auth-api'
+```
+
+`db.js`'s schema block is additive/idempotent (`CREATE TABLE IF NOT EXISTS`, plus a `PRAGMA table_info` check before any `ALTER TABLE`), so redeploying never touches the existing `chatrio.db` or its data. New env vars (`GOOGLE_CLIENT_ID`, `RESEND_API_KEY`, etc.) go in `/var/www/chatrio-auth-api/.env` directly on the VPS — `pm2 restart chatrio-auth-api --update-env` after editing it, or they won't be picked up.
+
+Adding a new third-party auth provider or API host requires two nginx-adjacent changes on top of the code, both easy to forget:
+1. **CSP** — the `chatrio` site's `Content-Security-Policy` header scopes `script-src`/`connect-src`/`frame-src` to known third parties (see below). A new provider's domain (e.g. `accounts.google.com` for Google Sign-In) needs adding to `connect-src` and `frame-src` or the browser silently blocks it — this fails silently in production with no error surfaced to the user, only in the browser console.
+2. **Routing** — new REST routes only need adding to `server/index.js`; they're automatically reachable through the existing `location /` → `chatrio-auth-api` nginx block. Only routes that need their *own* dedicated backend process (like `/friends` did briefly need before consolidation) require a new `location` block in `/etc/nginx/sites-available/chatrio-api`.
+
 ### Production routing and SEO safeguards
 
 The active nginx site is `/etc/nginx/sites-available/chatrio`. `nginx-seo-fixes.conf` is a reference snippet for the required rules; it is not a complete configuration file and must not replace the active site wholesale.
@@ -231,7 +260,7 @@ The active nginx site is `/etc/nginx/sites-available/chatrio`. `nginx-seo-fixes.
 - Blog hero and inline images have explicit dimensions, lazy loading where appropriate, and async decoding to reduce layout movement.
 - Sitemap image URLs are normalized to `https://chatrio.app/images/...` (never `https://chatrio.app//images/...`).
 - Article content is marked as an AdSense exclusion area to prevent automatic ad placement inside the article body.
-- A `Content-Security-Policy` header (enforcing, not report-only) is set in the nginx config — `script-src`/`connect-src`/`frame-src` are scoped to the actual third parties in use (Google Tag Manager, AdSense/`googlesyndication`, `api.chatrio.app` incl. `wss://`). Adding a new third-party script or API host requires widening this policy or it will be silently blocked.
+- A `Content-Security-Policy` header (enforcing, not report-only) is set in the nginx config — `script-src`/`connect-src`/`frame-src` are scoped to the actual third parties in use (Google Tag Manager, AdSense/`googlesyndication`, `api.chatrio.app` incl. `wss://`, and — as of 2026‑09‑08 for Google Sign-In — `accounts.google.com` in both `connect-src` and `frame-src`). Adding a new third-party script or API host requires widening this policy or it will be silently blocked.
 
 ### Hydration and CLS safeguard
 
@@ -270,13 +299,20 @@ Both matching engines live in `server/index.js` and keep all state in memory. Th
 
 ### Random Video Chat (`/video-chat`)
 
-A second, independent matching pool (`vc` in `server/index.js`) so video and text matching never cross-pair:
+A second, independent matching pool (`vc` in `server/index.js`) so video and text matching never cross-pair. Unlike text chat, this pool requires a signed-in account: the client connects its socket with `auth: { token }` (the JWT from `auth.tsx`), and the server decodes it once per connection into `socket.data`-scoped `authedUser`, shared with Circles' cohort-room auth.
 
-1. A user emits `vc_ready_to_chat` (after the browser grants camera/mic access) and joins `vc.waiting`.
-2. `tryVcMatch()` pairs two waiting users — there's no topic filter here.
-3. Video starts immediately on match; there is no invite/accept step, unlike the in-chat escalation.
-4. `vc_next` (Skip) leaves the current partner and re‑enters the queue; `vc_disconnect_request` (End) returns the user to the lobby and releases the camera.
+1. A user emits `vc_ready_to_chat` (after the browser grants camera/mic access) and joins `vc.waiting`. Rejected with `vc_error {code: "AUTH_REQUIRED"}` if not signed in.
+2. `tryVcMatch()` pairs two waiting users — there's no topic filter here. `pairPeers()` (shared by both the random-queue path and direct reconnect below) also starts the 15s match countdown and, if both users are authenticated, includes each side's `partnerUserId` in the `vc_partner_found` payload.
+3. Video starts immediately on match; there is no invite/accept step, unlike the in-chat escalation. The client reports `vc_connected` once its `RTCPeerConnection` reaches `"connected"`, which clears that pair's countdown timer server-side. If neither side connects before the countdown expires, `vc_countdown_expired` fires for both and they're released back into the queue.
+4. `vc_next` (Skip) leaves the current partner and re‑enters the queue; `vc_disconnect_request` (End) returns the user to the lobby, releases the camera, and forgets that user's socket↔userId mapping.
 5. A lightweight text side-channel (`vc_message`/`vc_typing`/`vc_delivered`) rides alongside the video call, rendered in `VideoChat.tsx`'s chat panel.
+
+### Add Friend & Reconnect
+
+- `vc_friend_request {toUserId}` (only valid against your *current* partner) calls `upsertFriendRequest()` in `server/friends.js`. First request from either side creates a `pending` row (canonically ordered `user_id_a < user_id_b`); if the other side already requested first, it auto-accepts instead of creating a second pending row.
+- The requester gets `vc_friend_request_sent {status}`; the partner (if still connected) gets `vc_friend_request_received {fromUserId, fromName, status}`.
+- `GET /friends`, `POST /friends/:userId/accept`, `POST /friends/:userId/decline` (REST, JWT-protected) back the `/friends` page — for reviewing/accepting requests outside of an active call.
+- `vc_direct_connect {friendUserId}` looks up that user's current socket via `vc.userSockets` (populated whenever an authenticated user emits `vc_ready_to_chat` *or* `vc_direct_connect`); if they're idle in `vc.waiting`, it calls `pairPeers()` directly, skipping the random-queue scan entirely. Otherwise it emits `vc_friend_offline` and the client falls back to the normal queue.
 
 ### Key Socket.IO events
 
@@ -287,9 +323,21 @@ A second, independent matching pool (`vc` in `server/index.js`) so video and tex
 | `message`, `image`, `typing` | `message`, `image`, `partner_typing` |
 | `delivered`, `disconnect_request` | `msg_sent`, `msg_delivered`, `friend_left` |
 | `video_invite/accept/decline/cancel`, `video_offer/answer/ice_candidate`, `video_end` | same names relayed to the partner — in-chat video escalation, scoped to `state.partner` |
-| `vc_ready_to_chat`, `vc_next`, `vc_disconnect_request` | `vc_waiting`, `vc_partner_found`, `vc_idle`, `vc_waiting_count`, `vc_friend_left` |
+| `vc_ready_to_chat`, `vc_next`, `vc_disconnect_request` | `vc_waiting`, `vc_partner_found` (incl. `partnerUserId`), `vc_idle`, `vc_waiting_count`, `vc_friend_left`, `vc_error {code:"AUTH_REQUIRED"}` |
 | `vc_offer/answer/ice_candidate`, `vc_end` | same names relayed to the partner — Random Video Chat signaling, scoped to `vc.partner` |
 | `vc_message`, `vc_typing`, `vc_delivered` | `vc_message`, `vc_partner_typing`, `vc_msg_sent`, `vc_msg_delivered` — Random Video Chat's text side-channel |
+| `vc_connected` | `vc_match_countdown {seconds}`, `vc_countdown_expired` — the 15s "decide fast" match timer |
+| `vc_friend_request {toUserId}`, `vc_direct_connect {friendUserId}` | `vc_friend_request_sent`, `vc_friend_request_received`, `vc_friend_offline` — Add Friend & Reconnect |
+
+### Key REST endpoints (auth & friends)
+
+| Endpoint | Notes |
+| --- | --- |
+| `POST /auth/signup`, `POST /auth/login` | Original password-based auth (`server/circles.js`) |
+| `POST /auth/request-code`, `POST /auth/verify-code` | Passwordless email-code login/signup (`server/auth.js`) — find-or-creates the account on verify |
+| `POST /auth/google` | Google Sign-In — verifies the ID token server-side, find-or-creates by `google_id`/email |
+| `GET /auth/me` | Resolve the current user from a bearer JWT |
+| `GET /friends`, `POST /friends/:userId/accept`, `POST /friends/:userId/decline` | Friends list + pending-request management (`server/friends.js`) |
 
 ---
 
@@ -300,7 +348,12 @@ A second, independent matching pool (`vc` in `server/index.js`) so video and tex
 | `PORT` | server | Port the Express/Socket.IO server listens on |
 | `FRONTEND_ORIGIN` | server | Allowed CORS origin for the frontend |
 | `GROQ_API_KEY` | server | Groq API key (keep secret — never commit) |
+| `JWT_SECRET` | server | Signs/verifies auth tokens for password, email-code, and Google login alike — must be identical across any process that needs to validate a token issued elsewhere (e.g. the video-chat socket handshake) |
+| `GOOGLE_CLIENT_ID` | server | Google OAuth Client ID — audience-checked when verifying Sign-In tokens; without it, `/auth/google` returns a 500 |
+| `RESEND_API_KEY` | server | [Resend](https://resend.com) API key for sending email-code emails; without it, codes are logged to the server console instead (dev-only fallback) |
+| `RESEND_FROM` | server | Optional override for the "from" address (defaults to `Chatrio <noreply@chatrio.app>`) — the domain must be verified on Resend |
 | `REACT_APP_API_BASE` | client | Overrides the socket server URL for `pages/VideoChat.tsx` only (defaults to `https://api.chatrio.app`); see the note under Getting Started — `Chat.tsx` does not read this var |
+| `REACT_APP_GOOGLE_CLIENT_ID` | client | Same Google OAuth Client ID as the server's `GOOGLE_CLIENT_ID` — enables the "Continue with Google" button on `/login`/`/signup`; button stays hidden if unset |
 
 ---
 
