@@ -148,6 +148,7 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 60;
+  color: #ffffff;
 }
 .vc-skip-btn {
   height: 52px;
@@ -267,24 +268,69 @@
 }
 .vc-chat-input::placeholder { color: rgba(255,255,255,0.4); }
 .vc-chat-send {
-  width: 38px;
-  height: 38px;
-  flex: 0 0 38px;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
   border-radius: 50%;
-  border: 1px solid rgba(124,58,237,0.4);
-  background: rgba(124,58,237,0.28);
+  border: none;
+  background: linear-gradient(135deg, #7c3aed, #22d3ee);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  box-shadow: 0 2px 10px rgba(124,58,237,0.4);
 }
-.vc-chat-send:disabled { opacity: 0.4; cursor: default; }
+.vc-chat-send:disabled { opacity: 0.45; box-shadow: none; cursor: default; }
+
+/* Add Friend — labeled pill in the call controls (only place to make friends) */
+.vc-friend-btn {
+  height: 52px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(124,58,237,0.55);
+  background: linear-gradient(135deg, rgba(124,58,237,0.9), rgba(34,211,238,0.7));
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.vc-friend-btn.vc-friend-added {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.2);
+  cursor: default;
+}
 
 @media (max-width: 900px) {
   .vc-waiting-preview { width: 170px; height: 230px; }
-  .vc-chat-panel { width: 100%; right: -100%; }
-  .vc-shift-local { right: 16px; bottom: calc(96px + env(safe-area-inset-bottom, 0px) + 40vh); }
+
+  /* Chat is a bottom sheet (not full-screen): the video call stays visible on
+     top and the call controls stay reachable below. Slides up when opened. */
+  .vc-chat-panel {
+    top: auto;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 54vh;
+    bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+    border-left: none;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px 18px 0 0;
+    transform: translateY(160%);
+    transition: transform 0.25s ease;
+  }
+  .vc-chat-panel.vc-chat-open { transform: translateY(0); }
+
+  /* Call controls always float above the chat sheet — always a way back to video */
+  .vc-connected .video-call-controls { z-index: 60; }
+
+  /* Self-view sits just above the chat sheet when it's open */
+  .vc-shift-local { right: 16px; bottom: calc(96px + env(safe-area-inset-bottom, 0px) + 54vh); }
+
+  /* Keep the composer + send button clear of the phone's home indicator */
+  .vc-chat-composer { padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+  .vc-friend-btn { height: 44px; padding: 0 14px; font-size: 13px; }
 }
 
 @media (max-width: 480px) {

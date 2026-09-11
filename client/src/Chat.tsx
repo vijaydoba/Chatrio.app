@@ -912,24 +912,24 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
             : waitingCount > 1 && <p className="waiting-sub">{waitingCount} people waiting</p>}
           {!matched && <button className="waiting-cancel" onClick={leaveChat}>Cancel</button>}
           {!matched && (
-            <Link to="/circles" className="waiting-circles-promo">
+            <Link to="/video-chat" className="waiting-circles-promo">
               <span className="wcp-head">
                 <span className="wcp-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
+                    <polygon points="23 7 16 12 23 17 23 7" />
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
                   </svg>
                 </span>
                 <span className="wcp-text">
                   <b>{hadChat ? "That person is gone forever." : "Waiting too long?"}</b>
                   <span>
                     {hadChat
-                      ? "On Circles, people near you stick around — chat again anytime."
-                      : "Real people might be right near you — anonymous, no account."}
+                      ? "Try Video Chat — see a real face, get matched instantly."
+                      : "Get matched instantly on Video Chat — face to face, no waiting."}
                   </span>
                 </span>
               </span>
-              <span className="wcp-cta">See who's near you →</span>
+              <span className="wcp-cta">Start Video Chat →</span>
             </Link>
           )}
         </div>
