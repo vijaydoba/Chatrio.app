@@ -97,10 +97,10 @@ export default function ChildSafety() {
         involves the exploitation of a minor, report it immediately using the
         in-app report tool, or contact us directly at{" "}
         <a
-          href="mailto:vijay83061@gmail.com"
+          href="mailto:chatrioapp@gmail.com"
           className="text-sky-600 dark:text-sky-400 hover:underline"
         >
-          vijay83061@gmail.com
+          chatrioapp@gmail.com
         </a>
         . All such reports are treated with the highest priority.
       </p>

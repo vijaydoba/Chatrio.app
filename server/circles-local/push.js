@@ -45,7 +45,7 @@ try {
       console.log("Generated new VAPID keys → vapid.json");
     }
   }
-  webpush.setVapidDetails("mailto:vijay83061@gmail.com", keys.publicKey, keys.privateKey);
+  webpush.setVapidDetails("mailto:chatrioapp@gmail.com", keys.publicKey, keys.privateKey);
   vapidPublicKey = keys.publicKey;
 } catch (e) {
   webpush = null;
