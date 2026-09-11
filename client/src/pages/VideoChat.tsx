@@ -94,7 +94,7 @@ export default function VideoChat() {
   const [cameraOff, setCameraOff] = useState(false);
   const [permissionError, setPermissionError] = useState("");
   const [skipConfirm, setSkipConfirm] = useState(false);
-  const [chatOpen, setChatOpen] = useState(true);
+  const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState("");
   const [partnerTyping, setPartnerTyping] = useState(false);
@@ -523,13 +523,13 @@ export default function VideoChat() {
             </button>
             {!!partnerUserId && (
               <button
-                className={`video-ctrl-btn${friendStatus !== "idle" ? " vc-ctrl-active" : ""}`}
+                className={`vc-friend-btn${friendStatus !== "idle" ? " vc-friend-added" : ""}`}
                 onClick={addFriend}
                 disabled={friendStatus !== "idle"}
                 aria-label="Add friend"
-                title={friendStatus === "accepted" ? "You're friends!" : friendStatus === "sent" ? "Request sent" : "Add friend"}
+                title={friendStatus === "accepted" ? "You're friends!" : friendStatus === "sent" ? "Request sent" : "Add this person as a friend"}
               >
-                {friendStatus === "accepted" ? "✓" : "👋"}
+                {friendStatus === "accepted" ? "✓ Friends" : friendStatus === "sent" ? "Request sent" : "👋 Add Friend"}
               </button>
             )}
             {skipConfirm ? (
