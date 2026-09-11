@@ -38,6 +38,7 @@ const BlindDateChat = React.lazy(() => import("./pages/BlindDateChat"));
 const CirclesAdmin = React.lazy(() => import("./pages/CirclesAdmin"));
 const CohortRoom = React.lazy(() => import("./pages/CohortRoom"));
 const Auth = React.lazy(() => import("./pages/Auth"));
+const Friends = React.lazy(() => import("./pages/Friends"));
 
 type Theme = "light" | "dark";
 
@@ -226,6 +227,7 @@ export default function App() {
     pathname.startsWith("/blind-date/") ||
     pathname === "/circles-admin" ||
     pathname.startsWith("/circles/") ||
+    pathname === "/friends" ||
     pathname === "/login" ||
     pathname === "/signup";
 
@@ -273,6 +275,7 @@ export default function App() {
             <nav className="nav" aria-label="Primary">
               <NavLink className="nav-link nav-link-cta" to="/chat">Chat</NavLink>
               <NavLink className="nav-link" to="/video-chat">Video Chat</NavLink>
+              <NavLink className="nav-link" to="/friends">Friends</NavLink>
               <NavLink className="nav-link" to="/circles">Circles</NavLink>
 
               <div
@@ -363,6 +366,7 @@ export default function App() {
             Chat
           </NavLink>
           <NavLink className="m-link" to="/video-chat" onClick={() => setNavOpen(false)}>Video Chat</NavLink>
+          <NavLink className="m-link" to="/friends" onClick={() => setNavOpen(false)}>Friends</NavLink>
           <NavLink className="m-link" to="/circles" onClick={() => setNavOpen(false)}>Circles</NavLink>
 
           <div className="mob-blog-group">
@@ -452,6 +456,7 @@ export default function App() {
                 />
                 <Route path="/circles-admin" element={<CirclesAdmin />} />
                 <Route path="/circles/:cohortId" element={<CohortRoom />} />
+                <Route path="/friends" element={<Friends />} />
                 <Route path="/login" element={<Auth mode="login" />} />
                 <Route path="/signup" element={<Auth mode="signup" />} />
                 <Route path="*" element={<NotFound />} />

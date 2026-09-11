@@ -116,11 +116,17 @@ export default function CohortRoom() {
   };
 
   if (loading || (!cohort && !error)) {
-    return <div className="circles-wrap"><p className="circles-sub">Loading…</p></div>;
+    return (
+      <div className="circles-wrap">
+        <Helmet><meta name="robots" content="noindex" /></Helmet>
+        <p className="circles-sub">Loading…</p>
+      </div>
+    );
   }
   if (error && !cohort) {
     return (
       <div className="circles-wrap">
+        <Helmet><meta name="robots" content="noindex" /></Helmet>
         <div className="auth-error">{error}</div>
         <NavLink className="circles-btn-ghost" to="/circles">← Back to Circles</NavLink>
       </div>

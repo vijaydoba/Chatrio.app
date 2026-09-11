@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { useNavigate } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { createRandomVideoCall, RandomVideoCallController } from "../randomVideoCall";
+import { useAuth } from "../auth";
 import "./video-chat.css";
 
 type Mode = "lobby" | "waiting" | "connected";
@@ -13,10 +15,78 @@ type ChatMessage = {
   ts: number;
   status?: MsgStatus;
 };
+type FriendStatus = "idle" | "sent" | "accepted";
+
+const VC_URL = "https://chatrio.app/video-chat";
+const VC_TITLE = "Random Video Chat – Talk Face to Face with Strangers | Chatrio";
+const VC_DESCRIPTION =
+  "Free random video chat with strangers. Sign in with an email code or Google, then get matched instantly — no download needed.";
+const VC_OG_TITLE = "Random Video Chat – Chatrio";
+const VC_OG_DESCRIPTION =
+  "Get matched instantly for free, face-to-face video chat with strangers. Sign in with an email code or Google — no download needed.";
+const VC_IMAGE = "https://chatrio.app/branding/chatrio-social-card-2026.png";
+const VC_IMAGE_ALT = "Chatrio Random Video Chat — talk face to face with strangers.";
+
+function VideoChatHead() {
+  return (
+    <Helmet>
+      <title>{VC_TITLE}</title>
+      <meta name="description" content={VC_DESCRIPTION} />
+      <link rel="canonical" href={VC_URL} />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={VC_OG_TITLE} />
+      <meta property="og:description" content={VC_OG_DESCRIPTION} />
+      <meta property="og:url" content={VC_URL} />
+      <meta property="og:image" content={VC_IMAGE} />
+      <meta property="og:image:type" content="image/png" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={VC_IMAGE_ALT} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={VC_OG_TITLE} />
+      <meta name="twitter:description" content={VC_OG_DESCRIPTION} />
+      <meta name="twitter:image" content={VC_IMAGE} />
+      <meta name="twitter:image:alt" content={VC_IMAGE_ALT} />
+      <script type="application/ld+json">{JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "@id": `${VC_URL}#app`,
+        "name": "Chatrio Random Video Chat",
+        "url": VC_URL,
+        "applicationCategory": "CommunicationApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": 0,
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock",
+        },
+        "description": "Free random video chat — get matched instantly with strangers for face-to-face video conversations.",
+      })}</script>
+      <script type="application/ld+json">{JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to Start a Random Video Chat on Chatrio",
+        "description": "Start a free, instant video chat with a stranger in seconds.",
+        "step": [
+          { "@type": "HowToStep", "position": 1, "name": "Sign in", "text": "Sign in with an email code or Google — no password needed." },
+          { "@type": "HowToStep", "position": 2, "name": "Start Video Chat", "text": "Allow camera and microphone access, then click Start Video Chat." },
+          { "@type": "HowToStep", "position": 3, "name": "Get matched instantly", "text": "You're matched with a real stranger and video starts immediately — no invite step." },
+        ],
+        "totalTime": "PT1M",
+        "tool": [{ "@type": "HowToTool", "name": "Web browser with camera and microphone" }],
+      })}</script>
+    </Helmet>
+  );
+}
 
 export default function VideoChat() {
+  const { user, token, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
+
   const [mode, setMode] = useState<Mode>("lobby");
   const [partnerId, setPartnerId] = useState<string>("");
+  const [partnerUserId, setPartnerUserId] = useState<number | null>(null);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
   const [waitingCount, setWaitingCount] = useState(0);
   const [notice, setNotice] = useState("");
@@ -28,6 +98,9 @@ export default function VideoChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState("");
   const [partnerTyping, setPartnerTyping] = useState(false);
+  const [countdownDeadline, setCountdownDeadline] = useState<number | null>(null);
+  const [countdownNow, setCountdownNow] = useState(Date.now());
+  const [friendStatus, setFriendStatus] = useState<FriendStatus>("idle");
 
   const socketRef = useRef<Socket | null>(null);
   const myIdRef = useRef<string>("");
@@ -39,10 +112,19 @@ export default function VideoChat() {
   const typingTimeoutRef = useRef<number | null>(null);
   const lastTypingEmitRef = useRef<number>(0);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const reconnectTargetRef = useRef<number | null>(
+    Number(new URLSearchParams(window.location.search).get("reconnect")) || null
+  );
 
   useEffect(() => {
     modeRef.current = mode;
   }, [mode]);
+
+  useEffect(() => {
+    if (countdownDeadline === null) return;
+    const id = window.setInterval(() => setCountdownNow(Date.now()), 250);
+    return () => window.clearInterval(id);
+  }, [countdownDeadline]);
 
   const showNotice = (text: string, ms = 2500) => {
     setNotice(text);
@@ -55,6 +137,7 @@ export default function VideoChat() {
       autoConnect: true,
       transports: ["websocket"],
       withCredentials: true,
+      auth: { token },
     });
     socketRef.current = socket;
 
@@ -64,13 +147,24 @@ export default function VideoChat() {
 
     socket.on("vc_waiting", () => setMode("waiting"));
 
-    socket.on("vc_partner_found", ({ partnerId: pid }) => {
+    socket.on("vc_error", ({ code }) => {
+      if (code === "AUTH_REQUIRED") {
+        showNotice("Please log in again to use video chat.", 3000);
+        navigate("/login", { state: { from: "/video-chat" }, replace: true });
+      }
+    });
+
+    socket.on("vc_partner_found", ({ partnerId: pid, partnerUserId: puid }) => {
+      reconnectTargetRef.current = null;
       setPartnerId(pid || "");
+      setPartnerUserId(typeof puid === "number" ? puid : null);
       setRemoteStream(null);
       setMuted(false);
       setCameraOff(false);
       setMessages([]);
       setPartnerTyping(false);
+      setFriendStatus("idle");
+      setCountdownDeadline(null);
       setMode("connected");
 
       if (localStreamRef.current) {
@@ -80,10 +174,31 @@ export default function VideoChat() {
           partnerId: pid,
           localStream: localStreamRef.current,
           onRemoteStream: setRemoteStream,
-          onState: () => {},
+          onState: (state) => {
+            if (state === "active") socket.emit("vc_connected");
+          },
           onError: (msg) => showNotice(msg, 3000),
         });
       }
+    });
+
+    socket.on("vc_match_countdown", ({ seconds }) => {
+      setCountdownDeadline(Date.now() + (Number(seconds) || 15) * 1000);
+    });
+
+    socket.on("vc_countdown_expired", () => {
+      callRef.current?.teardown();
+      callRef.current = null;
+      setRemoteStream(null);
+      setPartnerId("");
+      setPartnerUserId(null);
+      setPartnerTyping(false);
+      setCountdownDeadline(null);
+      showNotice("Time's up — finding someone new…", 2000);
+      setTimeout(() => {
+        setMode("waiting");
+        socketRef.current?.emit("vc_ready_to_chat");
+      }, 1200);
     });
 
     socket.on("vc_friend_left", () => {
@@ -91,12 +206,35 @@ export default function VideoChat() {
       callRef.current = null;
       setRemoteStream(null);
       setPartnerId("");
+      setPartnerUserId(null);
       setPartnerTyping(false);
+      setCountdownDeadline(null);
       showNotice("They left. Finding someone new…", 2000);
       setTimeout(() => {
         setMode("waiting");
         socketRef.current?.emit("vc_ready_to_chat");
       }, 1200);
+    });
+
+    socket.on("vc_friend_offline", () => {
+      showNotice("That friend isn't in the video chat lobby right now.", 3000);
+      reconnectTargetRef.current = null;
+      setMode("waiting");
+      socketRef.current?.emit("vc_ready_to_chat");
+    });
+
+    socket.on("vc_friend_request_sent", ({ status }) => {
+      setFriendStatus(status === "accepted" ? "accepted" : "sent");
+      showNotice(status === "accepted" ? "You're now friends! 🎉" : "Friend request sent.", 2500);
+    });
+
+    socket.on("vc_friend_request_received", ({ fromName, status }) => {
+      if (status === "accepted") {
+        setFriendStatus("accepted");
+        showNotice("You're now friends! 🎉", 2500);
+      } else {
+        showNotice(`${fromName || "Stranger"} wants to add you as a friend.`, 3000);
+      }
     });
 
     socket.on("vc_idle", () => setMode("lobby"));
@@ -148,8 +286,13 @@ export default function VideoChat() {
       localStreamRef.current = stream;
       if (localVideoRef.current) localVideoRef.current.srcObject = stream;
       const socket = ensureSocket();
-      if (socket.connected) socket.emit("vc_ready_to_chat");
-      else socket.once("connect", () => socket.emit("vc_ready_to_chat"));
+      const friendId = reconnectTargetRef.current;
+      const startEvent = () =>
+        friendId
+          ? socket.emit("vc_direct_connect", { friendUserId: friendId })
+          : socket.emit("vc_ready_to_chat");
+      if (socket.connected) startEvent();
+      else socket.once("connect", startEvent);
       setMode("waiting");
     } catch (err) {
       const name = err instanceof DOMException ? err.name : "";
@@ -167,10 +310,18 @@ export default function VideoChat() {
     callRef.current = null;
     setRemoteStream(null);
     setPartnerId("");
+    setPartnerUserId(null);
     setMessages([]);
     setPartnerTyping(false);
+    setCountdownDeadline(null);
+    setFriendStatus("idle");
     setMode("waiting");
     socketRef.current?.emit("vc_next");
+  };
+
+  const addFriend = () => {
+    if (!partnerUserId || friendStatus !== "idle") return;
+    socketRef.current?.emit("vc_friend_request", { toUserId: partnerUserId });
   };
 
   const leaveVideoChat = () => {
@@ -181,8 +332,11 @@ export default function VideoChat() {
     localStreamRef.current = null;
     setRemoteStream(null);
     setPartnerId("");
+    setPartnerUserId(null);
     setMessages([]);
     setPartnerTyping(false);
+    setCountdownDeadline(null);
+    setFriendStatus("idle");
     socketRef.current?.emit("vc_disconnect_request");
     setMode("lobby");
   };
@@ -229,13 +383,43 @@ export default function VideoChat() {
     setCameraOff(next);
   };
 
+  if (authLoading) {
+    return <div className="vc-page route-loading" role="status">Loading…</div>;
+  }
+
+  if (!user) {
+    return (
+      <div className="vc-page">
+        <VideoChatHead />
+        <div className="vc-lobby">
+          <div className="vc-lobby-icon">
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="23 7 16 12 23 17 23 7" />
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+            </svg>
+          </div>
+          <h1 className="vc-lobby-title">Random Video Chat</h1>
+          <p className="vc-lobby-sub">Instant · Face to face · Add friends</p>
+          <button
+            className="vc-start-btn"
+            onClick={() => navigate("/login", { state: { from: "/video-chat" } })}
+          >
+            Sign In to Start
+          </button>
+          <p className="vc-lobby-note">
+            Free with an email code or Google — takes a few seconds.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const countdownSeconds =
+    countdownDeadline !== null ? Math.max(0, Math.ceil((countdownDeadline - countdownNow) / 1000)) : null;
+
   return (
     <div className="vc-page">
-      <Helmet>
-        <title>Random Video Chat – Talk Face to Face with Strangers | Chatrio</title>
-        <meta name="description" content="Free random video chat with strangers. No sign-up, no account — just click start and get matched instantly." />
-        <link rel="canonical" href="https://chatrio.app/video-chat" />
-      </Helmet>
+      <VideoChatHead />
 
       {mode === "lobby" && (
         <div className="vc-lobby">
@@ -246,10 +430,12 @@ export default function VideoChat() {
             </svg>
           </div>
           <h1 className="vc-lobby-title">Random Video Chat</h1>
-          <p className="vc-lobby-sub">Anonymous · Instant · Face to face</p>
+          <p className="vc-lobby-sub">
+            {reconnectTargetRef.current ? "Reconnect · Instant · Face to face" : "Instant · Face to face · Add friends"}
+          </p>
           {!!permissionError && <div className="vc-lobby-error">{permissionError}</div>}
           <button className="vc-start-btn" onClick={startVideoChat}>
-            Start Video Chat
+            {reconnectTargetRef.current ? "Reconnect" : "Start Video Chat"}
           </button>
           <p className="vc-lobby-note">We'll ask for camera &amp; mic access when you start.</p>
         </div>
@@ -273,6 +459,10 @@ export default function VideoChat() {
           <video ref={remoteVideoRef} className="video-remote" autoPlay playsInline />
           {!remoteStream && <div className="video-calling-label">Connecting…</div>}
           <video ref={localVideoRef} className={`video-local${chatOpen ? " vc-shift-local" : ""}`} autoPlay playsInline muted />
+
+          {countdownSeconds !== null && (
+            <div className="vc-countdown-badge" aria-live="polite">{countdownSeconds}s</div>
+          )}
 
           {!!notice && <div className="banner warning vc-connected-banner">{notice}</div>}
 
@@ -331,6 +521,17 @@ export default function VideoChat() {
             <button className={`video-ctrl-btn${chatOpen ? " vc-ctrl-active" : ""}`} onClick={() => setChatOpen((v) => !v)} aria-label={chatOpen ? "Hide chat" : "Show chat"} title={chatOpen ? "Hide chat" : "Show chat"}>
               💬
             </button>
+            {!!partnerUserId && (
+              <button
+                className={`video-ctrl-btn${friendStatus !== "idle" ? " vc-ctrl-active" : ""}`}
+                onClick={addFriend}
+                disabled={friendStatus !== "idle"}
+                aria-label="Add friend"
+                title={friendStatus === "accepted" ? "You're friends!" : friendStatus === "sent" ? "Request sent" : "Add friend"}
+              >
+                {friendStatus === "accepted" ? "✓" : "👋"}
+              </button>
+            )}
             {skipConfirm ? (
               <>
                 <button className="video-hangup-btn" onClick={nextPartner}>Skip</button>

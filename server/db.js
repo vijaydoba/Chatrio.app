@@ -75,7 +75,47 @@ CREATE TABLE IF NOT EXISTS reports (
 );
 
 CREATE INDEX IF NOT EXISTS idx_reports_reported_ip ON reports(reported_ip);
+
+-- Passwordless email sign-in codes (random video chat + friends require an
+-- account; this is the lightweight alternative to a password).
+CREATE TABLE IF NOT EXISTS verification_codes (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  email      TEXT NOT NULL,
+  code_hash  TEXT NOT NULL,
+  purpose    TEXT NOT NULL DEFAULT 'login',
+  attempts   INTEGER NOT NULL DEFAULT 0,
+  expires_at INTEGER NOT NULL,
+  created_at INTEGER NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_verification_codes_email ON verification_codes(email);
+
+-- Persistent reconnect list for authenticated random-video-chat users
+-- ("Add Friend" — Monkey-app style). Text chat stays fully anonymous and
+-- never touches this table.
+CREATE TABLE IF NOT EXISTS friends (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id_a    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id_b    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  status       TEXT NOT NULL DEFAULT 'pending',
+  requested_by INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at   INTEGER NOT NULL,
+  responded_at INTEGER,
+  UNIQUE(user_id_a, user_id_b),
+  CHECK (user_id_a < user_id_b)
+);
+
+CREATE INDEX IF NOT EXISTS idx_friends_a ON friends(user_id_a);
+CREATE INDEX IF NOT EXISTS idx_friends_b ON friends(user_id_b);
 `);
+
+// Upgrading an existing DB: `users` predates Google sign-in, so add the
+// column instead of baking it into CREATE TABLE (which only runs once).
+const userCols = db.prepare("PRAGMA table_info(users)").all().map((c) => c.name);
+if (!userCols.includes("google_id")) {
+  db.exec("ALTER TABLE users ADD COLUMN google_id TEXT");
+}
+db.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id)");
 
 // --- Seed a couple of curated Circles so cohorts can actually fill. ---
 // Liquidity is the make-or-break for recurring cohorts; curated > user-created for v1.

@@ -129,6 +129,19 @@
 }
 
 /* ---- Connected (extends .video-call-overlay from App.css) ---- */
+.vc-countdown-badge {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(124,58,237,0.85);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  z-index: 5;
+}
 .vc-connected-banner {
   position: absolute;
   top: 70px;
@@ -272,4 +285,10 @@
   .vc-waiting-preview { width: 170px; height: 230px; }
   .vc-chat-panel { width: 100%; right: -100%; }
   .vc-shift-local { right: 16px; bottom: calc(96px + env(safe-area-inset-bottom, 0px) + 40vh); }
+}
+
+@media (max-width: 480px) {
+  .video-call-controls { gap: 8px; }
+  .video-ctrl-btn { width: 44px; height: 44px; font-size: 17px; }
+  .vc-skip-btn, .video-hangup-btn { height: 44px; padding: 0 14px; font-size: 14px; }
 }

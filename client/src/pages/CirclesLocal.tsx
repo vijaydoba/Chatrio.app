@@ -833,6 +833,20 @@ export default function CirclesLocal() {
         <title>Circles — Local Chat App to Meet People Near You | Chatrio</title>
         <meta name="description" content="Circles is a free anonymous local chat. See who's nearby, send one intro message, and chat if they accept. No account, no exact location, 18+." />
         <link rel="canonical" href="https://chatrio.app/circles" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Circles — Meet People Near You | Chatrio" />
+        <meta property="og:description" content="Free anonymous local chat. See who's nearby, send one intro message, and chat if they accept. No account, no exact location, 18+." />
+        <meta property="og:url" content="https://chatrio.app/circles" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Chatrio Circles — anonymous local chat to meet people near you." />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Circles — Meet People Near You | Chatrio" />
+        <meta name="twitter:description" content="Free anonymous local chat. See who's nearby, send one intro message, and chat if they accept. No account needed, 18+." />
+        <meta name="twitter:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta name="twitter:image:alt" content="Chatrio Circles — anonymous local chat to meet people near you." />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebApplication",

@@ -12,7 +12,17 @@ export default function Privacy() {
         <link rel="canonical" href="https://chatrio.app/privacy" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Privacy Policy – Chatrio" />
+        <meta property="og:description" content="We don't store your messages, don't track you, and don't require personal information to use Chatrio's anonymous chat." />
         <meta property="og:url" content="https://chatrio.app/privacy" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Chatrio — anonymous chat with strangers." />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Privacy Policy – Chatrio" />
+        <meta name="twitter:description" content="We don't store your messages, don't track you, and don't require personal information to use Chatrio." />
+        <meta name="twitter:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
         <meta name="robots" content="index, follow" />
       </Helmet>
       <header className="mb-12 border-b border-slate-200 dark:border-slate-700 pb-8">
