@@ -659,10 +659,45 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
         <meta property="og:title" content="Free Random Chat – Talk to Strangers | Chatrio" />
         <meta property="og:description" content="Anonymous random chat. No sign-up needed. Meet strangers instantly." />
         <meta property="og:url" content="https://chatrio.app/chat" />
-        <meta property="og:image" content="https://chatrio.app/branding/chatrio-512.png?v=2" />
-        <meta name="twitter:card" content="summary" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Chatrio — free anonymous random chat with strangers." />
+        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Random Chat – Chatrio" />
         <meta name="twitter:description" content="Anonymous random chat with strangers. No sign-up needed." />
+        <meta name="twitter:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta name="twitter:image:alt" content="Chatrio — free anonymous random chat with strangers." />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "@id": "https://chatrio.app/chat#app",
+          "name": "Chatrio Random Chat",
+          "url": "https://chatrio.app/chat",
+          "applicationCategory": "CommunicationApplication",
+          "operatingSystem": "All",
+          "offers": {
+            "@type": "Offer",
+            "price": 0,
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock",
+          },
+          "description": "Free anonymous random chat — talk to strangers instantly without signing up.",
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          "name": "How to Start a Random Chat on Chatrio",
+          "description": "Start an anonymous text chat with a stranger in seconds — no account required.",
+          "step": [
+            { "@type": "HowToStep", "position": 1, "name": "Set your name", "text": "Choose any name or stay as Stranger — no registration needed." },
+            { "@type": "HowToStep", "position": 2, "name": "Pick interests", "text": "Select optional topics to match with someone who shares them." },
+            { "@type": "HowToStep", "position": 3, "name": "Hit New Chat", "text": "Click once and you're connected with a real stranger instantly." },
+          ],
+          "totalTime": "PT30S",
+          "tool": [{ "@type": "HowToTool", "name": "Web browser" }],
+        })}</script>
       </Helmet>
       {mode === "connected" ? (
         <div className="tg-topbar">

@@ -11,6 +11,7 @@
     "@dicebear/collection": "^9.4.2",
     "@dicebear/core": "^9.4.2",
     "@maplibre/maplibre-gl-leaflet": "^0.1.4",
+    "@react-oauth/google": "^0.12.1",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
@@ -295,7 +296,8 @@
       "/blog/random-video-chat-guide",
       "/blog/best-anonymous-chat-app-nigeria-2026",
       "/blog/best-anonymous-chat-app-bangladesh-2026",
-      "/blog/best-anonymous-chat-app-brazil-2026"
+      "/blog/best-anonymous-chat-app-brazil-2026",
+      "/blog/chatrio-vs-monkey-app-comparison-2026"
     ],
     "exclude": [
       "/chat"

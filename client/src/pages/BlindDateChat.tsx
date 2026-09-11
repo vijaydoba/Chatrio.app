@@ -234,12 +234,18 @@ export default function BlindDateChat() {
   };
 
   if (phase === "loading") {
-    return <div className="circles-wrap"><p className="circles-sub">Loading…</p></div>;
+    return (
+      <div className="circles-wrap">
+        <Helmet><meta name="robots" content="noindex" /></Helmet>
+        <p className="circles-sub">Loading…</p>
+      </div>
+    );
   }
 
   if (phase === "no-profile") {
     return (
       <div className="circles-wrap">
+        <Helmet><meta name="robots" content="noindex" /></Helmet>
         <div className="wl-card">
           <h1 className="wl-h1">Build your profile first</h1>
           <p className="wl-sub">You need a Blind Date profile before you can find a match.</p>
@@ -252,6 +258,7 @@ export default function BlindDateChat() {
   if (phase === "error") {
     return (
       <div className="circles-wrap">
+        <Helmet><meta name="robots" content="noindex" /></Helmet>
         <div className="wl-card">
           <p className="wl-error">{error}</p>
           <button className="wl-btn" onClick={loadCurrent}>Retry</button>
@@ -277,6 +284,7 @@ export default function BlindDateChat() {
   if (phase === "waiting") {
     return (
       <div className="circles-wrap">
+        <Helmet><meta name="robots" content="noindex" /></Helmet>
         <div className="wl-card">
           <span className="wl-badge">Looking…</span>
           <h1 className="wl-h1">Finding your match</h1>
@@ -290,6 +298,7 @@ export default function BlindDateChat() {
   if (phase === "ended") {
     return (
       <div className="circles-wrap">
+        <Helmet><meta name="robots" content="noindex" /></Helmet>
         <div className="wl-card">
           <span className="wl-badge">Date over</span>
           <h1 className="wl-h1">That one's ended</h1>

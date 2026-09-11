@@ -218,19 +218,19 @@ img, video, canvas, svg{ max-width:100%; height:auto; }
 }
 .nav-link.active::after{ transform: scaleX(1); }
 
-/* Chat CTA pill */
+/* Chat CTA pill — only boxed when Chat is the active page; otherwise just
+   bold colored text, so it never looks selected while another page (e.g.
+   Video Chat) actually is. */
 .nav-link-cta{
-  background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(6,182,212,0.12)) !important;
-  border: 1px solid rgba(124,58,237,0.3);
-  color: var(--text) !important;
+  border: 1px solid transparent;
+  color: #7c3aed !important;
   padding: 7px 16px;
   border-radius: 10px;
   font-weight: 700;
 }
 .nav-link-cta::after{ display: none; }
 .nav-link-cta:hover{
-  background: linear-gradient(135deg, rgba(124,58,237,0.25), rgba(6,182,212,0.2)) !important;
-  border-color: rgba(124,58,237,0.5);
+  background: var(--pill-bg);
 }
 .nav-link-cta.active{
   background: linear-gradient(135deg, #7c3aed, #06b6d4) !important;
@@ -480,9 +480,11 @@ img, video, canvas, svg{ max-width:100%; height:auto; }
   color: #7c3aed;
   font-weight: 700;
 }
-.m-link-cta{
-  background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(6,182,212,0.10));
-  border-color: rgba(124,58,237,0.3) !important;
+/* Chat CTA row — bold colored text only when NOT active, so it never looks
+   selected while another row (e.g. Video Chat) actually is the active page.
+   .m-link.active above already gives Chat the full boxed treatment when it
+   truly is the current page. */
+.m-link-cta:not(.active){
   color: #7c3aed !important;
 }
 .m-link-muted{
@@ -1623,8 +1625,11 @@ body.chat-fullscreen [id^="fc-"]{display:none !important;}
   left: 50%;
   transform: translateX(-50%);
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 14px;
   align-items: center;
+  max-width: 94vw;
 }
 .video-ctrl-btn{
   width: 52px;

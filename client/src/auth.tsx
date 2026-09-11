@@ -10,6 +10,9 @@ type AuthState = {
   loading: boolean;
   signup: (email: string, name: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
+  requestCode: (email: string) => Promise<void>;
+  verifyCode: (email: string, code: string) => Promise<void>;
+  googleSignIn: (idToken: string) => Promise<void>;
   logout: () => void;
 };
 
@@ -68,6 +71,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(data.user);
   }, []);
 
+  const requestCode = useCallback(async (email: string) => {
+    await postJson("/auth/request-code", { email });
+  }, []);
+
+  const verifyCode = useCallback(async (email: string, code: string) => {
+    const data = await postJson("/auth/verify-code", { email, code });
+    localStorage.setItem(TOKEN_KEY, data.token);
+    setToken(data.token);
+    setUser(data.user);
+  }, []);
+
+  const googleSignIn = useCallback(async (idToken: string) => {
+    const data = await postJson("/auth/google", { idToken });
+    localStorage.setItem(TOKEN_KEY, data.token);
+    setToken(data.token);
+    setUser(data.user);
+  }, []);
+
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY);
     setToken(null);
@@ -75,7 +96,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, signup, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, token, loading, signup, login, requestCode, verifyCode, googleSignIn, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

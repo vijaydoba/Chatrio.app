@@ -14,3 +14,8 @@ export const BLIND_DATE_API_BASE =
 
 // Blind Date reverted to coming-soon — still in beta (2026-07-29).
 export const BLIND_DATE_LIVE = false;
+
+// "Continue with Google" on /login and /signup — set REACT_APP_GOOGLE_CLIENT_ID
+// once a Web-application OAuth Client ID exists in Google Cloud Console.
+// Empty until then; the Google sign-in button hides itself when unset.
+export const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";

@@ -1,26 +1,7 @@
 // Auth + Circles/cohort logic for Chatrio recurring-cohort mode.
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const db = require("./db");
-
-const JWT_SECRET = process.env.JWT_SECRET || "dev-insecure-secret-change-me";
-const TOKEN_TTL = "30d";
-
-function signToken(user) {
-  return jwt.sign({ uid: user.id }, JWT_SECRET, { expiresIn: TOKEN_TTL });
-}
-
-function verifyToken(token) {
-  try {
-    return jwt.verify(token, JWT_SECRET);
-  } catch {
-    return null;
-  }
-}
-
-function publicUser(u) {
-  return { id: u.id, email: u.email, name: u.name };
-}
+const { signToken, verifyToken, publicUser, getUserById } = require("./auth");
 
 // --- Auth ---
 function signup({ email, name, password }) {
@@ -50,10 +31,6 @@ function login({ email, password }) {
     throw httpErr(401, "Invalid email or password");
   }
   return { token: signToken(user), user: publicUser(user) };
-}
-
-function getUserById(id) {
-  return db.prepare("SELECT * FROM users WHERE id = ?").get(id);
 }
 
 // --- Circles & cohorts ---

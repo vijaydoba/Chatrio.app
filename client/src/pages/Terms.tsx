@@ -12,7 +12,17 @@ export default function Terms() {
         <link rel="canonical" href="https://chatrio.app/terms" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Terms of Service – Chatrio" />
+        <meta property="og:description" content="The rules and guidelines for using Chatrio's free anonymous chat platform responsibly." />
         <meta property="og:url" content="https://chatrio.app/terms" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Chatrio — anonymous chat with strangers." />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Terms of Service – Chatrio" />
+        <meta name="twitter:description" content="The rules and guidelines for using Chatrio's free anonymous chat platform responsibly." />
+        <meta name="twitter:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
         <meta name="robots" content="index, follow" />
       </Helmet>
       <header className="mb-12 border-b border-slate-200 dark:border-slate-700 pb-8">

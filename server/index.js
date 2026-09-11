@@ -4,6 +4,8 @@ const cors = require("cors");
 const { Server } = require("socket.io");
 require("dotenv").config();
 const circles = require("./circles");
+const auth = require("./auth");
+const friends = require("./friends");
 
 const PORT = process.env.PORT || 5050;
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "https://chatrio.app";
@@ -29,11 +31,13 @@ function authMiddleware(req, res, next) {
 
 function handle(fn) {
   return (req, res) => {
-    try {
-      res.json(fn(req, res));
-    } catch (e) {
-      res.status(e.status || 500).json({ error: e.message || "Server error" });
-    }
+    // Promise.resolve(...).then(...) so this uniformly handles both plain
+    // return values (circles.js) and async functions (auth.js's Google/OTP
+    // handlers, which await the email provider / token verification).
+    Promise.resolve()
+      .then(() => fn(req, res))
+      .then((result) => res.json(result))
+      .catch((e) => res.status(e.status || 500).json({ error: e.message || "Server error" }));
   };
 }
 
@@ -61,6 +65,14 @@ app.get("/reports", (req, res) => {
 app.post("/auth/signup", handle((req) => circles.signup(req.body || {})));
 app.post("/auth/login", handle((req) => circles.login(req.body || {})));
 app.get("/auth/me", authMiddleware, handle((req) => circles.publicUser(req.user)));
+
+// --- Passwordless email code + Google sign-in (required for video chat & friends) ---
+app.post("/auth/request-code", handle((req) => auth.requestCode(req.body || {})));
+app.post("/auth/verify-code", handle((req) => auth.verifyCode(req.body || {})));
+app.post("/auth/google", handle((req) => auth.googleSignIn(req.body || {})));
+
+// --- Friends: reconnect list for authenticated random-video-chat users ---
+app.use(friends.router);
 
 app.get("/circles", authMiddleware, handle((req) => circles.listCircles(req.user.id)));
 app.post("/circles/:id/join", authMiddleware, handle((req) =>
@@ -92,12 +104,23 @@ const state = {
 };
 
 // --- Random Video Chat: separate matching pool from text chat, so video and
-// text matching never cross-pair with each other.
+// text matching never cross-pair with each other. Unlike text chat, video
+// chat requires a signed-in account (see socket auth below), so it also
+// tracks stable userIds for the countdown/friend-reconnect features.
 const vc = {
   waiting: new Set(),
   partner: new Map(),
   waitingSince: new Map(),
+  matchDeadline: new Map(), // socketId -> Timeout (shared between a pair)
+  userSockets: new Map(), // userId -> socketId (latest connection for that user)
+  socketUser: new Map(), // socketId -> userId
 };
+
+// Monkey's "decide fast" hook: a short countdown starts the moment two
+// people are matched. It auto-clears once either side's WebRTC connection
+// comes up; if it runs out first, both are released back into the queue.
+const VC_COUNTDOWN_SECONDS = 15;
+const VC_COUNTDOWN_MS = VC_COUNTDOWN_SECONDS * 1000;
 
 // --- HELPERS ---
 function emitCounts() {
@@ -178,15 +201,61 @@ function emitVcCounts() {
   io.emit("vc_waiting_count", vc.waiting.size);
 }
 
+function clearVcCountdown(a) {
+  const timeout = vc.matchDeadline.get(a);
+  if (!timeout) return;
+  clearTimeout(timeout);
+  const b = vc.partner.get(a);
+  vc.matchDeadline.delete(a);
+  if (b) vc.matchDeadline.delete(b);
+}
+
 function clearVcPair(a, reason = "vc_friend_left") {
   const b = vc.partner.get(a);
   if (!b) return;
 
+  clearVcCountdown(a);
   vc.partner.delete(a);
   vc.partner.delete(b);
 
   io.to(a).emit(reason);
   io.to(b).emit(reason);
+}
+
+function startVcCountdown(a, b) {
+  const timeout = setTimeout(() => {
+    vc.matchDeadline.delete(a);
+    vc.matchDeadline.delete(b);
+    if (vc.partner.get(a) !== b) return; // already resolved by a skip/end
+
+    vc.partner.delete(a);
+    vc.partner.delete(b);
+    io.to(a).emit("vc_countdown_expired");
+    io.to(b).emit("vc_countdown_expired");
+  }, VC_COUNTDOWN_MS);
+  vc.matchDeadline.set(a, timeout);
+  vc.matchDeadline.set(b, timeout);
+}
+
+// Pairs two idle sockets directly — used both by the random queue scan
+// (tryVcMatch) and by a direct "reconnect with this friend" request.
+function pairPeers(a, b) {
+  vc.waiting.delete(a);
+  vc.waiting.delete(b);
+  vc.waitingSince.delete(a);
+  vc.waitingSince.delete(b);
+
+  vc.partner.set(a, b);
+  vc.partner.set(b, a);
+
+  io.to(a).emit("vc_partner_found", { partner: "Stranger", partnerId: b, partnerUserId: vc.socketUser.get(b) || null });
+  io.to(b).emit("vc_partner_found", { partner: "Stranger", partnerId: a, partnerUserId: vc.socketUser.get(a) || null });
+
+  startVcCountdown(a, b);
+  io.to(a).emit("vc_match_countdown", { seconds: VC_COUNTDOWN_SECONDS });
+  io.to(b).emit("vc_match_countdown", { seconds: VC_COUNTDOWN_SECONDS });
+
+  emitVcCounts();
 }
 
 function tryVcMatch() {
@@ -199,18 +268,7 @@ function tryVcMatch() {
 
       if (vc.partner.has(a) || vc.partner.has(b)) continue;
 
-      vc.waiting.delete(a);
-      vc.waiting.delete(b);
-      vc.waitingSince.delete(a);
-      vc.waitingSince.delete(b);
-
-      vc.partner.set(a, b);
-      vc.partner.set(b, a);
-
-      io.to(a).emit("vc_partner_found", { partner: "Stranger", partnerId: b });
-      io.to(b).emit("vc_partner_found", { partner: "Stranger", partnerId: a });
-
-      emitVcCounts();
+      pairPeers(a, b);
       return;
     }
   }
@@ -220,6 +278,15 @@ function tryVcMatch() {
 
 // --- SOCKET.IO ---
 io.on("connection", (socket) => {
+  // Shared identity for both Circles cohort rooms and random video chat —
+  // text chat never reads this and stays fully anonymous.
+  let authedUser = null;
+  const authToken = socket.handshake.auth && socket.handshake.auth.token;
+  if (authToken) {
+    const payload = circles.verifyToken(authToken);
+    if (payload) authedUser = circles.getUserById(payload.uid) || null;
+  }
+
   state.online.add(socket.id);
   state.username.set(socket.id, "Stranger");
   state.topics.set(socket.id, []);
@@ -335,8 +402,21 @@ io.on("connection", (socket) => {
 
   // --- Random Video Chat: dedicated auto-start video matching, separate
   // pool/state from text random chat (see `vc` above).
+  // Video chat requires a signed-in account (unlike text chat), so friends
+  // can be reconnected across sessions and the countdown/friend features
+  // have a stable identity to key off of.
+  function forgetVcIdentity() {
+    const uid = vc.socketUser.get(socket.id);
+    if (uid && vc.userSockets.get(uid) === socket.id) vc.userSockets.delete(uid);
+    vc.socketUser.delete(socket.id);
+  }
+
   socket.on("vc_ready_to_chat", () => {
+    if (!authedUser) return socket.emit("vc_error", { code: "AUTH_REQUIRED" });
     if (vc.partner.has(socket.id)) return;
+
+    vc.userSockets.set(authedUser.id, socket.id);
+    vc.socketUser.set(socket.id, authedUser.id);
 
     vc.waiting.add(socket.id);
     vc.waitingSince.set(socket.id, Date.now());
@@ -347,6 +427,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("vc_next", () => {
+    if (!authedUser) return socket.emit("vc_error", { code: "AUTH_REQUIRED" });
     clearVcPair(socket.id, "vc_friend_left");
 
     vc.waiting.add(socket.id);
@@ -357,10 +438,54 @@ io.on("connection", (socket) => {
     tryVcMatch();
   });
 
+  // Reconnect directly with a friend from the /friends list, bypassing the
+  // random queue. Only works if the friend is idle in the lobby right now.
+  socket.on("vc_direct_connect", ({ friendUserId }) => {
+    if (!authedUser) return socket.emit("vc_error", { code: "AUTH_REQUIRED" });
+    if (vc.partner.has(socket.id)) return;
+
+    // Register the caller's own identity — they may not have gone through
+    // vc_ready_to_chat first (e.g. arriving straight from the Friends page).
+    vc.userSockets.set(authedUser.id, socket.id);
+    vc.socketUser.set(socket.id, authedUser.id);
+
+    const friendSocketId = vc.userSockets.get(Number(friendUserId));
+    if (!friendSocketId || !vc.waiting.has(friendSocketId) || vc.partner.has(friendSocketId)) {
+      return socket.emit("vc_friend_offline");
+    }
+
+    pairPeers(socket.id, friendSocketId);
+  });
+
+  // Client reports its RTCPeerConnection reached "connected" — clears the
+  // match countdown for both sides of the pair.
+  socket.on("vc_connected", () => {
+    clearVcCountdown(socket.id);
+  });
+
+  // Post-call "Add Friend": auto-accepts if the partner already sent one.
+  socket.on("vc_friend_request", ({ toUserId }) => {
+    if (!authedUser) return;
+    const partnerSocketId = vc.partner.get(socket.id);
+    const partnerUserId = partnerSocketId ? vc.socketUser.get(partnerSocketId) : null;
+    if (!partnerUserId || Number(toUserId) !== partnerUserId) return;
+
+    const result = friends.upsertFriendRequest(authedUser.id, partnerUserId);
+    socket.emit("vc_friend_request_sent", result);
+    if (vc.userSockets.get(partnerUserId) === partnerSocketId) {
+      io.to(partnerSocketId).emit("vc_friend_request_received", {
+        fromUserId: authedUser.id,
+        fromName: authedUser.name,
+        status: result.status,
+      });
+    }
+  });
+
   socket.on("vc_disconnect_request", () => {
     clearVcPair(socket.id, "vc_friend_left");
     vc.waiting.delete(socket.id);
     vc.waitingSince.delete(socket.id);
+    forgetVcIdentity();
     socket.emit("vc_idle");
     emitVcCounts();
   });
@@ -401,44 +526,37 @@ io.on("connection", (socket) => {
   });
 
   // --- Circles: authenticated group cohort rooms (separate from random chat) ---
-  let cohortUser = null;
-  const token = socket.handshake.auth && socket.handshake.auth.token;
-  if (token) {
-    const payload = circles.verifyToken(token);
-    if (payload) cohortUser = circles.getUserById(payload.uid) || null;
-  }
-
   socket.on("cohort_join", ({ cohortId }) => {
-    if (!cohortUser) return socket.emit("cohort_error", { error: "Not authenticated" });
-    if (!circles.cohortMembership(cohortId, cohortUser.id)) {
+    if (!authedUser) return socket.emit("cohort_error", { error: "Not authenticated" });
+    if (!circles.cohortMembership(cohortId, authedUser.id)) {
       return socket.emit("cohort_error", { error: "Not a member of this cohort" });
     }
     socket.join(`cohort_${cohortId}`);
     socket.emit("cohort_ready", { cohortId });
     io.to(`cohort_${cohortId}`).emit("cohort_presence", {
       cohortId,
-      userId: cohortUser.id,
-      name: cohortUser.name,
+      userId: authedUser.id,
+      name: authedUser.name,
       event: "join",
     });
   });
 
   socket.on("cohort_message", ({ cohortId, text }) => {
-    if (!cohortUser) return socket.emit("cohort_error", { error: "Not authenticated" });
-    if (!circles.cohortMembership(cohortId, cohortUser.id)) return;
+    if (!authedUser) return socket.emit("cohort_error", { error: "Not authenticated" });
+    if (!circles.cohortMembership(cohortId, authedUser.id)) return;
     const clean = String(text || "").trim().slice(0, 2000);
     if (!clean) return;
-    const saved = circles.saveMessage(cohortId, cohortUser.id, clean);
+    const saved = circles.saveMessage(cohortId, authedUser.id, clean);
     io.to(`cohort_${cohortId}`).emit("cohort_message", { cohortId, ...saved });
   });
 
   socket.on("cohort_typing", ({ cohortId, typing }) => {
-    if (!cohortUser) return;
-    if (!circles.cohortMembership(cohortId, cohortUser.id)) return;
+    if (!authedUser) return;
+    if (!circles.cohortMembership(cohortId, authedUser.id)) return;
     socket.to(`cohort_${cohortId}`).emit("cohort_typing", {
       cohortId,
-      userId: cohortUser.id,
-      name: cohortUser.name,
+      userId: authedUser.id,
+      name: authedUser.name,
       typing: !!typing,
     });
   });
@@ -457,6 +575,7 @@ io.on("connection", (socket) => {
     clearVcPair(socket.id, "vc_friend_left");
     vc.waiting.delete(socket.id);
     vc.waitingSince.delete(socket.id);
+    forgetVcIdentity();
     emitVcCounts();
   });
 });

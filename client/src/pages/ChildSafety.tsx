@@ -12,7 +12,17 @@ export default function ChildSafety() {
         <link rel="canonical" href="https://chatrio.app/child-safety" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Child Safety Standards – Chatrio Circles" />
+        <meta property="og:description" content="How Chatrio protects minors and prevents child sexual abuse and exploitation (CSAE): age requirements, reporting and blocking, and moderator review." />
         <meta property="og:url" content="https://chatrio.app/child-safety" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Chatrio — anonymous chat with strangers." />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Child Safety Standards – Chatrio Circles" />
+        <meta name="twitter:description" content="How Chatrio protects minors and prevents CSAE: age requirements, reporting and blocking, and moderator review." />
+        <meta name="twitter:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
         <meta name="robots" content="index, follow" />
       </Helmet>
       <header className="mb-12 border-b border-slate-200 dark:border-slate-700 pb-8">
