@@ -1,6 +1,29 @@
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { POSTS, getSlotImage } from "../data/posts";
+
+function normalizeAssetPath(path?: string) {
+  if (!path) return "/images/default-thumb.png";
+  if (path.startsWith("http")) return path;
+  if (path.startsWith("/")) return path;
+  return `/${path}`;
+}
+
+// Hand-picked proven earners surfaced on the homepage to pass internal-link
+// equity to our best-performing posts and give Google a fresh-content signal
+// on the highest-traffic page. Resolved from POSTS by slug so they stay in
+// sync with the canonical post data (silently skipped if a slug is removed).
+const FEATURED_BLOG_SLUGS = [
+  "omegle-alternatives-2026-free-anonymous-chat",
+  "random-chat-apps-for-india-best-options-2025",
+  "best-anonymous-chat-app-india-2025",
+  "best-anonymous-chat-latin-america-2025",
+];
+
+const featuredPosts = FEATURED_BLOG_SLUGS
+  .map((slug) => POSTS.find((p) => p.slug === slug))
+  .filter((p): p is (typeof POSTS)[number] => Boolean(p));
 
 const features = [
   {
@@ -385,6 +408,43 @@ export default function Home() {
           </p>
         </div>
       </section>
+
+      {/* ── FROM THE BLOG ── */}
+      {featuredPosts.length > 0 && (
+        <section className="lp-blog lp-reveal">
+          <div className="lp-blog-head">
+            <h2 className="lp-section-title">From the Chatrio blog</h2>
+            <NavLink to="/blog" className="lp-blog-all">
+              View all posts <span aria-hidden="true">→</span>
+            </NavLink>
+          </div>
+          <div className="lp-blog-grid">
+            {featuredPosts.map((p) => (
+              <NavLink
+                to={`/blog/${p.slug}`}
+                className="lp-blog-card"
+                key={p.slug}
+                aria-label={`Read ${p.title}`}
+              >
+                <div className="lp-blog-media">
+                  <img
+                    src={normalizeAssetPath(getSlotImage(p.thumbnail, "card"))}
+                    alt={p.title}
+                    loading="lazy"
+                    width={280}
+                    height={190}
+                  />
+                </div>
+                <div className="lp-blog-body">
+                  <div className="lp-blog-meta">{`${p.date} • ${p.category}`}</div>
+                  <h3 className="lp-blog-title">{p.title}</h3>
+                  <p className="lp-blog-excerpt">{p.excerpt}</p>
+                </div>
+              </NavLink>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ── FAQ ── */}
       <section className="lp-faq lp-reveal">
