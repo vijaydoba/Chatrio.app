@@ -21,6 +21,7 @@ import CirclesApp from "./pages/CirclesApp";
 import Home from "./pages/Home";
 import BlogList from "./pages/BlogList";
 import BlogPost from "./pages/BlogPost";
+import TagPage from "./pages/TagPage";
 import { Helmet } from "react-helmet-async";
 import { BLIND_DATE_LIVE } from "./config";
 
@@ -60,6 +61,13 @@ function BlogRoute() {
   // A key guarantees a fresh content state when navigating directly between
   // articles in the SPA.
   return <BlogPost key={slug} />;
+}
+
+// /blog/tag/:tagSlug — indexable topic hub (only for tags meeting the post
+// threshold; TagPage itself noindexes thin/unknown slugs).
+function TagRoute() {
+  const { tagSlug } = useParams<{ tagSlug?: string }>();
+  return <TagPage key={tagSlug} slug={(tagSlug || "").toLowerCase()} />;
 }
 
 function NotFound() {
@@ -467,6 +475,7 @@ export default function App() {
           ) : (
             <Routes>
               <Route path="/blog" element={<BlogList />} />
+              <Route path="/blog/tag/:tagSlug" element={<TagRoute />} />
               <Route path="/blog/:slug" element={<BlogRoute />} />
               <Route path="/" element={isNative ? <Navigate to="/circles" replace /> : <Home />} />
               <Route path="/nearby" element={<Navigate to="/circles" replace />} />

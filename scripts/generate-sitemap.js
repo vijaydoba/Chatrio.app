@@ -31,6 +31,33 @@ const slugs      = extractField(postsSrc, "slug");
 const dates      = extractField(postsSrc, "date");
 const thumbnails = extractField(postsSrc, "thumbnail");
 
+/* ── Parse full post objects (for tag computation) ──
+   Block-split on "{ slug:" then pull double-quoted fields, tolerating
+   apostrophes and escaped quotes inside titles/excerpts. */
+const { getQualifyingTags } = require("../client/src/data/blog-topics.rules.js");
+
+function dq(block, field) {
+  const m = block.match(new RegExp(`${field}:\\s*"((?:[^"\\\\]|\\\\.)*)"`));
+  return m ? m[1].replace(/\\"/g, '"') : "";
+}
+const postObjects = postsSrc
+  .split(/\{\s*\n\s*slug:/)
+  .slice(1)
+  .map((block) => ({
+    title: dq(block, "title"),
+    excerpt: dq(block, "excerpt"),
+    category: dq(block, "category") || "Chat & Connection",
+  }))
+  .filter((p) => p.title);
+
+const tagPages = getQualifyingTags(postObjects).map((tag) => ({
+  loc: `/blog/tag/${tag.slug}`,
+  lastmod: TODAY,
+  changefreq: "weekly",
+  priority: "0.7",
+  image: null,
+}));
+
 /* ── Static pages ── */
 const staticPages = [
   { loc: "/",             lastmod: TODAY, changefreq: "weekly",  priority: "1.0" },
@@ -87,12 +114,15 @@ ${staticPages.map(urlEntry).join("\n")}
   <!-- BLOG POSTS -->
 ${postPages.map(urlEntry).join("\n")}
 
+  <!-- BLOG TAG HUBS -->
+${tagPages.map(urlEntry).join("\n")}
+
 </urlset>
 `;
 
 const sitemapOut = path.join(__dirname, "../client/public/sitemap.xml");
 fs.writeFileSync(sitemapOut, xml, "utf8");
-console.log(`✅  sitemap.xml updated — ${staticPages.length} static, ${postPages.length} posts (web stories retired)`);
+console.log(`✅  sitemap.xml updated — ${staticPages.length} static, ${postPages.length} posts, ${tagPages.length} tag hubs (web stories retired)`);
 
 /* ── Auto-update reactSnap.include in package.json ── */
 const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
@@ -102,6 +132,8 @@ const snapInclude = [
   ...staticPages.map(p => p.loc),
   // Every blog post
   ...postPages.map(p => p.loc),
+  // Blog tag hubs (must be prerendered — a CSR-only tag page = empty shell)
+  ...tagPages.map(p => p.loc),
 ];
 
 pkg.reactSnap.include = snapInclude;
