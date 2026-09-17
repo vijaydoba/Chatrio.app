@@ -199,12 +199,10 @@ export default function BlogPost() {
           "dateModified": post.date,
           "url": canonicalUrl,
           "author": {
-            "@type": "Person",
-            "name": "Vijay",
+            "@type": "Organization",
+            "name": "Chatrio Team",
             "url": "https://chatrio.app/about",
-            "jobTitle": "Founder",
-            "description": "Founder of Chatrio, writing about anonymous chat, online safety, and digital connection.",
-            "worksFor": { "@type": "Organization", "name": "Chatrio", "url": "https://chatrio.app" }
+            "description": "The Chatrio team writes about anonymous chat, online safety, and digital connection."
           },
           "publisher": {
             "@type": "Organization",
@@ -229,7 +227,7 @@ export default function BlogPost() {
 
       <h1 style={{ marginTop: 12 }}>{post.title}</h1>
       <div className="blog-meta-row">
-        <span>By <NavLink to="/about" className="post-author-link" rel="author">Vijay</NavLink></span>
+        <span>By <NavLink to="/about" className="post-author-link" rel="author">Chatrio Team</NavLink></span>
         <span>·</span>
         <span>{post.date}</span>
         <span>·</span>
@@ -278,11 +276,11 @@ export default function BlogPost() {
       )}
 
       <aside className="post-author-box" aria-label="About the author">
-        <div className="post-author-avatar" aria-hidden="true">V</div>
+        <div className="post-author-avatar" aria-hidden="true">C</div>
         <div>
-          <div className="post-author-name">Vijay · Founder of Chatrio</div>
+          <div className="post-author-name">The Chatrio Team</div>
           <p className="post-author-bio">
-            {"Vijay is the founder of Chatrio. He built the platform to make anonymous, judgment-free conversation with strangers simple and safe, and writes about online connection, chat safety, and digital loneliness. Every article here is written and reviewed against our "}
+            {"The Chatrio team builds and writes for Chatrio — a platform for anonymous, judgment-free conversation with strangers. We cover online connection, chat safety, and digital loneliness, drawing on first-hand experience running the product. Every article here is written and reviewed against our "}
             <NavLink to="/editorial-standards">editorial standards</NavLink>.
           </p>
         </div>
