@@ -29,16 +29,13 @@ export default function About() {
             "@type": "Organization",
             "name": "Chatrio",
             "url": "https://chatrio.app",
-            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-icon-512-2026.png", "width": 512, "height": 512 },
-            "founder": { "@type": "Person", "name": "Vijay", "jobTitle": "Founder", "url": "https://chatrio.app/about" }
+            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-icon-512-2026.png", "width": 512, "height": 512 }
           },
           "mainEntity": {
-            "@type": "Person",
-            "name": "Vijay",
-            "jobTitle": "Founder of Chatrio",
+            "@type": "Organization",
+            "name": "Chatrio Team",
             "url": "https://chatrio.app/about",
-            "description": "Vijay is the founder of Chatrio and writes about anonymous chat, online safety, and digital loneliness.",
-            "worksFor": { "@type": "Organization", "name": "Chatrio", "url": "https://chatrio.app" }
+            "description": "The Chatrio team builds Chatrio and writes about anonymous chat, online safety, and digital loneliness."
           }
         })}</script>
       </Helmet>
@@ -155,12 +152,12 @@ export default function About() {
         and that's what we optimize for.
       </p>
 
-      <h2 id="vijay">🤝 Who Builds Chatrio</h2>
+      <h2 id="team">🤝 Who Builds Chatrio</h2>
       <p>
-        {"Chatrio is an independent project founded and maintained by "}
-        <strong>Vijay</strong>, who built the platform on a simple belief: the
-        internet works best when it brings people together without demanding
-        their data in return. Vijay writes and reviews the articles on this blog —
+        {"Chatrio is an independent project built and maintained by the "}
+        <strong>Chatrio Team</strong>, on a simple belief: the internet works
+        best when it brings people together without demanding their data in
+        return. The team writes and reviews the articles on this blog —
         covering anonymous chat, online safety, and digital loneliness — and ships
         product improvements regularly based on user feedback.
       </p>

@@ -49,8 +49,8 @@ export default function EditorialStandards() {
 
       <h2>Who writes and reviews our content</h2>
       <p>
-        Articles on Chatrio are written and reviewed by{" "}
-        <a href="/about#vijay">Vijay</a>, the founder of Chatrio. Chatrio has
+        Articles on Chatrio are written and reviewed by the{" "}
+        <a href="/about#team">Chatrio team</a>. Chatrio has
         operated an anonymous, no-signup chat platform since 2024, and that
         first-hand experience running the product — including what keeps people
         safe and what goes wrong in real conversations — informs the guidance we
