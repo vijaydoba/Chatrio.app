@@ -1,41 +1,45 @@
-import { Post } from "./posts";
+import { Post, POSTS } from "./posts";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const rules = require("./blog-topics.rules");
 
-const CATEGORY_TOPICS: Record<Post["category"], string[]> = {
-  Love: ["Love", "Emotional Connection"],
-  Romance: ["Romance", "Relationship Advice"],
-  Dating: ["Dating", "Online Dating"],
-  Relationships: ["Relationships", "Communication"],
-  "Chat & Connection": ["Online Chat", "Conversation"],
-  "Mental Health": ["Mental Wellbeing", "Human Connection"],
-};
+// The app and the Node sitemap/prerender generator share ONE source of truth
+// (blog-topics.rules.js) so prerendered tag pages never disagree with the
+// sitemap. These thin wrappers add TypeScript types over the JS exports.
+export type TagInfo = { label: string; slug: string; count: number };
 
-const TOPIC_RULES: Array<{ label: string; pattern: RegExp }> = [
-  { label: "Love Bombing", pattern: /\blove bomb/i },
-  { label: "Emotional Intimacy", pattern: /\bemotional intimacy/i },
-  { label: "Social Anxiety", pattern: /\bsocial anxiety/i },
-  { label: "Social Battery", pattern: /\bsocial battery/i },
-  { label: "Online Safety", pattern: /\b(?:safe|safety|scam|fake profile|privacy)\b/i },
-  { label: "Conversation Starters", pattern: /\b(?:opening line|first message|conversation starter)\b/i },
-  { label: "Circles", pattern: /\bcircles\b/i },
-  { label: "Nearby Chat", pattern: /\b(?:nearby chat|local chat|people nearby)\b/i },
-  { label: "Community Apps", pattern: /\b(?:community app|neighborhood app|local group chat)\b/i },
-  { label: "Anonymous Chat", pattern: /\banonymous chat/i },
-  { label: "Online Friendship", pattern: /\b(?:online friend|make friends online)\b/i },
-  { label: "Online Dating", pattern: /\b(?:online dating|dating app)\b/i },
-  { label: "Attachment", pattern: /\battachment\b/i },
-  { label: "Breadcrumbing", pattern: /\bbreadcrumb/i },
-  { label: "Ghosting", pattern: /\bghost(?:ing|ed)?\b/i },
-  { label: "Situationships", pattern: /\bsituationship/i },
-  { label: "Limerence", pattern: /\blimerence\b/i },
-  { label: "Parasocial Bonds", pattern: /\bparasocial\b/i },
-  { label: "Loneliness", pattern: /\blonel(?:y|iness)\b/i },
-  { label: "Attraction", pattern: /\b(?:attraction|chemistry|flirt)\b/i },
-  { label: "Relationships", pattern: /\brelationship/i },
-  { label: "Online Chat", pattern: /\b(?:online chat|chatting online|text chat)\b/i },
-  { label: "Conversation", pattern: /\bconversation/i },
-  { label: "Romance", pattern: /\b(?:romance|romantic)\b/i },
-  { label: "Love", pattern: /\blove\b/i },
-];
+export const TAG_MIN_POSTS: number = rules.TAG_MIN_POSTS;
+export const getPostKeywords = (post: Post): string[] => rules.getPostKeywords(post);
+export const tagSlug = (label: string): string => rules.tagSlug(label);
+
+export function getQualifyingTags(posts: Post[] = POSTS): TagInfo[] {
+  return rules.getQualifyingTags(posts);
+}
+
+export function getPostsForTagSlug(slug: string, posts: Post[] = POSTS): Post[] {
+  return rules.getPostsForTagSlug(slug, posts);
+}
+
+export function findQualifyingTag(slug: string, posts: Post[] = POSTS): TagInfo | undefined {
+  return getQualifyingTags(posts).find((tag) => tag.slug === slug);
+}
+
+// The tag chips to show under an article: the post's own keywords, each marked
+// with whether it links to an indexable hub (qualifying) or is a plain label.
+export function getPostTagChips(
+  post: Post,
+  posts: Post[] = POSTS
+): Array<{ label: string; slug: string; hub: boolean }> {
+  const qualifying = new Set(getQualifyingTags(posts).map((t) => t.slug));
+  const seen = new Set<string>();
+  const chips: Array<{ label: string; slug: string; hub: boolean }> = [];
+  for (const label of getPostKeywords(post)) {
+    const slug = tagSlug(label);
+    if (seen.has(slug)) continue;
+    seen.add(slug);
+    chips.push({ label, slug, hub: qualifying.has(slug) });
+  }
+  return chips;
+}
 
 const TITLE_STOP_WORDS = new Set([
   "about", "after", "along", "being", "better", "complete", "explained",
@@ -58,19 +62,6 @@ function titleTerms(title: string): Set<string> {
           !/^\d{4}$/.test(word)
       )
   );
-}
-
-export function getPostKeywords(post: Post): string[] {
-  const searchable = `${post.title} ${post.excerpt}`;
-  const keywords = TOPIC_RULES.filter(({ pattern }) => pattern.test(searchable)).map(
-    ({ label }) => label
-  );
-
-  for (const topic of CATEGORY_TOPICS[post.category]) {
-    if (!keywords.includes(topic)) keywords.push(topic);
-  }
-
-  return keywords.slice(0, 5);
 }
 
 export function relatedPostScore(source: Post, candidate: Post): number {

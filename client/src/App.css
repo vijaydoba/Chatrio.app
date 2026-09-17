@@ -1107,6 +1107,26 @@ img, video, canvas, svg{ max-width:100%; height:auto; }
 }
 .blog-section-title{margin: 14px 0 10px;font-size: 16px;color: rgba(231,237,245,0.80);letter-spacing: 0.02em;}
 .blog-list{display: grid;gap: 12px;}
+
+/* Tag hub: breadcrumbs + sibling-topic cloud */
+.blog-crumbs{font-size: 13px;color: rgba(231,237,245,0.6);margin-bottom: 10px;}
+.blog-crumbs a{color: rgba(231,237,245,0.85);text-decoration: none;}
+.blog-crumbs a:hover{text-decoration: underline;}
+html:not(.dark) .blog-crumbs{color: rgba(30,41,59,0.6);}
+html:not(.dark) .blog-crumbs a{color: rgba(30,41,59,0.85);}
+
+.blog-tagcloud{margin-top: 40px;border-top: 1px solid var(--border, rgba(148,163,184,0.2));padding-top: 24px;}
+.blog-tagcloud-list{display: flex;flex-wrap: wrap;gap: 10px;margin-top: 6px;}
+.blog-tagcloud-chip{
+  display: inline-flex;align-items: center;gap: 6px;
+  padding: 7px 13px;border-radius: 999px;
+  background: rgba(124,58,237,0.10);border: 1px solid rgba(124,58,237,0.22);
+  color: #a78bfa;font-size: 13px;font-weight: 700;text-decoration: none;
+  transition: background 0.15s ease;
+}
+.blog-tagcloud-chip:hover{background: rgba(124,58,237,0.18);}
+.blog-tagcloud-count{font-size: 11px;font-weight: 800;opacity: 0.7;}
+html:not(.dark) .blog-tagcloud-chip{color: #6d28d9;background: rgba(124,58,237,0.08);border-color: rgba(124,58,237,0.20);}
 .blog-results-status{
   margin: 14px 0 8px;
   color: rgba(231,237,245,0.68);

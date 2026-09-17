@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useParams, NavLink, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { POSTS, Post, POST_REDIRECTS } from "../data/posts";
-import { getPostKeywords, relatedPostScore } from "../data/blog-topics";
+import { getPostKeywords, relatedPostScore, getPostTagChips } from "../data/blog-topics";
 
 function readingTime(html: string): number {
   const words = html.replace(/<[^>]+>/g, " ").trim().split(/\s+/).length;
@@ -92,6 +92,9 @@ export default function BlogPost() {
   const [contentError, setContentError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const postKeywords = useMemo(() => (post ? getPostKeywords(post) : []), [post]);
+  // Chips: qualifying tags link to their indexable /blog/tag hub; thin tags fall
+  // back to a (non-indexable) blog search so they still aid discovery.
+  const tagChips = useMemo(() => (post ? getPostTagChips(post).slice(0, 6) : []), [post]);
 
   const relatedPosts = useMemo(() => {
     if (!post) return [];
@@ -239,16 +242,16 @@ export default function BlogPost() {
         )}
       </div>
 
-      {postKeywords.length > 0 && (
+      {tagChips.length > 0 && (
         <nav className="post-topic-tags" aria-label="Article topics">
           <span className="post-topic-label">Explore topics:</span>
-          {postKeywords.map((keyword) => (
+          {tagChips.map((chip) => (
             <NavLink
-              key={keyword}
-              to={`/blog?search=${encodeURIComponent(keyword)}`}
+              key={chip.slug}
+              to={chip.hub ? `/blog/tag/${chip.slug}` : `/blog?search=${encodeURIComponent(chip.label)}`}
               className="post-topic-chip"
             >
-              {keyword}
+              {chip.label}
             </NavLink>
           ))}
         </nav>
