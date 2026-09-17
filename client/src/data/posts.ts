@@ -1969,4 +1969,31 @@ export const POSTS: Post[] = [
     date: "2026-09-08",
     category: "Chat & Connection",
   },
+  {
+    slug: "how-interest-based-chat-works-2026",
+    title: "How Interest-Based Chat Works: Match With Strangers Who Actually Get You",
+    excerpt:
+      "Random chat pairs you with anyone; interest-based chat pairs you with someone who shares your world. Here's how topic matching works, why it makes conversations click, and how to use it well.",
+    thumbnail: "/images/hero-why-you-feel-an-instant-connection-with-some-strangers.png",
+    date: "2026-09-17",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "global-chat-rooms-talk-to-people-worldwide-2026",
+    title: "Global Chat Rooms: How to Talk to People Around the World (2026)",
+    excerpt:
+      "Global chat rooms let you meet strangers across countries and time zones — for language practice, cultural exchange, or a late-night conversation when everyone you know is asleep. Here's how they work and how to use them safely.",
+    thumbnail: "/images/hero-building-meaningful-connections-digital-world.png",
+    date: "2026-09-17",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "how-ai-moderation-keeps-anonymous-chat-safe-2026",
+    title: "How AI Moderation Keeps Anonymous Chat Safe (2026)",
+    excerpt:
+      "Anonymous chat only works if it's safe. Here's how AI moderation actually works — what it catches, where it fails, and why the best platforms pair it with human review and one-tap reporting.",
+    thumbnail: "/images/hero-how-to-stay-safe-chatting-with-strangers-online-2026.png",
+    date: "2026-09-17",
+    category: "Chat & Connection",
+  },
 ];
