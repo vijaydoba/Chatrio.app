@@ -659,9 +659,9 @@ export const POSTS: Post[] = [
     slug: "random-chat-apps-for-india-best-options-2025",
     title: "Best Random Chat Apps in India 2026 (Free, No Sign-Up)",
     excerpt:
-      "The best free random chat apps in India for 2026. Talk to strangers, make friends, and start chatting instantly — no sign-up, no download, no phone number needed.",
+      "The 6 best free random chat apps in India for 2026 — compared. Talk to strangers, make friends, and start chatting instantly with no sign-up, no download, and no phone number.",
     thumbnail: "/images/hero-random-chat-apps-for-india-best-options-2025.png",
-    date: "2026-06-05",
+    date: "2026-09-17",
     category: "Chat & Connection",
   },
 
