@@ -42,6 +42,7 @@ const staticPages = [
   { loc: "/blog/relationships", lastmod: TODAY, changefreq: "weekly", priority: "0.7" },
   { loc: "/blog/mental%20health", lastmod: TODAY, changefreq: "weekly", priority: "0.7" },
   { loc: "/circles",      lastmod: TODAY, changefreq: "weekly",  priority: "0.8" },
+  { loc: "/circles/app",  lastmod: TODAY, changefreq: "monthly", priority: "0.6" },
   { loc: "/blind-date",   lastmod: TODAY, changefreq: "weekly",  priority: "0.8" },
   { loc: "/about",        lastmod: TODAY, changefreq: "monthly", priority: "0.6" },
   { loc: "/editorial-standards", lastmod: TODAY, changefreq: "monthly", priority: "0.5" },

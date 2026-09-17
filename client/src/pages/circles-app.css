@@ -1,0 +1,159 @@
+.ca-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 20px 64px;
+}
+
+.ca-hero {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-bottom: 40px;
+  margin-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ca-icon {
+  border-radius: 22px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.ca-hero h1 {
+  font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+
+.ca-hero p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  max-width: 520px;
+  margin: 0 0 20px;
+}
+
+.ca-play-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--text);
+  color: var(--bg);
+  border-radius: 12px;
+  padding: 11px 20px;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.ca-play-btn:hover {
+  opacity: 0.88;
+}
+
+.ca-play-btn-label {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.ca-play-btn-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  opacity: 0.75;
+}
+
+.ca-play-btn-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.ca-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 56px;
+  text-align: center;
+}
+
+.ca-features h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+
+.ca-features p {
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.ca-shots-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+.ca-shots {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  justify-content: center;
+}
+
+.ca-shots img {
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
+}
+
+.ca-cta {
+  text-align: center;
+  margin: 56px 0;
+}
+
+.ca-cta-note {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 14px;
+}
+
+.ca-back {
+  text-align: center;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.ca-back a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.ca-back a:hover {
+  color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .ca-hero {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  .ca-hero p {
+    max-width: none;
+  }
+
+  .ca-features {
+    grid-template-columns: 1fr;
+  }
+
+  .ca-shots {
+    justify-content: flex-start;
+  }
+}

@@ -17,6 +17,7 @@ import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import ChildSafety from "./pages/ChildSafety";
+import CirclesApp from "./pages/CirclesApp";
 import Home from "./pages/Home";
 import BlogList from "./pages/BlogList";
 import BlogPost from "./pages/BlogPost";
@@ -445,6 +446,7 @@ export default function App() {
                 <Route path="/chat" element={<Chat theme={theme} setTheme={setTheme} soundOn={soundOn} setSoundOn={setSoundOn} />} />
                 <Route path="/video-chat" element={<VideoChat />} />
                 <Route path="/circles" element={<CirclesLocal />} />
+                <Route path="/circles/app" element={<CirclesApp />} />
                 <Route path="/blind-date" element={<BlindDate />} />
                 <Route
                   path="/blind-date/onboarding"
@@ -506,6 +508,7 @@ export default function App() {
             <NavLink to="/privacy" className="footer-link">Privacy Policy</NavLink>
             <NavLink to="/terms" className="footer-link">Terms of Service</NavLink>
             <NavLink to="/child-safety" className="footer-link">Child Safety</NavLink>
+            <NavLink to="/circles/app" className="footer-link">Circles for Android</NavLink>
             <span style={{ opacity: 0.3 }}>|</span>
             <a
               href="https://x.com/Chatrioapp1"

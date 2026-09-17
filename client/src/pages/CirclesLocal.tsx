@@ -942,6 +942,7 @@ export default function CirclesLocal() {
         <section className="cl-seo">
           <h2>A local chat app that stays anonymous</h2>
           <p>Circles is a free local chat app for meeting people near you without giving up your privacy. There's no sign-up — pick a nickname, share an approximate location, and see who's around. You send one intro message; if the other person accepts, the chat opens. If they decline, they never hear from you again.</p>
+          <p><NavLink to="/circles/app">Get Circles on Android</NavLink> for real push notifications when someone replies.</p>
           <h2>Nearby chat, groups, and intro requests</h2>
           <p>Talk to people near you one-on-one, or start a local group pinned to your area — a coffee meetup, late-night talks, a running crew. Everything is anonymous, moderated, and strictly 18+.</p>
           <h2>How can it remember me without a sign-up?</h2>
