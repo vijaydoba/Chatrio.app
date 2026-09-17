@@ -1725,6 +1725,30 @@
     <image:image><image:loc>https://chatrio.app/images/hero-monkey-app-alternative-2026-free-no-sign-up.png</image:loc></image:image>
   </url>
 
+  <url>
+    <loc>https://chatrio.app/blog/how-interest-based-chat-works-2026</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://chatrio.app/images/hero-why-you-feel-an-instant-connection-with-some-strangers.png</image:loc></image:image>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/global-chat-rooms-talk-to-people-worldwide-2026</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://chatrio.app/images/hero-building-meaningful-connections-digital-world.png</image:loc></image:image>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/how-ai-moderation-keeps-anonymous-chat-safe-2026</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://chatrio.app/images/hero-how-to-stay-safe-chatting-with-strangers-online-2026.png</image:loc></image:image>
+  </url>
+
   <!-- BLOG TAG HUBS -->
 
   <url>
@@ -1777,6 +1801,13 @@
   </url>
 
   <url>
+    <loc>https://chatrio.app/blog/tag/online-safety</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://chatrio.app/blog/tag/chat-by-country</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
@@ -1785,13 +1816,6 @@
 
   <url>
     <loc>https://chatrio.app/blog/tag/communication</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://chatrio.app/blog/tag/online-safety</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1847,6 +1871,13 @@
   </url>
 
   <url>
+    <loc>https://chatrio.app/blog/tag/random-chat</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://chatrio.app/blog/tag/romance</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
@@ -1862,13 +1893,6 @@
 
   <url>
     <loc>https://chatrio.app/blog/tag/attraction</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://chatrio.app/blog/tag/random-chat</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
