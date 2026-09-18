@@ -3653,6 +3653,32 @@ html:not(.dark) .composer.tg-composer .tg-attach:hover {
 .lobby-save-btn:hover:not(:disabled) { background: var(--border); }
 .lobby-save-btn:disabled { opacity: 0.4; cursor: default; }
 
+/* ── gender / preference segmented buttons ── */
+.lobby-seg {
+  display: flex;
+  gap: 8px;
+}
+.lobby-seg-btn {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.lobby-seg-btn:hover { border-color: #a855f7; color: var(--text); }
+.lobby-seg-btn.on {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(109,40,217,0.28);
+}
+
 /* ── interest chips ── */
 .lobby-chips {
   display: flex;

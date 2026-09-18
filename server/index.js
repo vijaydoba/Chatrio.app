@@ -99,6 +99,8 @@ const state = {
   partner: new Map(),
   username: new Map(),
   topics: new Map(),
+  gender: new Map(),      // socketId -> 'male' | 'female' | '' (self-declared, unverified)
+  genderPref: new Map(),  // socketId -> 'any' | 'male' | 'female' (who they want to talk to)
   waitingSince: new Map(),
   blocked: new Map(), // socketId -> Set of socketIds it must never be rematched with (post-report)
 };
@@ -157,8 +159,22 @@ function clearPair(a, reason = "friend_left") {
   io.to(b).emit(reason);
 }
 
+// A one-directional gender check: does `pref` accept someone whose declared
+// gender is `otherGender`? "any"/unset accepts everyone; a specific preference
+// only matches a peer who declared that same gender (unverified, self-declared).
+function genderPrefOk(pref, otherGender) {
+  if (!pref || pref === "any") return true;
+  return otherGender === pref;
+}
+
 function canMatch(a, b) {
   if (state.blocked.get(a)?.has(b)) return false;
+
+  // Gender preferences must be satisfied in BOTH directions.
+  const prefA = state.genderPref.get(a) || "any";
+  const prefB = state.genderPref.get(b) || "any";
+  if (!genderPrefOk(prefA, state.gender.get(b) || "")) return false;
+  if (!genderPrefOk(prefB, state.gender.get(a) || "")) return false;
 
   const ta = state.topics.get(a) || [];
   const tb = state.topics.get(b) || [];
@@ -290,6 +306,8 @@ io.on("connection", (socket) => {
   state.online.add(socket.id);
   state.username.set(socket.id, "Stranger");
   state.topics.set(socket.id, []);
+  state.gender.set(socket.id, "");
+  state.genderPref.set(socket.id, "any");
   emitCounts();
   socket.emit("idle");
 
@@ -301,6 +319,14 @@ io.on("connection", (socket) => {
   socket.on("set_topics", ({ topics }) => {
     const t = Array.isArray(topics) ? topics.filter(Boolean).map(String).slice(0, 10) : [];
     state.topics.set(socket.id, t);
+  });
+
+  socket.on("set_gender", ({ gender } = {}) => {
+    state.gender.set(socket.id, gender === "male" || gender === "female" ? gender : "");
+  });
+
+  socket.on("set_gender_pref", ({ pref } = {}) => {
+    state.genderPref.set(socket.id, pref === "male" || pref === "female" ? pref : "any");
   });
 
   socket.on("ready_to_chat", () => {
@@ -568,6 +594,8 @@ io.on("connection", (socket) => {
     state.partner.delete(socket.id);
     state.username.delete(socket.id);
     state.topics.delete(socket.id);
+    state.gender.delete(socket.id);
+    state.genderPref.delete(socket.id);
     state.online.delete(socket.id);
     state.blocked.delete(socket.id);
     emitCounts();

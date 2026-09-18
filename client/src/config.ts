@@ -2,6 +2,12 @@
 export const API_BASE =
   process.env.REACT_APP_API_BASE || "https://api.chatrio.app";
 
+// Random text/video chat socket server (server/index.js, :5050 in prod behind
+// nginx at api.chatrio.app). Override locally with REACT_APP_SOCKET_URL
+// (e.g. http://localhost:5050) to test server matching changes.
+export const SOCKET_URL =
+  process.env.REACT_APP_SOCKET_URL || "https://api.chatrio.app";
+
 // Circles-local (proximity) service — hosted behind nginx at api.chatrio.app/circles-api.
 // Override locally with REACT_APP_CIRCLES_API_BASE (e.g. http://localhost:5060).
 export const CIRCLES_API_BASE =
