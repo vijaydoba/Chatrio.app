@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { io, Socket } from "socket.io-client";
 import DynamicIsland from "./DynamicIsland";
 import ChatrioMascot from "./components/ChatrioMascot";
+import { SOCKET_URL } from "./config";
 import { useKeyboardViewport } from "./useKeyboardViewport";
 import { createVideoCall, VideoCallController, VideoState } from "./videoChat";
 import "./App.css";
@@ -71,6 +72,14 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
   const [hadChat, setHadChat] = useState(false);
   const [selectedTopics, setSelectedTopics] = useState<string[]>(() =>
     JSON.parse(localStorage.getItem("topics") || "[]")
+  );
+  // Self-declared gender + who the user wants to be matched with. Both are
+  // unverified and optional; "" gender / "any" pref = no gender filtering.
+  const [myGender, setMyGender] = useState<"" | "male" | "female">(
+    () => (localStorage.getItem("myGender") as "" | "male" | "female") || ""
+  );
+  const [genderPref, setGenderPref] = useState<"any" | "male" | "female">(
+    () => (localStorage.getItem("genderPref") as "any" | "male" | "female") || "any"
   );
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -238,7 +247,7 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
   }, []);
 
   useEffect(() => {
-    const socket = io("https://api.chatrio.app", {
+    const socket = io(SOCKET_URL, {
       autoConnect: true,
       transports: ["websocket"],
       withCredentials: true,
@@ -251,6 +260,8 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
       setMyId(socket.id || "");
       socket.emit("set_username", username);
       socket.emit("set_topics", { topics: selectedTopics });
+      socket.emit("set_gender", { gender: myGender });
+      socket.emit("set_gender_pref", { pref: genderPref });
       if (modeRef.current === "waiting") {
         socket.emit("ready_to_chat");
       }
@@ -416,8 +427,25 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
     }
     socketRef.current.emit("set_username", username);
     socketRef.current.emit("set_topics", { topics: selectedTopics });
+    socketRef.current.emit("set_gender", { gender: myGender });
+    socketRef.current.emit("set_gender_pref", { pref: genderPref });
     socketRef.current.emit("ready_to_chat");
     setMode("waiting");
+  };
+
+  const chooseMyGender = (g: "male" | "female") => {
+    if (mode === "connected") return;
+    const next = myGender === g ? "" : g;
+    setMyGender(next);
+    localStorage.setItem("myGender", next);
+    socketRef.current?.emit("set_gender", { gender: next });
+  };
+
+  const chooseGenderPref = (p: "any" | "male" | "female") => {
+    if (mode === "connected") return;
+    setGenderPref(p);
+    localStorage.setItem("genderPref", p);
+    socketRef.current?.emit("set_gender_pref", { pref: p });
   };
 
   const nextChat = () => {
@@ -857,6 +885,48 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
                 <button className="lobby-save-btn" onClick={applyName} disabled={nameDraft.trim() === username}>
                   Save
                 </button>
+              </div>
+            </div>
+
+            <div className="lobby-field">
+              <label className="lobby-label">I want to chat with</label>
+              <div className="lobby-seg" role="group" aria-label="Who to chat with">
+                {([
+                  { key: "any", label: "Anyone" },
+                  { key: "female", label: "Women" },
+                  { key: "male", label: "Men" },
+                ] as const).map((o) => (
+                  <button
+                    key={o.key}
+                    className={`lobby-seg-btn${genderPref === o.key ? " on" : ""}`}
+                    onClick={() => chooseGenderPref(o.key)}
+                    aria-pressed={genderPref === o.key}
+                  >
+                    {o.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="lobby-field">
+              <label className="lobby-label">
+                I am
+                <span className="lobby-opt"> · so filters can find you</span>
+              </label>
+              <div className="lobby-seg" role="group" aria-label="Your gender">
+                {([
+                  { key: "female", label: "Woman" },
+                  { key: "male", label: "Man" },
+                ] as const).map((o) => (
+                  <button
+                    key={o.key}
+                    className={`lobby-seg-btn${myGender === o.key ? " on" : ""}`}
+                    onClick={() => chooseMyGender(o.key)}
+                    aria-pressed={myGender === o.key}
+                  >
+                    {o.label}
+                  </button>
+                ))}
               </div>
             </div>
 

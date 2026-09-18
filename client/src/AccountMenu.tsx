@@ -24,32 +24,47 @@ function initialsOf(name: string, email: string): string {
 }
 
 /** Renders the Google button only after mount (client-only) and only when a
- *  Client ID is configured — keeps the iframe out of the prerendered HTML. */
-function GoogleConnect({ onDone, width }: { onDone: () => void; width?: string }) {
+ *  Client ID is configured — keeps the iframe out of the prerendered HTML.
+ *  The button width is measured from its container and clamped to Google's
+ *  accepted 200–400px range, so it always fits (the mobile drawer is only
+ *  ~260px of inner space — a hardcoded width overflowed and clipped the icon). */
+function GoogleConnect({ onDone }: { onDone: () => void }) {
   const { googleSignIn } = useAuth();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
 
-  if (!mounted || !GOOGLE_CLIENT_ID) return null;
+  useEffect(() => {
+    const measure = () => {
+      const w = wrapRef.current?.clientWidth ?? 0;
+      if (w) setWidth(Math.max(200, Math.min(400, Math.floor(w))));
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  if (!GOOGLE_CLIENT_ID) return null;
 
   return (
-    <div className="account-google">
-      <GoogleLogin
-        onSuccess={async (cred) => {
-          if (!cred.credential) return;
-          try {
-            await googleSignIn(cred.credential);
-          } catch {
-            /* surfaced on the /login page; header stays silent */
-          } finally {
-            onDone();
-          }
-        }}
-        onError={onDone}
-        width={width}
-        text="continue_with"
-        shape="pill"
-      />
+    <div className="account-google" ref={wrapRef}>
+      {width > 0 && (
+        <GoogleLogin
+          onSuccess={async (cred) => {
+            if (!cred.credential) return;
+            try {
+              await googleSignIn(cred.credential);
+            } catch {
+              /* surfaced on the /login page; header stays silent */
+            } finally {
+              onDone();
+            }
+          }}
+          onError={onDone}
+          width={String(width)}
+          text="continue_with"
+          shape="pill"
+        />
+      )}
     </div>
   );
 }
@@ -90,7 +105,7 @@ export default function AccountMenu() {
         {open && (
           <div className="account-dropdown account-dropdown-auth" role="menu">
             <div className="account-auth-title">Log in or sign up</div>
-            <GoogleConnect onDone={() => setOpen(false)} width="232" />
+            <GoogleConnect onDone={() => setOpen(false)} />
             <div className="account-or"><span>or</span></div>
             <NavLink to="/login" className="account-item" role="menuitem" onClick={() => setOpen(false)}>
               <span className="dd-icon">✉️</span> Log in with email
@@ -157,7 +172,7 @@ export function MobileAccount({ onNavigate }: { onNavigate: () => void }) {
   if (!user) {
     return (
       <div className="m-account m-account-out">
-        <GoogleConnect onDone={onNavigate} width="332" />
+        <GoogleConnect onDone={onNavigate} />
         <NavLink to="/login" className="m-login-btn m-login-email" onClick={onNavigate}>
           Log in with email
         </NavLink>
