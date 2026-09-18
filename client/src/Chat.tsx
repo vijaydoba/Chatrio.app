@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { io, Socket } from "socket.io-client";
 import DynamicIsland from "./DynamicIsland";
+import ChatrioMascot from "./components/ChatrioMascot";
 import { useKeyboardViewport } from "./useKeyboardViewport";
 import { createVideoCall, VideoCallController, VideoState } from "./videoChat";
 import "./App.css";
@@ -836,12 +837,7 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
 
           <div className="lobby-hero">
             <div className="lobby-icon">
-              <svg viewBox="0 0 48 48" width="32" height="32" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M44 28a6 6 0 01-6 6H14l-8 8V10a6 6 0 016-6h26a6 6 0 016 6z"/>
-                <circle cx="18" cy="22" r="2" fill="white" stroke="none"/>
-                <circle cx="26" cy="22" r="2" fill="white" stroke="none"/>
-                <circle cx="34" cy="22" r="2" fill="white" stroke="none"/>
-              </svg>
+              <ChatrioMascot size={72} uid="lobby" />
             </div>
             <h2 className="lobby-title">Meet someone new</h2>
             <p className="lobby-sub">Anonymous · Instant · Real</p>
