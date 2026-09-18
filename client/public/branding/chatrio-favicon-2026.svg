@@ -1,13 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <linearGradient id="chatrio-icon-gradient" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#6d28d9"/>
+    <linearGradient id="ic-g" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7c3aed"/>
       <stop offset="100%" stop-color="#06b6d4"/>
     </linearGradient>
+    <radialGradient id="ic-bg" cx="0.5" cy="0.44" r="0.62">
+      <stop offset="0%" stop-color="#1b1436"/>
+      <stop offset="55%" stop-color="#0d1018"/>
+      <stop offset="100%" stop-color="#0b0f14"/>
+    </radialGradient>
+    <radialGradient id="ic-glow" cx="0.5" cy="0.44" r="0.5">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="ic-sh" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#6d28d9" flood-opacity="0.45"/>
+    </filter>
   </defs>
-  <rect x="2" y="4" width="44" height="30" rx="12" fill="url(#chatrio-icon-gradient)"/>
-  <path d="M8 34 L4 44 L20 34Z" fill="url(#chatrio-icon-gradient)"/>
-  <circle cx="14" cy="19" r="3" fill="white"/>
-  <circle cx="24" cy="19" r="3" fill="white"/>
-  <circle cx="34" cy="19" r="3" fill="white"/>
+  <rect x="0" y="0" width="512" height="512" rx="112" fill="url(#ic-bg)"/>
+  <circle cx="256" cy="226" r="230" fill="url(#ic-glow)"/>
+  <g transform="translate(64,67) scale(3.2)">
+    
+  <g filter="url(#ic-sh)">
+    <path d="M60 14 C33 14 14 30 14 52 C14 68 24 81 41 87 L36 104 L58 86 C59 86 60 86 60 86 C87 86 106 70 106 52 C106 30 87 14 60 14 Z"
+          fill="url(#ic-g)" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+  </g>
+  <circle cx="45" cy="46" r="9" fill="#fff"/>
+  <circle cx="75" cy="46" r="9" fill="#fff"/>
+  <circle cx="47" cy="47" r="4.2" fill="#0b1220"/>
+  <circle cx="77" cy="47" r="4.2" fill="#0b1220"/>
+  <path d="M42 60 Q60 82 78 60 Z" fill="#fff"/>
+  <path d="M54 71 Q60 82 66 71 Q66 66 60 66 Q54 66 54 71 Z" fill="#22d3ee"/>
+
+  </g>
 </svg>
