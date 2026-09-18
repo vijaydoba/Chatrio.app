@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import { initPush } from "./push";
 import NativeSplash from "./NativeSplash";
+import ChatrioMascot from "./components/ChatrioMascot";
 import AccountMenu, { MobileAccount } from "./AccountMenu";
 import About from "./pages/About";
 import EditorialStandards from "./pages/EditorialStandards";
@@ -263,19 +264,7 @@ export default function App() {
         <div className="site-wrap header">
           <NavLink to="/" className="brand" onClick={() => setNavOpen(false)}>
             <span className="brand-logo">
-              <svg className="brand-mark" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="bm" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="#6d28d9" />
-                    <stop offset="100%" stopColor="#06b6d4" />
-                  </linearGradient>
-                </defs>
-                <rect x="1" y="2" width="34" height="23" rx="9" fill="url(#bm)" />
-                <path d="M5 25 L2 34 L15 25Z" fill="url(#bm)" />
-                <circle cx="10" cy="13.5" r="2.2" fill="white" />
-                <circle cx="18" cy="13.5" r="2.2" fill="white" />
-                <circle cx="26" cy="13.5" r="2.2" fill="white" />
-              </svg>
+              <ChatrioMascot className="brand-mark" size={30} uid="brand" />
               <span className="wordmark">Chatrio</span>
             </span>
           </NavLink>
@@ -361,13 +350,7 @@ export default function App() {
         {/* Drawer header */}
         <div className="drawer-header">
           <div className="drawer-brand-mark">
-            <svg viewBox="0 0 36 36" width="20" height="20" fill="none">
-              <rect x="1" y="2" width="34" height="23" rx="9" fill="white" fillOpacity="0.9"/>
-              <path d="M5 25 L2 34 L15 25Z" fill="white" fillOpacity="0.9"/>
-              <circle cx="10" cy="13.5" r="2.2" fill="#7c3aed"/>
-              <circle cx="18" cy="13.5" r="2.2" fill="#7c3aed"/>
-              <circle cx="26" cy="13.5" r="2.2" fill="#7c3aed"/>
-            </svg>
+            <ChatrioMascot size={34} uid="drawer" />
           </div>
           <span className="drawer-brand-name">Chatrio</span>
         </div>

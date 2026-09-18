@@ -1,20 +1,57 @@
 // Instagram-style account control for the site header + mobile drawer.
-// Signed out → a "Log in" affordance. Signed in → an avatar that opens a
-// dropdown with the profile (name / email), quick links and Log out.
+// Signed out → a "Log in" button that opens a menu with a direct
+// "Continue with Google" (plus an email-login fallback). Signed in → an
+// avatar that opens a dropdown with the profile (name / email), quick links
+// and Log out.
 //
 // Hydration note: this project hydrates prerendered HTML that was captured as a
 // fresh, signed-out visitor. `user` is always null on the first client render
 // too (it's only populated after /auth/me resolves), so keying UI off `user`
-// keeps the initial tree identical to the prerender and avoids mismatches.
+// keeps the initial tree identical to the prerender and avoids mismatches. The
+// GoogleLogin widget is an async client-only iframe, so it is gated behind a
+// `mounted` flag and never appears in the prerendered markup.
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 import { useAuth } from "./auth";
+import { GOOGLE_CLIENT_ID } from "./config";
 
 function initialsOf(name: string, email: string): string {
   const base = (name || email || "?").trim();
   const parts = base.split(/\s+/).filter(Boolean);
   if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
   return base.slice(0, 2).toUpperCase();
+}
+
+/** Renders the Google button only after mount (client-only) and only when a
+ *  Client ID is configured — keeps the iframe out of the prerendered HTML. */
+function GoogleConnect({ onDone, width }: { onDone: () => void; width?: string }) {
+  const { googleSignIn } = useAuth();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted || !GOOGLE_CLIENT_ID) return null;
+
+  return (
+    <div className="account-google">
+      <GoogleLogin
+        onSuccess={async (cred) => {
+          if (!cred.credential) return;
+          try {
+            await googleSignIn(cred.credential);
+          } catch {
+            /* surfaced on the /login page; header stays silent */
+          } finally {
+            onDone();
+          }
+        }}
+        onError={onDone}
+        width={width}
+        text="continue_with"
+        shape="pill"
+      />
+    </div>
+  );
 }
 
 /** Desktop header account menu (avatar + dropdown). */
@@ -38,9 +75,32 @@ export default function AccountMenu() {
     };
   }, [open]);
 
+  // Signed out → "Log in" button that opens a small auth menu.
   if (!user) {
     return (
-      <NavLink to="/login" className="nav-login-btn">Log in</NavLink>
+      <div className="account-menu" ref={ref}>
+        <button
+          className="nav-login-btn"
+          onClick={() => setOpen((v) => !v)}
+          aria-haspopup="menu"
+          aria-expanded={open}
+        >
+          Log in
+        </button>
+        {open && (
+          <div className="account-dropdown account-dropdown-auth" role="menu">
+            <div className="account-auth-title">Log in or sign up</div>
+            <GoogleConnect onDone={() => setOpen(false)} width="232" />
+            <div className="account-or"><span>or</span></div>
+            <NavLink to="/login" className="account-item" role="menuitem" onClick={() => setOpen(false)}>
+              <span className="dd-icon">✉️</span> Log in with email
+            </NavLink>
+            <NavLink to="/signup" className="account-item" role="menuitem" onClick={() => setOpen(false)}>
+              <span className="dd-icon">✨</span> Create an account
+            </NavLink>
+          </div>
+        )}
+      </div>
     );
   }
 
@@ -96,9 +156,10 @@ export function MobileAccount({ onNavigate }: { onNavigate: () => void }) {
 
   if (!user) {
     return (
-      <div className="m-account">
-        <NavLink to="/login" className="m-login-btn" onClick={onNavigate}>
-          Log in
+      <div className="m-account m-account-out">
+        <GoogleConnect onDone={onNavigate} width="332" />
+        <NavLink to="/login" className="m-login-btn m-login-email" onClick={onNavigate}>
+          Log in with email
         </NavLink>
       </div>
     );

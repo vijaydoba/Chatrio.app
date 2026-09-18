@@ -1,7 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { POSTS, getSlotImage } from "../data/posts";
+import ChatrioMascot from "../components/ChatrioMascot";
+
+const CHAT_MODES = [
+  { key: "text", label: "Text", to: "/chat", cta: "Start Text Chat" },
+  { key: "video", label: "Video", to: "/video-chat", cta: "Start Video Chat" },
+] as const;
 
 function normalizeAssetPath(path?: string) {
   if (!path) return "/images/default-thumb.png";
@@ -142,6 +148,10 @@ const faqs = [
 ];
 
 export default function Home() {
+  // Hero chat-mode toggle (Text / Video) drives the primary CTA.
+  const [mode, setMode] = useState<(typeof CHAT_MODES)[number]["key"]>("text");
+  const activeMode = CHAT_MODES.find((m) => m.key === mode) ?? CHAT_MODES[0];
+
   // Reveal sections as they scroll into view (the hero animates on load instead).
   useEffect(() => {
     const els = Array.from(document.querySelectorAll<HTMLElement>(".lp-reveal"));
@@ -227,39 +237,71 @@ export default function Home() {
 
       {/* ── HERO ── */}
       <section className="lp-hero">
-        <div className="lp-live-badge lp-anim-fade-up" style={{ animationDelay: "0ms" }}>
+        <div className="lp-mascot lp-anim-pop" aria-hidden="true">
+          <ChatrioMascot size={112} uid="hero" />
+        </div>
+
+        <div className="lp-live-badge lp-anim-fade-up" style={{ animationDelay: "60ms" }}>
           <span className="lp-live-dot" />
           Live chat · No sign-up needed
         </div>
 
-        <h1 className="lp-headline lp-anim-fade-up" style={{ animationDelay: "80ms" }}>
+        <h1 className="lp-headline lp-anim-fade-up" style={{ animationDelay: "140ms" }}>
           Anonymous chat with strangers.<br />
           <span className="lp-gradient-text">Real talk, right now.</span>
         </h1>
 
-        <p className="lp-sub lp-anim-fade-up" style={{ animationDelay: "160ms" }}>
+        <p className="lp-sub lp-anim-fade-up" style={{ animationDelay: "220ms" }}>
           Talk to strangers online free with smart interest matching.
           Meet someone new in seconds — no account, no history.
         </p>
 
-        <div className="lp-cta-row lp-anim-fade-up" style={{ animationDelay: "240ms" }}>
-          <NavLink to="/video-chat" className="lp-btn-video">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="23 7 16 12 23 17 23 7" />
-              <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+        {/* Segmented Text / Video toggle drives the primary CTA below */}
+        <div className="lp-mode-toggle lp-anim-fade-up" role="tablist" aria-label="Choose chat mode" style={{ animationDelay: "300ms" }}>
+          <span className="lp-mode-thumb" data-mode={mode} aria-hidden="true" />
+          {CHAT_MODES.map((m) => (
+            <button
+              key={m.key}
+              type="button"
+              role="tab"
+              aria-selected={mode === m.key}
+              className={`lp-mode-btn${mode === m.key ? " is-active" : ""}`}
+              onClick={() => setMode(m.key)}
+            >
+              {m.key === "video" ? (
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="23 7 16 12 23 17 23 7" />
+                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                </svg>
+              )}
+              {m.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="lp-cta-row lp-anim-fade-up" style={{ animationDelay: "360ms" }}>
+          <NavLink to={activeMode.to} className="lp-btn-primary lp-btn-hero">
+            {activeMode.cta}
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
             </svg>
-            Start Video Chat
           </NavLink>
-          <NavLink to="/chat" className="lp-btn-primary">
-            Start Chatting
-          </NavLink>
-          <NavLink to="/circles" className="lp-btn-circles">
+        </div>
+
+        <div className="lp-hero-links lp-anim-fade-up" style={{ animationDelay: "420ms" }}>
+          <NavLink to="/circles" className="lp-hero-link">
             <span className="lp-live-dot" />
             Explore Circles
           </NavLink>
+          <span className="lp-hero-link-sep" aria-hidden="true">·</span>
           <a
             href="https://discord.gg/289JDCJtRj"
-            className="lp-btn-discord"
+            className="lp-hero-link"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Join the Chatrio Discord community (opens in a new tab)"
@@ -268,7 +310,7 @@ export default function Home() {
           </a>
         </div>
 
-        <div className="lp-trust-row lp-anim-fade-up" style={{ animationDelay: "320ms" }}>
+        <div className="lp-trust-row lp-anim-fade-up" style={{ animationDelay: "480ms" }}>
           <span>No account</span>
           <span>No message logs</span>
           <span>Free forever</span>
@@ -462,19 +504,7 @@ export default function Home() {
       {/* ── FINAL CTA ── */}
       <section className="lp-final-cta lp-reveal">
         <div className="lp-cta-logo">
-          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
-            <defs>
-              <linearGradient id="lg" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#6d28d9" />
-                <stop offset="100%" stopColor="#06b6d4" />
-              </linearGradient>
-            </defs>
-            <rect x="2" y="4" width="44" height="30" rx="12" fill="url(#lg)" />
-            <path d="M8 34 L4 44 L20 34Z" fill="url(#lg)" />
-            <circle cx="14" cy="19" r="3" fill="white" />
-            <circle cx="24" cy="19" r="3" fill="white" />
-            <circle cx="34" cy="19" r="3" fill="white" />
-          </svg>
+          <ChatrioMascot size={72} uid="cta" />
         </div>
         <h2 className="lp-cta-title">Ready to meet someone new?</h2>
         <p className="lp-cta-sub">No sign-up. No fluff. Just connect.</p>
