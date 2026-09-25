@@ -149,16 +149,25 @@ for (const slug of slugs) {
     failures.push(`Post absent from sitemap: ${slug}`);
   }
 }
-for (const categoryUrl of [
-  "chat%20%26%20connection",
-  "relationships",
-  "mental%20health",
-  "dating",
-  "love",
-  "romance",
-]) {
-  if (!sitemap.includes(`<loc>https://chatrio.app/blog/${categoryUrl}</loc>`)) {
-    failures.push(`Category absent from sitemap: ${categoryUrl}`);
+// Category filter views are noindex,follow (the /blog/tag/* hubs are the one
+// indexable taxonomy). They must be (a) kept OUT of the sitemap — a noindex URL
+// in the sitemap trips GSC — and (b) still prerendered, so a crawl never hits an
+// empty CSR shell. Also guard against the old URL-encoded slugs regressing.
+const { CATEGORY_TO_SLUG } = loadTsModule("client/src/data/posts.ts");
+const snapInclude = new Set(
+  JSON.parse(fs.readFileSync(path.join(clientRoot, "package.json"), "utf8"))
+    .reactSnap.include
+);
+if (/\/blog\/[^<]*%[0-9A-Fa-f]{2}/.test(sitemap)) {
+  failures.push("Sitemap contains URL-encoded blog slug(s) — use clean ASCII slugs");
+}
+for (const slug of Object.values(CATEGORY_TO_SLUG)) {
+  const catUrl = `/blog/${slug}`;
+  if (sitemap.includes(`<loc>https://chatrio.app${catUrl}</loc>`)) {
+    failures.push(`Noindex category page must not be in sitemap: ${catUrl}`);
+  }
+  if (!snapInclude.has(catUrl)) {
+    failures.push(`Category page not prerendered (empty-shell risk): ${catUrl}`);
   }
 }
 

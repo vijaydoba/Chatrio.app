@@ -100,8 +100,8 @@ export const POST_REDIRECTS: Record<string, string> = {
   "is-it-safe-to-talk-to-strangers-online": "is-it-safe-to-chat-with-strangers-online",
   "apps-like-omegle-that-are-safe-2026": "omegle-alternatives-2026-free-anonymous-chat",
   "new-omegle-2026-what-replaced-it": "why-omegle-shut-down-and-what-to-use-instead",
-  "online-chat-rooms-india-without-registration": "best-anonymous-chat-app-india-2025",
-  "talk-to-strangers-online-india-free-no-registration": "best-anonymous-chat-app-india-2025",
+  "online-chat-rooms-india-without-registration": "best-anonymous-chat-app-india",
+  "talk-to-strangers-online-india-free-no-registration": "best-anonymous-chat-app-india",
   "how-to-practice-english-by-chatting-with-strangers": "how-to-practice-english-through-online-chat",
   "how-to-keep-a-conversation-going-without-it-feeling-forced": "how-to-keep-a-conversation-going-with-someone-online",
   "how-online-chat-helps-people-with-social-anxiety-open-up": "how-to-overcome-social-anxiety-through-online-chat",
@@ -119,6 +119,44 @@ export const POST_REDIRECTS: Record<string, string> = {
   "free-random-chat-no-login-required": "anonymous-chat-no-login-no-registration-2026",
   "is-anonymous-chat-safe-2026-guide": "is-anonymous-chat-safe-guide-2026",
   "chat-with-strangers-in-mexico-free-anonymous-2025": "chat-with-strangers-in-mexico-free-2026",
+  // Yearless slug migration (dropped stale "-2025" suffix; content is current).
+  "random-chat-apps-for-india-best-options-2025": "random-chat-apps-for-india-best-options",
+  "best-anonymous-chat-app-india-2025": "best-anonymous-chat-app-india",
+  "can-you-still-use-omegle-2025": "can-you-still-use-omegle",
+  "best-anonymous-chat-latin-america-2025": "best-anonymous-chat-latin-america",
+  "best-free-random-chat-apps-talk-to-strangers-2025": "best-free-random-chat-apps-talk-to-strangers",
+};
+
+// ── Blog category taxonomy ──────────────────────────────────────────────────
+// Category listing pages live at /blog/<slug>. Slugs must be clean ASCII (no
+// spaces/ampersands) so they don't appear URL-encoded in the sitemap/search.
+export const CATEGORY_TO_SLUG: Record<string, string> = {
+  "Love": "love",
+  "Romance": "romance",
+  "Dating": "dating",
+  "Relationships": "relationships",
+  "Chat & Connection": "chat-and-connection",
+  "Mental Health": "mental-health",
+};
+
+// Clean slug → category name, plus legacy space/encoded slugs so old URLs
+// (e.g. /blog/chat%20%26%20connection) still resolve in-app before the nginx 301.
+export const SLUG_TO_CATEGORY: Record<string, string> = {
+  ...Object.fromEntries(
+    Object.entries(CATEGORY_TO_SLUG).map(([cat, slug]) => [slug, cat])
+  ),
+  "chat & connection": "Chat & Connection",
+  "mental health": "Mental Health",
+};
+
+// Categories whose intent is fully covered by a canonical /blog/tag/<slug> hub
+// of the same name. These pages canonicalize to the tag hub and are dropped
+// from the sitemap so the two URLs stop cannibalizing each other.
+export const CATEGORY_CANONICAL_TAG: Record<string, string> = {
+  "love": "love",
+  "romance": "romance",
+  "dating": "dating",
+  "relationships": "relationships",
 };
 
 export const POSTS: Post[] = [
@@ -656,7 +694,7 @@ export const POSTS: Post[] = [
   },
 
   {
-    slug: "random-chat-apps-for-india-best-options-2025",
+    slug: "random-chat-apps-for-india-best-options",
     title: "Best Random Chat Apps in India 2026 (Free, No Sign-Up)",
     excerpt:
       "The 6 best free random chat apps in India for 2026 — compared. Talk to strangers, make friends, and start chatting instantly with no sign-up, no download, and no phone number.",
@@ -788,7 +826,7 @@ export const POSTS: Post[] = [
     category: "Romance",
   },
   {
-    slug: "best-anonymous-chat-app-india-2025",
+    slug: "best-anonymous-chat-app-india",
     title: "Best Anonymous Chat App in India 2026 (Free, No Sign-Up)",
     excerpt: "India's best free anonymous chat app for 2026 — talk to strangers with no account, no phone number, and no sign-up. See why millions choose Chatrio and start chatting now.",
     thumbnail: "/images/hero-best-anonymous-chat-app-india-2025.png",
@@ -798,7 +836,7 @@ export const POSTS: Post[] = [
 
   // ── SEO BATCH 3 — June 2026 ────────────────────────────────────────────────
   {
-    slug: "can-you-still-use-omegle-2025",
+    slug: "can-you-still-use-omegle",
     title: "Can You Still Use Omegle in 2026? Truth + Alternatives",
     excerpt:
       "Omegle shut down in November 2023. So can you still use it? Here's exactly what happened, whether any version still works, and the best alternatives live right now.",
@@ -808,7 +846,7 @@ export const POSTS: Post[] = [
   },
 
   {
-    slug: "best-anonymous-chat-latin-america-2025",
+    slug: "best-anonymous-chat-latin-america",
     title: "Best Anonymous Chat App for Latin America 2026 (Free)",
     excerpt:
       "El mejor chat anónimo gratis para México, Colombia y España en 2026. Habla con desconocidos al instante — sin registro, sin número de teléfono y sin descargar nada.",
@@ -821,7 +859,7 @@ export const POSTS: Post[] = [
   // ── Blog Batch — June 2026 (Chat Keywords) ────────────────────────────────
 
   {
-    slug: "best-free-random-chat-apps-talk-to-strangers-2025",
+    slug: "best-free-random-chat-apps-talk-to-strangers",
     title: "Best Free Random Chat Apps to Talk to Strangers (2026)",
     excerpt: "Looking for the best free random chat apps in 2026? Here are the top platforms to talk to strangers instantly — no sign-up, no fees, no bots.",
     thumbnail: "/images/hero-best-free-random-chat-apps-talk-to-strangers-2025.png",

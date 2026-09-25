@@ -1,20 +1,15 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { NavLink, useParams, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { POSTS, Post, getSlotImage } from "../data/posts";
+import {
+  POSTS,
+  Post,
+  getSlotImage,
+  CATEGORY_TO_SLUG,
+  SLUG_TO_CATEGORY,
+  CATEGORY_CANONICAL_TAG,
+} from "../data/posts";
 import { getPostKeywords } from "../data/blog-topics";
-
-function titleCase(s: string) {
-  return s
-    .split(" ")
-    .map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w))
-    .join(" ");
-}
-
-function normalizeCategorySlug(cat?: string) {
-  if (!cat) return "all";
-  return String(cat).trim().toLowerCase();
-}
 
 function normalizeAssetPath(path?: string) {
   if (!path) return "/images/default-thumb.png";
@@ -27,7 +22,8 @@ const INITIAL_VISIBLE_POSTS = 20;
 const LOAD_MORE_POSTS = 20;
 
 function categoryPath(category: string) {
-  return `/blog/${encodeURIComponent(category.toLowerCase())}`;
+  const slug = CATEGORY_TO_SLUG[category] ?? category.toLowerCase();
+  return `/blog/${slug}`;
 }
 
 function primaryPostKeyword(post: Post) {
@@ -39,7 +35,11 @@ export default function BlogList() {
   // (see BlogRoute in App.tsx); for this component it always holds a category.
   const { slug: category } = useParams<{ slug?: string }>();
   const [searchParams] = useSearchParams();
-  const activeCategory = normalizeCategorySlug(category);
+  // activeCategory holds the resolved category NAME (e.g. "Chat & Connection")
+  // or "all" for the top-level /blog listing.
+  const activeCategory = category
+    ? SLUG_TO_CATEGORY[category.toLowerCase()] ?? "all"
+    : "all";
 
   const searchQueryParam = searchParams.get("search") || "";
   const [q, setQ] = useState(searchQueryParam);
@@ -50,17 +50,14 @@ export default function BlogList() {
     setQ(searchQueryParam);
   }, [searchQueryParam]);
 
-  const pageTitle =
-    activeCategory === "all"
-      ? "Blog"
-      : titleCase(activeCategory.replace(/\s*&\s*/g, " & "));
+  const pageTitle = activeCategory === "all" ? "Blog" : activeCategory;
 
   const filtered = useMemo(() => {
     return POSTS.slice()
       .sort((a, b) => (a.date < b.date ? 1 : -1))
       .filter((p) => {
         if (activeCategory === "all") return true;
-        return p.category.toLowerCase() === activeCategory;
+        return p.category === activeCategory;
       })
       .filter((p) => {
         if (!query) return true;
@@ -120,10 +117,18 @@ export default function BlogList() {
   }, []);
 
   const BLOG_ALL = "/blog";
+  // For categories fully covered by a same-named tag hub, canonicalize to the
+  // tag hub so the two URLs don't compete (see CATEGORY_CANONICAL_TAG).
+  const canonicalTag =
+    activeCategory === "all"
+      ? undefined
+      : CATEGORY_CANONICAL_TAG[CATEGORY_TO_SLUG[activeCategory] ?? ""];
   const canonicalUrl =
     activeCategory === "all"
       ? "https://chatrio.app/blog"
-      : `https://chatrio.app${categoryPath(activeCategory)}`;
+      : canonicalTag
+        ? `https://chatrio.app/blog/tag/${canonicalTag}`
+        : `https://chatrio.app${categoryPath(activeCategory)}`;
 
   const blogDesc = activeCategory === "all"
     ? "Read articles about love, romance, dating, and online connections on the Chatrio blog."
@@ -135,6 +140,11 @@ export default function BlogList() {
         <title>{activeCategory === "all" ? "Blog – Love, Dating & Chat Tips" : `${pageTitle} Blog`} | Chatrio</title>
         <meta name="description" content={blogDesc} />
         <link rel="canonical" href={canonicalUrl} />
+        {/* Category filter views duplicate the tag hubs (/blog/tag/*), which are
+            the one indexable taxonomy. Keep them crawlable but out of the index. */}
+        {activeCategory !== "all" && (
+          <meta name="robots" content="noindex,follow" />
+        )}
         <meta property="og:type" content="website" />
         <meta property="og:title" content={`${activeCategory === "all" ? "Chatrio Blog" : pageTitle} – Love, Dating & Chat`} />
         <meta property="og:description" content={blogDesc} />
@@ -158,7 +168,8 @@ export default function BlogList() {
       <section className="blog-hero">
         <h1 className="blog-title">{pageTitle}</h1>
         <p className="blog-sub">
-          Real stories, modern love, and meaningful conversations.
+          Real stories, modern love, and meaningful conversations.{" "}
+          <NavLink to="/blog/tags" className="blog-link">Browse all topics →</NavLink>
         </p>
 
         <div className="blog-search-wrap">
