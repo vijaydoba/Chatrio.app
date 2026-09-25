@@ -36,7 +36,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prebuild": "node ../scripts/generate-sitemap.js && node ../scripts/generate-blog-content.js && node ../scripts/audit-blog.js",
+    "prebuild": "node ../scripts/generate-sitemap.js && node ../scripts/generate-blog-content.js && node ../scripts/generate-redirects.js && node ../scripts/audit-blog.js",
     "build": "react-scripts build",
     "audit:blog": "node ../scripts/audit-blog.js",
     "backup:blog": "node ../scripts/generate-blog-backup.js",
