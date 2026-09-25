@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { createRandomVideoCall, RandomVideoCallController } from "../randomVideoCall";
 import { useAuth } from "../auth";
@@ -76,7 +76,105 @@ function VideoChatHead() {
         "totalTime": "PT1M",
         "tool": [{ "@type": "HowToTool", "name": "Web browser with camera and microphone" }],
       })}</script>
+      <script type="application/ld+json">{JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          { "@type": "Question", "name": "Is Chatrio video chat free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Random video chat on Chatrio is completely free — there are no per-minute fees, credits, or premium paywall to get matched. You just need a browser with a camera and microphone." } },
+          { "@type": "Question", "name": "Do I need to download an app?", "acceptedAnswer": { "@type": "Answer", "text": "No. Chatrio runs in your web browser on phone or desktop, so there's nothing to install. Open the page, sign in, and start matching." } },
+          { "@type": "Question", "name": "Why do I need to sign in?", "acceptedAnswer": { "@type": "Answer", "text": "A quick sign-in — an emailed code or Google, with no password — keeps the community accountable, reduces bots and throwaway accounts, and lets you add friends and reconnect with people you enjoyed talking to. It's free and takes a few seconds." } },
+          { "@type": "Question", "name": "Can I video chat without turning on my camera?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. If you'd rather not be on camera, use Chatrio Text Chat instead — it matches you with a stranger for a typed conversation, with no camera or microphone needed." } },
+          { "@type": "Question", "name": "Is random video chat safe?", "acceptedAnswer": { "@type": "Answer", "text": "Chatrio is for adults 18 and over. Your camera and microphone are only active during a call, you can skip anyone instantly, and you should never share personal or financial details with a stranger. See our Child Safety policy for how we handle abuse and underage use." } },
+          { "@type": "Question", "name": "How does matching work?", "acceptedAnswer": { "@type": "Answer", "text": "Matching is random and instant — tap Start Video Chat and you're connected with another available person right away, with no invite or scheduling step. If you don't click, skip and you'll meet someone new in seconds." } }
+        ]
+      })}</script>
     </Helmet>
+  );
+}
+
+function VideoChatSEO() {
+  return (
+    <section className="vc-seo" aria-label="About Chatrio random video chat">
+      <p className="vc-seo-intro">
+        Random video chat connects you face to face with a stranger, live, in a single tap.
+        Chatrio matches you instantly with real people for free, browser-based video
+        conversations — a modern, free alternative to classic random video chat sites like
+        Omegle. Meet someone new, have a real conversation, and add the people you click with
+        as friends.
+      </p>
+
+      <h2 className="vc-seo-h2">How random video chat works</h2>
+      <ol className="vc-seo-steps">
+        <li>
+          <span className="vc-seo-step-n">1</span>
+          <div>
+            <b>Sign in</b>
+            <p>Use an emailed code or Google — no password, and nothing to download.</p>
+          </div>
+        </li>
+        <li>
+          <span className="vc-seo-step-n">2</span>
+          <div>
+            <b>Start video chat</b>
+            <p>Allow camera and microphone access, then tap <em>Start Video Chat</em>.</p>
+          </div>
+        </li>
+        <li>
+          <span className="vc-seo-step-n">3</span>
+          <div>
+            <b>Get matched instantly</b>
+            <p>You're connected with a real stranger and video starts right away — no invite step. Skip anytime to meet someone new.</p>
+          </div>
+        </li>
+      </ol>
+
+      <h2 className="vc-seo-h2">Why chat on Chatrio</h2>
+      <ul className="vc-seo-features">
+        <li><b>Instant, random matching</b> — no invites, no scheduling, no waiting rooms.</li>
+        <li><b>Add friends</b> — clicked with someone? Send a friend request and pick the conversation back up later.</li>
+        <li><b>Prefer to type?</b> <Link to="/chat">Text Chat</Link> matches you with a stranger with no camera or mic needed.</li>
+        <li><b>Skip anytime</b> — one tap moves you on to the next person.</li>
+        <li><b>Free &amp; browser-based</b> — nothing to download; works on phone and desktop.</li>
+      </ul>
+
+      <h2 className="vc-seo-h2">Staying safe on video chat</h2>
+      <p className="vc-seo-body">
+        Chatrio is for adults 18 and over. Your camera and microphone are only active while
+        you're in a call, you can skip anyone instantly, and you should never share personal
+        or financial details with someone you've just met. Read our{" "}
+        <Link to="/child-safety">Child Safety policy</Link> for how we handle abuse and
+        underage use — or, if you'd rather meet people near you, explore local interest rooms
+        in <Link to="/circles">Circles</Link>.
+      </p>
+
+      <h2 className="vc-seo-h2">Frequently asked questions</h2>
+      <div className="vc-seo-faq">
+        <details>
+          <summary>Is Chatrio video chat free?</summary>
+          <p>Yes. Random video chat on Chatrio is completely free — there are no per-minute fees, credits, or premium paywall to get matched. You just need a browser with a camera and microphone.</p>
+        </details>
+        <details>
+          <summary>Do I need to download an app?</summary>
+          <p>No. Chatrio runs in your web browser on phone or desktop, so there's nothing to install. Open the page, sign in, and start matching.</p>
+        </details>
+        <details>
+          <summary>Why do I need to sign in?</summary>
+          <p>A quick sign-in — an emailed code or Google, with no password — keeps the community accountable, reduces bots and throwaway accounts, and lets you add friends and reconnect with people you enjoyed talking to. It's free and takes a few seconds.</p>
+        </details>
+        <details>
+          <summary>Can I video chat without turning on my camera?</summary>
+          <p>Yes. If you'd rather not be on camera, use Chatrio <Link to="/chat">Text Chat</Link> instead — it matches you with a stranger for a typed conversation, with no camera or microphone needed.</p>
+        </details>
+        <details>
+          <summary>Is random video chat safe?</summary>
+          <p>Chatrio is for adults 18 and over. Your camera and microphone are only active during a call, you can skip anyone instantly, and you should never share personal or financial details with a stranger. See our <Link to="/child-safety">Child Safety policy</Link> for how we handle abuse and underage use.</p>
+        </details>
+        <details>
+          <summary>How does matching work?</summary>
+          <p>Matching is random and instant — tap Start Video Chat and you're connected with another available person right away, with no invite or scheduling step. If you don't click, skip and you'll meet someone new in seconds.</p>
+        </details>
+      </div>
+    </section>
   );
 }
 
@@ -101,6 +199,7 @@ export default function VideoChat() {
   const [countdownDeadline, setCountdownDeadline] = useState<number | null>(null);
   const [countdownNow, setCountdownNow] = useState(Date.now());
   const [friendStatus, setFriendStatus] = useState<FriendStatus>("idle");
+  const [hadCall, setHadCall] = useState(false);
 
   const socketRef = useRef<Socket | null>(null);
   const myIdRef = useRef<string>("");
@@ -166,6 +265,7 @@ export default function VideoChat() {
       setFriendStatus("idle");
       setCountdownDeadline(null);
       setMode("connected");
+      setHadCall(true);
 
       if (localStreamRef.current) {
         callRef.current = createRandomVideoCall({
@@ -389,7 +489,7 @@ export default function VideoChat() {
 
   if (!user) {
     return (
-      <div className="vc-page">
+      <div className="vc-page vc-page-landing">
         <VideoChatHead />
         <div className="vc-lobby">
           <div className="vc-lobby-icon">
@@ -410,6 +510,7 @@ export default function VideoChat() {
             Free with an email code or Google — takes a few seconds.
           </p>
         </div>
+        <VideoChatSEO />
       </div>
     );
   }
@@ -451,6 +552,20 @@ export default function VideoChat() {
           {waitingCount > 1 && <p className="vc-waiting-count">{waitingCount} people waiting</p>}
           {!!notice && <div className="vc-notice">{notice}</div>}
           <button className="vc-cancel-btn" onClick={leaveVideoChat}>Cancel</button>
+          <Link to="/chat" className="waiting-circles-promo">
+            <span className="wcp-head">
+              <span className="wcp-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+              </span>
+              <span className="wcp-text">
+                <b>{hadCall ? "Rather type than wait?" : "Camera shy or waiting too long?"}</b>
+                <span>Text Chat matches you instantly — no camera or mic needed.</span>
+              </span>
+            </span>
+            <span className="wcp-cta">Start Text Chat →</span>
+          </Link>
         </div>
       )}
 
