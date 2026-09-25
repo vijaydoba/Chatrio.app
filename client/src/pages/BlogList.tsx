@@ -140,11 +140,6 @@ export default function BlogList() {
         <title>{activeCategory === "all" ? "Blog – Love, Dating & Chat Tips" : `${pageTitle} Blog`} | Chatrio</title>
         <meta name="description" content={blogDesc} />
         <link rel="canonical" href={canonicalUrl} />
-        {/* Category filter views duplicate the tag hubs (/blog/tag/*), which are
-            the one indexable taxonomy. Keep them crawlable but out of the index. */}
-        {activeCategory !== "all" && (
-          <meta name="robots" content="noindex,follow" />
-        )}
         <meta property="og:type" content="website" />
         <meta property="og:title" content={`${activeCategory === "all" ? "Chatrio Blog" : pageTitle} – Love, Dating & Chat`} />
         <meta property="og:description" content={blogDesc} />
@@ -160,6 +155,17 @@ export default function BlogList() {
           "name": "Chatrio Blog",
           "description": "Articles about love, dating, romance, and online connections.",
           "publisher": { "@type": "Organization", "name": "Chatrio", "url": "https://chatrio.app", "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-icon-512-2026.png", "width": 512, "height": 512 } }
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://chatrio.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://chatrio.app/blog" },
+            ...(activeCategory === "all"
+              ? []
+              : [{ "@type": "ListItem", "position": 3, "name": activeCategory, "item": `https://chatrio.app${categoryPath(activeCategory)}` }]),
+          ],
         })}</script>
         {featured && (
           <link rel="preload" as="image" href={normalizeAssetPath(getSlotImage(featured.thumbnail, "featured"))} />

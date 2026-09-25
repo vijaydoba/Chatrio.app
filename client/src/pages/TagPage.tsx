@@ -88,6 +88,16 @@ export default function TagPage({ slug }: { slug: string }) {
             })),
           },
         })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://chatrio.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://chatrio.app/blog" },
+            { "@type": "ListItem", "position": 3, "name": "Topics", "item": "https://chatrio.app/blog/tags" },
+            { "@type": "ListItem", "position": 4, "name": tag.label, "item": canonicalUrl },
+          ],
+        })}</script>
         {featured && (
           <link rel="preload" as="image" href={normalizeAssetPath(getSlotImage(featured.thumbnail, "featured"))} />
         )}
@@ -194,6 +204,9 @@ export default function TagPage({ slug }: { slug: string }) {
                     {t.label} <span className="blog-tagcloud-count">{t.count}</span>
                   </NavLink>
                 ))}
+                <NavLink to="/blog/tags" className="blog-tagcloud-chip">
+                  View all topics →
+                </NavLink>
               </div>
             </nav>
           )}
