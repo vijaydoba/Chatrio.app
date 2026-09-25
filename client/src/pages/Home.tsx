@@ -22,9 +22,9 @@ function normalizeAssetPath(path?: string) {
 // sync with the canonical post data (silently skipped if a slug is removed).
 const FEATURED_BLOG_SLUGS = [
   "omegle-alternatives-2026-free-anonymous-chat",
-  "random-chat-apps-for-india-best-options-2025",
-  "best-anonymous-chat-app-india-2025",
-  "best-anonymous-chat-latin-america-2025",
+  "random-chat-apps-for-india-best-options",
+  "best-anonymous-chat-app-india",
+  "best-anonymous-chat-latin-america",
 ];
 
 const featuredPosts = FEATURED_BLOG_SLUGS

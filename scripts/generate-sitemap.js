@@ -11,6 +11,10 @@ const path = require("path");
 
 const BASE_URL = "https://chatrio.app";
 const TODAY = new Date().toISOString().split("T")[0];
+// Stable lastmod for static + tag-hub pages. Bump only when those pages actually
+// change. Using TODAY here would falsely claim every page was modified on every
+// build — a signal Google distrusts. Blog posts keep their own real dates.
+const SITE_LASTMOD = "2026-09-25";
 
 /* ── Parse TypeScript source with regex ── */
 
@@ -52,31 +56,40 @@ const postObjects = postsSrc
 
 const tagPages = getQualifyingTags(postObjects).map((tag) => ({
   loc: `/blog/tag/${tag.slug}`,
-  lastmod: TODAY,
+  lastmod: SITE_LASTMOD,
   changefreq: "weekly",
   priority: "0.7",
   image: null,
 }));
 
-/* ── Static pages ── */
+/* ── Static pages ──
+   `sitemap: false` = still prerendered (so no empty CSR shell if crawled) but
+   omitted from sitemap.xml. All /blog/<category> filter views are noindex,follow
+   (the /blog/tag/* hubs are the one indexable taxonomy), so they're kept out of
+   the sitemap — a noindex URL in the sitemap trips GSC's "Submitted URL marked
+   noindex" warning. */
 const staticPages = [
-  { loc: "/",             lastmod: TODAY, changefreq: "weekly",  priority: "1.0" },
-  { loc: "/blog",         lastmod: TODAY, changefreq: "weekly",  priority: "0.9" },
-  { loc: "/blog/love",    lastmod: TODAY, changefreq: "weekly",  priority: "0.7" },
-  { loc: "/blog/romance", lastmod: TODAY, changefreq: "weekly",  priority: "0.7" },
-  { loc: "/blog/dating",  lastmod: TODAY, changefreq: "weekly",  priority: "0.7" },
-  { loc: "/blog/chat%20%26%20connection", lastmod: TODAY, changefreq: "weekly", priority: "0.7" },
-  { loc: "/blog/relationships", lastmod: TODAY, changefreq: "weekly", priority: "0.7" },
-  { loc: "/blog/mental%20health", lastmod: TODAY, changefreq: "weekly", priority: "0.7" },
-  { loc: "/circles",      lastmod: TODAY, changefreq: "weekly",  priority: "0.8" },
-  { loc: "/circles/app",  lastmod: TODAY, changefreq: "monthly", priority: "0.6" },
-  { loc: "/blind-date",   lastmod: TODAY, changefreq: "weekly",  priority: "0.8" },
-  { loc: "/about",        lastmod: TODAY, changefreq: "monthly", priority: "0.6" },
-  { loc: "/editorial-standards", lastmod: TODAY, changefreq: "monthly", priority: "0.5" },
-  { loc: "/contact",      lastmod: TODAY, changefreq: "monthly", priority: "0.5" },
-  { loc: "/privacy",      lastmod: TODAY, changefreq: "yearly",  priority: "0.4" },
-  { loc: "/terms",        lastmod: TODAY, changefreq: "yearly",  priority: "0.4" },
-  { loc: "/child-safety", lastmod: TODAY, changefreq: "yearly",  priority: "0.4" },
+  // NOTE: /friends is intentionally omitted — it's an auth-gated private user
+  // page (noindex,follow), not a public landing page.
+  { loc: "/",             lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "1.0" },
+  { loc: "/video-chat",   lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "0.9" },
+  { loc: "/blog",         lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "0.9" },
+  { loc: "/blog/tags",    lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "0.6" },
+  { loc: "/blog/love",          lastmod: SITE_LASTMOD, changefreq: "weekly", priority: "0.7", sitemap: false },
+  { loc: "/blog/romance",       lastmod: SITE_LASTMOD, changefreq: "weekly", priority: "0.7", sitemap: false },
+  { loc: "/blog/dating",        lastmod: SITE_LASTMOD, changefreq: "weekly", priority: "0.7", sitemap: false },
+  { loc: "/blog/relationships", lastmod: SITE_LASTMOD, changefreq: "weekly", priority: "0.7", sitemap: false },
+  { loc: "/blog/chat-and-connection", lastmod: SITE_LASTMOD, changefreq: "weekly", priority: "0.7", sitemap: false },
+  { loc: "/blog/mental-health", lastmod: SITE_LASTMOD, changefreq: "weekly", priority: "0.7", sitemap: false },
+  { loc: "/circles",      lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "0.8" },
+  { loc: "/circles/app",  lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.6" },
+  { loc: "/blind-date",   lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "0.8" },
+  { loc: "/about",        lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.6" },
+  { loc: "/editorial-standards", lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.5" },
+  { loc: "/contact",      lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.5" },
+  { loc: "/privacy",      lastmod: SITE_LASTMOD, changefreq: "yearly",  priority: "0.4" },
+  { loc: "/terms",        lastmod: SITE_LASTMOD, changefreq: "yearly",  priority: "0.4" },
+  { loc: "/child-safety", lastmod: SITE_LASTMOD, changefreq: "yearly",  priority: "0.4" },
 ];
 
 /* ── Blog posts ── */
@@ -109,7 +122,7 @@ const xml = `<?xml version="1.0" encoding="UTF-8"?>
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
   <!-- STATIC PAGES -->
-${staticPages.map(urlEntry).join("\n")}
+${staticPages.filter((p) => p.sitemap !== false).map(urlEntry).join("\n")}
 
   <!-- BLOG POSTS -->
 ${postPages.map(urlEntry).join("\n")}

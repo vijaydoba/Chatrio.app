@@ -24,6 +24,8 @@ import Home from "./pages/Home";
 import BlogList from "./pages/BlogList";
 import BlogPost from "./pages/BlogPost";
 import TagPage from "./pages/TagPage";
+import { SLUG_TO_CATEGORY } from "./data/posts";
+import BlogTags from "./pages/BlogTags";
 import { Helmet } from "react-helmet-async";
 import { BLIND_DATE_LIVE } from "./config";
 
@@ -49,15 +51,11 @@ type Theme = "light" | "dark";
 /* ---------------- Pages (inline) ---------------- */
 
 // /blog/:slug is shared by category listing pages and individual post pages —
-// resolve which to render based on the param. Must cover every value in
-// Post["category"] (posts.ts) lowercased, since useParams decodes the URL
-// (the nav pill for "Chat & Connection" links to /blog/chat%20%26%20connection).
-const BLOG_CATEGORY_SLUGS = new Set([
-  "love", "romance", "dating", "relationships", "chat & connection", "mental health",
-]);
+// resolve which to render based on the param. SLUG_TO_CATEGORY (posts.ts) maps
+// clean category slugs (and legacy space/encoded slugs) to a category name.
 function BlogRoute() {
   const { slug } = useParams<{ slug?: string }>();
-  if (slug && BLOG_CATEGORY_SLUGS.has(slug.toLowerCase())) {
+  if (slug && SLUG_TO_CATEGORY[slug.toLowerCase()]) {
     return <BlogList />;
   }
   // A key guarantees a fresh content state when navigating directly between
@@ -253,7 +251,7 @@ export default function App() {
   const BLOG_LOVE = "/blog/love";
   const BLOG_ROMANCE = "/blog/romance";
   const BLOG_DATING = "/blog/dating";
-  const BLOG_CHAT = "/blog/chat%20%26%20connection";
+  const BLOG_CHAT = "/blog/chat-and-connection";
 
   return (
     <div className="site">
@@ -462,6 +460,7 @@ export default function App() {
           ) : (
             <Routes>
               <Route path="/blog" element={<BlogList />} />
+              <Route path="/blog/tags" element={<BlogTags />} />
               <Route path="/blog/tag/:tagSlug" element={<TagRoute />} />
               <Route path="/blog/:slug" element={<BlogRoute />} />
               <Route path="/" element={isNative ? <Navigate to="/circles" replace /> : <Home />} />
