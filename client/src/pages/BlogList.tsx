@@ -140,6 +140,11 @@ export default function BlogList() {
         <title>{activeCategory === "all" ? "Blog – Love, Dating & Chat Tips" : `${pageTitle} Blog`} | Chatrio</title>
         <meta name="description" content={blogDesc} />
         <link rel="canonical" href={canonicalUrl} />
+        {/* Category filter views duplicate the /blog/tag/* hubs (the one indexable
+            taxonomy) and /blog itself. Keep crawlable but out of the index. */}
+        {activeCategory !== "all" && (
+          <meta name="robots" content="noindex,follow" />
+        )}
         <meta property="og:type" content="website" />
         <meta property="og:title" content={`${activeCategory === "all" ? "Chatrio Blog" : pageTitle} – Love, Dating & Chat`} />
         <meta property="og:description" content={blogDesc} />
