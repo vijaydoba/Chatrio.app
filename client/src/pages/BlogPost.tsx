@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, NavLink, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { POSTS, Post, POST_REDIRECTS } from "../data/posts";
+import { POSTS, Post, POST_REDIRECTS, CATEGORY_TO_SLUG } from "../data/posts";
 import { getPostKeywords, relatedPostScore, getPostTagChips } from "../data/blog-topics";
 
 function readingTime(html: string): number {
@@ -218,7 +218,7 @@ export default function BlogPost() {
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://chatrio.app/" },
             { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://chatrio.app/blog" },
-            { "@type": "ListItem", "position": 3, "name": post.category, "item": `https://chatrio.app/blog/${encodeURIComponent(String(post.category).toLowerCase())}` },
+            { "@type": "ListItem", "position": 3, "name": post.category, "item": `https://chatrio.app/blog/${CATEGORY_TO_SLUG[post.category] ?? String(post.category).toLowerCase()}` },
             { "@type": "ListItem", "position": 4, "name": post.title, "item": canonicalUrl }
           ]
         })}</script>
