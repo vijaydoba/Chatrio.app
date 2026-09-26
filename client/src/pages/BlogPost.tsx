@@ -275,6 +275,31 @@ export default function BlogPost() {
         />
       )}
 
+      <aside
+        className="post-cta"
+        aria-label="Try Chatrio"
+        style={{
+          marginTop: 40,
+          padding: "24px 20px",
+          borderRadius: 16,
+          border: "1px solid var(--border, #e2e8f0)",
+          background: "var(--surface-2, rgba(124,58,237,0.06))",
+          textAlign: "center",
+        }}
+      >
+        <h2 style={{ fontSize: "1.25rem", fontWeight: 700, margin: "0 0 6px" }}>
+          Ready to start a conversation?
+        </h2>
+        <p style={{ margin: "0 0 16px", opacity: 0.85 }}>
+          No sign-up, fully anonymous. Pick how you want to connect:
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
+          <NavLink to="/chat" className="post-cta-btn">Free anonymous text chat →</NavLink>
+          <NavLink to="/video-chat" className="post-cta-btn">Random video chat with strangers →</NavLink>
+          <NavLink to="/circles" className="post-cta-btn">Meet people near you →</NavLink>
+        </div>
+      </aside>
+
       <aside className="post-author-box" aria-label="About the author">
         <div className="post-author-avatar" aria-hidden="true">C</div>
         <div>

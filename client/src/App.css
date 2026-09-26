@@ -1422,6 +1422,22 @@ html:not(.dark) .blog-tagcloud-chip{color: #6d28d9;background: rgba(124,58,237,0
   border-color: rgba(124,58,237,.45);
   transform: translateY(-2px);
 }
+.post-cta-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 18px;
+  min-height: 44px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: .95rem;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  transition: transform .16s ease, opacity .16s ease;
+}
+.post-cta-btn:hover{ transform: translateY(-2px); opacity: .92; }
 .post-related-topic{
   display: inline-flex;
   padding: 4px 8px;
