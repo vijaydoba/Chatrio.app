@@ -38,6 +38,14 @@ const pairs = [...block[1].matchAll(/"([^"]+)":\s*"([^"]+)"/g)].map((m) => ({
   to: m[2],
 }));
 
+// Pruned posts (thin / low-value, removed to lift the site's quality signal) →
+// 410 Gone, so Google drops them from the index instead of treating a bare 404
+// as possibly-temporary. Source of truth: client/src/data/pruned-slugs.json.
+let gone = [];
+try {
+  gone = require("../client/src/data/pruned-slugs.json");
+} catch (_) { /* no prune list yet */ }
+
 // Some redirects point at a slug that is itself a redirect key (old →
 // consolidated-dupe → keeper). Resolve the chain so we emit a DIRECT 301 to the
 // final keeper — crawlers never hit a 301→301 chain, which Google penalizes.
@@ -61,6 +69,10 @@ const lines = pairs.map(({ from, to }) => {
   return `location ~ ^/blog/${reEscape(from)}/?$ { return 301 /blog/${target}; }`;
 });
 
+const goneLines = gone.map(
+  (slug) => `location ~ ^/blog/${reEscape(slug)}/?$ { return 410; }`
+);
+
 const conf = `# ─── AUTO-GENERATED — do not edit by hand ───────────────────────────────────
 # Source: client/src/data/posts.ts (POST_REDIRECTS)
 # Regenerate: node scripts/generate-redirects.js  (also runs on client prebuild)
@@ -72,13 +84,16 @@ const conf = `# ─── AUTO-GENERATED — do not edit by hand ─────
 #   location /blog/ { try_files $uri $uri/ =404; }
 # rule, then:  sudo nginx -t && sudo systemctl reload nginx
 #
-# ${pairs.length} redirects.
+# ${pairs.length} redirects, ${goneLines.length} 410s (pruned posts).
 
 ${lines.join("\n")}
+
+# ─── 410 GONE — pruned thin/low-value posts (client/src/data/pruned-slugs.json) ───
+${goneLines.join("\n")}
 `;
 
 fs.writeFileSync(outPath, conf, "utf8");
 console.log(
-  `✅  nginx-blog-redirects.conf updated — ${pairs.length} 301s` +
+  `✅  nginx-blog-redirects.conf updated — ${pairs.length} 301s, ${goneLines.length} 410s` +
     (warnings ? `, ${warnings} warning(s)` : "")
 );
