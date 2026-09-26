@@ -99,11 +99,12 @@ VPS (`185.190.142.158`).
 ## Remaining work
 
 ### P1-7 — Prune / consolidate thin posts
-~200 psychology/filler posts Google won't index. **Wait ~2–4 weeks** after the
-2026-09-25 slug/redirect migration so 301 equity consolidates in GSC, then prune
-on clean per-page impression data (pullable via the GSC service account —
-`webmasters` scope, `searchAnalytics.query`). Destructive (301s live URLs) — needs
-a plan + sign-off.
+Data-backed plan ready in **`PRUNE-PLAN.md`**: 109 of 203 posts have 0 GSC
+impressions over 90 days; after excluding 5 strategic (young) Circles/Blind Date
+cluster posts, **104 prune candidates** remain. NOT auto-executed — each removal
+needs a consolidation target + review (301 via `POST_REDIRECTS` + nginx, or 410
+for pure filler). Data pulled via the GSC service account (`webmasters` scope,
+`searchAnalytics.query`).
 
 ### P1-8 — Topic clusters + internal linking
 Group posts into clusters pointing to a pillar page and to each other; every post
