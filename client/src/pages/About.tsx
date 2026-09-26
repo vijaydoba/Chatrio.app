@@ -134,8 +134,9 @@ export default function About() {
           delays
         </li>
         <li>
-          <strong>Security:</strong> End-to-end encryption for all direct
-          messages
+          <strong>Security:</strong> Encrypted connections everywhere (HTTPS and
+          secure WebSockets), with peer-to-peer encrypted video and voice via
+          WebRTC
         </li>
         <li>
           <strong>Hosting:</strong> Global CDN for low latency worldwide
