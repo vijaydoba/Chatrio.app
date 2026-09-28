@@ -162,7 +162,7 @@ export default function BlogPost() {
   }
 
   const canonicalUrl = `https://chatrio.app/blog/${post.slug}`;
-  const ogImage = post.thumbnail ? `https://chatrio.app/${String(post.thumbnail).replace(/^\/?/, "")}` : "https://chatrio.app/branding/chatrio-512.png?v=2";
+  const ogImage = post.thumbnail ? `https://chatrio.app/${String(post.thumbnail).replace(/^\/?/, "")}` : "https://chatrio.app/branding/chatrio-icon-512-2026.png";
   const metaDescription = seoDescription(post.excerpt);
   const mins = rawContentHtml ? readingTime(contentHtml) : null;
 
@@ -208,7 +208,7 @@ export default function BlogPost() {
             "@type": "Organization",
             "name": "Chatrio",
             "url": "https://chatrio.app",
-            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-512.png?v=2", "width": 512, "height": 512 }
+            "logo": { "@type": "ImageObject", "url": "https://chatrio.app/branding/chatrio-icon-512-2026.png", "width": 512, "height": 512 }
           },
           "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl }
         })}</script>

@@ -684,6 +684,10 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
         <title>Free Random Chat – Talk to Strangers | Chatrio</title>
         <meta name="description" content="Start a free anonymous chat with a random stranger right now. No sign-up, no account. Choose your interests and click New Chat — instant connection." />
         <link rel="canonical" href="https://chatrio.app/chat" />
+        {/* The live chat interface is a thin app shell when crawled (no session),
+            kept out of the sitemap. noindex so Google drops it — robots.txt no
+            longer blocks it, so crawlers can actually SEE this directive. */}
+        <meta name="robots" content="noindex, follow" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Free Random Chat – Talk to Strangers | Chatrio" />
         <meta property="og:description" content="Anonymous random chat. No sign-up needed. Meet strangers instantly." />

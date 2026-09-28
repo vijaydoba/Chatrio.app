@@ -29,7 +29,9 @@
     <meta name="apple-mobile-web-app-title" content="Chatrio" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="application-name" content="Chatrio" />
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <!-- robots is set per-route via Helmet (default in App.tsx; pages override
+         with noindex). Kept out of this static head so there's never a duplicate
+         index+noindex pair on noindex pages. -->
     <meta name="author" content="Chatrio" />
 
     <!-- Open Graph (static across all pages) -->
