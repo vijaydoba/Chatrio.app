@@ -9,7 +9,7 @@ import {
   SLUG_TO_CATEGORY,
   CATEGORY_CANONICAL_TAG,
 } from "../data/posts";
-import { getPostKeywords } from "../data/blog-topics";
+import { getPostKeywords, findQualifyingTag } from "../data/blog-topics";
 
 function normalizeAssetPath(path?: string) {
   if (!path) return "/images/default-thumb.png";
@@ -119,10 +119,14 @@ export default function BlogList() {
   const BLOG_ALL = "/blog";
   // For categories fully covered by a same-named tag hub, canonicalize to the
   // tag hub so the two URLs don't compete (see CATEGORY_CANONICAL_TAG).
-  const canonicalTag =
+  // Only canonicalize to a tag hub that actually qualifies (>= post threshold).
+  // If the mapped tag no longer qualifies (e.g. after a prune), self-canonicalize
+  // instead of pointing the canonical at a 404 tag page.
+  const mappedTag =
     activeCategory === "all"
       ? undefined
       : CATEGORY_CANONICAL_TAG[CATEGORY_TO_SLUG[activeCategory] ?? ""];
+  const canonicalTag = mappedTag && findQualifyingTag(mappedTag) ? mappedTag : undefined;
   const canonicalUrl =
     activeCategory === "all"
       ? "https://chatrio.app/blog"

@@ -30,7 +30,5 @@ Allow: /
 
 User-agent: *
 Allow: /
-Disallow: /chat
-Disallow: /chat/
 
 Sitemap: https://chatrio.app/sitemap.xml

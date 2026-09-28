@@ -152,8 +152,13 @@ export const SLUG_TO_CATEGORY: Record<string, string> = {
 // Categories whose intent is fully covered by a canonical /blog/tag/<slug> hub
 // of the same name. These pages canonicalize to the tag hub and are dropped
 // from the sitemap so the two URLs stop cannibalizing each other.
+// Category filter views (noindex) canonicalize to their same-named tag hub so
+// the two URLs don't compete. Only list a category here if its tag hub actually
+// qualifies (>= post threshold in blog-topics.rules). "love" is intentionally
+// omitted: after pruning it no longer meets the hub threshold, so /blog/tag/love
+// 404s — pointing a canonical there would be a broken signal. BlogList also
+// re-validates against findQualifyingTag() as a safety net.
 export const CATEGORY_CANONICAL_TAG: Record<string, string> = {
-  "love": "love",
   "romance": "romance",
   "dating": "dating",
   "relationships": "relationships",

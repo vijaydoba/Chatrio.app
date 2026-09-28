@@ -255,6 +255,13 @@ export default function App() {
 
   return (
     <div className="site">
+      {/* Site-wide default robots directive. Owning it here (instead of a static
+          tag in index.html that Helmet can't dedupe) means pages that set their
+          own noindex cleanly REPLACE this — one robots meta per page, no
+          conflicting index+noindex pair. */}
+      <Helmet>
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+      </Helmet>
       {isNative && <NativeSplash />}
       {!isNative && (
       <>
