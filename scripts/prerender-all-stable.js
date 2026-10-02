@@ -295,7 +295,17 @@ async function main() {
     }
 
     if (!homepageHtml) throw new Error("Homepage was not prerendered.");
-    fs.writeFileSync(path.join(BUILD_DIR, "200.html"), homepageHtml);
+    // 200.html is the SPA fallback nginx serves for any route without its own
+    // prerendered file — i.e. the app routes (/chat, /friends, /login, /signup,
+    // /nearby, …). Those must carry NO ad code (ads next to live chat/video UGC
+    // violates AdSense policy). The homepage snapshot has the AdSense <script>
+    // injected by the path-gated loader in index.html; strip it from the fallback
+    // only. Real content pages keep their own prerendered files (with the tag).
+    const fallbackHtml = homepageHtml.replace(
+      /<script\b[^>]*\badsbygoogle\.js[^>]*><\/script>/gi,
+      ""
+    );
+    fs.writeFileSync(path.join(BUILD_DIR, "200.html"), fallbackHtml);
 
     await browser.close();
     browser = await launchBrowser();
