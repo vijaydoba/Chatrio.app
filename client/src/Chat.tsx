@@ -233,19 +233,6 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
     }
   }, [mode]);
 
-  // Remove Google's consent banner if it appears (fallback to CSS hiding)
-  useEffect(() => {
-    const removeConsentBanner = () => {
-      const banners = document.querySelectorAll(
-        '[class*="fc-"], [id*="fc-"], .fc-consent-root, .fc-message-root'
-      );
-      banners.forEach((el) => el.remove());
-    };
-    removeConsentBanner();
-    const interval = setInterval(removeConsentBanner, 500);
-    return () => clearInterval(interval);
-  }, []);
-
   useEffect(() => {
     const socket = io(SOCKET_URL, {
       autoConnect: true,
