@@ -112,8 +112,21 @@
       gtag('config', 'G-PFV6PRM1N2');
     </script>
 
-    <!-- Google AdSense Auto Ads -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4413754398988234" crossorigin="anonymous"></script>
+    <!-- Google AdSense — loaded on content pages only. The chat / video-chat /
+         circles app routes carry live user media (UGC); per AdSense policy no ad
+         code may run there, so we gate the loader by path. Same HTML is served to
+         everyone (not cloaking) — the app routes simply contain no ad code. -->
+    <script>
+      (function () {
+        var APP_ROUTES = /^\/(chat|video-chat|circles|circles-admin|blind-date|friends|nearby|login|signup)(\/|$)/;
+        if (APP_ROUTES.test(location.pathname)) return;
+        var s = document.createElement("script");
+        s.async = true;
+        s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4413754398988234";
+        s.crossOrigin = "anonymous";
+        document.head.appendChild(s);
+      })();
+    </script>
 
     <!-- Ahrefs Analytics -->
     <script src="https://analytics.ahrefs.com/analytics.js" data-key="dBx/GqBhaKFlz0Q0AYwZSQ" async></script>
