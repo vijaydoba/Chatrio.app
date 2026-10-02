@@ -136,6 +136,15 @@ async function render(browser, route) {
     }
   });
 
+  // Tell the page it's being prerendered so the path-gated AdSense loader in
+  // index.html skips injecting the ad <script>. We never want the ad tag baked
+  // into a static snapshot: the homepage snapshot doubles as the SPA fallback
+  // nginx serves for app routes (/chat, /login, …), which must stay ad-free.
+  // Ads load at runtime via the same gate on real content-page visits.
+  await page.evaluateOnNewDocument(() => {
+    window.__PRERENDERING__ = true;
+  });
+
   try {
     await page.goto(`http://127.0.0.1:${PORT}${route}`, {
       waitUntil: "networkidle0",
