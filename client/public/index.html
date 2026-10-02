@@ -118,6 +118,7 @@
          everyone (not cloaking) — the app routes simply contain no ad code. -->
     <script>
       (function () {
+        if (window.__PRERENDERING__) return;
         var APP_ROUTES = /^\/(chat|video-chat|circles|circles-admin|blind-date|friends|nearby|login|signup)(\/|$)/;
         if (APP_ROUTES.test(location.pathname)) return;
         if (document.querySelector('script[src*="adsbygoogle.js"]')) return;
