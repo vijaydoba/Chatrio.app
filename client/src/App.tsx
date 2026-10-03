@@ -170,6 +170,75 @@ function CookieBanner() {
   );
 }
 
+// Routes where a user actually connects with strangers (live text/video chat,
+// local Circles rooms, Blind Date). Chatrio is an adults-only service (Terms §1),
+// so these sit behind a one-time 18+ confirmation — the entry signal reviewers
+// and users see before any stranger interaction. The homepage and content pages
+// stay open (SEO + ads); the gate fires when someone enters a chat feature.
+const AGE_GATED = /^\/(chat|video-chat|circles|blind-date)(\/|$)/;
+
+function AgeGate() {
+  const { pathname } = useLocation();
+  // Default hidden so it's never baked into a prerendered snapshot (keeps page
+  // content in the static HTML for SEO and matches the first client render to
+  // avoid a hydration mismatch). The effect decides visibility after mount.
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const confirmed = localStorage.getItem("age_confirmed") === "true";
+    setVisible(AGE_GATED.test(pathname) && !confirmed);
+  }, [pathname]);
+
+  // Lock background scroll while the gate is up.
+  useEffect(() => {
+    if (!visible) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [visible]);
+
+  if (!visible) return null;
+
+  const confirm = () => {
+    localStorage.setItem("age_confirmed", "true");
+    setVisible(false);
+  };
+
+  const leave = () => {
+    window.location.href = "https://www.google.com/";
+  };
+
+  return (
+    <div className="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
+      <div className="age-gate-card">
+        <div className="age-gate-badge">18+</div>
+        <h2 className="age-gate-title" id="age-gate-title">Are you 18 or older?</h2>
+        <p className="age-gate-text">
+          Chatrio is an anonymous chat platform for adults only. You must be at least
+          18 to use the chat, video, and Circles features. By entering, you confirm
+          you are 18 or older and agree to our{" "}
+          <a href="/terms" className="age-gate-link">Terms</a> and{" "}
+          <a href="/child-safety" className="age-gate-link">Child Safety</a> policy.
+        </p>
+        <div className="age-gate-actions">
+          <button className="age-gate-btn age-gate-btn-primary" onClick={confirm}>
+            Yes, I'm 18 or older
+          </button>
+          <button className="age-gate-btn age-gate-btn-outline" onClick={leave}>
+            No, I'm under 18
+          </button>
+        </div>
+        <p className="age-gate-fineprint">
+          We don't collect any personal data to verify your age. If you're under 18,
+          Chatrio isn't for you.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 /* ---------------- App ---------------- */
 
 // Running inside the Capacitor-wrapped Android app: it ships Circles only,
@@ -487,6 +556,7 @@ export default function App() {
       {!isNative && (
       <>
       <CookieBanner />
+      <AgeGate />
 
       <footer className="site-footer">
         <div className="site-wrap footer-grid">
