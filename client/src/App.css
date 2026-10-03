@@ -4902,6 +4902,92 @@ html.dark .tg-chat.tg-bg-dots { background-color: #1a1a2e; background-image: rad
   .cookie-btn { text-align: center; }
 }
 
+/* 18+ age gate — one-time confirmation before stranger-chat features */
+.age-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(10, 10, 20, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.age-gate-card {
+  width: 100%;
+  max-width: 440px;
+  background: #1a1a2e;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 32px 28px;
+  text-align: center;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+.age-gate-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.age-gate-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 12px;
+}
+.age-gate-text {
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.65;
+  margin: 0 0 22px;
+}
+.age-gate-link {
+  color: #a78bfa;
+  text-decoration: underline;
+}
+.age-gate-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.age-gate-btn {
+  padding: 13px 18px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s, transform 0.05s;
+  width: 100%;
+}
+.age-gate-btn:hover { opacity: 0.9; }
+.age-gate-btn:active { transform: translateY(1px); }
+.age-gate-btn-primary {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  color: #fff;
+}
+.age-gate-btn-outline {
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.85);
+}
+.age-gate-fineprint {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.5;
+  margin: 18px 0 0;
+}
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
   .stories-title { font-size: 28px; }
