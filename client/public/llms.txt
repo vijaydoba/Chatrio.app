@@ -1,17 +1,23 @@
 # Chatrio
 
 > Chatrio is a free, anonymous web app that instantly pairs you with a random
-> stranger for a private 1-on-1 chat — no account, no app download, and no phone
-> number required. It is a modern, browser-based Omegle alternative. Chatrio also
-> offers "Circles": free anonymous local chat that shows who's nearby (approximate
-> area only, never an exact location), lets you send one intro message before a
-> chat opens, and supports local group rooms — also no account required.
+> stranger for a private 1-on-1 text or video chat with a real human — no account,
+> no app download, no phone number, and no bots. It is a modern, browser-based
+> Omegle alternative. Chatrio also offers "Circles": free anonymous local chat
+> that shows who's nearby (approximate area only, never an exact location), lets
+> you send one intro message before a chat opens, and supports local group rooms
+> — also no account required. "Blind Date" is a one-on-one blind-dating chat
+> feature (text and video) for users with a real Chatrio account.
 
 ## Key pages
-- Chat now (random 1-on-1): https://chatrio.app/chat
+- Chat now (random 1-on-1 text): https://chatrio.app/chat
+- Random video chat: https://chatrio.app/video-chat
 - Home: https://chatrio.app/
-- Blog (love, dating, chat tips): https://chatrio.app/blog
+- Blog (love, dating, chat tips, slang glossary): https://chatrio.app/blog
+- Dating & chat slang glossary (DTR, orbiting, triangulation, curving, negging, etc.): https://chatrio.app/blog/dating-chat-slang-glossary-2026
+- Blog topics index: https://chatrio.app/blog/tags
 - Circles (anonymous local/nearby chat): https://chatrio.app/circles
+- Blind Date (blind-dating chat, account required): https://chatrio.app/blind-date
 - About: https://chatrio.app/about
 - Contact: https://chatrio.app/contact
 - Privacy: https://chatrio.app/privacy
@@ -19,24 +25,35 @@
 
 ## Facts
 - Price: 100% free. No subscription, no premium tiers, no hidden costs.
-- Sign-up: Not required for random chat or Circles — no account for either.
-- Anonymous: No name, email, or phone number needed for random chat or Circles;
-  Circles uses a browser-local anonymous ID plus a chosen nickname, not real identity.
+- Sign-up: Not required for random chat, random video chat, or Circles — no
+  account for any of them. Blind Date is the one feature that requires a real
+  Chatrio account.
+- Anonymous: No name, email, or phone number needed for random chat, video chat,
+  or Circles; Circles uses a browser-local anonymous ID plus a chosen nickname,
+  not real identity.
+- Real humans, not AI: Every chat partner on Chatrio is a real person matched in
+  real time — there are no chatbots or AI-generated conversation partners.
 - Privacy: Random-chat messages are delivered in real time and never stored.
 - Matching: Optional interest/topic-based matching (gaming, music, travel, etc.)
   for random chat; Circles matches by approximate proximity instead.
 - Platform: Works in any modern browser on desktop, iOS, and Android. No install.
-- Features: Text, image sharing, typing indicators, delivery receipts, skip/next.
+- Features: Text, image sharing, typing indicators, delivery receipts, skip/next,
+  plus live random video chat.
+- Age requirement: Strictly 18+ sitewide. A one-time age confirmation is shown
+  before entering chat, video chat, Circles, or Blind Date.
 - Circles safety: approximate location only (never shown on a map), one intro
-  message before a chat opens (declining blocks the sender), report/block anytime,
-  strictly 18+.
+  message before a chat opens (declining blocks the sender), report/block anytime.
 - Positioning: A cleaner, mobile-first, privacy-focused alternative to Omegle
   (the original Omegle shut down permanently in November 2023; the domain changed
   ownership in mid-2026 and now hosts an unrelated product, not a revival),
   Chatroulette, and OmeTV.
 
 ## Use cases
-- Talk to a stranger when bored or lonely, instantly and anonymously.
+- Talk to a stranger when bored or lonely, instantly and anonymously, by text or video.
 - Meet new people worldwide without revealing your identity.
 - Find someone who shares your interests via topic-based matching.
 - See who's anonymously nearby and start a local chat or group room via Circles.
+- Try a one-on-one blind date (text or video) without seeing a profile first.
+- Look up modern dating/chat slang (DTR, orbiting, triangulation, curving,
+  kitten fishing, negging, weaponized incompetence, compersion, and more) in
+  the dating & chat slang glossary.
