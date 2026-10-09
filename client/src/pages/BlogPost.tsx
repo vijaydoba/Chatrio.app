@@ -14,11 +14,14 @@ export function seoTitle(title: string): string {
   const MAX_TOTAL_LENGTH = 60;
   if ((title + SUFFIX).length <= MAX_TOTAL_LENGTH) return title + SUFFIX;
 
-  const available = MAX_TOTAL_LENGTH - SUFFIX.length - 1;
-  const cut = title.slice(0, available).trimEnd();
+  // Title alone fits — drop the brand suffix rather than mid-word-truncating
+  // the title to make room for it (a cut title + "…" + brand reads as broken).
+  if (title.length <= MAX_TOTAL_LENGTH) return title;
+
+  const cut = title.slice(0, MAX_TOTAL_LENGTH - 1).trimEnd();
   const lastSpace = cut.lastIndexOf(" ");
-  const short = lastSpace > available * 0.6 ? cut.slice(0, lastSpace) : cut;
-  return short + "…" + SUFFIX;
+  const short = lastSpace > MAX_TOTAL_LENGTH * 0.6 ? cut.slice(0, lastSpace) : cut;
+  return short + "…";
 }
 
 export function seoDescription(description: string): string {
