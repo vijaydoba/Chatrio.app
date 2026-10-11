@@ -112,6 +112,12 @@
       gtag('config', 'G-PFV6PRM1N2');
     </script>
 
+    <!-- AdSense account ownership marker (static). Loads NO ads, so unlike the
+         ad loader below it's safe on every route — including the SPA-fallback
+         app routes (/chat, /login, …) that are served the homepage snapshot.
+         Lets AdSense verify the account regardless of JS rendering. -->
+    <meta name="google-adsense-account" content="ca-pub-4413754398988234" />
+
     <!-- Google AdSense — loaded on content pages only. The chat / video-chat /
          circles app routes carry live user media (UGC); per AdSense policy no ad
          code may run there, so we gate the loader by path. Same HTML is served to
