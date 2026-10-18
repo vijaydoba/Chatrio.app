@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { useAuth, apiGet, apiPost } from "../auth";
 import { SOCKET_URL } from "../config";
 import Avatar from "../components/Avatar";
+import { DmThread } from "./Dm";
 import "./circles.css";
 import "./messages.css";
 
@@ -50,8 +51,8 @@ function lastSeenLabel(lastSeen: number | null): string {
 
 // Public, indexable landing shown to logged-out visitors (and crawlers — the
 // prerenderer runs with no token, so this is the snapshot Google gets). The
-// authenticated inbox below stays noindex. This is the one public state, so
-// it carries the real content + canonical + schema that makes /friends worth
+// authenticated hub below stays noindex. This is the one public state, so it
+// carries the real content + canonical + schema that makes /friends worth
 // indexing instead of a thin auth wall.
 const FRIENDS_FAQS = [
   {
@@ -184,19 +185,42 @@ function FriendsPublic() {
   );
 }
 
+// Empty right pane (desktop, no conversation selected) — WhatsApp-web style.
+function DmPlaceholder() {
+  return (
+    <div className="dm-placeholder">
+      <div className="dm-placeholder-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+      </div>
+      <h2>Your messages</h2>
+      <p>Pick a friend on the left to open the conversation, or start a video chat to meet someone new.</p>
+    </div>
+  );
+}
+
+// FriendsHub — the whole Friends experience. Logged out → public landing.
+// Logged in → WhatsApp-web layout: a conversation rail + the active thread.
+// Desktop shows both panes; mobile shows the rail, or the thread when one is
+// open (the URL — /friends vs /friends/:id — drives which).
 export default function Friends() {
   const { user, token, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const { friendId: friendIdParam } = useParams();
+  const activeId = friendIdParam ? Number(friendIdParam) : null;
+
   const [inbox, setInbox] = useState<Inbox | null>(null);
   const [error, setError] = useState("");
   const [busyId, setBusyId] = useState<number | null>(null);
   const socketRef = useRef<Socket | null>(null);
+  const activeIdRef = useRef<number | null>(activeId);
+  useEffect(() => { activeIdRef.current = activeId; }, [activeId]);
 
   const load = useCallback(async () => {
     if (!token) return;
     try {
-      const data = await apiGet("/dm/inbox", token);
-      setInbox(data);
+      setInbox(await apiGet("/dm/inbox", token));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Couldn't load messages");
     }
@@ -206,7 +230,34 @@ export default function Friends() {
     if (!authLoading && user) load();
   }, [authLoading, user, load]);
 
-  // Live inbox: presence changes + incoming messages while this screen is open.
+  // Opening a conversation clears its unread in the rail (the thread marks read).
+  useEffect(() => {
+    if (activeId == null) return;
+    setInbox((prev) =>
+      prev
+        ? { ...prev, conversations: prev.conversations.map((c) => (c.id === activeId ? { ...c, unread: 0 } : c)) }
+        : prev
+    );
+  }, [activeId]);
+
+  // Refresh the rail from an open thread's send/receive (preview + ordering).
+  const applyActivity = useCallback((fid: number, last: LastMessage) => {
+    setInbox((prev) => {
+      if (!prev) return prev;
+      const idx = prev.conversations.findIndex((c) => c.id === fid);
+      if (idx === -1) return prev;
+      const updated: Conversation = {
+        ...prev.conversations[idx],
+        lastMessage: last,
+        unread: fid === activeIdRef.current ? 0 : prev.conversations[idx].unread,
+      };
+      const rest = prev.conversations.filter((_, i) => i !== idx);
+      return { ...prev, conversations: [updated, ...rest] };
+    });
+  }, []);
+
+  // Live rail: presence changes + messages arriving in OTHER conversations
+  // (the open one is handled by the thread via applyActivity).
   useEffect(() => {
     if (!token || !user) return;
     const socket = io(SOCKET_URL, { transports: ["websocket"], withCredentials: true, auth: { token } });
@@ -226,6 +277,7 @@ export default function Friends() {
     });
 
     socket.on("dm_message", (m: { fromUserId: number; text: string; ts: number }) => {
+      if (m.fromUserId === activeIdRef.current) return; // open thread handles its own
       setInbox((prev) => {
         if (!prev) return prev;
         const idx = prev.conversations.findIndex((c) => c.id === m.fromUserId);
@@ -272,8 +324,13 @@ export default function Friends() {
     );
   }
 
-  // Logged-out visitors (and the prerenderer/crawlers) get the public landing.
+  // Logged out: a thread URL needs auth; the bare page is the public landing
+  // (also what the prerenderer/crawlers see).
   if (!user) {
+    if (activeId != null) {
+      navigate("/login", { state: { from: `/friends/${activeId}` }, replace: true });
+      return null;
+    }
     return <FriendsPublic />;
   }
 
@@ -284,106 +341,123 @@ export default function Friends() {
   const isEmpty = inbox !== null && convos.length === 0 && incoming.length === 0 && sent.length === 0;
 
   return (
-    <div className="circles-wrap friends-inbox">
+    <div className={`friends-hub${activeId != null ? " has-active" : ""}`}>
       <Helmet>
-        <title>Messages — Chatrio</title>
-        <meta name="description" content="Your Chatrio friends and direct messages — chat any time, and jump into a video call when you're both online." />
         <link rel="canonical" href="https://chatrio.app/friends" />
         <meta name="robots" content="noindex, follow" />
+        {activeId == null && <title>Messages — Chatrio</title>}
       </Helmet>
 
-      <div className="msg-head">
-        <h1 className="circles-h1">Messages</h1>
-        {convos.length > 0 && (
-          <span className="msg-head-sub">
-            {onlineCount > 0 && <span className="msg-online-dot" aria-hidden="true" />}
-            {`${convos.length} friend${convos.length === 1 ? "" : "s"}${onlineCount ? ` · ${onlineCount} online` : ""}`}
-          </span>
-        )}
-      </div>
-
-      {error && <div className="auth-error">{error}</div>}
-
-      {incoming.length > 0 && (
-        <section className="msg-section">
-          <h2 className="msg-label">{incoming.length} request{incoming.length === 1 ? "" : "s"}</h2>
-          {incoming.map((f) => (
-            <div className="msg-request" key={f.id}>
-              <Avatar name={f.name} size={44} />
-              <div className="msg-req-meta">
-                <div className="msg-req-name">{f.name}</div>
-                <div className="msg-req-sub">wants to connect</div>
-              </div>
-              <div className="msg-req-actions">
-                <button className="msg-req-accept" disabled={busyId === f.id} onClick={() => respond(f.id, "accept")}>Accept</button>
-                <button className="msg-req-decline" disabled={busyId === f.id} onClick={() => respond(f.id, "decline")}>Decline</button>
-              </div>
-            </div>
-          ))}
-        </section>
-      )}
-
-      {inbox === null ? (
-        <p className="circles-sub msg-loading">Loading…</p>
-      ) : isEmpty ? (
-        <div className="msg-empty">
-          <div className="msg-empty-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
+      {/* ---- Left rail: conversations ---- */}
+      <aside className="friends-rail">
+        <div className="friends-rail-scroll">
+          <div className="msg-head">
+            <h1 className="circles-h1">Messages</h1>
+            {convos.length > 0 && (
+              <span className="msg-head-sub">
+                {onlineCount > 0 && <span className="msg-online-dot" aria-hidden="true" />}
+                {`${convos.length} friend${convos.length === 1 ? "" : "s"}${onlineCount ? ` · ${onlineCount} online` : ""}`}
+              </span>
+            )}
           </div>
-          <h2>No friends yet</h2>
-          <p>Add someone at the end of a video chat, then pick the conversation back up here any time.</p>
-          <button className="circles-btn-primary" onClick={() => navigate("/video-chat")}>Start a video chat</button>
-        </div>
-      ) : (
-        convos.length > 0 && (
-          <section className="msg-section">
-            <h2 className="msg-label">Chats</h2>
-            <div className="msg-list">
-              {convos.map((c) => (
-                <button className={`msg-row${c.unread ? " msg-unread" : ""}`} key={c.id} onClick={() => navigate(`/friends/${c.id}`)}>
-                  <Avatar name={c.name} size={48} presence={c.online ? "online" : "offline"} />
-                  <div className="msg-row-meta">
-                    <div className="msg-row-top">
-                      <span className="msg-row-name">{c.name}</span>
-                      {c.lastMessage && <span className="msg-row-time">{timeLabel(c.lastMessage.createdAt)}</span>}
-                    </div>
-                    <div className="msg-row-prev">
-                      {c.lastMessage
-                        ? `${c.lastMessage.fromMe ? "You: " : ""}${c.lastMessage.text}`
-                        : c.online
-                        ? "Online now · say hi 👋"
-                        : lastSeenLabel(c.lastSeen)}
+
+          {error && <div className="auth-error">{error}</div>}
+
+          {incoming.length > 0 && (
+            <section className="msg-section">
+              <h2 className="msg-label">{incoming.length} request{incoming.length === 1 ? "" : "s"}</h2>
+              {incoming.map((f) => (
+                <div className="msg-request" key={f.id}>
+                  <Avatar name={f.name} size={44} />
+                  <div className="msg-req-meta">
+                    <div className="msg-req-name">{f.name}</div>
+                    <div className="msg-req-sub">wants to connect</div>
+                  </div>
+                  <div className="msg-req-actions">
+                    <button className="msg-req-accept" disabled={busyId === f.id} onClick={() => respond(f.id, "accept")}>Accept</button>
+                    <button className="msg-req-decline" disabled={busyId === f.id} onClick={() => respond(f.id, "decline")}>Decline</button>
+                  </div>
+                </div>
+              ))}
+            </section>
+          )}
+
+          {inbox === null ? (
+            <p className="circles-sub msg-loading">Loading…</p>
+          ) : isEmpty ? (
+            <div className="msg-empty">
+              <div className="msg-empty-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </div>
+              <h2>No friends yet</h2>
+              <p>Add someone at the end of a video chat, then pick the conversation back up here any time.</p>
+              <button className="circles-btn-primary" onClick={() => navigate("/video-chat")}>Start a video chat</button>
+            </div>
+          ) : (
+            convos.length > 0 && (
+              <section className="msg-section">
+                <h2 className="msg-label">Chats</h2>
+                <div className="msg-list">
+                  {convos.map((c) => (
+                    <button
+                      className={`msg-row${c.unread ? " msg-unread" : ""}${c.id === activeId ? " msg-row-active" : ""}`}
+                      key={c.id}
+                      onClick={() => navigate(`/friends/${c.id}`)}
+                    >
+                      <Avatar name={c.name} size={48} presence={c.online ? "online" : "offline"} />
+                      <div className="msg-row-meta">
+                        <div className="msg-row-top">
+                          <span className="msg-row-name">{c.name}</span>
+                          {c.lastMessage && <span className="msg-row-time">{timeLabel(c.lastMessage.createdAt)}</span>}
+                        </div>
+                        <div className="msg-row-prev">
+                          {c.lastMessage
+                            ? `${c.lastMessage.fromMe ? "You: " : ""}${c.lastMessage.text}`
+                            : c.online
+                            ? "Online now · say hi 👋"
+                            : lastSeenLabel(c.lastSeen)}
+                        </div>
+                      </div>
+                      {c.unread > 0 && <span className="msg-badge">{c.unread > 9 ? "9+" : c.unread}</span>}
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )
+          )}
+
+          {sent.length > 0 && (
+            <section className="msg-section">
+              <h2 className="msg-label">Pending</h2>
+              <div className="msg-list">
+                {sent.map((f) => (
+                  <div className="msg-row msg-row-static" key={f.id}>
+                    <Avatar name={f.name} size={48} />
+                    <div className="msg-row-meta">
+                      <div className="msg-row-name">{f.name}</div>
+                      <div className="msg-row-prev">Waiting for them to accept</div>
                     </div>
                   </div>
-                  {c.unread > 0 && <span className="msg-badge">{c.unread > 9 ? "9+" : c.unread}</span>}
-                </button>
-              ))}
-            </div>
-          </section>
-        )
-      )}
-
-      {sent.length > 0 && (
-        <section className="msg-section">
-          <h2 className="msg-label">Pending</h2>
-          <div className="msg-list">
-            {sent.map((f) => (
-              <div className="msg-row msg-row-static" key={f.id}>
-                <Avatar name={f.name} size={48} />
-                <div className="msg-row-meta">
-                  <div className="msg-row-name">{f.name}</div>
-                  <div className="msg-row-prev">Waiting for them to accept</div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </section>
-      )}
+            </section>
+          )}
+        </div>
+      </aside>
+
+      {/* ---- Right pane: active conversation (or placeholder on desktop) ---- */}
+      <section className="friends-pane">
+        {activeId != null ? (
+          <DmThread key={activeId} friendId={activeId} onBack={() => navigate("/friends")} onActivity={applyActivity} />
+        ) : (
+          <DmPlaceholder />
+        )}
+      </section>
     </div>
   );
 }

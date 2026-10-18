@@ -27,6 +27,7 @@ import TagPage from "./pages/TagPage";
 import { SLUG_TO_CATEGORY } from "./data/posts";
 import BlogTags from "./pages/BlogTags";
 import { Helmet } from "react-helmet-async";
+import { useAuth } from "./auth";
 import { BLIND_DATE_LIVE } from "./config";
 
 import "./App.css";
@@ -45,7 +46,6 @@ const CirclesAdmin = React.lazy(() => import("./pages/CirclesAdmin"));
 const CohortRoom = React.lazy(() => import("./pages/CohortRoom"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 const Friends = React.lazy(() => import("./pages/Friends"));
-const Dm = React.lazy(() => import("./pages/Dm"));
 
 type Theme = "light" | "dark";
 
@@ -298,6 +298,7 @@ export default function App() {
   }, [navOpen]);
 
   const { pathname } = useLocation();
+  const { user } = useAuth();
   const usesLazyProductRoute =
     pathname === "/chat" ||
     pathname === "/video-chat" ||
@@ -310,10 +311,11 @@ export default function App() {
     pathname === "/login" ||
     pathname === "/signup";
 
-  // A private DM thread (/friends/:id) is an immersive, app-like screen: it
-  // fills the viewport under the header and drops the marketing footer, so it
-  // reads as a focused conversation rather than a web page with a chat glued on.
-  const isImmersiveChat = /^\/friends\/[^/]+$/.test(pathname);
+  // The logged-in Friends hub (rail + conversation, WhatsApp-web style) is an
+  // immersive, app-like screen: it fills the viewport under the header and drops
+  // the marketing footer. Logged out, /friends is the public marketing landing,
+  // which keeps the normal page chrome + footer (and is what crawlers see).
+  const isImmersiveChat = pathname.startsWith("/friends") && !!user;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -534,7 +536,7 @@ export default function App() {
                 <Route path="/circles-admin" element={<CirclesAdmin />} />
                 <Route path="/circles/:cohortId" element={<CohortRoom />} />
                 <Route path="/friends" element={<Friends />} />
-                <Route path="/friends/:friendId" element={<Dm />} />
+                <Route path="/friends/:friendId" element={<Friends />} />
                 <Route path="/login" element={<Auth mode="login" />} />
                 <Route path="/signup" element={<Auth mode="signup" />} />
                 <Route path="*" element={<NotFound />} />

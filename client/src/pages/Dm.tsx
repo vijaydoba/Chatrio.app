@@ -18,6 +18,16 @@ type DmMsg = {
 };
 type Friend = { id: number; name: string; online: boolean; lastSeen: number | null };
 
+// Called whenever a message is sent or received in this thread, so the hub's
+// left rail can refresh that conversation's preview + ordering (WhatsApp-web).
+type ActivityFn = (friendId: number, last: { text: string; fromMe: boolean; createdAt: number }) => void;
+
+type DmThreadProps = {
+  friendId: number;
+  onBack: () => void;
+  onActivity?: ActivityFn;
+};
+
 function fmtTime(ts: number) {
   return new Date(ts).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
 }
@@ -36,9 +46,11 @@ function presenceLabel(f: Friend): string {
 
 const makeMsgId = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 
-export default function Dm() {
-  const { friendId } = useParams();
-  const id = Number(friendId);
+// The conversation pane. Rendered standalone on a mobile route and embedded in
+// the right pane of FriendsHub on desktop; its `.dm-wrap` adapts to the pane
+// via CSS (`.friends-pane .dm-wrap`). `key={friendId}` at the call site remounts
+// it cleanly when switching conversations.
+export function DmThread({ friendId: id, onBack, onActivity }: DmThreadProps) {
   const { user, token, loading } = useAuth();
   const navigate = useNavigate();
 
@@ -86,6 +98,7 @@ export default function Dm() {
           ? prev
           : [...prev, { id: m.id, sender_id: m.fromUserId, text: m.text, created_at: m.ts, read_at: null }]
       );
+      onActivity?.(id, { text: m.text, fromMe: false, createdAt: m.ts });
       markRead(); // we're looking at the thread, so their message is read
     });
 
@@ -115,7 +128,7 @@ export default function Dm() {
       socket.disconnect();
       socketRef.current = null;
     };
-  }, [id, token, friend, user?.id]);
+  }, [id, token, friend, user?.id, onActivity]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -126,12 +139,14 @@ export default function Dm() {
     const text = draft.trim();
     if (!text || !socketRef.current || !user) return;
     const msgId = makeMsgId();
+    const ts = Date.now();
     setMessages((prev) => [
       ...prev,
-      { id: msgId, sender_id: user.id, text, created_at: Date.now(), read_at: null, pending: true },
+      { id: msgId, sender_id: user.id, text, created_at: ts, read_at: null, pending: true },
     ]);
     socketRef.current.emit("dm_send", { toUserId: id, msgId, text });
     socketRef.current.emit("dm_typing", { toUserId: id, typing: false });
+    onActivity?.(id, { text, fromMe: true, createdAt: ts });
     setDraft("");
   };
 
@@ -157,7 +172,7 @@ export default function Dm() {
       <div className="dm-wrap dm-centered">
         <Helmet><meta name="robots" content="noindex" /></Helmet>
         <div className="auth-error">{error}</div>
-        <button className="circles-btn-ghost" onClick={() => navigate("/friends")}>← Back to Messages</button>
+        <button className="circles-btn-ghost" onClick={onBack}>← Back to Messages</button>
       </div>
     );
   }
@@ -177,7 +192,7 @@ export default function Dm() {
       </Helmet>
 
       <header className="dm-head">
-        <button className="dm-back" onClick={() => navigate("/friends")} aria-label="Back to Messages">
+        <button className="dm-back" onClick={onBack} aria-label="Back to Messages">
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
           </svg>
@@ -243,4 +258,11 @@ export default function Dm() {
       </form>
     </div>
   );
+}
+
+// Standalone route fallback (kept so a direct import/route to Dm still works).
+export default function Dm() {
+  const { friendId } = useParams();
+  const navigate = useNavigate();
+  return <DmThread friendId={Number(friendId)} onBack={() => navigate("/friends")} />;
 }

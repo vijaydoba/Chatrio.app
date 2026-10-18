@@ -253,3 +253,128 @@
 
 .friends-lp-outro { text-align: center; margin-top: 40px; }
 .friends-lp-outro p { max-width: 460px; margin: 0 auto 4px; }
+
+/* ============================================================================
+   FriendsHub — WhatsApp-web two-pane layout (rail + conversation).
+   Fills the viewport under the 68px sticky header (App.tsx drops the footer and
+   strips page padding on the logged-in Friends routes). Desktop shows both
+   panes; mobile shows one at a time, driven by the URL (.has-active).
+   ============================================================================ */
+.friends-hub {
+  display: flex;
+  height: calc(100vh - 68px);
+  height: calc(100dvh - 68px);
+  color: var(--text);
+}
+
+/* Left rail */
+.friends-rail {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+}
+.friends-rail-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 16px 28px;
+}
+.friends-rail .circles-h1 { margin-bottom: 0; }
+
+/* Right pane */
+.friends-pane {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+/* The embedded thread fills the pane (its standalone full-height/border/bg is
+   neutralised; the pane provides the surface). */
+.friends-pane .dm-wrap {
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* Active conversation highlight in the rail — tint + a brand accent bar */
+.msg-row-active,
+.msg-row-active:hover {
+  background: color-mix(in srgb, var(--primary) 16%, transparent);
+  position: relative;
+}
+.msg-row-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(var(--primary), var(--primary-2));
+}
+
+/* Empty right pane (desktop, nothing selected) */
+.dm-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  padding: 40px;
+  background:
+    radial-gradient(900px 360px at 50% 0%, color-mix(in srgb, var(--primary) 8%, transparent), transparent 70%),
+    var(--bg);
+}
+.dm-placeholder-icon {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-2);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 18%, transparent), color-mix(in srgb, var(--primary-2) 12%, transparent));
+  margin-bottom: 6px;
+}
+.dm-placeholder h2 { margin: 0; font-size: 1.3rem; }
+.dm-placeholder p { margin: 0; opacity: .66; max-width: 320px; line-height: 1.6; }
+
+/* ---- Desktop: both panes side by side ---- */
+@media (min-width: 900px) {
+  .friends-rail {
+    width: 360px;
+    flex: none;
+    border-right: 1px solid var(--border);
+  }
+  .friends-pane {
+    background:
+      radial-gradient(1000px 400px at 50% -8%, color-mix(in srgb, var(--primary) 8%, transparent), transparent 70%),
+      var(--bg);
+  }
+  /* The rail is always visible, so the in-thread back button is redundant. */
+  .friends-hub .dm-back { display: none; }
+  /* Rail conversation list reads better flush than as a floating card here. */
+  .friends-rail .msg-list { border-radius: 14px; }
+  /* The 360px rail is too narrow for inline request actions — stack them so
+     the name isn't truncated. */
+  .friends-rail .msg-request { flex-wrap: wrap; }
+  .friends-rail .msg-req-meta { flex: 1 1 auto; }
+  .friends-rail .msg-req-actions { width: 100%; }
+  .friends-rail .msg-req-accept,
+  .friends-rail .msg-req-decline { flex: 1; }
+}
+
+/* ---- Mobile: one pane at a time (URL drives which) ---- */
+@media (max-width: 899px) {
+  .friends-hub:not(.has-active) .friends-pane { display: none; }
+  .friends-hub.has-active .friends-rail { display: none; }
+}
