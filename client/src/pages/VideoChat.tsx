@@ -206,6 +206,7 @@ export default function VideoChat() {
   const [muted, setMuted] = useState(false);
   const [cameraOff, setCameraOff] = useState(false);
   const [permissionError, setPermissionError] = useState("");
+  const [permState, setPermState] = useState<"unknown" | "granted" | "prompt" | "denied">("unknown");
   const [skipConfirm, setSkipConfirm] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -394,12 +395,48 @@ export default function VideoChat() {
     messagesEndRef.current?.scrollIntoView({ block: "end" });
   }, [messages, partnerTyping]);
 
+  // Reflect the browser's current camera/mic permission so the lobby shows the
+  // right guidance — and reassures the user when it's already granted (then a
+  // refresh won't re-prompt). The permission prompt itself is browser-
+  // controlled: Safari and Brave re-ask each session unless the site is set to
+  // "Allow" persistently, which we can't override — only guide the user toward.
+  useEffect(() => {
+    if (!user) return;
+    const perms = (navigator as any).permissions;
+    if (!perms || !perms.query) return;
+    let active = true;
+    const statuses: any[] = [];
+    const evaluate = () => {
+      if (!active || statuses.length === 0) return;
+      const states = statuses.map((s) => s.state);
+      setPermState(
+        states.includes("denied") ? "denied" : states.every((s) => s === "granted") ? "granted" : "prompt"
+      );
+    };
+    Promise.allSettled([perms.query({ name: "camera" }), perms.query({ name: "microphone" })])
+      .then((res: any[]) => {
+        res.forEach((r) => {
+          if (r.status === "fulfilled" && r.value) {
+            statuses.push(r.value);
+            r.value.onchange = evaluate;
+          }
+        });
+        evaluate();
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+      statuses.forEach((s) => { s.onchange = null; });
+    };
+  }, [user]);
+
   const startVideoChat = async () => {
     setPermissionError("");
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       localStreamRef.current = stream;
       if (localVideoRef.current) localVideoRef.current.srcObject = stream;
+      setPermState("granted");
       const socket = ensureSocket();
       const friendId = reconnectTargetRef.current;
       const startEvent = () =>
@@ -411,10 +448,16 @@ export default function VideoChat() {
       setMode("waiting");
     } catch (err) {
       const name = err instanceof DOMException ? err.name : "";
-      if (name === "NotFoundError" || name === "OverconstrainedError") {
+      if (name === "NotFoundError" || name === "OverconstrainedError" || name === "DevicesNotFoundError") {
         setPermissionError("No camera or microphone found on this device.");
+      } else if (name === "NotReadableError" || name === "TrackStartError") {
+        setPermissionError("Your camera or mic is in use by another app or tab. Close it (Zoom, Meet, FaceTime…) and try again.");
+      } else if (name === "NotAllowedError" || name === "SecurityError" || name === "PermissionDeniedError") {
+        // Browser blocked it — show the actionable "unblock" guidance instead.
+        setPermState("denied");
+        setPermissionError("");
       } else {
-        setPermissionError("Camera and microphone access is needed for video chat.");
+        setPermissionError("Couldn't start your camera and mic. Please try again.");
       }
     }
   };
@@ -549,11 +592,27 @@ export default function VideoChat() {
           <p className="vc-lobby-sub">
             {reconnectTargetRef.current ? "Reconnect · Instant · Face to face" : "Instant · Face to face · Add friends"}
           </p>
-          {!!permissionError && <div className="vc-lobby-error">{permissionError}</div>}
+          {permState === "denied" ? (
+            <div className="vc-lobby-denied">
+              <strong>Camera &amp; mic are blocked</strong>
+              <span>
+                Click the camera icon in your browser's address bar and choose <b>Allow</b>, then press Start.
+                On Safari: Settings → Websites → Camera → Allow for chatrio.app.
+              </span>
+            </div>
+          ) : (
+            !!permissionError && <div className="vc-lobby-error">{permissionError}</div>
+          )}
           <button className="vc-start-btn" onClick={startVideoChat}>
             {reconnectTargetRef.current ? "Reconnect" : "Start Video Chat"}
           </button>
-          <p className="vc-lobby-note">We'll ask for camera &amp; mic access when you start.</p>
+          <p className="vc-lobby-note">
+            {permState === "granted"
+              ? "✓ Camera & mic ready — you won't be asked again on this browser."
+              : permState === "denied"
+              ? "Allow access above, then press Start."
+              : "We'll ask for camera & mic when you start — choose “Allow” and you won't be asked again."}
+          </p>
         </div>
       )}
 

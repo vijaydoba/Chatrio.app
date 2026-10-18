@@ -51,6 +51,27 @@
   font-size: 13px;
   margin-bottom: 16px;
 }
+/* Actionable "camera blocked" guidance (shown instead of a bare error when the
+   browser has denied permission — tells the user exactly how to unblock). */
+.vc-lobby-denied {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+  max-width: 420px;
+  background: rgba(245,158,11,0.12);
+  border: 1px solid rgba(245,158,11,0.4);
+  color: var(--text);
+  padding: 13px 16px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.vc-lobby-denied strong { font-size: 14px; color: #d97706; }
+html.dark .vc-lobby-denied strong { color: #fbbf24; }
+.vc-lobby-denied span { opacity: .85; }
+.vc-lobby-denied b { font-weight: 700; }
 .vc-start-btn {
   border: none;
   border-radius: 999px;
