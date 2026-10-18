@@ -4,7 +4,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { createRandomVideoCall, RandomVideoCallController } from "../randomVideoCall";
 import { useAuth } from "../auth";
+import Avatar from "../components/Avatar";
 import "./video-chat.css";
+
+/* Call-control icons — line icons matching the lobby/send icons already in use,
+   so the connected call stops relying on OS emoji (which render differently on
+   every device). */
+const IconMic = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="22"/></svg>);
+const IconMicOff = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v2a3 3 0 0 0 5.12 2.12M15 9.34V5a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-1m14 0v1a7 7 0 0 1-.11 1.23"/><line x1="12" y1="19" x2="12" y2="22"/></svg>);
+const IconVideo = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>);
+const IconVideoOff = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 16v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2m4 0h4a2 2 0 0 1 2 2v2l4-3v10"/><line x1="1" y1="1" x2="23" y2="23"/></svg>);
+const IconChat = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>);
+const IconUserPlus = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>);
+const IconCheck = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>);
+const IconSkip = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>);
+const IconX = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>);
+const IconPhone = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>);
 
 type Mode = "lobby" | "waiting" | "connected";
 type MsgStatus = "sending" | "sent" | "delivered";
@@ -573,7 +588,13 @@ export default function VideoChat() {
         <div className="video-call-overlay vc-connected">
           <video ref={remoteVideoRef} className="video-remote" autoPlay playsInline />
           {!remoteStream && <div className="video-calling-label">Connecting…</div>}
+          <div className="vc-name-chip"><span className="vc-name-dot" />Stranger</div>
           <video ref={localVideoRef} className={`video-local${chatOpen ? " vc-shift-local" : ""}`} autoPlay playsInline muted />
+          {cameraOff && (
+            <div className={`vc-local-off${chatOpen ? " vc-shift-local" : ""}`} aria-hidden="true">
+              <Avatar name={user?.name || "You"} size={46} />
+            </div>
+          )}
 
           {countdownSeconds !== null && (
             <div className="vc-countdown-badge" aria-live="polite">{countdownSeconds}s</div>
@@ -626,38 +647,37 @@ export default function VideoChat() {
             </div>
           </div>
 
+          {skipConfirm && <div className="vc-skip-hint">Tap skip again to move on</div>}
           <div className="video-call-controls">
-            <button className="video-ctrl-btn" onClick={toggleMute} aria-label={muted ? "Unmute" : "Mute"} title={muted ? "Unmute" : "Mute"}>
-              {muted ? "🔇" : "🎙️"}
+            <button className={`video-ctrl-btn${muted ? " vc-ctrl-off" : ""}`} onClick={toggleMute} aria-label={muted ? "Unmute" : "Mute"} title={muted ? "Unmute" : "Mute"}>
+              {muted ? <IconMicOff /> : <IconMic />}
             </button>
-            <button className="video-ctrl-btn" onClick={toggleCamera} aria-label={cameraOff ? "Turn camera on" : "Turn camera off"} title={cameraOff ? "Turn camera on" : "Turn camera off"}>
-              {cameraOff ? "📷" : "🎥"}
+            <button className={`video-ctrl-btn${cameraOff ? " vc-ctrl-off" : ""}`} onClick={toggleCamera} aria-label={cameraOff ? "Turn camera on" : "Turn camera off"} title={cameraOff ? "Turn camera on" : "Turn camera off"}>
+              {cameraOff ? <IconVideoOff /> : <IconVideo />}
             </button>
             <button className={`video-ctrl-btn${chatOpen ? " vc-ctrl-active" : ""}`} onClick={() => setChatOpen((v) => !v)} aria-label={chatOpen ? "Hide chat" : "Show chat"} title={chatOpen ? "Hide chat" : "Show chat"}>
-              💬
+              <IconChat />
             </button>
             {!!partnerUserId && (
               <button
-                className={`vc-friend-btn${friendStatus !== "idle" ? " vc-friend-added" : ""}`}
+                className={`video-ctrl-btn vc-friend-icon${friendStatus !== "idle" ? " vc-friend-added" : ""}`}
                 onClick={addFriend}
                 disabled={friendStatus !== "idle"}
-                aria-label="Add friend"
+                aria-label={friendStatus === "accepted" ? "You're friends" : friendStatus === "sent" ? "Request sent" : "Add friend"}
                 title={friendStatus === "accepted" ? "You're friends!" : friendStatus === "sent" ? "Request sent" : "Add this person as a friend"}
               >
-                {friendStatus === "accepted" ? "✓ Friends" : friendStatus === "sent" ? "Request sent" : "👋 Add Friend"}
+                {friendStatus === "idle" ? <IconUserPlus /> : <IconCheck />}
               </button>
             )}
             {skipConfirm ? (
               <>
-                <button className="video-hangup-btn" onClick={nextPartner}>Skip</button>
-                <button className="video-ctrl-btn" onClick={() => setSkipConfirm(false)} aria-label="Cancel skip">✕</button>
+                <button className="video-ctrl-btn vc-ctrl-confirm" onClick={nextPartner} aria-label="Confirm skip" title="Skip to next person"><IconSkip /></button>
+                <button className="video-ctrl-btn" onClick={() => setSkipConfirm(false)} aria-label="Cancel skip" title="Cancel"><IconX /></button>
               </>
             ) : (
-              <button className="vc-skip-btn" onClick={() => setSkipConfirm(true)}>Skip</button>
+              <button className="video-ctrl-btn" onClick={() => setSkipConfirm(true)} aria-label="Skip" title="Skip to next person"><IconSkip /></button>
             )}
-            <button className="video-hangup-btn" onClick={leaveVideoChat} aria-label="End call" title="End call">
-              End
-            </button>
+            <button className="video-ctrl-btn vc-ctrl-end" onClick={leaveVideoChat} aria-label="End call" title="End call"><IconPhone /></button>
           </div>
         </div>
       )}

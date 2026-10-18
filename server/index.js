@@ -6,6 +6,8 @@ require("dotenv").config();
 const circles = require("./circles");
 const auth = require("./auth");
 const friends = require("./friends");
+const presence = require("./presence");
+const dm = require("./dm");
 
 const PORT = process.env.PORT || 5050;
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "https://chatrio.app";
@@ -73,6 +75,7 @@ app.post("/auth/google", handle((req) => auth.googleSignIn(req.body || {})));
 
 // --- Friends: reconnect list for authenticated random-video-chat users ---
 app.use(friends.router);
+app.use(dm.router);
 
 app.get("/circles", authMiddleware, handle((req) => circles.listCircles(req.user.id)));
 app.post("/circles/:id/join", authMiddleware, handle((req) =>
@@ -128,6 +131,23 @@ const VC_COUNTDOWN_MS = VC_COUNTDOWN_SECONDS * 1000;
 function emitCounts() {
   io.emit("online", state.online.size);
   io.emit("waiting_count", state.waiting.size);
+}
+
+// Deliver an event to every live socket a signed-in user currently holds
+// (multiple tabs = multiple sockets). Used for DM delivery + presence.
+function emitToUser(userId, event, payload) {
+  for (const sid of presence.socketsFor(userId)) io.to(sid).emit(event, payload);
+}
+
+// Tell a user's currently-online accepted friends about their presence change,
+// so friend lists / inboxes update live without polling.
+function broadcastPresence(userId, online) {
+  const payload = online
+    ? { userId, online: true }
+    : { userId, online: false, lastSeen: presence.getLastSeen(userId) };
+  for (const friendId of friends.listAcceptedFriendIds(userId)) {
+    emitToUser(friendId, "friend_presence", payload);
+  }
 }
 
 // Random chat has no login yet, so IP is the only durable signal for
@@ -309,6 +329,14 @@ io.on("connection", (socket) => {
   state.gender.set(socket.id, "");
   state.genderPref.set(socket.id, "any");
   emitCounts();
+
+  // Account presence: a signed-in user is "online" for their friends while they
+  // hold any socket. Announce to online friends the first time they connect.
+  if (authedUser) {
+    const cameOnline = presence.markOnline(authedUser.id, socket.id);
+    if (cameOnline) broadcastPresence(authedUser.id, true);
+  }
+
   socket.emit("idle");
 
   socket.on("set_username", (name) => {
@@ -495,8 +523,14 @@ io.on("connection", (socket) => {
     const partnerSocketId = vc.partner.get(socket.id);
     const partnerUserId = partnerSocketId ? vc.socketUser.get(partnerSocketId) : null;
     if (!partnerUserId || Number(toUserId) !== partnerUserId) return;
+    if (partnerUserId === authedUser.id) return; // self-match guard (never friend yourself)
 
-    const result = friends.upsertFriendRequest(authedUser.id, partnerUserId);
+    let result;
+    try {
+      result = friends.upsertFriendRequest(authedUser.id, partnerUserId);
+    } catch (e) {
+      return; // upsert can throw — a socket handler must never crash the server
+    }
     socket.emit("vc_friend_request_sent", result);
     if (vc.userSockets.get(partnerUserId) === partnerSocketId) {
       io.to(partnerSocketId).emit("vc_friend_request_received", {
@@ -587,6 +621,45 @@ io.on("connection", (socket) => {
     });
   });
 
+  // --- Direct messages between accepted friends (persistent, Instagram-style).
+  // Persistence + the friends-only guard live in dm.js; this just relays.
+  socket.on("dm_send", ({ toUserId, msgId, text } = {}) => {
+    if (!authedUser) return socket.emit("dm_error", { msgId, error: "Not authenticated" });
+    const recipientId = Number(toUserId);
+    let saved;
+    try {
+      saved = dm.saveDm(authedUser.id, recipientId, text);
+    } catch (e) {
+      return socket.emit("dm_error", { msgId, error: e.message || "Could not send" });
+    }
+    // Ack the sender (maps their optimistic msgId → the stored row).
+    socket.emit("dm_sent", { msgId, id: saved.id, ts: saved.created_at });
+    // Deliver to the recipient's live sockets; their inbox + open thread both
+    // listen for dm_message.
+    emitToUser(recipientId, "dm_message", {
+      id: saved.id,
+      fromUserId: authedUser.id,
+      fromName: authedUser.name,
+      text: saved.text,
+      ts: saved.created_at,
+    });
+  });
+
+  socket.on("dm_typing", ({ toUserId, typing } = {}) => {
+    if (!authedUser) return;
+    const recipientId = Number(toUserId);
+    if (!friends.areFriends(authedUser.id, recipientId)) return;
+    emitToUser(recipientId, "dm_typing", { fromUserId: authedUser.id, typing: !!typing });
+  });
+
+  socket.on("dm_read", ({ fromUserId } = {}) => {
+    if (!authedUser) return;
+    const otherId = Number(fromUserId);
+    if (!friends.areFriends(authedUser.id, otherId)) return;
+    dm.markRead(authedUser.id, otherId);
+    emitToUser(otherId, "dm_read", { byUserId: authedUser.id });
+  });
+
   socket.on("disconnect", () => {
     clearPair(socket.id, "friend_left");
     state.waiting.delete(socket.id);
@@ -604,6 +677,13 @@ io.on("connection", (socket) => {
     vc.waiting.delete(socket.id);
     vc.waitingSince.delete(socket.id);
     forgetVcIdentity();
+
+    // Presence: if this was the user's last socket, mark them offline (stamps
+    // last_seen) and tell their online friends.
+    if (authedUser) {
+      const wentOffline = presence.markOffline(authedUser.id, socket.id);
+      if (wentOffline) broadcastPresence(authedUser.id, false);
+    }
     emitVcCounts();
   });
 });

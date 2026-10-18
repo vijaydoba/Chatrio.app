@@ -95,9 +95,31 @@ function respond(userId, otherId, action) {
   return { status: "declined" };
 }
 
+// True iff a and b are accepted (mutual) friends — gates every DM path.
+function areFriends(a, b) {
+  if (!a || !b || a === b) return false;
+  const [x, y] = pairKey(a, b);
+  const row = db
+    .prepare("SELECT status FROM friends WHERE user_id_a = ? AND user_id_b = ?")
+    .get(x, y);
+  return !!row && row.status === "accepted";
+}
+
+// IDs of a user's accepted friends — used for presence fan-out and the inbox.
+function listAcceptedFriendIds(userId) {
+  return db
+    .prepare(
+      `SELECT CASE WHEN user_id_a = ? THEN user_id_b ELSE user_id_a END AS other_id
+       FROM friends
+       WHERE status = 'accepted' AND (user_id_a = ? OR user_id_b = ?)`
+    )
+    .all(userId, userId, userId)
+    .map((r) => r.other_id);
+}
+
 const router = express.Router();
 router.get("/friends", authMiddleware, handle((req) => listFriends(req.user.id)));
 router.post("/friends/:userId/accept", authMiddleware, handle((req) => respond(req.user.id, Number(req.params.userId), "accept")));
 router.post("/friends/:userId/decline", authMiddleware, handle((req) => respond(req.user.id, Number(req.params.userId), "decline")));
 
-module.exports = { router, upsertFriendRequest, listFriends };
+module.exports = { router, upsertFriendRequest, listFriends, areFriends, listAcceptedFriendIds };

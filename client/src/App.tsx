@@ -45,6 +45,7 @@ const CirclesAdmin = React.lazy(() => import("./pages/CirclesAdmin"));
 const CohortRoom = React.lazy(() => import("./pages/CohortRoom"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 const Friends = React.lazy(() => import("./pages/Friends"));
+const Dm = React.lazy(() => import("./pages/Dm"));
 
 type Theme = "light" | "dark";
 
@@ -305,7 +306,7 @@ export default function App() {
     pathname.startsWith("/blind-date/") ||
     pathname === "/circles-admin" ||
     pathname.startsWith("/circles/") ||
-    pathname === "/friends" ||
+    pathname.startsWith("/friends") ||
     pathname === "/login" ||
     pathname === "/signup";
 
@@ -528,6 +529,7 @@ export default function App() {
                 <Route path="/circles-admin" element={<CirclesAdmin />} />
                 <Route path="/circles/:cohortId" element={<CohortRoom />} />
                 <Route path="/friends" element={<Friends />} />
+                <Route path="/friends/:friendId" element={<Dm />} />
                 <Route path="/login" element={<Auth mode="login" />} />
                 <Route path="/signup" element={<Auth mode="signup" />} />
                 <Route path="*" element={<NotFound />} />

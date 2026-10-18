@@ -1,0 +1,177 @@
+/* Messages inbox — Instagram-style conversation list. Reuses circles-wrap /
+   circles-h1 for the page frame; everything below is the list + requests. */
+
+.msg-section { margin-top: 22px; }
+
+.msg-label {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  opacity: .55;
+  margin: 0 0 10px;
+}
+
+.msg-loading { margin-top: 20px; }
+
+/* Conversation rows */
+.msg-list { display: flex; flex-direction: column; gap: 2px; }
+
+.msg-row {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  font: inherit;
+  transition: background .12s ease;
+}
+.msg-row:hover { background: var(--card); }
+.msg-row:focus-visible { outline: 2px solid var(--primary-2); outline-offset: 2px; }
+.msg-row-static { cursor: default; }
+.msg-row-static:hover { background: transparent; }
+
+.msg-row-meta { flex: 1; min-width: 0; }
+.msg-row-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.msg-row-name {
+  font-weight: 700;
+  font-size: .98rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.msg-row-time { font-size: .72rem; opacity: .6; flex: none; }
+.msg-row-prev {
+  font-size: .85rem;
+  opacity: .62;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+.msg-unread .msg-row-prev { opacity: 1; font-weight: 600; }
+.msg-unread .msg-row-time { color: var(--primary-2); opacity: 1; font-weight: 700; }
+
+.msg-badge {
+  flex: none;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Pinned friend request */
+.msg-request {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, .14), rgba(34, 211, 238, .08));
+  border: 1px solid rgba(124, 58, 237, .35);
+  margin-bottom: 8px;
+}
+.msg-req-meta { flex: 1; min-width: 0; }
+.msg-req-name { font-weight: 700; }
+.msg-req-sub { font-size: .82rem; opacity: .72; }
+.msg-req-actions { display: flex; flex-direction: column; gap: 6px; }
+.msg-req-accept, .msg-req-decline {
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-size: .8rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.msg-req-accept { border: none; color: #fff; background: linear-gradient(135deg, #7c3aed, #22d3ee); }
+.msg-req-decline { border: 1px solid var(--border); background: transparent; color: var(--text); font-weight: 700; }
+.msg-req-accept:disabled, .msg-req-decline:disabled { opacity: .55; cursor: default; }
+
+/* Empty state */
+.msg-empty {
+  text-align: center;
+  padding: 44px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.msg-empty-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-2);
+  background: linear-gradient(135deg, rgba(124, 58, 237, .18), rgba(34, 211, 238, .12));
+  margin-bottom: 6px;
+}
+.msg-empty h2 { margin: 0; font-size: 1.2rem; }
+.msg-empty p { margin: 0 0 10px; opacity: .72; max-width: 340px; line-height: 1.55; }
+
+/* Public landing (logged-out / crawler view of /friends) */
+.friends-lp { max-width: 640px; margin: 0 auto; }
+
+.friends-lp-hero { text-align: center; padding: 6px 0 2px; }
+.friends-lp-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-2);
+  background: linear-gradient(135deg, rgba(124, 58, 237, .18), rgba(34, 211, 238, .12));
+  margin-bottom: 12px;
+}
+.friends-lp-hero .circles-sub { max-width: 520px; margin-left: auto; margin-right: auto; }
+
+.friends-lp-cta-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 20px 0 4px;
+}
+.friends-lp-ghost-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .12s ease, border-color .12s ease;
+}
+.friends-lp-ghost-btn:hover { background: var(--card); border-color: var(--primary-2); }
+
+.friends-lp-section { margin-top: 30px; }
+.friends-lp-section h2 { font-size: 1.12rem; margin: 0 0 8px; }
+.friends-lp-section p { margin: 0; opacity: .8; line-height: 1.65; }
+.friends-lp-section a { color: var(--primary-2); font-weight: 600; }
+
+.friends-lp-faq { margin-top: 10px; }
+.friends-lp-faq-item { border-top: 1px solid var(--border); padding: 14px 0; }
+.friends-lp-faq-item:last-child { border-bottom: 1px solid var(--border); }
+.friends-lp-faq-item h3 { font-size: .98rem; margin: 0 0 6px; }
+.friends-lp-faq-item p { margin: 0; opacity: .78; line-height: 1.6; }
+
+.friends-lp-outro { text-align: center; margin-top: 34px; }
+.friends-lp-outro p { max-width: 460px; margin: 0 auto; }

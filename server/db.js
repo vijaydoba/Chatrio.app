@@ -107,6 +107,21 @@ CREATE TABLE IF NOT EXISTS friends (
 
 CREATE INDEX IF NOT EXISTS idx_friends_a ON friends(user_id_a);
 CREATE INDEX IF NOT EXISTS idx_friends_b ON friends(user_id_b);
+
+-- Instagram-style 1:1 direct messages between accepted friends. Keyed to a
+-- user pair: a conversation is every row where (sender_id, recipient_id) is
+-- either (me, them) or (them, me). Distinct from the Circles cohort messages.
+CREATE TABLE IF NOT EXISTS dm_messages (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  sender_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  recipient_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  text         TEXT NOT NULL,
+  created_at   INTEGER NOT NULL,
+  read_at      INTEGER
+);
+
+CREATE INDEX IF NOT EXISTS idx_dm_pair   ON dm_messages(sender_id, recipient_id, id);
+CREATE INDEX IF NOT EXISTS idx_dm_unread ON dm_messages(recipient_id, read_at);
 `);
 
 // Upgrading an existing DB: `users` predates Google sign-in, so add the
@@ -116,6 +131,12 @@ if (!userCols.includes("google_id")) {
   db.exec("ALTER TABLE users ADD COLUMN google_id TEXT");
 }
 db.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id)");
+
+// `last_seen` (ms epoch) powers friend presence — stamped when a user's last
+// socket disconnects. Added post-hoc like google_id so existing DBs upgrade.
+if (!userCols.includes("last_seen")) {
+  db.exec("ALTER TABLE users ADD COLUMN last_seen INTEGER");
+}
 
 // --- Seed a couple of curated Circles so cohorts can actually fill. ---
 // Liquidity is the make-or-break for recurring cohorts; curated > user-created for v1.
