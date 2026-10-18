@@ -57,10 +57,11 @@ const TOPIC_RULES = [
   { label: "Circles", pattern: /\bcircles\b/i },
   { label: "Nearby Chat", pattern: /\b(?:nearby chat|local chat|people nearby|near you|in your area|local group)\b/i },
   { label: "Community Apps", pattern: /\b(?:community app|neighborhood app|nextdoor|yik yak|meetup|group chat)\b/i },
-  { label: "Make Friends Online", pattern: /\b(?:make friends|making friends|online friend|friendships?|meet people|meet new people)\b/i },
+  { label: "Make Friends Online", pattern: /\b(?:make friends|making friends|online friend|friendships?|meet people|meet new people|met online|meet someone online|someone you met|people you meet)\b/i },
 
   // ── Conversation help ──
-  { label: "Conversation Starters", pattern: /\b(?:opening line|first message|conversation starter|conversation game|questions to ask|what to talk about|topics to talk|how to start a conversation)\b/i },
+  { label: "Conversation Starters", pattern: /\b(?:opening line|first message|conversation starters?|conversation game|questions to ask|what to talk about|what to say|topics to talk|chat topics|deep conversations?|meaningful conversations?|keep (?:a|the|your) conversation going|how to start a conversation)\b/i },
+  { label: "Language Exchange", pattern: /\b(?:practice english|learn english|language exchange|native speakers?|conversational english)\b/i },
 
   // ── Dating ──
   { label: "Online Dating", pattern: /\b(?:online dating|dating app|anonymous dating|virtual dating|blind date)\b/i },

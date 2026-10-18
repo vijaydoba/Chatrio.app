@@ -993,6 +993,13 @@
   </url>
 
   <url>
+    <loc>https://chatrio.app/blog/tag/conversation-starters</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://chatrio.app/blog/tag/random-chat</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -1022,13 +1029,6 @@
 
   <url>
     <loc>https://chatrio.app/blog/tag/community-apps</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://chatrio.app/blog/tag/conversation-starters</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
