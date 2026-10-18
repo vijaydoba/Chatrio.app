@@ -116,6 +116,21 @@ body{
 
 img, video, canvas, svg{ max-width:100%; height:auto; }
 
+/* ===================== RESPONSIVE SAFETY NET =====================
+   Containers already clip overflow-x; these ensure long words/URLs and wide
+   code/tables WRAP or scroll locally instead of being silently clipped. Safe,
+   additive, and lift every page (incl. all blog/content pages) at once. */
+p, li, h1, h2, h3, h4, h5, h6, a, blockquote, figcaption, td, th, dd, dt{
+  overflow-wrap:break-word;
+}
+pre{ overflow-x:auto; max-width:100%; -webkit-overflow-scrolling:touch; }
+pre code{ white-space:pre; }
+/* Wide tables scroll inside their own box rather than widening the page */
+table{ max-width:100%; }
+.table-scroll, .tbl-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+/* Media honours its own aspect box */
+img, video{ height:auto; }
+
 /* ===================== SITE LAYOUT ===================== */
 .site{min-height:100dvh;display:grid;grid-template-rows:auto 1fr auto}
 .site-main{padding:32px 0}

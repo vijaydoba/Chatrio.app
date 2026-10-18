@@ -1,9 +1,12 @@
-/* Direct-message thread — focused full-height chat column. */
+/* Direct-message thread — focused full-height chat column.
+   Mobile-correct height (dvh) so the composer never hides behind a browser
+   toolbar; 16px inputs to stop iOS zoom-on-focus. */
 
 .dm-wrap {
   max-width: 720px;
   margin: 0 auto;
   height: calc(100vh - 64px);
+  height: calc(100dvh - 64px);
   display: flex;
   flex-direction: column;
   color: var(--text);
@@ -16,36 +19,43 @@
   padding: 0 20px;
 }
 
-/* Header */
+/* ---- Header ---- */
 .dm-head {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
+  gap: 11px;
+  padding: 11px 14px;
   border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--card-solid) 70%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 .dm-back {
   background: none;
   border: none;
   color: var(--text);
   cursor: pointer;
-  padding: 4px 6px 4px 0;
+  padding: 6px 4px 6px 0;
   display: flex;
   align-items: center;
+  border-radius: 8px;
+  flex: none;
 }
-.dm-head-id { flex: 1; min-width: 0; line-height: 1.22; }
+.dm-back:hover { opacity: .7; }
+.dm-head-id { flex: 1; min-width: 0; line-height: 1.25; }
 .dm-head-name {
   font-weight: 800;
   font-size: 1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: -.01em;
 }
-.dm-head-status { font-size: .78rem; opacity: .6; }
-.dm-head-status.online { color: #22c55e; opacity: 1; }
+.dm-head-status { font-size: .76rem; opacity: .6; }
+.dm-head-status.online { color: #22c55e; opacity: 1; font-weight: 600; }
 .dm-call-btn {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   flex: none;
   border-radius: 50%;
   border: none;
@@ -56,52 +66,63 @@
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 4px 14px rgba(124, 58, 237, .4);
+  transition: transform .12s ease;
 }
+.dm-call-btn:hover { transform: translateY(-1px); }
+.dm-call-btn:active { transform: translateY(0); }
 
-/* Message list */
+/* ---- Message list ---- */
 .dm-body {
   flex: 1;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   padding: 18px 14px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
-.dm-empty { margin: auto; max-width: 300px; text-align: center; opacity: .62; font-size: .9rem; line-height: 1.55; }
+.dm-empty { margin: auto; max-width: 300px; text-align: center; opacity: .62; font-size: .92rem; line-height: 1.6; }
 
 .dm-msg { display: flex; flex-direction: column; margin-bottom: 2px; }
 .dm-msg.them { align-items: flex-start; }
 .dm-msg.me { align-items: flex-end; }
 
 .dm-bubble {
-  max-width: 76%;
-  padding: 9px 13px;
-  border-radius: 18px;
-  font-size: .92rem;
+  max-width: 78%;
+  padding: 9px 14px;
+  border-radius: 20px;
+  font-size: .94rem;
   line-height: 1.4;
+  overflow-wrap: break-word;
   word-break: break-word;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
 }
 .dm-msg.them .dm-bubble {
   background: var(--card-solid);
   border: 1px solid var(--border);
-  border-bottom-left-radius: 6px;
+  border-bottom-left-radius: 7px;
 }
 .dm-msg.me .dm-bubble {
   background: linear-gradient(135deg, #7c3aed, #22d3ee);
   color: #fff;
-  border-bottom-right-radius: 6px;
+  border-bottom-right-radius: 7px;
 }
+/* Group consecutive bubbles from the same side a little tighter */
+.dm-msg.them + .dm-msg.them,
+.dm-msg.me + .dm-msg.me { margin-top: -1px; }
+
 .dm-bubble-text { display: block; }
 .dm-bubble-time { display: block; font-size: .62rem; opacity: .6; margin-top: 3px; text-align: right; }
-.dm-seen { font-size: .68rem; opacity: .6; margin: 1px 4px 6px; }
+.dm-seen { font-size: .68rem; opacity: .6; margin: 2px 6px 6px; }
 
-/* Typing indicator */
+/* ---- Typing indicator ---- */
 .dm-typing-bubble {
   display: inline-flex;
   gap: 4px;
   align-items: center;
-  padding: 11px 14px;
-  border-radius: 18px;
+  padding: 12px 15px;
+  border-radius: 20px;
   background: var(--card-solid);
   border: 1px solid var(--border);
 }
@@ -121,13 +142,14 @@
 }
 @media (prefers-reduced-motion: reduce) { .dm-dot { animation: none; } }
 
-/* Composer */
+/* ---- Composer ---- */
 .dm-composer {
   display: flex;
   gap: 10px;
   align-items: center;
   padding: 12px 14px calc(12px + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--border);
+  background: var(--bg);
 }
 .dm-input {
   flex: 1;
@@ -137,13 +159,14 @@
   border-radius: 999px;
   padding: 11px 16px;
   color: var(--text);
-  font-size: .92rem;
+  font-size: 16px; /* >=16px prevents iOS zoom-on-focus */
   outline: none;
+  transition: border-color .12s ease;
 }
 .dm-input:focus { border-color: var(--primary); }
 .dm-send {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   flex: none;
   border-radius: 50%;
   border: none;
@@ -153,5 +176,22 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: transform .12s ease, opacity .12s ease;
 }
-.dm-send:disabled { opacity: .45; cursor: default; }
+.dm-send:not(:disabled):hover { transform: translateY(-1px); }
+.dm-send:disabled { opacity: .4; cursor: default; }
+
+@media (min-width: 721px) {
+  /* Desktop: contained card. Height accounts for the 68px sticky header +
+     site-main's 32px top/bottom padding + these 14px margins so the column
+     fits without forcing the page to scroll. */
+  .dm-wrap {
+    height: calc(100dvh - 160px);
+    min-height: 420px;
+    margin-top: 14px;
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+}

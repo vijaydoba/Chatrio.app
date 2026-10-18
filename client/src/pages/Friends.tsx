@@ -284,7 +284,7 @@ export default function Friends() {
   const isEmpty = inbox !== null && convos.length === 0 && incoming.length === 0 && sent.length === 0;
 
   return (
-    <div className="circles-wrap">
+    <div className="circles-wrap friends-inbox">
       <Helmet>
         <title>Messages — Chatrio</title>
         <meta name="description" content="Your Chatrio friends and direct messages — chat any time, and jump into a video call when you're both online." />
@@ -292,12 +292,15 @@ export default function Friends() {
         <meta name="robots" content="noindex, follow" />
       </Helmet>
 
-      <h1 className="circles-h1">Messages</h1>
-      <p className="circles-sub">
-        {convos.length > 0
-          ? `${convos.length} friend${convos.length === 1 ? "" : "s"}${onlineCount ? ` · ${onlineCount} online now` : ""}`
-          : "People you've added from video chat. Message them any time."}
-      </p>
+      <div className="msg-head">
+        <h1 className="circles-h1">Messages</h1>
+        {convos.length > 0 && (
+          <span className="msg-head-sub">
+            {onlineCount > 0 && <span className="msg-online-dot" aria-hidden="true" />}
+            {`${convos.length} friend${convos.length === 1 ? "" : "s"}${onlineCount ? ` · ${onlineCount} online` : ""}`}
+          </span>
+        )}
+      </div>
 
       {error && <div className="auth-error">{error}</div>}
 
