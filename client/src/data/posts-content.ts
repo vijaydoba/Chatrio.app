@@ -2,6 +2,190 @@
 // via dynamic import so the main JS bundle stays small.
 
 export const POST_CONTENT: Record<string, string> = {
+  "random-video-chat-on-your-phone-no-app": `
+    <figure class="post-figure">
+      <img src="/images/hero-random-video-chat-on-your-phone-no-app.png" alt="A smartphone showing a live random video chat between two strangers, running in a mobile browser with no app installed" width="1200" height="630" />
+      <figcaption>Random video chat runs in your phone's browser — nothing to install.</figcaption>
+    </figure>
+
+    <p>
+      Most people who want to <a href="/video-chat">video chat with strangers</a> are holding a phone, not sitting at a laptop. The good news: on Chatrio you don't need to find, download, or sign into an app to do it. Random video chat runs entirely in your mobile browser, so you can go from "I'm bored" to face-to-face with a real person in about the time it takes to read this sentence.
+    </p>
+
+    <div class="table-of-contents">
+      <h3>📋 What's Inside</h3>
+      <ul>
+        <li><a href="#works-on-phone">Does random video chat work on a phone?</a></li>
+        <li><a href="#how-to-start">How to start in your browser</a></li>
+        <li><a href="#camera-access">Allowing your camera on iOS and Android</a></li>
+        <li><a href="#better-call">Five things that make a mobile call better</a></li>
+        <li><a href="#staying-safe">Staying safe on a phone</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <h2 id="works-on-phone">Does random video chat work on a phone?</h2>
+    <p>
+      Yes — and for Chatrio, the phone is the main event. The whole experience is built mobile-first, which means it's designed around a single vertical screen, a front camera, and a thumb. You open the page in Safari on an iPhone or Chrome on Android, and the same <a href="/blog/random-video-chat-guide">random video chat</a> that works on desktop works there too, with no separate download and no app-store account to create.
+    </p>
+    <p>
+      Because it's browser-based, there's nothing taking up storage on your device and nothing running in the background after you close the tab. When you leave, the call is over and the camera light goes off.
+    </p>
+
+    <h2 id="how-to-start">How to start in your browser</h2>
+    <div class="infobox">
+      <h4>📱 Four steps on your phone</h4>
+      <ol>
+        <li>Open <a href="/video-chat">chatrio.app/video-chat</a> in your phone's browser, or tap "Video Chat" in the menu.</li>
+        <li>Tap <strong>Allow</strong> when the browser asks to use your camera and microphone.</li>
+        <li>You join the queue — video starts automatically the moment you're matched with a real person.</li>
+        <li>Use the on-screen buttons to mute, turn your camera off, skip to someone new, or end the call.</li>
+      </ol>
+    </div>
+    <p>
+      There's no invite or accept step. The second two people are paired, both cameras go live — that's the point of the mode. If you'd rather warm up with typing first, <a href="/chat">text chat</a> is one tap away instead, and either side can add video later.
+    </p>
+
+    <h2 id="camera-access">Allowing your camera on iOS and Android</h2>
+    <p>
+      The one thing that trips people up on mobile is the camera permission. Your phone only shares your camera with a website after you explicitly allow it, so if your screen stays black, that permission is almost always the reason.
+    </p>
+    <p>
+      On an <strong>iPhone</strong>, Safari asks the first time you join. If you tapped "Don't Allow" by accident, open Settings → Safari → Camera (and Microphone) and set them to Ask or Allow, then reload the page. On <strong>Android</strong>, Chrome shows a small camera icon in the address bar — tap it to switch the permission back on, or check Settings → Site settings → Camera if you never saw a prompt.
+    </p>
+    <p>
+      One more mobile quirk: only one app can use the camera at a time. If another video app is open in the background, close it first so Chatrio can reach the camera.
+    </p>
+
+    <h2 id="better-call">Five things that make a mobile call better</h2>
+    <ul>
+      <li><strong>Face a window.</strong> Light in front of you beats a bright light behind you, which turns you into a silhouette.</li>
+      <li><strong>Hold the phone a little above eye level.</strong> It's a friendlier angle than filming up your chin.</li>
+      <li><strong>Use Wi-Fi if the video stutters.</strong> Video is heavier than texting, so a weak signal shows up as a frozen or blurry picture.</li>
+      <li><strong>Pop in earbuds.</strong> They cut echo and make it much easier to hear someone in a noisy room.</li>
+      <li><strong>Prop it up.</strong> Leaning the phone against something steadies the picture and frees your hands.</li>
+    </ul>
+
+    <h2 id="staying-safe">Staying safe on a phone</h2>
+    <p>
+      The safety basics are the same on mobile as anywhere else: Chatrio is for adults only, your camera is live only while you're in a call, and you can skip anyone instantly. Keep identifying details — your full name, your exact location, anything in the background that gives away where you live — out of frame and out of the conversation until you genuinely trust someone. For the full rundown, read <a href="/blog/is-video-chat-with-strangers-safe-2026">Is Video Chat With Strangers Safe?</a>
+    </p>
+
+    <h2 id="faq">Frequently Asked Questions</h2>
+
+    <h3>Do I need to download an app?</h3>
+    <p>No. Random video chat runs in your mobile browser — Safari, Chrome, or whatever you already use. There's nothing to install and no app-store account to set up.</p>
+
+    <h3>Does it use a lot of data?</h3>
+    <p>Live video uses more data than texting, so on a limited mobile plan it's worth connecting to Wi-Fi. On Wi-Fi there's nothing to worry about.</p>
+
+    <h3>Why is my camera showing a black screen?</h3>
+    <p>Almost always a permission that got denied. Re-allow the camera in your browser's site settings and reload, and make sure no other app is holding the camera.</p>
+
+    <h3>Can I switch to the back camera?</h3>
+    <p>Video chat uses your front (selfie) camera by default so the other person can see your face. You can turn the camera off entirely at any time and stay on audio.</p>
+
+    <h3>Is it really free?</h3>
+    <p>Yes — no per-minute fees, no credits, no premium tier. Just open the page and match.</p>
+
+    <p>
+      <strong>Related articles:</strong> <a href="/blog/random-video-chat-guide">Random Video Chat: Meet Strangers Face-to-Face Instantly</a> • <a href="/blog/first-random-video-chat-what-to-say">Your First Random Video Chat: What to Say</a> • <a href="/blog/video-chat-vs-text-chat-which-is-better">Video Chat vs Text Chat: Which Is Better?</a>
+    </p>
+  `,
+  "first-random-video-chat-what-to-say": `
+    <figure class="post-figure">
+      <img src="/images/hero-first-random-video-chat-what-to-say.png" alt="A first-time user smiling nervously at their screen during a random video chat, with a short countdown timer visible" width="1200" height="630" />
+      <figcaption>The first few seconds feel huge — here's how to get through them.</figcaption>
+    </figure>
+
+    <p>
+      You tap Start, a stranger's face appears, and… your mind goes completely blank. If that's you, you're not broken — it happens to almost everyone on their <a href="/video-chat">first random video chat</a>. The difference between people who enjoy it and people who quit after one try isn't confidence. It's having a couple of simple moves ready for the first few seconds.
+    </p>
+
+    <div class="table-of-contents">
+      <h3>📋 What's Inside</h3>
+      <ul>
+        <li><a href="#why-blank">Why your mind goes blank</a></li>
+        <li><a href="#first-seconds">The first five seconds</a></li>
+        <li><a href="#what-to-say">What to actually say</a></li>
+        <li><a href="#the-timer">Using the 15-second timer</a></li>
+        <li><a href="#keep-going">Keeping it going — or moving on</a></li>
+        <li><a href="#leaving">How to leave gracefully</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <h2 id="why-blank">Why your mind goes blank</h2>
+    <p>
+      Meeting a brand-new face with no warning is a small jolt to your nervous system. There's no profile to read, no shared friend to mention, no time to plan — just a person, looking back at you. Your brain treats that as mild pressure and, for a second or two, pauses the part that produces words. That blank moment is normal, it's brief, and the other person is very often feeling exactly the same thing.
+    </p>
+
+    <h2 id="first-seconds">The first five seconds</h2>
+    <p>
+      You don't need a clever opening line. You need to not freeze. Three tiny actions carry the whole start of a call:
+    </p>
+    <ul>
+      <li><strong>Smile and say hi.</strong> It sounds too simple, but a warm "hey, how's it going?" instantly tells the other person you're friendly, not scary.</li>
+      <li><strong>React to something you can see.</strong> Their hoodie, their room, their headphones, the fact that you both clearly didn't know what to say — naming it out loud breaks the ice better than any script.</li>
+      <li><strong>Ask one easy question.</strong> "Where are you tuning in from?" or "what are you up to tonight?" gives them an easy on-ramp to talk.</li>
+    </ul>
+
+    <h2 id="what-to-say">What to actually say</h2>
+    <p>
+      Good openers on video are short, light, and easy to answer. A few that reliably work:
+    </p>
+    <ul>
+      <li>"Okay, you go first — I'm terrible at starting these."</li>
+      <li>"What made you open a random video chat tonight?"</li>
+      <li>"Quick one: cats or dogs?" — a silly either/or almost always gets a laugh.</li>
+      <li>"What's something you're actually into right now?"</li>
+    </ul>
+    <p>
+      Notice none of these are impressive. They're just open doors. If you want a deeper bank of openers that work in any chat format, see <a href="/blog/best-opening-lines-for-online-chat-with-strangers">the best opening lines for online chat with strangers</a>.
+    </p>
+
+    <h2 id="the-timer">Using the 15-second timer</h2>
+    <p>
+      Chatrio's random video chat starts every match with a short countdown — about fifteen seconds. It's there on purpose: a gentle nudge to say something quickly rather than sitting in silence sizing each other up. Think of it as a tiny deadline that works in your favour. Say hi before it runs out and the timer disappears the moment the call really gets going. If neither person engages, you're both returned to the queue and you simply meet someone new — no awkward lingering.
+    </p>
+    <p>
+      The trick is to treat the timer as permission to be a little bold. You have nothing to lose: if it doesn't click, the next match is one tap away.
+    </p>
+
+    <h2 id="keep-going">Keeping it going — or moving on</h2>
+    <p>
+      Once you're past hello, keep the conversation moving by following up on what they say instead of reaching for the next random question. If they mention they're studying, ask what for. If they're up late, ask why. Short reactions — "no way," "that's actually cool," "wait, really?" — keep the energy up without you having to carry everything.
+    </p>
+    <p>
+      And if there's just no spark? That's fine. Random chat is a numbers game, and skipping isn't rude — it's the whole design. A quick "nice talking to you, take care" and Skip is perfectly normal.
+    </p>
+
+    <h2 id="leaving">How to leave gracefully</h2>
+    <p>
+      You never owe anyone a long goodbye, but a two-second sign-off leaves both of you feeling good: "this was fun, have a good one." Then tap End to return to the lobby, or Skip to roll straight into the next match. If a conversation turns uncomfortable at any point, you don't owe even that — end it immediately. You're always in control of when a call stops.
+    </p>
+
+    <h2 id="faq">Frequently Asked Questions</h2>
+
+    <h3>Is it normal to be nervous?</h3>
+    <p>Completely. Nearly everyone is nervous on their first few calls, including the person on the other end. It fades fast once you've done it a handful of times.</p>
+
+    <h3>What if I say something awkward?</h3>
+    <p>You will, and it won't matter. On random video chat there's no history and no audience — if a call goes sideways, the next one is a fresh start with someone who never saw it.</p>
+
+    <h3>Do I have to show my face the whole time?</h3>
+    <p>No. You can turn your camera off and stay on audio whenever you like. If you'd rather not be on camera at all, <a href="/chat">text chat</a> matches you for a typed conversation instead.</p>
+
+    <h3>What does the countdown timer do?</h3>
+    <p>It gives each match a short window to connect so no one sits in silence. Engage and it clears on its own; ignore it and you're both sent back to meet someone new.</p>
+
+    <h3>How do I get better at this?</h3>
+    <p>Reps. The more calls you have, the less the blank moment hits. Prefer to practise your opener by typing first? Start with <a href="/blog/how-to-start-a-conversation-with-a-stranger-online">how to start a conversation with a stranger online</a>.</p>
+
+    <p>
+      <strong>Related articles:</strong> <a href="/blog/random-video-chat-on-your-phone-no-app">How to Video Chat With Strangers on Your Phone</a> • <a href="/blog/random-video-chat-guide">Random Video Chat: Meet Strangers Face-to-Face Instantly</a> • <a href="/blog/video-chat-vs-text-chat-which-is-better">Video Chat vs Text Chat: Which Is Better?</a>
+    </p>
+  `,
   "dating-chat-slang-glossary-2026": `
       <figure class="post-figure">
         <img src="/images/hero-questions-to-ask-to-get-to-know-someone.png" alt="Modern dating and online-chat slang glossary for 2026" />

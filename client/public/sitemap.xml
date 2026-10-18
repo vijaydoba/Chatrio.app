@@ -98,6 +98,22 @@
   <!-- BLOG POSTS -->
 
   <url>
+    <loc>https://chatrio.app/blog/random-video-chat-on-your-phone-no-app</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://chatrio.app/images/hero-random-video-chat-on-your-phone-no-app.png</image:loc></image:image>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/first-random-video-chat-what-to-say</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://chatrio.app/images/hero-first-random-video-chat-what-to-say.png</image:loc></image:image>
+  </url>
+
+  <url>
     <loc>https://chatrio.app/blog/dating-chat-slang-glossary-2026</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>monthly</changefreq>
@@ -979,6 +995,13 @@
   </url>
 
   <url>
+    <loc>https://chatrio.app/blog/tag/conversation-starters</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://chatrio.app/blog/tag/human-connection</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -987,13 +1010,6 @@
 
   <url>
     <loc>https://chatrio.app/blog/tag/mental-wellbeing</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://chatrio.app/blog/tag/conversation-starters</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1056,7 +1072,21 @@
   </url>
 
   <url>
+    <loc>https://chatrio.app/blog/tag/video-chat</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://chatrio.app/blog/tag/dating</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/tag/random-video-chat</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1099,13 +1129,6 @@
 
   <url>
     <loc>https://chatrio.app/blog/tag/romance</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://chatrio.app/blog/tag/video-chat</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

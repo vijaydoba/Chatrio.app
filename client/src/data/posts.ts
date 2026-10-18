@@ -166,6 +166,24 @@ export const CATEGORY_CANONICAL_TAG: Record<string, string> = {
 
 export const POSTS: Post[] = [
   {
+    slug: "random-video-chat-on-your-phone-no-app",
+    title: "How to Video Chat With Strangers on Your Phone",
+    excerpt:
+      "Start a random video chat from your phone browser — no app, no account. How to allow your camera and meet strangers face-to-face on iOS or Android.",
+    thumbnail: "/images/hero-random-video-chat-on-your-phone-no-app.png",
+    date: "2026-10-18",
+    category: "Chat & Connection",
+  },
+  {
+    slug: "first-random-video-chat-what-to-say",
+    title: "Your First Random Video Chat: What to Say",
+    excerpt:
+      "Matched on random video chat and your mind goes blank? What to say in the first few seconds, how to use the 15-second timer, and how to exit gracefully.",
+    thumbnail: "/images/hero-first-random-video-chat-what-to-say.png",
+    date: "2026-10-18",
+    category: "Chat & Connection",
+  },
+  {
     slug: "dating-chat-slang-glossary-2026",
     title: "Modern Dating & Chat Slang Glossary (2026)",
     excerpt:

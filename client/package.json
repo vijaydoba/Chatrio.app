@@ -101,6 +101,8 @@
       "/privacy",
       "/terms",
       "/child-safety",
+      "/blog/random-video-chat-on-your-phone-no-app",
+      "/blog/first-random-video-chat-what-to-say",
       "/blog/dating-chat-slang-glossary-2026",
       "/blog/dopamine-cycle-anonymous-chat-why-you-keep-coming-back",
       "/blog/when-to-exchange-contact-after-anonymous-chat",
@@ -212,9 +214,9 @@
       "/blog/tag/authenticity",
       "/blog/tag/nearby-chat",
       "/blog/tag/stranger-chat",
+      "/blog/tag/conversation-starters",
       "/blog/tag/human-connection",
       "/blog/tag/mental-wellbeing",
-      "/blog/tag/conversation-starters",
       "/blog/tag/random-chat",
       "/blog/tag/relationships",
       "/blog/tag/app-alternatives",
@@ -223,14 +225,15 @@
       "/blog/tag/texting",
       "/blog/tag/free-chat-sites",
       "/blog/tag/online-dating",
+      "/blog/tag/video-chat",
       "/blog/tag/dating",
+      "/blog/tag/random-video-chat",
       "/blog/tag/chat-rooms",
       "/blog/tag/introverts",
       "/blog/tag/loneliness",
       "/blog/tag/omegle-alternatives",
       "/blog/tag/psychology",
-      "/blog/tag/romance",
-      "/blog/tag/video-chat"
+      "/blog/tag/romance"
     ],
     "exclude": [
       "/chat"
