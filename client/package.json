@@ -84,6 +84,7 @@
     "include": [
       "/",
       "/video-chat",
+      "/friends",
       "/blog",
       "/blog/tags",
       "/blog/love",

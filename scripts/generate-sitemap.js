@@ -69,10 +69,15 @@ const tagPages = getQualifyingTags(postObjects).map((tag) => ({
    the sitemap — a noindex URL in the sitemap trips GSC's "Submitted URL marked
    noindex" warning. */
 const staticPages = [
-  // NOTE: /friends is intentionally omitted — it's an auth-gated private user
-  // page (noindex,follow), not a public landing page.
+  // /friends renders a public, indexable landing (FriendsPublic) for logged-out
+  // visitors and the prerenderer; the authenticated inbox and the /friends/:id DM
+  // thread stay noindex at runtime. The prerenderer runs with no token, so the
+  // public landing is what gets snapshotted and indexed — safe to include here.
+  // (Only /friends is listed; the parameterized /friends/:friendId DM route is
+  // private and deliberately left out.)
   { loc: "/",             lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "1.0" },
   { loc: "/video-chat",   lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "0.9" },
+  { loc: "/friends",      lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.6" },
   { loc: "/blog",         lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "0.9" },
   { loc: "/blog/tags",    lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "0.6" },
   { loc: "/blog/love",          lastmod: SITE_LASTMOD, changefreq: "weekly", priority: "0.7", sitemap: false },
