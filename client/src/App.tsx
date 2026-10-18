@@ -310,6 +310,11 @@ export default function App() {
     pathname === "/login" ||
     pathname === "/signup";
 
+  // A private DM thread (/friends/:id) is an immersive, app-like screen: it
+  // fills the viewport under the header and drops the marketing footer, so it
+  // reads as a focused conversation rather than a web page with a chat glued on.
+  const isImmersiveChat = /^\/friends\/[^/]+$/.test(pathname);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setNavOpen(false);
@@ -508,7 +513,7 @@ export default function App() {
 
       {/* --------------------------- */}
 
-      <main className="site-main">
+      <main className={`site-main${isImmersiveChat ? " site-main-immersive" : ""}`}>
         <div className="site-wrap">
           {usesLazyProductRoute ? (
             <Suspense fallback={<div className="route-loading" role="status">Loading…</div>}>
@@ -560,6 +565,7 @@ export default function App() {
       <CookieBanner />
       <AgeGate />
 
+      {!isImmersiveChat && (
       <footer className="site-footer">
         <div className="site-wrap footer-grid">
           <div className="footer-brand">
@@ -615,6 +621,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      )}
       </>
       )}
     </div>

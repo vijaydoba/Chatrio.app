@@ -3,13 +3,20 @@
    toolbar; 16px inputs to stop iOS zoom-on-focus. */
 
 .dm-wrap {
-  max-width: 720px;
+  max-width: 820px;
   margin: 0 auto;
-  height: calc(100vh - 64px);
-  height: calc(100dvh - 64px);
+  /* Fill the viewport under the 68px sticky header (footer is hidden on this
+     route) so the conversation owns the screen like a real messaging app. */
+  height: calc(100vh - 68px);
+  height: calc(100dvh - 68px);
   display: flex;
   flex-direction: column;
   color: var(--text);
+  position: relative;
+  /* Subtle brand glow instead of flat void — reads as an intentional surface. */
+  background:
+    radial-gradient(1200px 420px at 50% -10%, color-mix(in srgb, var(--primary) 9%, transparent), transparent 70%),
+    var(--bg);
 }
 .dm-centered {
   align-items: center;
@@ -182,16 +189,12 @@
 .dm-send:disabled { opacity: .4; cursor: default; }
 
 @media (min-width: 721px) {
-  /* Desktop: contained card. Height accounts for the 68px sticky header +
-     site-main's 32px top/bottom padding + these 14px margins so the column
-     fits without forcing the page to scroll. */
+  /* Desktop: frame the full-height column with hairline side borders so it
+     reads as a defined app surface against the darker page, not a card in a
+     void. No top/bottom radius — it spans header to viewport bottom. */
   .dm-wrap {
-    height: calc(100dvh - 160px);
-    min-height: 420px;
-    margin-top: 14px;
-    margin-bottom: 14px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    overflow: hidden;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    box-shadow: 0 0 60px -20px color-mix(in srgb, var(--primary) 40%, transparent);
   }
 }
