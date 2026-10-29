@@ -63,26 +63,19 @@ export const POST_REDIRECTS: Record<string, string> = {
   "what-is-a-trauma-bond-signs-how-to-break-free-2026": "dating-chat-slang-glossary-2026",
   "what-is-benching-signs-someone-is-keeping-you-as-a-backup-2026": "dating-chat-slang-glossary-2026",
   "what-is-codependency-signs-healthier-bonds-2026": "dating-chat-slang-glossary-2026",
-  "what-is-compersion-the-opposite-of-jealousy-2026": "dating-chat-slang-glossary-2026",
   "what-is-cuffing-season-why-it-happens-2026": "dating-chat-slang-glossary-2026",
   "what-is-curving-signs-of-a-soft-rejection-2026": "dating-chat-slang-glossary-2026",
-  "what-is-dtr-how-to-have-the-define-the-relationship-talk-2026": "dating-chat-slang-glossary-2026",
   "what-is-emotional-intimacy-how-to-build-it-2026": "dating-chat-slang-glossary-2026",
   "what-is-fawn-response-signs-of-people-pleasing-trauma-2026": "dating-chat-slang-glossary-2026",
   "what-is-future-faking-signs-why-it-works-2026": "dating-chat-slang-glossary-2026",
   "what-is-gaslighting-signs-how-to-respond-2026": "dating-chat-slang-glossary-2026",
   "what-is-gray-rocking-how-this-response-tactic-works-2026": "dating-chat-slang-glossary-2026",
   "what-is-hoovering-signs-an-ex-is-pulling-you-back-2026": "dating-chat-slang-glossary-2026",
-  "what-is-kitten-fishing-signs-of-a-slightly-misleading-profile-2026": "dating-chat-slang-glossary-2026",
   "what-is-limerence-obsessive-infatuation-explained-2026": "dating-chat-slang-glossary-2026",
   "what-is-micro-cheating-signs-youve-crossed-a-line-2026": "dating-chat-slang-glossary-2026",
-  "what-is-negging-signs-how-to-shut-it-down-2026": "dating-chat-slang-glossary-2026",
-  "what-is-orbiting-dating-trend-explained-2026": "dating-chat-slang-glossary-2026",
   "what-is-stonewalling-signs-how-to-break-the-pattern-2026": "dating-chat-slang-glossary-2026",
-  "what-is-the-ick-why-it-happens-what-to-do-2026": "dating-chat-slang-glossary-2026",
   "what-is-the-slow-fade-signs-someone-is-losing-interest-2026": "dating-chat-slang-glossary-2026",
   "what-is-the-talking-stage-signs-meaning-2026": "dating-chat-slang-glossary-2026",
-  "what-is-weaponized-incompetence-signs-examples-2026": "dating-chat-slang-glossary-2026",
   // Legacy/incorrect internal slugs. Keep these aliases so old links and search
   // results resolve to a real article instead of becoming soft 404s.
   "are-online-chat-connections-real": "online-friendships-are-real-friendships-heres-the-proof",
@@ -165,6 +158,69 @@ export const CATEGORY_CANONICAL_TAG: Record<string, string> = {
 };
 
 export const POSTS: Post[] = [
+  {
+    slug: "what-is-orbiting-dating-trend-explained-2026",
+    title: "What Is Orbiting? The Dating Trend Worse Than Ghosting (2026)",
+    excerpt:
+      "They stopped replying, but they're still watching every story you post. Here's what orbiting is, why it happens, and how to stop waiting on it.",
+    thumbnail: "/images/hero-what-is-breadcrumbing-signs-how-to-stop-accepting-it-2026.png",
+    date: "2026-08-06",
+    category: "Dating",
+  },
+  {
+    slug: "what-is-negging-signs-how-to-shut-it-down-2026",
+    title: "What Is Negging? Signs, Examples & How to Shut It Down (2026)",
+    excerpt:
+      "A backhanded compliment dressed up as playful teasing is still designed to make you chase approval. Here's how to spot negging and respond.",
+    thumbnail: "/images/hero-how-to-manage-your-emotions-during-a-difficult-online-conversation.png",
+    date: "2026-08-08",
+    category: "Mental Health",
+  },
+  {
+    slug: "what-is-compersion-the-opposite-of-jealousy-2026",
+    title: "What Is Compersion? The Opposite of Jealousy, Explained (2026)",
+    excerpt:
+      "Feeling genuine joy at a partner's happiness with someone else sounds impossible to some and obvious to others. Here's what compersion actually is.",
+    thumbnail: "/images/hero-love-is-built-not-found-real-love-in-modern-relationships.png",
+    date: "2026-08-08",
+    category: "Love",
+  },
+  {
+    slug: "what-is-dtr-how-to-have-the-define-the-relationship-talk-2026",
+    title: "What Is DTR? How to Have the Define-the-Relationship Talk (2026)",
+    excerpt:
+      "\"So what are we?\" is a short question that can feel enormous. Here's what DTR means and how to actually get through the conversation.",
+    thumbnail: "/images/hero-how-to-know-when-an-online-connection-is-worth-pursuing.png",
+    date: "2026-08-09",
+    category: "Relationships",
+  },
+  {
+    slug: "what-is-kitten-fishing-signs-of-a-slightly-misleading-profile-2026",
+    title: "What Is Kitten Fishing? Signs of a Slightly Misleading Profile (2026)",
+    excerpt:
+      "Not a fake identity — just an old photo, a shaved-off age, or a heavily filtered life. Here's how kitten fishing differs from catfishing.",
+    thumbnail: "/images/hero-virtual-dating-tips-video-dates-2026.png",
+    date: "2026-08-09",
+    category: "Dating",
+  },
+  {
+    slug: "what-is-the-ick-why-it-happens-what-to-do-2026",
+    title: "What Is 'The Ick'? Why It Happens & What to Do About It (2026)",
+    excerpt:
+      "One small moment and the attraction just vanishes. Here's the psychology behind the ick, and whether it's ever worth pushing past.",
+    thumbnail: "/images/hero-romantic-conversations-that-build-connection.png",
+    date: "2026-08-08",
+    category: "Romance",
+  },
+  {
+    slug: "what-is-weaponized-incompetence-signs-examples-2026",
+    title: "What Is Weaponized Incompetence? Signs & Examples (2026)",
+    excerpt:
+      "\"I just wasn't very good at it\" can be a real skill gap — or a convenient way to never have to do something again. Here's the difference.",
+    thumbnail: "/images/hero-why-people-are-more-honest-with-strangers-than-friends.png",
+    date: "2026-08-09",
+    category: "Relationships",
+  },
   {
     slug: "random-video-chat-on-your-phone-no-app",
     title: "How to Video Chat With Strangers on Your Phone",

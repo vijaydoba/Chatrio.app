@@ -215,11 +215,11 @@ export const POST_CONTENT: Record<string, string> = {
       <h3>The talking stage</h3>
       <p>The early, pre-relationship phase where two people chat and flirt to feel each other out before either commits to dating.</p>
       <h3>DTR (define the relationship)</h3>
-      <p>The conversation where two people decide, out loud, what they actually are — exclusive, casual, or something else.</p>
+      <p>The conversation where two people decide, out loud, what they actually are — exclusive, casual, or something else. <a href="/blog/what-is-dtr-how-to-have-the-define-the-relationship-talk-2026">Read the full guide →</a></p>
       <h3>Cuffing season</h3>
       <p>The colder months when people are more inclined to pair up for a steady partner, then often drift apart by spring.</p>
       <h3>The ick</h3>
-      <p>A sudden, hard-to-explain feeling of turn-off toward someone you were into, often triggered by a small, trivial thing.</p>
+      <p>A sudden, hard-to-explain feeling of turn-off toward someone you were into, often triggered by a small, trivial thing. <a href="/blog/what-is-the-ick-why-it-happens-what-to-do-2026">Read the full guide →</a></p>
       <h3>Beige flag</h3>
       <p>A trait that isn't a red or green flag — just oddly boring or quirky enough to make you pause and wonder.</p>
 
@@ -231,7 +231,7 @@ export const POST_CONTENT: Record<string, string> = {
       <h3>The slow fade</h3>
       <p>Gradually reducing contact until a relationship quietly dies, instead of ending it directly.</p>
       <h3>Orbiting</h3>
-      <p>Someone stops talking to you but keeps watching and reacting to your posts — hovering in your online orbit.</p>
+      <p>Someone stops talking to you but keeps watching and reacting to your posts — hovering in your online orbit. <a href="/blog/what-is-orbiting-dating-trend-explained-2026">Read the full guide →</a></p>
       <h3>Hoovering</h3>
       <p>When an ex "vacuums" you back in with sudden attention or nostalgia, usually to re-establish contact on their terms.</p>
       <h3>Future faking</h3>
@@ -241,13 +241,13 @@ export const POST_CONTENT: Record<string, string> = {
       <h3>Gaslighting</h3>
       <p>Making someone doubt their own memory or perception so they question what really happened. If a chat leaves you feeling this way, our guide to <a href="/blog">telling if someone is genuine online</a> can help.</p>
       <h3>Negging</h3>
-      <p>A backhanded "compliment" designed to lower your confidence and make you seek the other person's approval.</p>
+      <p>A backhanded "compliment" designed to lower your confidence and make you seek the other person's approval. <a href="/blog/what-is-negging-signs-how-to-shut-it-down-2026">Read the full guide →</a></p>
       <h3>Kitten-fishing</h3>
-      <p>Presenting a slightly misleading version of yourself online — real, but heavily flattering, photos and details.</p>
+      <p>Presenting a slightly misleading version of yourself online — real, but heavily flattering, photos and details. <a href="/blog/what-is-kitten-fishing-signs-of-a-slightly-misleading-profile-2026">Read the full guide →</a></p>
       <h3>Micro-cheating</h3>
       <p>Small acts of emotional or flirtatious investment in someone outside your relationship that stop short of a physical affair.</p>
       <h3>Weaponized incompetence</h3>
-      <p>Pretending to be bad at a task so someone else takes it over — a quiet way of offloading effort.</p>
+      <p>Pretending to be bad at a task so someone else takes it over — a quiet way of offloading effort. <a href="/blog/what-is-weaponized-incompetence-signs-examples-2026">Read the full guide →</a></p>
       <h3>Stonewalling</h3>
       <p>Shutting down and refusing to engage during conflict, leaving the other person talking to a wall.</p>
       <h3>Gray-rocking</h3>
@@ -261,7 +261,7 @@ export const POST_CONTENT: Record<string, string> = {
       <h3>Codependency</h3>
       <p>A one-sided dynamic where one person's sense of worth depends heavily on being needed by the other.</p>
       <h3>Compersion</h3>
-      <p>The warm feeling of genuine happiness at a partner's joy or connection with someone else — often called the opposite of jealousy.</p>
+      <p>The warm feeling of genuine happiness at a partner's joy or connection with someone else — often called the opposite of jealousy. <a href="/blog/what-is-compersion-the-opposite-of-jealousy-2026">Read the full guide →</a></p>
       <h3>Emotional intimacy</h3>
       <p>The closeness that comes from feeling safe enough to be honest and vulnerable — often easier to reach with a stranger than you'd expect.</p>
       <h3>Parasocial relationship</h3>
@@ -13592,4 +13592,701 @@ prove that.
 
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does AI moderation read my private messages?","acceptedAnswer":{"@type":"Answer","text":"Automated systems scan messages for harmful patterns in real time, but that's very different from a person reading your chats. On privacy-focused platforms, screening happens in the moment and conversations aren't stored afterward."}},{"@type":"Question","name":"Can AI moderation catch everything?","acceptedAnswer":{"@type":"Answer","text":"No. It's excellent at scale and at known-bad content, but it misses context, nuance, and brand-new abuse. That's why the best platforms combine AI with human review and user reporting."}},{"@type":"Question","name":"What is image hashing?","acceptedAnswer":{"@type":"Answer","text":"It's a technique that turns an image into a digital fingerprint and checks it against fingerprints of known illegal material, flagging matches without a human needing to view the image. PhotoDNA is the best-known example."}},{"@type":"Question","name":"How does Chatrio moderate chat?","acceptedAnswer":{"@type":"Answer","text":"Chatrio uses automated filters to detect and block the most harmful content categories, backed by one-tap user reporting. Because conversations aren't stored, moderation happens in real time rather than through a saved record."}}]}</script>
     `,
+  "what-is-orbiting-dating-trend-explained-2026": `
+    <figure class="post-figure">
+      <img src="/images/hero-what-is-breadcrumbing-signs-how-to-stop-accepting-it-2026.png" alt="A small satellite circling a profile icon at a distance without ever making contact, representing orbiting" width="1200" height="630" />
+      <figcaption>They stopped replying. They didn't stop watching.</figcaption>
+    </figure>
+
+    <p style="font-size:13px;opacity:.7;margin:0 0 18px">Published: August 6, 2026</p>
+
+    <div class="table-of-contents">
+      <h3>📋 Article Overview</h3>
+      <ul>
+        <li><a href="#what-is-it">What Is Orbiting?</a></li>
+        <li><a href="#where-it-came-from">Where the Term Came From</a></li>
+        <li><a href="#why-people-do-it">Why People Orbit Instead of Just Leaving</a></li>
+        <li><a href="#vs-ghosting-breadcrumbing">Orbiting vs Ghosting vs Breadcrumbing</a></li>
+        <li><a href="#what-to-do">What to Do When You're Being Orbited</a></li>
+        <li><a href="#faq">Frequently Asked Questions</a></li>
+      </ul>
+    </div>
+
+    <h2 id="what-is-it">What Is Orbiting?</h2>
+    <p>
+      Orbiting is when someone cuts off direct communication — no replies, no calls, nothing — but keeps passively engaging with you on social
+      media: watching your stories, liking old posts, staying visibly present without ever actually talking to you again. You're not fully cut
+      off, and you're not really connected either. You're just being kept in their orbit — close enough to notice, far enough to never talk to.
+    </p>
+    <p>
+      That's close to the original explanation from the person who coined the term. Writer
+      <a href="https://www.annaiovine.com/orbiting" target="_blank" rel="noopener noreferrer">Anna Iovine</a> described watching a man she'd been
+      on two dates with stop replying to texts entirely — while remaining consistently one of the first people to view her Instagram stories.
+      The behavior didn't fit "ghosting," since he clearly hadn't disappeared. It needed its own name.
+    </p>
+
+    <h2 id="where-it-came-from">Where the Term Came From</h2>
+    <div class="infobox">
+      <h4>📖 A Word Coined for a Behavior That Already Existed</h4>
+      <p>
+        Iovine coined "orbiting" while pitching a trend piece, describing the person doing it as keeping their target "in their orbit" — visible,
+        monitored, but never engaged with directly. The term caught on quickly enough that it was shortlisted for a major dictionary's word of
+        the year, and it's since been widely covered as one of the more common ways modern dating quietly ends without ever actually ending.
+      </p>
+    </div>
+    <p class="footnote">
+      Source: <a href="https://fortune.com/2024/06/03/orbiting-dating-nightmare-trend-apps-genz" target="_blank" rel="noopener noreferrer">Fortune, "'Orbiting' is the latest dating nightmare fueling Gen Z's disillusionment with finding love on the apps"</a>.
+    </p>
+
+    <h2 id="why-people-do-it">Why People Orbit Instead of Just Leaving</h2>
+    <p>
+      Orbiting rarely comes from a coordinated plan — it's usually the path of least resistance. Fully unfollowing or blocking someone takes a
+      deliberate action and can feel unnecessarily harsh over a few dates. Replying to a message they don't want to send takes emotional effort.
+      Watching a story costs nothing and requires no decision at all. The result is a low-effort, low-accountability way to keep someone as a
+      backup option, monitor their life, or simply avoid the small discomfort of a clean ending — without the discomfort of one.
+    </p>
+    <p>
+      It's rarely about you specifically as much as it's about the orbiter avoiding an uncomfortable conversation. That doesn't make it less
+      confusing to be on the receiving end of, especially when the story views keep arriving right on schedule.
+    </p>
+
+    <h2 id="vs-ghosting-breadcrumbing">Orbiting vs Ghosting vs Breadcrumbing</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr><th></th><th>Ghosting</th><th>Orbiting</th><th>Breadcrumbing</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Direct contact</strong></td><td>None, ever again</td><td>None</td><td>Occasional, just enough to keep you around</td></tr>
+        <tr><td><strong>Social media presence</strong></td><td>Often unfollows or disappears</td><td>Stays visibly active on your content</td><td>Stays active, sometimes even likes your posts</td></tr>
+        <tr><td><strong>What it signals</strong></td><td>A clean, if abrupt, exit</td><td>Keeping you as an option without commitment</td><td>Keeping you on a string without commitment</td></tr>
+      </tbody>
+    </table>
+    <p>
+      Read more on the mechanics of the other two in our guides to
+      <a href="/blog/dating-chat-slang-glossary-2026">why people ghost</a> and
+      <a href="/blog/dating-chat-slang-glossary-2026">what breadcrumbing looks like</a>. All three avoid a direct
+      conversation; orbiting is the version where the avoidance is visible in real time, every time they view your story.
+    </p>
+
+    <h2 id="what-to-do">What to Do When You're Being Orbited</h2>
+    <ol>
+      <li><strong>Don't read the views as interest.</strong> A story view costs nothing and isn't a substitute for the effort of an actual message.</li>
+      <li><strong>Mute or unfollow if the visibility is keeping you stuck.</strong> You don't owe an explanation, and you're allowed to remove the reminder.</li>
+      <li><strong>Resist the urge to post "for" them.</strong> Orbiting can pull both people into a strange, silent performance for an audience of one — it's worth noticing if you've started doing it too.</li>
+      <li><strong>Treat the silence as your actual answer.</strong> Someone who wanted to talk to you would talk to you; the orbit itself is the information.</li>
+      <li><strong>Redirect the energy toward people who are actually available.</strong> <a href="/chat">Chatrio</a> is a straightforward place to start a real, two-way conversation instead of waiting on a one-way one.</li>
+    </ol>
+
+    <h2 id="faq">Frequently Asked Questions</h2>
+
+    <h3>Is orbiting always intentional?</h3>
+    <p>Not necessarily calculated, but it is a choice, even a passive one — someone actively views your content while choosing not to reply. Intent aside, the healthy response is the same: don't wait on it.</p>
+
+    <h3>Should I confront someone who's orbiting me?</h3>
+    <p>You can, but expect it to rarely produce the outcome you want. A direct question ("are we talking again or not?") at least forces clarity, even if the honest answer is one you don't love.</p>
+
+    <h3>Is orbiting worse than ghosting?</h3>
+    <p>Many people find it harder to move on from, since ghosting has a clear end point and orbiting doesn't — the ongoing visibility can keep hope alive long after the connection has effectively ended.</p>
+
+    <h3>What's the difference between orbiting and just following someone casually?</h3>
+    <p>Context. Orbiting specifically follows a period of direct communication that abruptly stopped, while the passive social presence continues — it's the contrast between the two that defines the pattern.</p>
+
+    <div class="post-related">
+      <h3>Related Reading</h3>
+      <ul>
+        <li><a href="/blog/what-is-negging-signs-how-to-shut-it-down-2026">What Is Negging? Signs, Examples &amp; How to Shut It Down</a></li>
+        <li><a href="/blog/what-is-compersion-the-opposite-of-jealousy-2026">What Is Compersion? The Opposite of Jealousy</a></li>
+        <li><a href="/blog/dating-chat-slang-glossary-2026">Modern Dating &amp; Chat Slang Glossary (2026)</a></li>
+        <li><a href="/chat">Start a real conversation instead →</a></li>
+      </ul>
+    </div>
+  `,
+  "what-is-negging-signs-how-to-shut-it-down-2026": `
+    <figure class="post-figure">
+      <img src="/images/hero-how-to-manage-your-emotions-during-a-difficult-online-conversation.png" alt="A compliment speech bubble with a small hidden barb inside it, representing an insult disguised as flattery" width="1200" height="630" />
+      <figcaption>It's phrased like a compliment. It's built to make you want another one.</figcaption>
+    </figure>
+
+    <p style="font-size:13px;opacity:.7;margin:0 0 18px">Published: August 8, 2026</p>
+
+    <div class="table-of-contents">
+      <h3>📋 Article Overview</h3>
+      <ul>
+        <li><a href="#what-is-it">What Is Negging?</a></li>
+        <li><a href="#where-it-comes-from">Where the Term Comes From</a></li>
+        <li><a href="#how-it-works">How It's Supposed to Work</a></li>
+        <li><a href="#examples">Common Examples</a></li>
+        <li><a href="#how-to-respond">How to Shut It Down</a></li>
+        <li><a href="#faq">Frequently Asked Questions</a></li>
+      </ul>
+    </div>
+
+    <h2 id="what-is-it">What Is Negging?</h2>
+    <p>
+      Negging is a backhanded remark, framed as a joke or an offhand observation, designed to knock someone's confidence just enough that they
+      start seeking the negger's approval. It usually targets something the other person is a little insecure about already, wrapped in enough
+      plausible deniability that calling it out gets met with "it was just a joke."
+    </p>
+    <p>
+      What separates negging from ordinary teasing is the intent behind it. Playful teasing between people who already like each other tends to
+      build warmth. Negging is calculated to do the opposite first — a small dip in confidence — specifically so the recovery feels like it has
+      to come from the person who caused it.
+    </p>
+
+    <h2 id="where-it-comes-from">Where the Term Comes From</h2>
+    <div class="infobox">
+      <h4>📖 A Tactic Named in Pickup-Artist Culture</h4>
+      <p>
+        The term was popularized within pickup-artist communities in the 2000s as a deliberate technique for lowering a target's guard, on the
+        theory that a person used to constant validation would respond more to a mild insult than another compliment. It's since become widely
+        recognized as a manipulation tactic rather than a legitimate way to build attraction.
+      </p>
+    </div>
+
+    <h2 id="how-it-works">How It's Supposed to Work</h2>
+    <p>
+      The mechanism relies on a small, temporary drop in self-assurance creating an opening. If the remark lands, the target briefly wants to
+      prove the negger wrong or win their approval back, which keeps attention and effort flowing toward the person who caused the discomfort in
+      the first place. It's a short-term trick, not a foundation — it tends to fall apart quickly once someone recognizes the pattern for what
+      it is.
+    </p>
+
+    <h2 id="examples">Common Examples</h2>
+    <ul>
+      <li><strong>"You're actually really funny for someone who dresses like that"</strong> — a compliment with a jab built into the same sentence.</li>
+      <li><strong>"I usually don't go for girls/guys with your look, but you're cool"</strong> — framed as open-minded, landing as a put-down.</li>
+      <li><strong>Mocking something you clearly care about,</strong> then acting surprised that you took it seriously.</li>
+      <li><strong>Downplaying an accomplishment</strong> right after you share it, followed by a vague compliment elsewhere.</li>
+      <li><strong>Comparing you unfavorably to someone else,</strong> then immediately softening it with "but I like you anyway."</li>
+    </ul>
+
+    <h2 id="how-to-respond">How to Shut It Down</h2>
+    <ol>
+      <li><strong>Name it plainly, without heat.</strong> "That sounded like a backhanded compliment" removes the plausible deniability the remark depends on.</li>
+      <li><strong>Don't perform the recovery they're fishing for.</strong> Chasing approval right after the remark is exactly the response negging is built to produce.</li>
+      <li><strong>Notice if it's a pattern, not a one-off.</strong> A single awkward joke is different from a repeated tactic in how someone talks to you.</li>
+      <li><strong>Keep your reaction low-effort.</strong> A flat "okay" or simply changing the subject denies the remark the attention it's seeking.</li>
+      <li><strong>Recognize that genuine interest doesn't need to shrink you first.</strong> Real attraction doesn't require a confidence hit to get your attention.</li>
+    </ol>
+
+    <h2 id="faq">Frequently Asked Questions</h2>
+
+    <h3>Is negging always intentional?</h3>
+    <p>Often, yes — it's typically a learned tactic rather than an accident, though some people repeat patterns they picked up without fully examining why they use them.</p>
+
+    <h3>Can negging happen outside of dating?</h3>
+    <p>Yes, the same backhanded pattern shows up in friendships and workplaces, usually with the same underlying goal of keeping someone slightly off-balance and seeking approval.</p>
+
+    <h3>Is it negging if I don't feel bothered by it?</h3>
+    <p>The tactic itself is defined by the intent behind the remark, not by whether it worked on you — some people are simply less susceptible to it than others.</p>
+
+    <h3>What's the difference between negging and constructive criticism?</h3>
+    <p>Constructive criticism is offered to help you, on request or in context that makes that clear. Negging is delivered to unsettle you, usually with no real substance behind it.</p>
+
+    <div class="post-related">
+      <h3>Related Reading</h3>
+      <ul>
+        <li><a href="/blog/what-is-compersion-the-opposite-of-jealousy-2026">What Is Compersion? The Opposite of Jealousy</a></li>
+        <li><a href="/blog/what-is-dtr-how-to-have-the-define-the-relationship-talk-2026">What Is DTR? How to Have the Define-the-Relationship Talk</a></li>
+        <li><a href="/blog/dating-chat-slang-glossary-2026">Modern Dating &amp; Chat Slang Glossary (2026)</a></li>
+        <li><a href="/chat">Start a real conversation instead →</a></li>
+      </ul>
+    </div>
+  `,
+  "what-is-compersion-the-opposite-of-jealousy-2026": `
+    <figure class="post-figure">
+      <img src="/images/hero-love-is-built-not-found-real-love-in-modern-relationships.png" alt="Two hearts side by side, one glowing brighter as it reflects light from the other's happiness, representing joy at a partner's joy" width="1200" height="630" />
+      <figcaption>Not the absence of jealousy — the presence of something else entirely.</figcaption>
+    </figure>
+
+    <p style="font-size:13px;opacity:.7;margin:0 0 18px">Published: August 8, 2026</p>
+
+    <div class="table-of-contents">
+      <h3>📋 Article Overview</h3>
+      <ul>
+        <li><a href="#what-is-it">What Is Compersion?</a></li>
+        <li><a href="#where-it-comes-from">Where the Term Comes From</a></li>
+        <li><a href="#vs-jealousy">Compersion vs Simply Not Feeling Jealous</a></li>
+        <li><a href="#where-it-shows-up">Where It Shows Up</a></li>
+        <li><a href="#can-it-be-learned">Can It Be Learned?</a></li>
+        <li><a href="#faq">Frequently Asked Questions</a></li>
+      </ul>
+    </div>
+
+    <h2 id="what-is-it">What Is Compersion?</h2>
+    <p>
+      Compersion is the feeling of genuine joy at seeing a partner happy, fulfilled, or excited about something — including, in its most
+      discussed form, their happiness in a connection with someone else. It's often described as the opposite of jealousy: instead of a partner's
+      outside happiness feeling like a threat, it registers as something worth being glad about.
+    </p>
+    <p>
+      The word is most associated with polyamorous and non-monogamous communities, where it names a specific, recognizable feeling that
+      mainstream relationship language never really had a word for. But the underlying experience — being happy because someone you care about
+      is happy — isn't limited to any one relationship structure.
+    </p>
+
+    <h2 id="where-it-comes-from">Where the Term Comes From</h2>
+    <div class="infobox">
+      <h4>📖 A Word Built to Name a Missing Feeling</h4>
+      <p>
+        "Compersion" emerged from polyamorous communities, coined specifically because English had no existing word for feeling happy about a
+        partner's happiness with another person. Naming the feeling made it easier to talk about and, for many people practicing it, easier to
+        recognize and build toward intentionally.
+      </p>
+    </div>
+
+    <h2 id="vs-jealousy">Compersion vs Simply Not Feeling Jealous</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr><th></th><th>Not feeling jealous</th><th>Compersion</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>What's present</strong></td><td>An absence — no negative reaction</td><td>An active, positive feeling</td></tr>
+        <tr><td><strong>How it feels</strong></td><td>Neutral, unaffected</td><td>Genuinely glad, sometimes warm or moved</td></tr>
+        <tr><td><strong>What it requires</strong></td><td>Simply not being bothered</td><td>Actively caring about their happiness enough to enjoy it</td></tr>
+      </tbody>
+    </table>
+    <p>
+      Neither is required for a healthy relationship — plenty of secure couples never aim for compersion specifically and simply build
+      <a href="/blog/dating-chat-slang-glossary-2026">emotional intimacy</a> in their own way.
+    </p>
+
+    <h2 id="where-it-shows-up">Where It Shows Up</h2>
+    <ul>
+      <li><strong>Polyamorous and open relationships,</strong> where it's most often discussed and actively cultivated between partners.</li>
+      <li><strong>Monogamous relationships too,</strong> in smaller everyday forms — genuine happiness at a partner's close friendship, a hobby, or a promotion that has nothing to do with you.</li>
+      <li><strong>Parenting and close friendships,</strong> where the same underlying feeling shows up outside a romantic context entirely.</li>
+      <li><strong>Long-distance relationships,</strong> where being glad a partner is thriving apart from you can matter as much as missing them.</li>
+    </ul>
+
+    <h2 id="can-it-be-learned">Can It Be Learned?</h2>
+    <ol>
+      <li><strong>Start smaller than romance.</strong> Practicing genuine happiness at a friend's or sibling's good news builds the same underlying muscle.</li>
+      <li><strong>Separate a partner's happiness from your own sense of security.</strong> The two feel linked by habit, not by necessity.</li>
+      <li><strong>Notice the difference between compersion and forced positivity.</strong> If jealousy is genuinely present, naming it honestly matters more than performing joy over it.</li>
+      <li><strong>Build the kind of security where a partner's outside happiness doesn't need to compete with yours.</strong> That foundation tends to matter more than trying to feel a specific emotion on command.</li>
+      <li><strong>Talk about it directly with a partner</strong> rather than assuming either of you already knows where the other stands.</li>
+    </ol>
+
+    <h2 id="faq">Frequently Asked Questions</h2>
+
+    <h3>Is compersion only relevant to polyamorous relationships?</h3>
+    <p>The term originated there, but the underlying feeling — genuine happiness at someone else's happiness — shows up in monogamous relationships and friendships too, just less often discussed by name.</p>
+
+    <h3>Is it a problem if I don't feel compersion?</h3>
+    <p>Not at all. It's not a requirement for a healthy relationship of any kind, and plenty of secure, happy couples never think about it at all.</p>
+
+    <h3>Can jealousy and compersion happen at the same time?</h3>
+    <p>Yes, and it's common — the two aren't mutually exclusive, and many people describe feeling a mix of both in the same moment before one settles.</p>
+
+    <h3>Is compersion the same as being unbothered by anything a partner does?</h3>
+    <p>No — compersion is a specific positive response to a partner's genuine happiness, not a general lack of boundaries or feelings about the relationship.</p>
+
+    <div class="post-related">
+      <h3>Related Reading</h3>
+      <ul>
+        <li><a href="/blog/what-is-dtr-how-to-have-the-define-the-relationship-talk-2026">What Is DTR? How to Have the Define-the-Relationship Talk</a></li>
+        <li><a href="/blog/what-is-kitten-fishing-signs-of-a-slightly-misleading-profile-2026">What Is Kitten Fishing? Signs of a Slightly Misleading Profile</a></li>
+        <li><a href="/blog/dating-chat-slang-glossary-2026">Modern Dating &amp; Chat Slang Glossary (2026)</a></li>
+        <li><a href="/chat">Start a real conversation instead →</a></li>
+      </ul>
+    </div>
+  `,
+  "what-is-dtr-how-to-have-the-define-the-relationship-talk-2026": `
+    <figure class="post-figure">
+      <img src="/images/hero-how-to-know-when-an-online-connection-is-worth-pursuing.png" alt="Two speech bubbles finally overlapping into one clear shape after a long stretch of unlabeled conversation, representing the DTR talk" width="1200" height="630" />
+      <figcaption>A short question. A conversation people spend weeks avoiding.</figcaption>
+    </figure>
+
+    <p style="font-size:13px;opacity:.7;margin:0 0 18px">Published: August 9, 2026</p>
+
+    <div class="table-of-contents">
+      <h3>📋 Article Overview</h3>
+      <ul>
+        <li><a href="#what-is-it">What Is DTR?</a></li>
+        <li><a href="#when-to-have-it">When to Have the Conversation</a></li>
+        <li><a href="#why-its-hard">Why It Feels So Much Bigger Than It Is</a></li>
+        <li><a href="#how-to-do-it">How to Actually Have It</a></li>
+        <li><a href="#possible-outcomes">Possible Outcomes, and All of Them Are Fine</a></li>
+        <li><a href="#faq">Frequently Asked Questions</a></li>
+      </ul>
+    </div>
+
+    <h2 id="what-is-it">What Is DTR?</h2>
+    <p>
+      DTR stands for "define the relationship" — the conversation where two people say out loud what they've been doing together, rather than
+      each privately guessing. It's the moment "so what are we?" gets an actual answer instead of being deflected, joked about, or left to
+      resolve itself through vibes alone.
+    </p>
+    <p>
+      DTR isn't only for couples deciding on exclusivity. It covers any moment two people need to name where things stand — casual, exclusive,
+      undefined on purpose, or ending — so that both people are operating from the same understanding instead of two different ones.
+    </p>
+
+    <h2 id="when-to-have-it">When to Have the Conversation</h2>
+    <ul>
+      <li><strong>When the relationship's behavior has outgrown its label,</strong> like daily contact and real emotional investment with no name attached to any of it.</li>
+      <li><strong>When one person's actions suggest a different understanding</strong> than what's actually been said out loud.</li>
+      <li><strong>Before a moment that requires clarity,</strong> like meeting friends, traveling together, or introducing someone to family.</li>
+      <li><strong>When jealousy or confusion starts showing up</strong> around other people either of you is spending time with.</li>
+      <li><strong>When you notice you're avoiding the topic</strong> specifically because you're afraid of the answer — that avoidance is itself worth paying attention to.</li>
+    </ul>
+
+    <h2 id="why-its-hard">Why It Feels So Much Bigger Than It Is</h2>
+    <div class="infobox">
+      <h4>📖 The Conversation That's Bigger in Your Head</h4>
+      <p>
+        DTR conversations get built up because they force a choice out of the open — before, either person could privately hope for whatever
+        outcome they wanted. Naming it out loud removes that comfortable ambiguity, which is exactly why it feels so much riskier than it
+        usually turns out to be. Most people report the anticipation being worse than the actual conversation.
+      </p>
+    </div>
+
+    <h2 id="how-to-do-it">How to Actually Have It</h2>
+    <ol>
+      <li><strong>Pick a real, low-pressure moment</strong> rather than bringing it up mid-argument or right after something upsetting happened.</li>
+      <li><strong>Lead with your own honest position</strong> instead of opening with "what are we?" and putting all the pressure on the other person to answer first.</li>
+      <li><strong>Ask a direct question and let it sit.</strong> Resist filling the silence with reassurance before you've actually heard the answer.</li>
+      <li><strong>Separate what you want from what you think they want.</strong> Answering honestly matters more than guessing the "right" response.</li>
+      <li><strong>Treat it as one conversation, not the only one.</strong> Relationships change, and revisiting the label later is normal, not a failure of the first talk.</li>
+    </ol>
+    <p>
+      If the relationship still doesn't have a clear shape after the talk, that undefined middle ground is its own thing — see our guide to
+      <a href="/blog/dating-chat-slang-glossary-2026">situationships</a> for what that looks like day to day.
+    </p>
+
+    <h2 id="possible-outcomes">Possible Outcomes, and All of Them Are Fine</h2>
+    <p>
+      A DTR talk can land on exclusivity, on staying casual by mutual agreement, on needing more time before deciding, or on realizing the two
+      of you actually want different things and parting ways. None of these outcomes make the conversation a failure — the point isn't to get
+      a specific answer, it's to make sure both people are working from the same one.
+    </p>
+
+    <h2 id="faq">Frequently Asked Questions</h2>
+
+    <h3>How do I bring up DTR without sounding like an ultimatum?</h3>
+    <p>Frame it as curiosity about where things stand rather than a demand for a specific outcome — "I'd like to know how you're feeling about this" lands very differently than "we need to talk about our future."</p>
+
+    <h3>What if they avoid answering?</h3>
+    <p>A pattern of dodging the question is itself an answer. One postponed conversation is normal; repeated avoidance usually means they're not ready to commit to clarity either way.</p>
+
+    <h3>Is it too early to have a DTR talk after a few weeks?</h3>
+    <p>There's no fixed timeline — the right moment is whenever the ambiguity starts costing you more than the conversation would, which can happen at three weeks or three months.</p>
+
+    <h3>Can the relationship survive if the answers don't match?</h3>
+    <p>Sometimes, with a compromise both people actually agree to — but a mismatch that gets smoothed over rather than resolved tends to resurface later in a harder form.</p>
+
+    <div class="post-related">
+      <h3>Related Reading</h3>
+      <ul>
+        <li><a href="/blog/what-is-kitten-fishing-signs-of-a-slightly-misleading-profile-2026">What Is Kitten Fishing? Signs of a Slightly Misleading Profile</a></li>
+        <li><a href="/blog/what-is-the-ick-why-it-happens-what-to-do-2026">What Is 'The Ick'? Why It Happens &amp; What to Do</a></li>
+        <li><a href="/blog/dating-chat-slang-glossary-2026">Modern Dating &amp; Chat Slang Glossary (2026)</a></li>
+        <li><a href="/chat">Start a real conversation instead →</a></li>
+      </ul>
+    </div>
+  `,
+  "what-is-kitten-fishing-signs-of-a-slightly-misleading-profile-2026": `
+    <figure class="post-figure">
+      <img src="/images/hero-virtual-dating-tips-video-dates-2026.png" alt="A dating profile photo softly out of focus at the edges, several years and several filters removed from the person behind it, representing kitten fishing" width="1200" height="630" />
+      <figcaption>Not a fake person. Just a flattering edit of a real one.</figcaption>
+    </figure>
+
+    <p style="font-size:13px;opacity:.7;margin:0 0 18px">Published: August 9, 2026</p>
+
+    <div class="table-of-contents">
+      <h3>📋 Article Overview</h3>
+      <ul>
+        <li><a href="#what-is-it">What Is Kitten Fishing?</a></li>
+        <li><a href="#vs-catfishing">Kitten Fishing vs Catfishing</a></li>
+        <li><a href="#common-forms">Common Forms It Takes</a></li>
+        <li><a href="#why-people-do-it">Why People Do It</a></li>
+        <li><a href="#what-to-do">What to Do If You Notice It</a></li>
+        <li><a href="#faq">Frequently Asked Questions</a></li>
+      </ul>
+    </div>
+
+    <h2 id="what-is-it">What Is Kitten Fishing?</h2>
+    <p>
+      Kitten fishing is presenting a mildly misleading version of yourself on a dating profile — older photos, a shaved-off age, an exaggerated
+      job title, or interests listed more out of aspiration than actual practice. It's a small-scale, low-stakes cousin of catfishing: nobody's
+      identity is fake, just the edges are softened in whatever direction feels more appealing.
+    </p>
+    <p>
+      Most people have done a version of it, even in small ways. What separates ordinary profile flattery from kitten fishing is degree — a
+      slightly better lighting choice is normal; a five-year-old photo that no longer resembles you in person is the kind of gap that causes a
+      real, if minor, letdown when someone actually meets you.
+    </p>
+
+    <h2 id="vs-catfishing">Kitten Fishing vs Catfishing</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr><th></th><th>Kitten Fishing</th><th>Catfishing</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Identity</strong></td><td>Real person, softened details</td><td>Entirely fabricated persona</td></tr>
+        <tr><td><strong>Intent</strong></td><td>Usually insecurity or vanity</td><td>Deliberate, sustained deception</td></tr>
+        <tr><td><strong>Meeting in person</strong></td><td>Will meet, may cause a small letdown</td><td>Actively avoided indefinitely</td></tr>
+        <tr><td><strong>Financial angle</strong></td><td>Essentially never</td><td>Common in the more serious cases</td></tr>
+      </tbody>
+    </table>
+    <p>
+      For the more serious version of this pattern, see our guide to
+      <a href="/blog/what-is-catfishing-signs-how-to-spot-it-2026">catfishing</a>, which covers fully fabricated identities rather than a
+      flattering edit of a real one.
+    </p>
+
+    <h2 id="common-forms">Common Forms It Takes</h2>
+    <ul>
+      <li><strong>Photos that are several years, hairstyles, or body changes out of date,</strong> chosen because they're the most flattering ones available rather than the most current.</li>
+      <li><strong>A job title rounded up</strong> — "consultant" instead of a more specific, less impressive-sounding role.</li>
+      <li><strong>An age listed a year or two younger</strong> than reality, often to stay inside a filtering range other people search by.</li>
+      <li><strong>Interests and hobbies listed as active</strong> that are really things someone did once, or would like to do more of.</li>
+      <li><strong>Heavy filters or flattering angles used consistently,</strong> rather than as one photo among several more accurate ones.</li>
+    </ul>
+
+    <h2 id="why-people-do-it">Why People Do It</h2>
+    <div class="infobox">
+      <h4>📖 A Small Edit to Get Past the First Filter</h4>
+      <p>
+        Most kitten fishing comes from insecurity about clearing that first, brutal filtering pass — the swipe or the scroll where a profile
+        gets judged in seconds. The logic is that a slightly better-looking, slightly younger, slightly more impressive version gets further,
+        and the truth can catch up once there's already some connection. It's a short-term fix for a long-term problem, since the gap still
+        has to be closed eventually, usually on a first date.
+      </p>
+    </div>
+
+    <h2 id="what-to-do">What to Do If You Notice It</h2>
+    <ol>
+      <li><strong>Ask for a recent, unfiltered photo</strong> before meeting, framed casually rather than as an accusation.</li>
+      <li><strong>Suggest a quick video call first.</strong> It resolves most of the ambiguity in about thirty seconds.</li>
+      <li><strong>Decide how much the specific gap actually matters to you.</strong> A photo that's a year old is different from one that's a decade old.</li>
+      <li><strong>Give a small amount of grace on a first meeting.</strong> Mild profile flattery is common enough that it's rarely worth ending things over on its own.</li>
+      <li><strong>If the gap is large or the pattern repeats with excuses attached,</strong> treat it as a more serious signal rather than an isolated slip.</li>
+    </ol>
+
+    <h2 id="faq">Frequently Asked Questions</h2>
+
+    <h3>Is kitten fishing considered lying?</h3>
+    <p>It's a mild, usually low-stakes form of it — more self-flattery than deception, though the person on the receiving end can still reasonably feel misled.</p>
+
+    <h3>How is it different from just having a good photo?</h3>
+    <p>A good photo of the current you is normal. Kitten fishing is a photo or detail that no longer reflects reality in a way that would surprise someone meeting you.</p>
+
+    <h3>Should I call someone out for kitten fishing?</h3>
+    <p>A light, direct comment usually works better than a confrontation — most kitten fishing isn't malicious, and most people will own up to it if asked plainly.</p>
+
+    <h3>Is video chat a reliable way to avoid it?</h3>
+    <p>Yes — it's one of the fastest ways to confirm someone matches their profile before investing more time, and it filters out anything more serious than a flattering photo, too.</p>
+
+    <div class="post-related">
+      <h3>Related Reading</h3>
+      <ul>
+        <li><a href="/blog/what-is-the-ick-why-it-happens-what-to-do-2026">What Is 'The Ick'? Why It Happens &amp; What to Do</a></li>
+        <li><a href="/blog/what-is-weaponized-incompetence-signs-examples-2026">What Is Weaponized Incompetence? Signs &amp; Examples</a></li>
+        <li><a href="/blog/dating-chat-slang-glossary-2026">Modern Dating &amp; Chat Slang Glossary (2026)</a></li>
+        <li><a href="/chat">Start a real conversation instead →</a></li>
+      </ul>
+    </div>
+  `,
+  "what-is-the-ick-why-it-happens-what-to-do-2026": `
+    <figure class="post-figure">
+      <img src="/images/hero-romantic-conversations-that-build-connection.png" alt="A heart-shaped speech bubble with a small crack running through it, representing attraction fading in an instant" width="1200" height="630" />
+      <figcaption>Nothing changed about them. Something changed about how you saw them.</figcaption>
+    </figure>
+
+    <p style="font-size:13px;opacity:.7;margin:0 0 18px">Published: August 8, 2026</p>
+
+    <div class="table-of-contents">
+      <h3>📋 Article Overview</h3>
+      <ul>
+        <li><a href="#what-is-it">What Is "The Ick"?</a></li>
+        <li><a href="#where-it-comes-from">Where the Term Comes From</a></li>
+        <li><a href="#why-it-happens">Why It Happens So Suddenly</a></li>
+        <li><a href="#common-triggers">Common Triggers</a></li>
+        <li><a href="#what-to-do">Is It Ever Worth Pushing Past?</a></li>
+        <li><a href="#faq">Frequently Asked Questions</a></li>
+      </ul>
+    </div>
+
+    <h2 id="what-is-it">What Is "The Ick"?</h2>
+    <p>
+      The ick is a sudden, often irrational loss of attraction triggered by one specific moment — the way someone laughs, runs, orders coffee,
+      or talks to a waiter. One second the attraction is there, and the next it's gone, replaced by a cringing discomfort that can feel completely
+      out of proportion to whatever actually happened.
+    </p>
+    <p>
+      It's not the same as a genuine red flag or a slow realization that someone isn't a good match. The ick is faster and stranger than that — it
+      often targets something entirely neutral or even objectively fine, and the person experiencing it usually knows, even in the moment, that
+      the reaction doesn't quite make logical sense.
+    </p>
+
+    <h2 id="where-it-comes-from">Where the Term Comes From</h2>
+    <div class="infobox">
+      <h4>📖 A Phrase That Found a New Audience Online</h4>
+      <p>
+        "The ick" has circulated in British slang for years, but it found a much wider audience through dating reality shows and short-form
+        video, where people began cataloguing and comparing their most specific ick triggers. What used to be a vague, hard-to-explain feeling
+        got a name — and once it had a name, people started noticing it far more often.
+      </p>
+    </div>
+
+    <h2 id="why-it-happens">Why It Happens So Suddenly</h2>
+    <p>
+      One read is that the ick is less about the trigger itself and more about a subconscious search for a reason to exit — attraction that was
+      already fragile or uncertain finds a small, vivid detail to hang the discomfort on. Another read is simpler: attraction runs partly on
+      instinct, and instinct doesn't always explain itself before it changes its mind.
+    </p>
+    <p>
+      Either way, the ick tends to show up more in situations that were already uncertain to begin with, which is part of why the same small habit
+      can be endearing in one relationship and unbearable in another.
+    </p>
+
+    <h2 id="common-triggers">Common Triggers</h2>
+    <ul>
+      <li><strong>A specific physical mannerism</strong> — a laugh, a walk, a way of running that suddenly looks different than it did before.</li>
+      <li><strong>How they treat someone in a service role,</strong> which can either cement attraction or end it in a single interaction.</li>
+      <li><strong>An overly eager or try-hard moment,</strong> especially one that reads as performing confidence rather than having it.</li>
+      <li><strong>A small oversharing moment</strong> that lands at the wrong time, before enough trust has been built to carry it.</li>
+      <li><strong>Nothing identifiable at all</strong> — sometimes the shift is real but the specific trigger never becomes clear.</li>
+    </ul>
+
+    <h2 id="what-to-do">Is It Ever Worth Pushing Past?</h2>
+    <ol>
+      <li><strong>Ask whether it's a pattern or a moment.</strong> A single ick triggered by something trivial is different from a growing list of them.</li>
+      <li><strong>Separate the ick from an actual red flag.</strong> Cruelty, dishonesty, and disrespect deserve a different response than a cringe reaction to a laugh.</li>
+      <li><strong>Give it a little time before deciding anything.</strong> Some icks fade once the initial jolt passes; others don't, and that's information too.</li>
+      <li><strong>Notice if it shows up early with everyone.</strong> A recurring ick across different people may say more about your own readiness than about them.</li>
+      <li><strong>If the spark is gone for good, be honest about it</strong> rather than dragging out a connection that's already quietly over for you.</li>
+    </ol>
+
+    <p>
+      If the fading interest is coming from the other direction instead, our guide to
+      <a href="/blog/dating-chat-slang-glossary-2026">the slow fade</a> covers what that looks like from the receiving end.
+    </p>
+
+    <h2 id="faq">Frequently Asked Questions</h2>
+
+    <h3>Is the ick the same as losing interest?</h3>
+    <p>Related but not identical — losing interest is usually gradual, while the ick is typically sudden and tied to one specific, often trivial trigger.</p>
+
+    <h3>Can the ick go away?</h3>
+    <p>Sometimes. If it was triggered by a fleeting moment rather than a real character issue, the discomfort can fade with time and distance from that one instance.</p>
+
+    <h3>Is it shallow to end things over an ick?</h3>
+    <p>Attraction isn't purely rational for anyone, and forcing a connection that's genuinely gone rarely works out better than being honest about it early.</p>
+
+    <h3>Why do some people never seem to get the ick?</h3>
+    <p>It likely comes down to how securely someone feels in the connection to begin with — a stronger, more settled attraction has more room to absorb an odd moment without it derailing everything.</p>
+
+    <div class="post-related">
+      <h3>Related Reading</h3>
+      <ul>
+        <li><a href="/blog/what-is-weaponized-incompetence-signs-examples-2026">What Is Weaponized Incompetence? Signs &amp; Examples</a></li>
+        <li><a href="/blog/what-is-orbiting-dating-trend-explained-2026">What Is Orbiting? The Dating Trend Worse Than Ghosting</a></li>
+        <li><a href="/blog/dating-chat-slang-glossary-2026">Modern Dating &amp; Chat Slang Glossary (2026)</a></li>
+        <li><a href="/chat">Start a real conversation instead →</a></li>
+      </ul>
+    </div>
+  `,
+  "what-is-weaponized-incompetence-signs-examples-2026": `
+    <figure class="post-figure">
+      <img src="/images/hero-why-people-are-more-honest-with-strangers-than-friends.png" alt="One set of hands confidently finishing a task while another set nearby fumbles it just enough to be handed back, representing weaponized incompetence" width="1200" height="630" />
+      <figcaption>Not being unable. Being conveniently, consistently bad at it.</figcaption>
+    </figure>
+
+    <p style="font-size:13px;opacity:.7;margin:0 0 18px">Published: August 9, 2026</p>
+
+    <div class="table-of-contents">
+      <h3>📋 Article Overview</h3>
+      <ul>
+        <li><a href="#what-is-it">What Is Weaponized Incompetence?</a></li>
+        <li><a href="#common-examples">Common Examples</a></li>
+        <li><a href="#vs-genuine">Weaponized Incompetence vs a Genuine Skill Gap</a></li>
+        <li><a href="#why-it-works">Why It Keeps Working</a></li>
+        <li><a href="#what-to-do">How to Respond</a></li>
+        <li><a href="#faq">Frequently Asked Questions</a></li>
+      </ul>
+    </div>
+
+    <h2 id="what-is-it">What Is Weaponized Incompetence?</h2>
+    <p>
+      Weaponized incompetence is performing — consciously or not — a task badly enough, or forgetfully enough, that someone else stops asking
+      you to do it and takes it over instead. It shows up most often around household responsibilities and shared logistics, where "I'm just
+      not good at this" quietly becomes a permanent exemption rather than a temporary limitation.
+    </p>
+    <p>
+      The word "weaponized" points at the outcome, not necessarily a fully conscious plan. Someone doesn't have to be scheming for the pattern
+      to function this way — it just has to reliably produce the same result: the task moves off their plate and stays off it.
+    </p>
+
+    <h2 id="common-examples">Common Examples</h2>
+    <ul>
+      <li><strong>Doing a chore just poorly enough</strong> that it needs to be redone, until it's simply easier for someone else to do it themselves.</li>
+      <li><strong>"Forgetting" the same logistical detail repeatedly,</strong> like a recurring appointment or a recurring bill, despite remembering other things just fine.</li>
+      <li><strong>Asking so many clarifying questions about a simple task</strong> that it becomes faster for the other person to just do it.</li>
+      <li><strong>Genuinely not knowing how something works</strong> after years of consistently not being the one responsible for it.</li>
+      <li><strong>Framing the same excuse — "you're just better at this" —</strong> as a compliment rather than an ongoing exemption.</li>
+    </ul>
+
+    <h2 id="vs-genuine">Weaponized Incompetence vs a Genuine Skill Gap</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr><th></th><th>Genuine skill gap</th><th>Weaponized incompetence</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Response to feedback</strong></td><td>Improves with practice or instruction</td><td>Stays the same no matter how many times it's explained</td></tr>
+        <tr><td><strong>Consistency</strong></td><td>Struggles across similar tasks generally</td><td>Oddly specific to tasks they'd rather not do</td></tr>
+        <tr><td><strong>Effort to improve</strong></td><td>Visible attempts to get better</td><td>Little or no attempt, despite claiming to want to help</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="why-it-works">Why It Keeps Working</h2>
+    <div class="infobox">
+      <h4>📖 Fixing It Yourself Is Often Faster</h4>
+      <p>
+        Weaponized incompetence persists because the path of least resistance almost always favors the person doing it. Correcting the same
+        mistake repeatedly takes more energy than just doing the task, so the responsibility quietly and permanently shifts. Each individual
+        instance looks small and forgivable — it's only the accumulated pattern that reveals what's actually happening.
+      </p>
+    </div>
+
+    <h2 id="what-to-do">How to Respond</h2>
+    <ol>
+      <li><strong>Name the pattern, not just the latest instance.</strong> "This keeps happening with this specific task" is harder to wave off than one isolated complaint.</li>
+      <li><strong>Stop stepping in to fix it immediately.</strong> Letting a consequence actually land is often what finally motivates real improvement.</li>
+      <li><strong>Ask for a specific, small change and follow up on it,</strong> rather than a vague promise to "try harder" that's easy to forget.</li>
+      <li><strong>Separate genuine struggle from convenient struggle.</strong> If real effort to improve is visible, that's a different situation entirely.</li>
+      <li><strong>Recognize that this is ultimately about shared responsibility,</strong> and it's fair to expect the imbalance to actually change, not just be acknowledged.</li>
+    </ol>
+    <p>
+      If the underlying pattern is closer to conflict avoidance than genuine incompetence, our guide to
+      <a href="/blog/dating-chat-slang-glossary-2026">stonewalling</a> covers a related way responsibility gets
+      dodged.
+    </p>
+
+    <h2 id="faq">Frequently Asked Questions</h2>
+
+    <h3>Is weaponized incompetence always deliberate?</h3>
+    <p>Not always fully conscious, but it's rarely completely accidental either — most people can improve at a task once the consequences of not improving actually land on them.</p>
+
+    <h3>Does it only happen in romantic relationships?</h3>
+    <p>No — it shows up just as often between roommates, coworkers, and family members, anywhere a task can be quietly reassigned by doing it badly.</p>
+
+    <h3>What if they genuinely don't realize they're doing it?</h3>
+    <p>Naming the specific pattern clearly, with examples, is usually the fastest way to move it from an unconscious habit to something they can actually address.</p>
+
+    <h3>Can this pattern be unlearned?</h3>
+    <p>Yes, with real effort and follow-through — but it requires the responsibility actually shifting back, not just an apology that changes nothing about who does the task next time.</p>
+
+    <div class="post-related">
+      <h3>Related Reading</h3>
+      <ul>
+        <li><a href="/blog/what-is-orbiting-dating-trend-explained-2026">What Is Orbiting? The Dating Trend Worse Than Ghosting</a></li>
+        <li><a href="/blog/what-is-negging-signs-how-to-shut-it-down-2026">What Is Negging? Signs, Examples &amp; How to Shut It Down</a></li>
+        <li><a href="/blog/dating-chat-slang-glossary-2026">Modern Dating &amp; Chat Slang Glossary (2026)</a></li>
+        <li><a href="/chat">Start a real conversation instead →</a></li>
+      </ul>
+    </div>
+  `,
 };

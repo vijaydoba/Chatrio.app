@@ -105,6 +105,62 @@
   <!-- BLOG POSTS -->
 
   <url>
+    <loc>https://chatrio.app/blog/what-is-orbiting-dating-trend-explained-2026</loc>
+    <lastmod>2026-08-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://chatrio.app/images/hero-what-is-breadcrumbing-signs-how-to-stop-accepting-it-2026.png</image:loc></image:image>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/what-is-negging-signs-how-to-shut-it-down-2026</loc>
+    <lastmod>2026-08-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://chatrio.app/images/hero-how-to-manage-your-emotions-during-a-difficult-online-conversation.png</image:loc></image:image>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/what-is-compersion-the-opposite-of-jealousy-2026</loc>
+    <lastmod>2026-08-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://chatrio.app/images/hero-love-is-built-not-found-real-love-in-modern-relationships.png</image:loc></image:image>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/what-is-dtr-how-to-have-the-define-the-relationship-talk-2026</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://chatrio.app/images/hero-how-to-know-when-an-online-connection-is-worth-pursuing.png</image:loc></image:image>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/what-is-kitten-fishing-signs-of-a-slightly-misleading-profile-2026</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://chatrio.app/images/hero-virtual-dating-tips-video-dates-2026.png</image:loc></image:image>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/what-is-the-ick-why-it-happens-what-to-do-2026</loc>
+    <lastmod>2026-08-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://chatrio.app/images/hero-romantic-conversations-that-build-connection.png</image:loc></image:image>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/what-is-weaponized-incompetence-signs-examples-2026</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://chatrio.app/images/hero-why-people-are-more-honest-with-strangers-than-friends.png</image:loc></image:image>
+  </url>
+
+  <url>
     <loc>https://chatrio.app/blog/random-video-chat-on-your-phone-no-app</loc>
     <lastmod>2026-10-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -988,7 +1044,28 @@
   </url>
 
   <url>
+    <loc>https://chatrio.app/blog/tag/human-connection</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/tag/mental-wellbeing</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://chatrio.app/blog/tag/nearby-chat</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/tag/relationships</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1009,14 +1086,7 @@
   </url>
 
   <url>
-    <loc>https://chatrio.app/blog/tag/human-connection</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://chatrio.app/blog/tag/mental-wellbeing</loc>
+    <loc>https://chatrio.app/blog/tag/communication</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1030,13 +1100,6 @@
   </url>
 
   <url>
-    <loc>https://chatrio.app/blog/tag/relationships</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
     <loc>https://chatrio.app/blog/tag/app-alternatives</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -1044,7 +1107,7 @@
   </url>
 
   <url>
-    <loc>https://chatrio.app/blog/tag/communication</loc>
+    <loc>https://chatrio.app/blog/tag/online-dating</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1052,6 +1115,13 @@
 
   <url>
     <loc>https://chatrio.app/blog/tag/community-apps</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/tag/dating</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1072,13 +1142,6 @@
   </url>
 
   <url>
-    <loc>https://chatrio.app/blog/tag/online-dating</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
     <loc>https://chatrio.app/blog/tag/video-chat</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -1086,7 +1149,7 @@
   </url>
 
   <url>
-    <loc>https://chatrio.app/blog/tag/dating</loc>
+    <loc>https://chatrio.app/blog/tag/psychology</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1094,6 +1157,20 @@
 
   <url>
     <loc>https://chatrio.app/blog/tag/random-video-chat</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/tag/romance</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://chatrio.app/blog/tag/attraction</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1128,14 +1205,7 @@
   </url>
 
   <url>
-    <loc>https://chatrio.app/blog/tag/psychology</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://chatrio.app/blog/tag/romance</loc>
+    <loc>https://chatrio.app/blog/tag/relationship-advice</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
