@@ -85,7 +85,11 @@ function decodeEntities(s) {
 
 function faqScriptFor(html) {
   if (html.includes('"@type":"FAQPage"')) return null; // already has it
-  const start = html.search(/<h2[^>]*\bid="faq"/i);
+  let start = html.search(/<h2[^>]*\bid="faq"/i);
+  // Some posts author the FAQ heading as a plain `<h2>Frequently Asked
+  // Questions</h2>` without the id; match that too so they aren't silently
+  // skipped (7 posts were missing schema because of this).
+  if (start === -1) start = html.search(/<h2[^>]*>\s*Frequently Asked Questions\s*<\/h2>/i);
   if (start === -1) return null;
   // FAQ block runs until the related-reading box, the next <h2>, or the end.
   const after = html.slice(start);
