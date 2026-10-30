@@ -20,6 +20,29 @@ function primaryPostKeyword(post: Post) {
   return getPostKeywords(post)[0] || post.category;
 }
 
+// Hand-written, topic-specific intros so each hub carries genuine unique prose
+// (not a templated blurb) — fixes the "thin content" flag and strengthens the
+// hub's topical relevance. Keyed by tag slug; hubs without an entry fall back to
+// the generic count line. Keep each one distinct and substantive.
+const TAG_INTROS: Record<string, string> = {
+  "omegle-alternatives":
+    "Omegle shut down in 2023, and the wave of copycats that followed varies wildly in safety and quality. These guides break down which Omegle-style random chat sites are actually worth using today, what to watch out for, and how anonymous chat has changed since the original closed.",
+  psychology:
+    "Why do we often open up faster to strangers than to the people we know? This collection digs into the psychology behind anonymous conversation — the comfort of the “stranger on a train” effect, the dopamine loops of random chat, and what talking to strangers reveals about how we connect.",
+  attraction:
+    "Attraction online works differently than it does across a room, where tone, timing, and text do the heavy lifting instead of eye contact. These articles explore how chemistry forms over chat, what makes a first message land, and the signals that build — or quietly break — a connection before you ever meet.",
+  romance:
+    "Modern romance increasingly begins in a chat window rather than across a room. These pieces cover building real intimacy online, navigating text-first and long-distance relationships, and telling genuine connection apart from performance.",
+  "chat-rooms":
+    "Chat rooms never really died — they evolved into topic channels, interest groups, and anonymous lobbies. This collection covers the best chat rooms today, how to find communities that are actually active, and how to stay safe in group conversations with strangers.",
+  introverts:
+    "For introverts and shy people, text-first chat often feels safer than a phone call or a crowded room. These guides look at why anonymous conversation suits quieter personalities, how to rebuild social confidence at your own pace, and how to make friends online without the small-talk pressure.",
+  loneliness:
+    "Loneliness isn’t really about being alone — it’s about feeling unseen. These articles examine how random and anonymous chat can be a genuine first step out of isolation: when it helps, when it doesn’t, and how to turn a passing conversation into something that actually eases the feeling.",
+  "relationship-advice":
+    "Honest, practical advice for the messy middle of modern dating and relationships. From reading mixed signals and naming toxic patterns to knowing when to have “the talk,” these guides focus on what to actually do — not just what to feel.",
+};
+
 // Indexable topic hub for a tag with enough posts. Thin tags never reach here —
 // BlogRoute only renders TagPage for slugs in getQualifyingTags() (>= threshold,
 // <= coverage cap), so this page is never a one-post shell.
@@ -47,7 +70,10 @@ export default function TagPage({ slug }: { slug: string }) {
   }
 
   const canonicalUrl = `https://chatrio.app/blog/tag/${tag.slug}`;
-  const desc = `${tag.count} articles about ${tag.label.toLowerCase()} on the Chatrio blog — tips, guides, and stories about anonymous chat and online connection.`;
+  const intro = TAG_INTROS[tag.slug];
+  const desc =
+    intro ||
+    `${tag.count} articles about ${tag.label.toLowerCase()} on the Chatrio blog — tips, guides, and stories about anonymous chat and online connection.`;
   const featured = posts[0];
   const rest = posts.slice(1);
 
@@ -110,10 +136,19 @@ export default function TagPage({ slug }: { slug: string }) {
           <span>{tag.label}</span>
         </nav>
         <h1 className="blog-title">{tag.label}</h1>
-        <p className="blog-sub">
-          {tag.count} articles about {tag.label.toLowerCase()} — anonymous chat, online
-          connection, and talking to strangers safely.
-        </p>
+        {intro ? (
+          <>
+            <p className="blog-tag-intro">{intro}</p>
+            <p className="blog-sub">
+              {tag.count} {tag.count === 1 ? "article" : "articles"} on {tag.label.toLowerCase()} below.
+            </p>
+          </>
+        ) : (
+          <p className="blog-sub">
+            {tag.count} articles about {tag.label.toLowerCase()} — anonymous chat, online
+            connection, and talking to strangers safely.
+          </p>
+        )}
       </section>
 
       <section className="blog-layout">
