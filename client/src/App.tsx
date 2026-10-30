@@ -358,6 +358,7 @@ export default function App() {
               <NavLink className="nav-link" to="/video-chat">Video Chat</NavLink>
               <NavLink className="nav-link" to="/friends">Friends</NavLink>
               <NavLink className="nav-link" to="/circles">Circles</NavLink>
+              <NavLink className="nav-link" to="/blind-date">Blind Date</NavLink>
 
               <div
                 className="nav-dropdown-container"
@@ -446,6 +447,7 @@ export default function App() {
           <NavLink className="m-link" to="/video-chat" onClick={() => setNavOpen(false)}>Video Chat</NavLink>
           <NavLink className="m-link" to="/friends" onClick={() => setNavOpen(false)}>Friends</NavLink>
           <NavLink className="m-link" to="/circles" onClick={() => setNavOpen(false)}>Circles</NavLink>
+          <NavLink className="m-link" to="/blind-date" onClick={() => setNavOpen(false)}>Blind Date</NavLink>
 
           <div className="mob-blog-group">
             <button

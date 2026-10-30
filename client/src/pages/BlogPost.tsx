@@ -251,6 +251,10 @@ export default function BlogPost() {
               key={chip.slug}
               to={chip.hub ? `/blog/tag/${chip.slug}` : `/blog?search=${encodeURIComponent(chip.label)}`}
               className="post-topic-chip"
+              // Hub chips are indexable taxonomy pages — follow them. Search-result
+              // chips point at thin /blog?search=… views (noindex, canonical→/blog),
+              // so keep crawlers from discovering and wasting budget on them.
+              rel={chip.hub ? undefined : "nofollow"}
             >
               {chip.label}
             </NavLink>

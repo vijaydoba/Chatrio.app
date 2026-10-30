@@ -145,8 +145,10 @@ export default function BlogList() {
         <meta name="description" content={blogDesc} />
         <link rel="canonical" href={canonicalUrl} />
         {/* Category filter views duplicate the /blog/tag/* hubs (the one indexable
-            taxonomy) and /blog itself. Keep crawlable but out of the index. */}
-        {activeCategory !== "all" && (
+            taxonomy) and /blog itself. Keep crawlable but out of the index.
+            Search-result views (/blog?search=…) are thin, canonicalize to /blog,
+            and must stay out of the index too. */}
+        {(activeCategory !== "all" || searchQueryParam) && (
           <meta name="robots" content="noindex,follow" />
         )}
         <meta property="og:type" content="website" />
