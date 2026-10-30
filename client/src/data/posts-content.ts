@@ -12440,7 +12440,7 @@ prove that.
       <ul>
         <li><a href="/blog/how-to-spot-fake-profiles-and-scammers-in-online-chat">How to Spot Fake Profiles and Scammers in Online Chat</a></li>
         <li><a href="/blog/how-to-date-someone-you-met-online-safely">How to Date Someone You Met Online Safely</a></li>
-        <li><a href="/blog">Anonymous Dating Apps: What They Are and Why People Are Switching</a></li>
+        <li><a href="/blog/what-is-kitten-fishing-signs-of-a-slightly-misleading-profile-2026">What Is Kitten Fishing? Signs of a Slightly Misleading Profile</a></li>
         <li><a href="/chat">Start a real conversation instead →</a></li>
       </ul>
     </div>
@@ -12560,8 +12560,8 @@ prove that.
       <h3>Related Reading</h3>
       <ul>
         <li><a href="/blog/dating-chat-slang-glossary-2026">What Is Gaslighting? Signs, Examples & How to Respond</a></li>
-        <li><a href="/blog/dating-chat-slang-glossary-2026">What Is Negging? Signs, Examples & How to Shut It Down</a></li>
-        <li><a href="/blog">How to Recognize Emotional Manipulation in Online Chat</a></li>
+        <li><a href="/blog/what-is-negging-signs-how-to-shut-it-down-2026">What Is Negging? Signs, Examples & How to Shut It Down</a></li>
+        <li><a href="/blog/what-is-weaponized-incompetence-signs-examples-2026">What Is Weaponized Incompetence? Signs &amp; Examples</a></li>
         <li><a href="/chat">Start a real conversation instead →</a></li>
       </ul>
     </div>

@@ -3,6 +3,8 @@
 export type Post = {
   slug: string;
   title: string;
+  /** Optional SEO <title> override when the H1 title is too long (>60 chars). Falls back to title. */
+  seoTitle?: string;
   excerpt: string;
   thumbnail: string;
   date: string;
@@ -160,6 +162,7 @@ export const CATEGORY_CANONICAL_TAG: Record<string, string> = {
 export const POSTS: Post[] = [
   {
     slug: "what-is-orbiting-dating-trend-explained-2026",
+    seoTitle: "What Is Orbiting? Meaning, Signs & What to Do (2026)",
     title: "What Is Orbiting? The Dating Trend Worse Than Ghosting (2026)",
     excerpt:
       "They stopped replying, but they're still watching every story you post. Here's what orbiting is, why it happens, and how to stop waiting on it.",
@@ -169,6 +172,7 @@ export const POSTS: Post[] = [
   },
   {
     slug: "what-is-negging-signs-how-to-shut-it-down-2026",
+    seoTitle: "What Is Negging? Signs & How to Shut It Down (2026)",
     title: "What Is Negging? Signs, Examples & How to Shut It Down (2026)",
     excerpt:
       "A backhanded compliment dressed up as playful teasing is still designed to make you chase approval. Here's how to spot negging and respond.",
@@ -178,6 +182,7 @@ export const POSTS: Post[] = [
   },
   {
     slug: "what-is-compersion-the-opposite-of-jealousy-2026",
+    seoTitle: "What Is Compersion? The Opposite of Jealousy (2026)",
     title: "What Is Compersion? The Opposite of Jealousy, Explained (2026)",
     excerpt:
       "Feeling genuine joy at a partner's happiness with someone else sounds impossible to some and obvious to others. Here's what compersion actually is.",
@@ -187,6 +192,7 @@ export const POSTS: Post[] = [
   },
   {
     slug: "what-is-dtr-how-to-have-the-define-the-relationship-talk-2026",
+    seoTitle: "What Is DTR? The Define-the-Relationship Talk (2026)",
     title: "What Is DTR? How to Have the Define-the-Relationship Talk (2026)",
     excerpt:
       "\"So what are we?\" is a short question that can feel enormous. Here's what DTR means and how to actually get through the conversation.",
@@ -196,6 +202,7 @@ export const POSTS: Post[] = [
   },
   {
     slug: "what-is-kitten-fishing-signs-of-a-slightly-misleading-profile-2026",
+    seoTitle: "What Is Kitten Fishing? Signs & How to Spot It (2026)",
     title: "What Is Kitten Fishing? Signs of a Slightly Misleading Profile (2026)",
     excerpt:
       "Not a fake identity — just an old photo, a shaved-off age, or a heavily filtered life. Here's how kitten fishing differs from catfishing.",
@@ -205,6 +212,7 @@ export const POSTS: Post[] = [
   },
   {
     slug: "what-is-the-ick-why-it-happens-what-to-do-2026",
+    seoTitle: "What Is the Ick? Why It Happens & What to Do (2026)",
     title: "What Is 'The Ick'? Why It Happens & What to Do About It (2026)",
     excerpt:
       "One small moment and the attraction just vanishes. Here's the psychology behind the ick, and whether it's ever worth pushing past.",

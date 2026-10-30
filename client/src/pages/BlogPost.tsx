@@ -172,7 +172,7 @@ export default function BlogPost() {
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", padding: 12 }}>
       <Helmet>
-        <title>{seoTitle(post.title)}</title>
+        <title>{seoTitle(post.seoTitle ?? post.title)}</title>
         <meta name="description" content={metaDescription} />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:type" content="article" />
