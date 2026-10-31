@@ -38,7 +38,7 @@ function BlindDateWaitlist() {
     <div className="circles-wrap">
       <Helmet>
         <title>Blind Date — Coming Soon | Chatrio</title>
-        <meta name="description" content="Blind Date — meet the person before you meet the face. A profile-matched chat where names and photos stay hidden until you both choose to reveal them. Coming soon to Chatrio." />
+        <meta name="description" content="Blind Date — meet the person before you meet the face. A profile-matched chat where names and photos stay hidden until you both choose to reveal them." />
         <link rel="canonical" href="https://chatrio.app/blind-date" />
       </Helmet>
 

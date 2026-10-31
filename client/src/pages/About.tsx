@@ -9,7 +9,7 @@ export default function About() {
     >
       <Helmet>
         <title>About Chatrio – Anonymous Chat App | Privacy-First Platform</title>
-        <meta name="description" content="Learn about Chatrio — a free, anonymous chat platform that connects strangers instantly. No accounts, no tracking, no data stored. Built for real conversations." />
+        <meta name="description" content="Learn about Chatrio — a free, anonymous chat platform that connects strangers instantly. No accounts, no tracking, no data stored." />
         <link rel="canonical" href="https://chatrio.app/about" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="About Chatrio – Anonymous Chat App" />

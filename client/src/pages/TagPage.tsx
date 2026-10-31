@@ -20,6 +20,16 @@ function primaryPostKeyword(post: Post) {
   return getPostKeywords(post)[0] || post.category;
 }
 
+// Meta descriptions should stay ~155 chars; the hub intros are longer than that,
+// so derive the <meta> from the intro's first sentence (the full intro still
+// renders on the page). Falls back to a clean word-boundary truncation.
+function firstSentence(text: string): string {
+  const match = text.match(/^.*?[.?!](?=\s|$)/);
+  const sentence = (match ? match[0] : text).trim();
+  if (sentence.length <= 160) return sentence;
+  return sentence.slice(0, 157).replace(/\s+\S*$/, "") + "…";
+}
+
 // Hand-written, topic-specific intros so each hub carries genuine unique prose
 // (not a templated blurb) — fixes the "thin content" flag and strengthens the
 // hub's topical relevance. Keyed by tag slug; hubs without an entry fall back to
@@ -71,9 +81,9 @@ export default function TagPage({ slug }: { slug: string }) {
 
   const canonicalUrl = `https://chatrio.app/blog/tag/${tag.slug}`;
   const intro = TAG_INTROS[tag.slug];
-  const desc =
-    intro ||
-    `${tag.count} articles about ${tag.label.toLowerCase()} on the Chatrio blog — tips, guides, and stories about anonymous chat and online connection.`;
+  const desc = intro
+    ? firstSentence(intro)
+    : `${tag.count} articles about ${tag.label.toLowerCase()} on the Chatrio blog — tips, guides, and stories about anonymous chat and online connection.`;
   const featured = posts[0];
   const rest = posts.slice(1);
 

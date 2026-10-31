@@ -179,7 +179,7 @@ export default function Home() {
     <div className="lp-page">
       <Helmet>
         <title>Anonymous Chat – Talk to Strangers Online Free | Chatrio</title>
-        <meta name="description" content="Talk to strangers online free on Chatrio — anonymous chat with no sign-up and no app download. Pick your interests and connect with someone new in seconds. Start chatting now." />
+        <meta name="description" content="Talk to strangers online free on Chatrio — anonymous chat with no sign-up or app download. Pick your interests and connect with someone new in seconds." />
         <link rel="canonical" href="https://chatrio.app/" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Chatrio – Free Anonymous Chat with Strangers" />
