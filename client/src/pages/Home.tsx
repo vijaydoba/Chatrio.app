@@ -225,13 +225,21 @@ export default function Home() {
           "url": "https://chatrio.app/chat",
           "applicationCategory": "CommunicationApplication",
           "operatingSystem": "All",
+          "publisher": { "@id": "https://chatrio.app/#org" },
+          "featureList": [
+            "Anonymous text chat with strangers — no account required",
+            "Random video chat with one-tap escalation from text",
+            "Interest-based matching (gaming, music, travel, and more)",
+            "Circles — anonymous local chat to meet people nearby",
+            "No message logs — conversations are never stored"
+          ],
           "offers": {
             "@type": "Offer",
             "price": 0,
             "priceCurrency": "USD",
             "availability": "https://schema.org/InStock"
           },
-          "description": "Free anonymous chat app — talk to strangers instantly without signing up."
+          "description": "Free anonymous chat app — talk to strangers instantly without signing up. A modern Omegle alternative with interest matching, video chat, and local Circles."
         })}</script>
       </Helmet>
 
@@ -390,6 +398,27 @@ export default function Home() {
             <span className="lp-radar-blip" style={{ top: "62%", left: "22%", animationDelay: ".6s" }} />
             <span className="lp-radar-blip" style={{ top: "72%", left: "68%", animationDelay: "1.2s" }} />
           </div>
+        </div>
+      </section>
+
+      {/* ── WHAT IS CHATRIO (self-contained definition block for answer engines) ── */}
+      <section className="lp-narrative lp-reveal">
+        <div className="lp-narrative-inner">
+          <h2>What is Chatrio?</h2>
+          <p>
+            Chatrio is a free, anonymous chat app for talking to strangers online — no
+            sign-up, no download, and no message logs. It pairs you with someone who
+            shares at least one of your interests, so every conversation starts with
+            common ground instead of an awkward opener. You can chat by text, switch to
+            live video with one tap, or use Circles to meet people near you.
+          </p>
+          <p>
+            Built as a modern Omegle alternative, Chatrio runs entirely in your browser
+            on phone or desktop. There are no accounts, no profiles, and no conversation
+            history — messages are delivered in real time and never stored on Chatrio's
+            servers. Pick a nickname (or stay as Stranger), choose your interests, and
+            you're connected with someone new in seconds.
+          </p>
         </div>
       </section>
 
