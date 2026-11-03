@@ -28,7 +28,6 @@ import { SLUG_TO_CATEGORY } from "./data/posts";
 import BlogTags from "./pages/BlogTags";
 import { Helmet } from "react-helmet-async";
 import { useAuth } from "./auth";
-import { BLIND_DATE_LIVE } from "./config";
 
 import "./App.css";
 
@@ -39,9 +38,6 @@ import "./App.css";
 const Chat = React.lazy(() => import("./Chat"));
 const VideoChat = React.lazy(() => import("./pages/VideoChat"));
 const CirclesLocal = React.lazy(() => import("./pages/CirclesLocal"));
-const BlindDate = React.lazy(() => import("./pages/BlindDate"));
-const BlindDateOnboarding = React.lazy(() => import("./pages/BlindDateOnboarding"));
-const BlindDateChat = React.lazy(() => import("./pages/BlindDateChat"));
 const CirclesAdmin = React.lazy(() => import("./pages/CirclesAdmin"));
 const CohortRoom = React.lazy(() => import("./pages/CohortRoom"));
 const Auth = React.lazy(() => import("./pages/Auth"));
@@ -172,11 +168,11 @@ function CookieBanner() {
 }
 
 // Routes where a user actually connects with strangers (live text/video chat,
-// local Circles rooms, Blind Date). Chatrio is an adults-only service (Terms §1),
+// local Circles rooms). Chatrio is an adults-only service (Terms §1),
 // so these sit behind a one-time 18+ confirmation — the entry signal reviewers
 // and users see before any stranger interaction. The homepage and content pages
 // stay open (SEO + ads); the gate fires when someone enters a chat feature.
-const AGE_GATED = /^\/(chat|video-chat|circles|blind-date)(\/|$)/;
+const AGE_GATED = /^\/(chat|video-chat|circles)(\/|$)/;
 
 function AgeGate() {
   const { pathname } = useLocation();
@@ -303,8 +299,6 @@ export default function App() {
     pathname === "/chat" ||
     pathname === "/video-chat" ||
     pathname === "/circles" ||
-    pathname === "/blind-date" ||
-    pathname.startsWith("/blind-date/") ||
     pathname === "/circles-admin" ||
     pathname.startsWith("/circles/") ||
     pathname.startsWith("/friends") ||
@@ -367,7 +361,6 @@ export default function App() {
               <NavLink className="nav-link" to="/video-chat">Video Chat</NavLink>
               <NavLink className="nav-link" to="/friends">Friends</NavLink>
               <NavLink className="nav-link" to="/circles">Circles</NavLink>
-              <NavLink className="nav-link" to="/blind-date">Blind Date</NavLink>
 
               <div
                 className="nav-dropdown-container"
@@ -456,7 +449,6 @@ export default function App() {
           <NavLink className="m-link" to="/video-chat" onClick={() => setNavOpen(false)}>Video Chat</NavLink>
           <NavLink className="m-link" to="/friends" onClick={() => setNavOpen(false)}>Friends</NavLink>
           <NavLink className="m-link" to="/circles" onClick={() => setNavOpen(false)}>Circles</NavLink>
-          <NavLink className="m-link" to="/blind-date" onClick={() => setNavOpen(false)}>Blind Date</NavLink>
 
           <div className="mob-blog-group">
             <button
@@ -535,15 +527,6 @@ export default function App() {
                 <Route path="/video-chat" element={<VideoChat />} />
                 <Route path="/circles" element={<CirclesLocal />} />
                 <Route path="/circles/app" element={<CirclesApp />} />
-                <Route path="/blind-date" element={<BlindDate />} />
-                <Route
-                  path="/blind-date/onboarding"
-                  element={BLIND_DATE_LIVE ? <BlindDateOnboarding /> : <Navigate to="/blind-date" replace />}
-                />
-                <Route
-                  path="/blind-date/chat"
-                  element={BLIND_DATE_LIVE ? <BlindDateChat /> : <Navigate to="/blind-date" replace />}
-                />
                 <Route path="/circles-admin" element={<CirclesAdmin />} />
                 <Route path="/circles/:cohortId" element={<CohortRoom />} />
                 <Route path="/friends" element={<Friends />} />
@@ -561,6 +544,9 @@ export default function App() {
               <Route path="/blog/:slug" element={<BlogRoute />} />
               <Route path="/" element={isNative ? <Navigate to="/circles" replace /> : <Home />} />
               <Route path="/nearby" element={<Navigate to="/circles" replace />} />
+              {/* Blind Date is paused (BLIND_DATE_LIVE=false, feature code kept for
+                  later) — redirect the route and any old shared/indexed links home. */}
+              <Route path="/blind-date/*" element={<Navigate to="/" replace />} />
               <Route path="/about" element={<About />} />
               <Route path="/editorial-standards" element={<EditorialStandards />} />
               <Route path="/contact" element={<Contact />} />

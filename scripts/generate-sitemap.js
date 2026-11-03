@@ -88,7 +88,6 @@ const staticPages = [
   { loc: "/blog/mental-health", lastmod: SITE_LASTMOD, changefreq: "weekly", priority: "0.7", sitemap: false },
   { loc: "/circles",      lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "0.8" },
   { loc: "/circles/app",  lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.6" },
-  { loc: "/blind-date",   lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "0.8" },
   { loc: "/about",        lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.6" },
   { loc: "/editorial-standards", lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.5" },
   { loc: "/contact",      lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.5" },

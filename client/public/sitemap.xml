@@ -54,13 +54,6 @@
   </url>
 
   <url>
-    <loc>https://chatrio.app/blind-date</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
     <loc>https://chatrio.app/about</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>monthly</changefreq>
@@ -1135,14 +1128,14 @@
   </url>
 
   <url>
-    <loc>https://chatrio.app/blog/tag/free-chat-sites</loc>
+    <loc>https://chatrio.app/blog/tag/video-chat</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://chatrio.app/blog/tag/video-chat</loc>
+    <loc>https://chatrio.app/blog/tag/free-chat-sites</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
