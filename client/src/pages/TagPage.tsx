@@ -102,7 +102,11 @@ export default function TagPage({ slug }: { slug: string }) {
         <meta property="og:title" content={`${tag.label} – Chatrio Blog`} />
         <meta property="og:description" content={desc} />
         <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:image" content="https://chatrio.app/branding/chatrio-icon-512-2026.png" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Chatrio — anonymous chat with strangers. Real talk, right now." />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${tag.label} – Chatrio Blog`} />
         <meta name="twitter:description" content={desc} />

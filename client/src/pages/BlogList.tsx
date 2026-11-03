@@ -135,8 +135,10 @@ export default function BlogList() {
         : `https://chatrio.app${categoryPath(activeCategory)}`;
 
   const blogDesc = activeCategory === "all"
-    ? "Read articles about love, romance, dating, and online connections on the Chatrio blog."
+    ? "Read real stories, practical dating tips, and honest advice about love, romance, and online connections from the Chatrio blog archive."
     : `Explore ${pageTitle} articles — tips, stories, and insights about ${pageTitle.toLowerCase()} and online connections.`;
+
+  const ogTitle = `${activeCategory === "all" ? "Chatrio Blog" : pageTitle} – Love, Dating & Chat`;
 
   return (
     <div className="blog-page">
@@ -152,12 +154,16 @@ export default function BlogList() {
           <meta name="robots" content="noindex,follow" />
         )}
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={`${activeCategory === "all" ? "Chatrio Blog" : pageTitle} – Love, Dating & Chat`} />
+        <meta property="og:title" content={ogTitle} />
         <meta property="og:description" content={blogDesc} />
         <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:image" content="https://chatrio.app/branding/chatrio-icon-512-2026.png" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Chatrio — anonymous chat with strangers. Real talk, right now." />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`Chatrio Blog – ${pageTitle}`} />
+        <meta name="twitter:title" content={ogTitle} />
         <meta name="twitter:description" content={blogDesc} />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
@@ -183,7 +189,7 @@ export default function BlogList() {
         )}
       </Helmet>
       <section className="blog-hero">
-        <h1 className="blog-title">{pageTitle}</h1>
+        <h1 className="blog-title">{activeCategory === "all" ? "Chatrio Blog" : pageTitle}</h1>
         <p className="blog-sub">
           Real stories, modern love, and meaningful conversations.{" "}
           <NavLink to="/blog/tags" className="blog-link">Browse all topics →</NavLink>
