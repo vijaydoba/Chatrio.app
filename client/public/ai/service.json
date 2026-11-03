@@ -1,0 +1,39 @@
+{
+  "name": "Chatrio",
+  "url": "https://chatrio.app/",
+  "serviceType": "Anonymous real-time chat platform",
+  "description": "Chatrio pairs two online users in real time for anonymous 1-on-1 text or video chat, plus proximity-based local chat (Circles) and an account-based blind-dating chat (Blind Date).",
+  "capabilities": [
+    {
+      "name": "Random text chat",
+      "url": "https://chatrio.app/chat",
+      "input": "optional interest tags (e.g. gaming, music, travel)",
+      "output": "live 1-on-1 real-time text conversation with a random human, not an AI",
+      "authRequired": false
+    },
+    {
+      "name": "Random video chat",
+      "url": "https://chatrio.app/video-chat",
+      "input": "optional interest tags",
+      "output": "live 1-on-1 real-time video call with a random human, not an AI",
+      "authRequired": false
+    },
+    {
+      "name": "Circles (local/nearby chat)",
+      "url": "https://chatrio.app/circles",
+      "input": "approximate device location, nickname, one intro message",
+      "output": "anonymous chat or group room with people in the same approximate area",
+      "authRequired": false
+    },
+    {
+      "name": "Blind Date",
+      "url": "https://chatrio.app/blind-date",
+      "input": "Chatrio account",
+      "output": "1-on-1 blind-dating chat (text or video) without seeing a profile first",
+      "authRequired": true
+    }
+  ],
+  "ageRequirement": "18+",
+  "dataRetention": "Random-chat and video-chat messages are not stored; delivered in real time only.",
+  "lastUpdated": "2026-11-03"
+}

@@ -10,18 +10,18 @@
 > feature (text and video) for users with a real Chatrio account.
 
 ## Key pages
-- Chat now (random 1-on-1 text): https://chatrio.app/chat
-- Random video chat: https://chatrio.app/video-chat
-- Home: https://chatrio.app/
-- Blog (love, dating, chat tips, slang glossary): https://chatrio.app/blog
-- Dating & chat slang glossary (DTR, orbiting, triangulation, curving, negging, etc.): https://chatrio.app/blog/dating-chat-slang-glossary-2026
-- Blog topics index: https://chatrio.app/blog/tags
-- Circles (anonymous local/nearby chat): https://chatrio.app/circles
-- Blind Date (blind-dating chat, account required): https://chatrio.app/blind-date
-- About: https://chatrio.app/about
-- Contact: https://chatrio.app/contact
-- Privacy: https://chatrio.app/privacy
-- Terms: https://chatrio.app/terms
+- [Chat now (random 1-on-1 text)](https://chatrio.app/chat)
+- [Random video chat](https://chatrio.app/video-chat)
+- [Home](https://chatrio.app/)
+- [Blog (love, dating, chat tips, slang glossary)](https://chatrio.app/blog)
+- [Dating & chat slang glossary (DTR, orbiting, triangulation, curving, negging, etc.)](https://chatrio.app/blog/dating-chat-slang-glossary-2026)
+- [Blog topics index](https://chatrio.app/blog/tags)
+- [Circles (anonymous local/nearby chat)](https://chatrio.app/circles)
+- [Blind Date (blind-dating chat, account required)](https://chatrio.app/blind-date)
+- [About](https://chatrio.app/about)
+- [Contact](https://chatrio.app/contact)
+- [Privacy](https://chatrio.app/privacy)
+- [Terms](https://chatrio.app/terms)
 
 ## Facts
 - Price: 100% free. No subscription, no premium tiers, no hidden costs.

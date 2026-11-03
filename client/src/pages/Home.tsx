@@ -241,6 +241,16 @@ export default function Home() {
           },
           "description": "Free anonymous chat app — talk to strangers instantly without signing up. A modern Omegle alternative with interest matching, video chat, and local Circles."
         })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": "https://chatrio.app/#webpage",
+          "url": "https://chatrio.app/",
+          "name": "Chatrio — Anonymous Chat with Strangers",
+          "isPartOf": { "@id": "https://chatrio.app/#website" },
+          "about": { "@id": "https://chatrio.app/#org" },
+          "dateModified": new Date().toISOString().split("T")[0]
+        })}</script>
       </Helmet>
 
       {/* ── HERO ── */}

@@ -1,0 +1,37 @@
+{
+  "name": "Chatrio",
+  "url": "https://chatrio.app/",
+  "description": "Chatrio is a free, anonymous web app that instantly pairs you with a random stranger for a private 1-on-1 text or video chat with a real human — no account, no app download, no phone number, and no bots. It is a modern, browser-based Omegle alternative.",
+  "category": "Social / Chat",
+  "pricing": "Free — no subscription, no premium tiers, no hidden costs",
+  "signupRequired": false,
+  "platforms": ["web", "iOS (browser)", "Android (browser)"],
+  "products": [
+    {
+      "name": "Random Chat",
+      "url": "https://chatrio.app/chat",
+      "description": "Anonymous 1-on-1 text chat with a random stranger, optional interest matching, no account required."
+    },
+    {
+      "name": "Random Video Chat",
+      "url": "https://chatrio.app/video-chat",
+      "description": "Anonymous 1-on-1 live video chat with a random stranger, no account required."
+    },
+    {
+      "name": "Circles",
+      "url": "https://chatrio.app/circles",
+      "description": "Anonymous local/nearby chat showing approximate-area presence only, with intro-message gated 1-on-1 chats and local group rooms. No account required."
+    },
+    {
+      "name": "Blind Date",
+      "url": "https://chatrio.app/blind-date",
+      "description": "One-on-one blind-dating chat (text and video) without seeing a profile first. Requires a real Chatrio account."
+    }
+  ],
+  "sameAs": [
+    "https://x.com/Chatrioapp1",
+    "https://discord.gg/289JDCJtRj"
+  ],
+  "contact": "chatrioapp@gmail.com",
+  "lastUpdated": "2026-11-03"
+}

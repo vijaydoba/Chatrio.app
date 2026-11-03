@@ -1,0 +1,51 @@
+{
+  "name": "Chatrio",
+  "url": "https://chatrio.app/",
+  "faqs": [
+    {
+      "q": "Is Chatrio completely free?",
+      "a": "Yes — always. Chatrio has no subscription fees, no premium tiers, and no hidden costs. The anonymous chat experience is free for everyone."
+    },
+    {
+      "q": "Do I need to create an account?",
+      "a": "No account is needed. Visit Chatrio, choose a nickname (or stay as \"Stranger\"), pick your interests, and click New Chat. No email, no password, no profile required."
+    },
+    {
+      "q": "Is my chat history saved anywhere?",
+      "a": "No. Messages are delivered in real time but never stored on Chatrio's servers. The moment you close the chat, your conversation is gone permanently."
+    },
+    {
+      "q": "How does interest matching work?",
+      "a": "Pick interests like gaming, music, travel, or fitness. Chatrio pairs you with someone who selected the same or similar topics, so you always have something to talk about."
+    },
+    {
+      "q": "Can I talk to strangers online for free?",
+      "a": "Yes. Chatrio lets you talk to strangers online free — no sign-up, no app, and no payment. Just set a nickname, pick your interests, and hit New Chat to connect with someone new instantly."
+    },
+    {
+      "q": "Is Chatrio a good Omegle alternative?",
+      "a": "Chatrio launched as a modern alternative to Omegle, with a cleaner mobile-first interface, interest-based matching, photo sharing, and a stronger commitment to privacy."
+    },
+    {
+      "q": "How does Chatrio handle inappropriate content?",
+      "a": "Users can report inappropriate behavior with one click. Repeated violations result in bans. Automated filters also detect and block the most harmful content categories."
+    },
+    {
+      "q": "Can I use Chatrio on my phone?",
+      "a": "Yes. Chatrio is fully responsive and works on any modern smartphone browser — iOS Safari and Android Chrome included. No app download required."
+    },
+    {
+      "q": "What makes Chatrio different from other random chat sites?",
+      "a": "Three things: instant connections (no waiting rooms), real interest matching (not just random pairing), and genuine privacy (no data stored, no accounts, no tracking)."
+    },
+    {
+      "q": "What is Circles?",
+      "a": "Circles is Chatrio's newest feature — an anonymous local chat to meet people near you. Your location is only ever shared approximately (never exact), you send one intro message before a chat opens, and you can join local group rooms too. No account required."
+    },
+    {
+      "q": "Can I video chat on Chatrio?",
+      "a": "Yes — two ways. Escalate any text chat to a live video call with one tap using the camera icon, or go straight to Random Video Chat for a match where video starts the instant you're connected. No account needed for either."
+    }
+  ],
+  "lastUpdated": "2026-11-03"
+}
