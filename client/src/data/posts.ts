@@ -1223,8 +1223,9 @@ export const POSTS: Post[] = [
   {
     slug: "chatrio-vs-monkey-app-comparison-2026",
     title: "Chatrio vs Monkey App: Which Random Chat Is Actually Safer in 2026?",
+    seoTitle: "Chatrio vs Monkey Chat: Is It Safe? (2026)",
     excerpt:
-      "Monkey pairs you with strangers on 15-second timed video calls and asks for a Snapchat, Google, or phone sign-up. Chatrio needs none of that. Here's a full, honest comparison of features, privacy, and safety.",
+      "Monkey video chat pairs strangers on 15-second calls and wants a sign-up; Chatrio needs none of it. An honest Monkey chat safety and privacy comparison.",
     thumbnail: "/images/hero-monkey-app-alternative-2026-free-no-sign-up.png",
     date: "2026-09-08",
     category: "Chat & Connection",

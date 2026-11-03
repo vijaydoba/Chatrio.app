@@ -21,6 +21,13 @@ function normalizeAssetPath(path?: string) {
 // on the highest-traffic page. Resolved from POSTS by slug so they stay in
 // sync with the canonical post data (silently skipped if a slug is removed).
 const FEATURED_BLOG_SLUGS = [
+  // Money pages first: surfaced here to pass homepage link equity to posts that
+  // already rank ~#80 in Google but currently receive almost no internal equity
+  // (DataForSEO shows page_rank 0 on them — homepage links are the fix).
+  "why-omegle-shut-down-and-what-to-use-instead",
+  "dating-chat-slang-glossary-2026",
+  "online-friendships-are-real-friendships-heres-the-proof",
+  // Pillar + proven geo posts.
   "omegle-alternatives-2026-free-anonymous-chat",
   "random-chat-apps-for-india-best-options",
   "best-anonymous-chat-app-india",
