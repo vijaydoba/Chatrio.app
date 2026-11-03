@@ -15,8 +15,12 @@ export default function About() {
         <meta property="og:title" content="About Chatrio – Anonymous Chat App" />
         <meta property="og:description" content="Chatrio connects strangers instantly without accounts or data storage. Anonymous, free, and privacy-first." />
         <meta property="og:url" content="https://chatrio.app/about" />
-        <meta property="og:image" content="https://chatrio.app/branding/chatrio-icon-512-2026.png" />
-        <meta name="twitter:card" content="summary" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Chatrio — anonymous chat with strangers. Real talk, right now." />
+        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="About Chatrio – Anonymous Chat App" />
         <meta name="twitter:description" content="Chatrio connects strangers instantly without accounts or data storage." />
         <script type="application/ld+json">{JSON.stringify({

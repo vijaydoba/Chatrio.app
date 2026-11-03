@@ -29,24 +29,17 @@
     <meta name="apple-mobile-web-app-title" content="Chatrio" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="application-name" content="Chatrio" />
-    <!-- robots is set per-route via Helmet (default in App.tsx; pages override
-         with noindex). Kept out of this static head so there's never a duplicate
-         index+noindex pair on noindex pages. -->
+    <!-- robots, og:image(:*), and twitter:card/image(:*) are set per-route via
+         Helmet (default in App.tsx; pages override). Kept out of this static
+         head so there's never a duplicate pair (e.g. index+noindex, or a
+         page-specific og:image sitting next to this fallback). -->
     <meta name="author" content="Chatrio" />
 
     <!-- Open Graph (static across all pages) -->
     <meta property="og:site_name" content="Chatrio" />
-    <meta property="og:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Chatrio — anonymous chat with strangers. Real talk, right now." />
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@Chatrioapp1" />
-    <meta name="twitter:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
-    <meta name="twitter:image:alt" content="Chatrio — anonymous chat with strangers. Real talk, right now." />
 
     <!-- JSON-LD: WebSite + Organization (sitewide); WebApplication lives only on Home via Helmet -->
     <script type="application/ld+json">

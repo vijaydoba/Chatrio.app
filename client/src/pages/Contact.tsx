@@ -13,8 +13,12 @@ export default function Contact() {
         <meta property="og:title" content="Contact Chatrio – Get Help & Support" />
         <meta property="og:description" content="Reach out to the Chatrio team for support, feedback, or partnership enquiries." />
         <meta property="og:url" content="https://chatrio.app/contact" />
-        <meta property="og:image" content="https://chatrio.app/branding/chatrio-icon-512-2026.png" />
-        <meta name="twitter:card" content="summary" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Chatrio — anonymous chat with strangers. Real talk, right now." />
+        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Contact Chatrio" />
         <meta name="twitter:description" content="Reach out to the Chatrio team for support or feedback." />
         <script type="application/ld+json">{JSON.stringify({

@@ -179,7 +179,7 @@ export default function Home() {
     <div className="lp-page">
       <Helmet>
         <title>Anonymous Chat – Talk to Strangers Online Free | Chatrio</title>
-        <meta name="description" content="Talk to strangers online free on Chatrio — anonymous chat with no sign-up or app download. Pick your interests and connect with someone new in seconds." />
+        <meta name="description" content="Talk to strangers online for free — anonymous chat with no sign-up or app download. Pick your interests and connect with someone new in seconds." />
         <link rel="canonical" href="https://chatrio.app/" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Chatrio – Free Anonymous Chat with Strangers" />
@@ -195,19 +195,6 @@ export default function Home() {
         <meta name="twitter:description" content="Chat with strangers anonymously. No sign-up needed. Free, instant, private random chat." />
         <meta name="twitter:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
         <meta name="twitter:image:alt" content="Chatrio — anonymous chat with strangers. Real talk, right now." />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "HowTo",
-          "name": "How to Chat with Strangers on Chatrio",
-          "description": "Start an anonymous chat with a stranger in seconds — no account required.",
-          "step": [
-            { "@type": "HowToStep", "position": 1, "name": "Set your name", "text": "Choose any name or stay as Stranger — no registration needed." },
-            { "@type": "HowToStep", "position": 2, "name": "Pick interests", "text": "Select optional topics like gaming, music, or travel to match with the right person." },
-            { "@type": "HowToStep", "position": 3, "name": "Hit New Chat", "text": "Click once and you are live with a new person instantly." }
-          ],
-          "totalTime": "PT30S",
-          "tool": [{ "@type": "HowToTool", "name": "Web browser" }]
-        })}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "FAQPage",

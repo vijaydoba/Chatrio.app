@@ -332,12 +332,21 @@ export default function App() {
 
   return (
     <div className="site">
-      {/* Site-wide default robots directive. Owning it here (instead of a static
-          tag in index.html that Helmet can't dedupe) means pages that set their
-          own noindex cleanly REPLACE this — one robots meta per page, no
-          conflicting index+noindex pair. */}
+      {/* Site-wide defaults for robots + social preview tags. Owning these here
+          (instead of static tags in index.html that Helmet can't dedupe) means
+          pages that set their own values cleanly REPLACE these — one tag per
+          page, never a duplicate pair (e.g. a page-specific og:image sitting
+          next to this fallback). */}
       <Helmet>
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+        <meta property="og:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Chatrio — anonymous chat with strangers. Real talk, right now." />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
+        <meta name="twitter:image:alt" content="Chatrio — anonymous chat with strangers. Real talk, right now." />
       </Helmet>
       {isNative && <NativeSplash />}
       {!isNative && (
