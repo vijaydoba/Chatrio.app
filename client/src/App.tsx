@@ -629,6 +629,7 @@ export default function App() {
                 alt="Chatrio - Featured on Startup Fame"
                 width="224"
                 height="36"
+                loading="lazy"
               />
             </a>
           </div>
