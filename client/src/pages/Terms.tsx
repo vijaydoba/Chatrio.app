@@ -23,7 +23,6 @@ export default function Terms() {
         <meta name="twitter:title" content="Terms of Service – Chatrio" />
         <meta name="twitter:description" content="The rules and guidelines for using Chatrio's free anonymous chat platform responsibly." />
         <meta name="twitter:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
-        <meta name="robots" content="index, follow" />
       </Helmet>
       <header className="mb-12 border-b border-slate-200 dark:border-slate-700 pb-8">
         <h1 className="text-4xl md:text-5xl mb-4 font-bold text-slate-900 dark:text-slate-50">

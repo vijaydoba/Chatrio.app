@@ -23,7 +23,6 @@ export default function Privacy() {
         <meta name="twitter:title" content="Privacy Policy – Chatrio" />
         <meta name="twitter:description" content="We don't store your messages, don't track you, and don't require personal information to use Chatrio." />
         <meta name="twitter:image" content="https://chatrio.app/branding/chatrio-social-card-2026.png" />
-        <meta name="robots" content="index, follow" />
       </Helmet>
       <header className="mb-12 border-b border-slate-200 dark:border-slate-700 pb-8">
         <h1 className="text-4xl md:text-5xl mb-4 font-bold text-slate-900 dark:text-slate-50">

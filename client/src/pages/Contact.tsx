@@ -32,7 +32,7 @@ export default function Contact() {
       </Helmet>
       <header className="mb-10 border-b border-slate-200 dark:border-slate-700 pb-5">
         <h1 className="text-4xl mb-2 font-bold text-slate-900 dark:text-slate-50">
-          Contact Us
+          Contact Chatrio
         </h1>
         <p className="text-lg text-slate-500 dark:text-slate-400">
           We are here to help with any questions or concerns.

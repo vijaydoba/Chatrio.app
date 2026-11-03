@@ -705,19 +705,6 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
           },
           "description": "Free anonymous random chat — talk to strangers instantly without signing up.",
         })}</script>
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "HowTo",
-          "name": "How to Start a Random Chat on Chatrio",
-          "description": "Start an anonymous text chat with a stranger in seconds — no account required.",
-          "step": [
-            { "@type": "HowToStep", "position": 1, "name": "Set your name", "text": "Choose any name or stay as Stranger — no registration needed." },
-            { "@type": "HowToStep", "position": 2, "name": "Pick interests", "text": "Select optional topics to match with someone who shares them." },
-            { "@type": "HowToStep", "position": 3, "name": "Hit New Chat", "text": "Click once and you're connected with a real stranger instantly." },
-          ],
-          "totalTime": "PT30S",
-          "tool": [{ "@type": "HowToTool", "name": "Web browser" }],
-        })}</script>
       </Helmet>
       {mode === "connected" ? (
         <div className="tg-topbar">

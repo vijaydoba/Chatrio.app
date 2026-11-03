@@ -80,19 +80,6 @@ function VideoChatHead() {
       })}</script>
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
-        "@type": "HowTo",
-        "name": "How to Start a Random Video Chat on Chatrio",
-        "description": "Start a free, instant video chat with a stranger in seconds.",
-        "step": [
-          { "@type": "HowToStep", "position": 1, "name": "Sign in", "text": "Sign in with an email code or Google — no password needed." },
-          { "@type": "HowToStep", "position": 2, "name": "Start Video Chat", "text": "Allow camera and microphone access, then click Start Video Chat." },
-          { "@type": "HowToStep", "position": 3, "name": "Get matched instantly", "text": "You're matched with a real stranger and video starts immediately — no invite step." },
-        ],
-        "totalTime": "PT1M",
-        "tool": [{ "@type": "HowToTool", "name": "Web browser with camera and microphone" }],
-      })}</script>
-      <script type="application/ld+json">{JSON.stringify({
-        "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
           { "@type": "Question", "name": "Is Chatrio video chat free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Random video chat on Chatrio is completely free — there are no per-minute fees, credits, or premium paywall to get matched. You just need a browser with a camera and microphone." } },

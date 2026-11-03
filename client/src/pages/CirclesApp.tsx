@@ -58,7 +58,6 @@ export default function CirclesApp() {
           content="Anonymous nearby chat with real push notifications for replies. Free, 18+, no sign-up."
         />
         <meta name="twitter:image" content="https://chatrio.app/images/circles-app-icon.png" />
-        <meta name="robots" content="index, follow" />
       </Helmet>
 
       <header className="ca-hero">

@@ -884,7 +884,7 @@ export default function CirclesLocal() {
           {obStep === 1 ? (
             <>
               <span className="cl-badge">Beta · 18+</span>
-              <h1 className="cl-h1">Pick a name</h1>
+              <p className="cl-h1">Pick a name</p>
               <p className="cl-sub">This is what nearby people will see. No email, no phone.</p>
               <div className="cl-steps" aria-hidden="true"><i className="on" /><i /></div>
               <label className="cl-field">
@@ -909,7 +909,7 @@ export default function CirclesLocal() {
           ) : (
             <>
               <button type="button" className="cl-ob-back" onClick={() => setObStep(1)}>{Ic.back} Back</button>
-              <h1 className="cl-h1">A few last things</h1>
+              <p className="cl-h1">A few last things</p>
               <p className="cl-sub">You are, and confirming you're an adult.</p>
               <div className="cl-steps" aria-hidden="true"><i className="on" /><i className="on" /></div>
               <div className="cl-field">
@@ -940,7 +940,7 @@ export default function CirclesLocal() {
         </div>
         {!Capacitor.isNativePlatform() && (
         <section className="cl-seo">
-          <h2>A local chat app that stays anonymous</h2>
+          <h1>A local chat app that stays anonymous</h1>
           <p>Circles is a free local chat app for meeting people near you without giving up your privacy. There's no sign-up — pick a nickname, share an approximate location, and see who's around. You send one intro message; if the other person accepts, the chat opens. If they decline, they never hear from you again.</p>
           <p><NavLink to="/circles/app">Get Circles on Android</NavLink> for real push notifications when someone replies.</p>
           <h2>Nearby chat, groups, and intro requests</h2>
@@ -1087,7 +1087,7 @@ export default function CirclesLocal() {
     return Shell(
       <div className="cl-card cl-onboard">
         <span className="cl-loc-icon" aria-hidden="true">{Ic.pin}</span>
-        <h1 className="cl-h1">Hi, {me.nickname} 👋</h1>
+        <p className="cl-h1">Hi, {me.nickname} 👋</p>
         <div className="cl-steps" aria-hidden="true"><i className="on" /><i className="on" /></div>
         {locDenied ? (
           <>
