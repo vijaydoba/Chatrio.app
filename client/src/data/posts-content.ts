@@ -6601,7 +6601,7 @@ prove that.
       <h2 id="they-initiate">They Initiate Consistently</h2>
       <p>One of the clearest signals of genuine interest is consistent initiation. Anyone can reply when you message them. Initiating means they were thinking about you when you weren't talking — and that thought became action.</p>
       <p>The key word is consistently. One good morning message means little. A pattern of reaching out first, across different times and contexts, means they want to be in contact with you. Not just when it's convenient, but as a regular choice.</p>
-      <p>Watch for variety in initiation too. If they message to share something random, something they saw that reminded them of you, something they just wanted to tell you — that's more meaningful than a daily "how are you." Variety signals that you're present in their mind throughout their day.</p>
+      <p>Watch for variety in initiation too. If they message to share something random, something they saw that reminded them of you, something they just wanted to tell you — that's more meaningful than a daily "how are you." Variety signals that you're present in their mind throughout their day. The reverse is worth naming too: someone who stops reaching out but still watches your stories and lingers on your posts isn't quietly falling for you — that pattern is <a href="/blog/what-is-orbiting-dating-trend-explained-2026">orbiting</a>, attention without intention.</p>
 
       <h2 id="they-remember">They Remember Everything You Say</h2>
       <p>People remember what matters to them. If someone brings up something you mentioned two weeks ago — a challenge at work, a trip you were planning, something you were anxious about — they were paying attention in a way that goes beyond politeness.</p>
@@ -6627,7 +6627,7 @@ prove that.
 
       <h2 id="real-vs-infatuation">Real Feelings vs. Infatuation: How to Tell the Difference</h2>
       <p>Infatuation is intense but narrow — it focuses on the idea of someone rather than the actual person. Real feelings are demonstrated through sustained behavior over time, genuine curiosity about who you are beyond the surface, and consistent presence even when the conversation isn't easy or exciting.</p>
-      <p>If someone shows all the signs above across weeks and months — not just during the exciting early phase — what you're seeing is real. Infatuation fades quickly when the conversation gets ordinary. Real feelings deepen through the ordinary.</p>
+      <p>If someone shows all the signs above across weeks and months — not just during the exciting early phase — what you're seeing is real. Infatuation fades quickly when the conversation gets ordinary. Real feelings deepen through the ordinary. Occasionally the opposite happens and an early spark curdles into a sudden, hard-to-explain turn-off — <a href="/blog/what-is-the-ick-why-it-happens-what-to-do-2026">the ick</a> — which usually says more about a fragile connection than about anything you did.</p>
       <p>The most important signal of all: do they show up when it's inconvenient for them? Anyone can be charming and engaged when a conversation is going well. The person who checks in when they're tired, busy, or having a bad day — that person is choosing you.</p>
 
       <div class="post-related">
@@ -6635,7 +6635,7 @@ prove that.
         <ul>
           <li><a href="/blog/random-chat-for-singles-find-love-without-dating-apps">Psychology of Falling in Love Online</a></li>
           <li><a href="/blog/romantic-conversations-that-build-connection">Text Chemistry: Creating Attraction Online</a></li>
-          <li><a href="/blog/romantic-conversations-that-build-connection">The Science of Attraction in Online Chat</a></li>
+          <li><a href="/blog/what-is-the-ick-why-it-happens-what-to-do-2026">What Is the Ick? Why It Happens and What to Do</a></li>
           <li><a href="/chat">Connect with someone on Chatrio →</a></li>
         </ul>
       </div>
@@ -12371,7 +12371,7 @@ prove that.
     <h2 id="what-is-it">What Is Catfishing?</h2>
     <p>
       Catfishing is creating a fake online identity — a stolen or altered photo, a fabricated name and backstory — to pursue a relationship with
-      someone who doesn't know they're being deceived. It's not the same as a slightly flattering profile photo or a small exaggeration. A catfish
+      someone who doesn't know they're being deceived. It's not the same as <a href="/blog/what-is-kitten-fishing-signs-of-a-slightly-misleading-profile-2026">kitten fishing</a>, where a real person just posts a slightly flattering photo or a small exaggeration. A catfish
       is a sustained, deliberate persona built specifically so the other person keeps believing it's real.
     </p>
     <p>
@@ -12519,8 +12519,8 @@ prove that.
       </tbody>
     </table>
     <p>
-      Triangulation often runs alongside other manipulation tactics — see our guide to
-      <a href="/blog/dating-chat-slang-glossary-2026">gaslighting</a> for a related pattern that can show up in the same
+      Triangulation often runs alongside other manipulation tactics — see our guides to
+      <a href="/blog/dating-chat-slang-glossary-2026">gaslighting</a>, <a href="/blog/what-is-negging-signs-how-to-shut-it-down-2026">negging</a>, and <a href="/blog/what-is-weaponized-incompetence-signs-examples-2026">weaponized incompetence</a> for related patterns that show up in the same
       relationship.
     </p>
 
