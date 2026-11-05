@@ -213,7 +213,7 @@ export default function Home() {
         })}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
+          "@type": ["WebApplication", "SoftwareApplication"],
           "@id": "https://chatrio.app/#app",
           "name": "Chatrio",
           "url": "https://chatrio.app/chat",
@@ -241,9 +241,9 @@ export default function Home() {
           "@id": "https://chatrio.app/#webpage",
           "url": "https://chatrio.app/",
           "name": "Chatrio — Anonymous Chat with Strangers",
+          "description": "Talk to strangers online for free — anonymous chat with no sign-up or app download. Pick your interests and connect with someone new in seconds.",
           "isPartOf": { "@id": "https://chatrio.app/#website" },
-          "about": { "@id": "https://chatrio.app/#org" },
-          "dateModified": new Date().toISOString().split("T")[0]
+          "about": { "@id": "https://chatrio.app/#org" }
         })}</script>
       </Helmet>
 

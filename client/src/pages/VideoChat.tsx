@@ -33,7 +33,7 @@ type ChatMessage = {
 type FriendStatus = "idle" | "sent" | "accepted";
 
 const VC_URL = "https://chatrio.app/video-chat";
-const VC_TITLE = "Random Video Chat – Talk Face to Face with Strangers | Chatrio";
+const VC_TITLE = "Random Video Chat with Strangers – Free & Instant | Chatrio";
 const VC_DESCRIPTION =
   "Free random video chat with strangers. Sign in with an email code or Google, then get matched instantly — no download needed.";
 const VC_OG_TITLE = "Random Video Chat – Chatrio";

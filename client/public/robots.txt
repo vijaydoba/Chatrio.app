@@ -28,6 +28,12 @@ Allow: /
 User-agent: Perplexity-User
 Allow: /
 
+User-agent: Applebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
 User-agent: *
 Allow: /
 
