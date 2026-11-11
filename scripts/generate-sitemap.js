@@ -75,8 +75,8 @@ const staticPages = [
   // public landing is what gets snapshotted and indexed — safe to include here.
   // (Only /friends is listed; the parameterized /friends/:friendId DM route is
   // private and deliberately left out.)
-  { loc: "/",             lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "1.0" },
-  { loc: "/video-chat",   lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "0.9" },
+  { loc: "/",             lastmod: "2026-11-11", changefreq: "weekly",  priority: "1.0" },
+  { loc: "/video-chat",   lastmod: "2026-11-11", changefreq: "weekly",  priority: "0.9" },
   { loc: "/friends",      lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.6" },
   { loc: "/blog",         lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "0.9" },
   { loc: "/blog/tags",    lastmod: SITE_LASTMOD, changefreq: "weekly",  priority: "0.6" },

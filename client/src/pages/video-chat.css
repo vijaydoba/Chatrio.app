@@ -440,9 +440,29 @@ html.dark .vc-lobby-denied strong { color: #fbbf24; }
   font-size: 14px; line-height: 1.6;
 }
 
+/* Comparison table */
+.vc-seo-compare-lead { color: var(--muted, rgba(120,130,150,0.95)); margin: 0 0 16px; }
+.vc-seo-table-wrap {
+  overflow-x: auto;
+  border: 1px solid rgba(124,58,237,0.16);
+  border-radius: 14px;
+}
+.vc-seo-compare { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 440px; }
+.vc-seo-compare th, .vc-seo-compare td {
+  padding: 11px 13px; text-align: left;
+  border-bottom: 1px solid rgba(124,58,237,0.12);
+}
+.vc-seo-compare thead th { background: rgba(124,58,237,0.08); color: var(--text); font-weight: 800; }
+.vc-seo-compare tbody th { color: var(--text); font-weight: 700; white-space: nowrap; }
+.vc-seo-compare td { color: var(--muted, rgba(120,130,150,0.95)); }
+.vc-seo-compare tbody tr:last-child th,
+.vc-seo-compare tbody tr:last-child td { border-bottom: none; }
+.vc-seo-compare .vc-yes { color: #22d3ee; font-weight: 700; }
+
 @media (max-width: 520px) {
   .vc-seo-intro { font-size: 15px; }
   .vc-seo-h2 { font-size: 19px; }
+  .vc-seo-compare { font-size: 13px; }
 }
 
 /* ===== Connected call: frosted control dock + line icons =====

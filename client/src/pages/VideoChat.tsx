@@ -33,9 +33,9 @@ type ChatMessage = {
 type FriendStatus = "idle" | "sent" | "accepted";
 
 const VC_URL = "https://chatrio.app/video-chat";
-const VC_TITLE = "Random Video Chat with Strangers – Free & Instant | Chatrio";
+const VC_TITLE = "Random Video Chat – Free Omegle Alternative | Chatrio";
 const VC_DESCRIPTION =
-  "Free random video chat with strangers. Sign in with an email code or Google, then get matched instantly — no download needed.";
+  "A free Omegle alternative for random video chat with strangers — no download, runs in your browser. Sign in with a code or Google and get matched instantly.";
 const VC_OG_TITLE = "Random Video Chat – Chatrio";
 const VC_OG_DESCRIPTION =
   "Get matched instantly for free, face-to-face video chat with strangers. Sign in with an email code or Google — no download needed.";
@@ -138,6 +138,32 @@ function VideoChatSEO() {
         <li><b>Skip anytime</b> — one tap moves you on to the next person.</li>
         <li><b>Free &amp; browser-based</b> — nothing to download; works on phone and desktop.</li>
       </ul>
+
+      <h2 className="vc-seo-h2">Chatrio vs Omegle and Monkey</h2>
+      <p className="vc-seo-compare-lead">
+        Omegle shut down in 2023, and most replacements are phone apps you have to install.
+        Chatrio runs in any browser and does both text and video, so you can start a
+        conversation in a tab without downloading anything.
+      </p>
+      <div className="vc-seo-table-wrap">
+        <table className="vc-seo-compare">
+          <thead>
+            <tr>
+              <th scope="col">Feature</th>
+              <th scope="col">Chatrio</th>
+              <th scope="col">Omegle</th>
+              <th scope="col">Monkey</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Status</th><td className="vc-yes">Live</td><td>Shut down 2023</td><td>Live</td></tr>
+            <tr><th scope="row">Runs in</th><td className="vc-yes">Any browser</td><td>Browser</td><td>App only</td></tr>
+            <tr><th scope="row">Download</th><td className="vc-yes">None</td><td>None</td><td>Required</td></tr>
+            <tr><th scope="row">Text &amp; video</th><td className="vc-yes">Both</td><td>Both</td><td>Video-first</td></tr>
+            <tr><th scope="row">Meet people nearby</th><td className="vc-yes">Yes, via Circles</td><td>No</td><td>No</td></tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2 className="vc-seo-h2">Staying safe on video chat</h2>
       <p className="vc-seo-body">

@@ -242,6 +242,8 @@ export default function Home() {
           "url": "https://chatrio.app/",
           "name": "Chatrio — Anonymous Chat with Strangers",
           "description": "Talk to strangers online for free — anonymous chat with no sign-up or app download. Pick your interests and connect with someone new in seconds.",
+          "datePublished": "2025-08-28",
+          "dateModified": "2026-11-11",
           "isPartOf": { "@id": "https://chatrio.app/#website" },
           "about": { "@id": "https://chatrio.app/#org" }
         })}</script>
