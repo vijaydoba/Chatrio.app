@@ -162,9 +162,11 @@ export default function About() {
         {"Chatrio is an independent project built and maintained by the "}
         <strong>Chatrio Team</strong>, on a simple belief: the internet works
         best when it brings people together without demanding their data in
-        return. The team writes and reviews the articles on this blog —
-        covering anonymous chat, online safety, and digital loneliness — and ships
-        product improvements regularly based on user feedback.
+        return. Our guides on this blog are written and edited by{" "}
+        <strong>Kathrin Vogel</strong>, who covers anonymous chat, online safety,
+        and digital connection — grounded in first-hand experience running the
+        product. The team ships product improvements regularly based on user
+        feedback.
       </p>
       <p>
         {"Every article is written and reviewed against our "}
