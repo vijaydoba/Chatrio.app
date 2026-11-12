@@ -5517,7 +5517,7 @@ prove that.
         When no one knows who you are, you can say things you would not say to people in your life.
         This is not an invitation to be cruel — it is an invitation to be honest.
         The conversations people have on anonymous platforms are frequently more genuine than anything happening
-        on their curated social feeds.
+        on their curated social feeds. It's the part people most often <a href="/blog/the-truth-about-anonymous-chat-with-strangers">get wrong about anonymous chat with strangers</a>: the fact that a conversation is disposable is exactly what makes the honesty possible.
       </p>
 
       <h3>Access to a genuinely different perspective</h3>
@@ -7201,7 +7201,7 @@ prove that.
       <h2 id="short-answer">Is Anonymous Chat Safe? The Short Answer</h2>
       <p>
         People often ask, <strong>"is anonymous chat safe?"</strong> — and the honest answer is: <strong>yes, when you use a service that doesn't collect your identity and you follow a few basic rules.</strong>
-        Anonymity itself is a protection, not a danger. Because you don't share your real identity, a stranger can't find you, look you up, or contact you elsewhere. In fact, anonymity can make you <em>safer</em> than named social media: there's no profile to trace, no phone number attached, and no history linking a conversation back to you. The risk isn't anonymity — it's oversharing, and choosing platforms that quietly store your data.
+        Anonymity itself is a protection, not a danger. Because you don't share your real identity, a stranger can't find you, look you up, or contact you elsewhere. In fact, anonymity can make you <em>safer</em> than named social media: there's no profile to trace, no phone number attached, and no history linking a conversation back to you. The risk isn't anonymity — it's oversharing, and choosing platforms that quietly store your data. If you're weighing the risks, it's worth understanding why <a href="/blog/the-truth-about-anonymous-chat-with-strangers">the real danger is more concentrated than the stereotype suggests</a> — it clusters around specific situations rather than every conversation.
       </p>
 
       <div class="infobox">
@@ -9583,7 +9583,7 @@ prove that.
 
       <h3>Less Social Risk</h3>
       <p>
-        If a conversation goes awkward with a friend, you see them again. With a stranger? You never see them again (unless you match again, which is rare). <strong>Zero consequences = freedom to be real</strong>.
+        If a conversation goes awkward with a friend, you see them again. With a stranger? You never see them again (unless you match again, which is rare). <strong>Zero consequences = freedom to be real</strong>. That disposability is the most <a href="/blog/the-truth-about-anonymous-chat-with-strangers">misunderstood thing about chatting with strangers online</a> — it isn't what makes a conversation shallow, it's what makes the honesty possible.
       </p>
 
       <h3>Specialized Support</h3>
