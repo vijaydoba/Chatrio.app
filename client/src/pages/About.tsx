@@ -163,7 +163,7 @@ export default function About() {
         <strong>Chatrio Team</strong>, on a simple belief: the internet works
         best when it brings people together without demanding their data in
         return. Our guides on this blog are written and edited by{" "}
-        <strong>Kathrin Vogel</strong>, who covers anonymous chat, online safety,
+        <a href="/author/kathrin-vogel"><strong>Kathrin Vogel</strong></a>, who covers anonymous chat, online safety,
         and digital connection — grounded in first-hand experience running the
         product. The team ships product improvements regularly based on user
         feedback.

@@ -90,6 +90,7 @@ const staticPages = [
   { loc: "/circles/app",  lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.6" },
   { loc: "/about",        lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.6" },
   { loc: "/editorial-standards", lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.5" },
+  { loc: "/author/kathrin-vogel", lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.5" },
   { loc: "/contact",      lastmod: SITE_LASTMOD, changefreq: "monthly", priority: "0.5" },
   { loc: "/privacy",      lastmod: SITE_LASTMOD, changefreq: "yearly",  priority: "0.4" },
   { loc: "/terms",        lastmod: SITE_LASTMOD, changefreq: "yearly",  priority: "0.4" },

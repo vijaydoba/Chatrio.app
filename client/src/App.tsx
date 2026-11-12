@@ -14,6 +14,7 @@ import NativeSplash from "./NativeSplash";
 import ChatrioMascot from "./components/ChatrioMascot";
 import AccountMenu, { MobileAccount } from "./AccountMenu";
 import About from "./pages/About";
+import AuthorKathrinVogel from "./pages/AuthorKathrinVogel";
 import EditorialStandards from "./pages/EditorialStandards";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
@@ -42,6 +43,9 @@ const CirclesAdmin = React.lazy(() => import("./pages/CirclesAdmin"));
 const CohortRoom = React.lazy(() => import("./pages/CohortRoom"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 const Friends = React.lazy(() => import("./pages/Friends"));
+// Temporary Mantine UI preview (noindex, not in nav/sitemap). Lazy so Mantine
+// stays in its own chunk and never ships in the main bundle. Remove with the file.
+const UiPreview = React.lazy(() => import("./pages/UiPreview"));
 
 type Theme = "light" | "dark";
 
@@ -536,11 +540,13 @@ export default function App() {
                   later) — redirect the route and any old shared/indexed links home. */}
               <Route path="/blind-date/*" element={<Navigate to="/" replace />} />
               <Route path="/about" element={<About />} />
+              <Route path="/author/kathrin-vogel" element={<AuthorKathrinVogel />} />
               <Route path="/editorial-standards" element={<EditorialStandards />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/child-safety" element={<ChildSafety />} />
+              <Route path="/ui-preview" element={<Suspense fallback={<div className="route-loading" role="status">Loading…</div>}><UiPreview /></Suspense>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           )}

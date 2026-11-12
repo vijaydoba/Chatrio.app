@@ -204,7 +204,7 @@ export default function BlogPost() {
           "author": {
             "@type": "Person",
             "name": "Kathrin Vogel",
-            "url": "https://chatrio.app/about",
+            "url": "https://chatrio.app/author/kathrin-vogel",
             "jobTitle": "Writer & Editor",
             "worksFor": { "@type": "Organization", "name": "Chatrio", "url": "https://chatrio.app" },
             "description": "Kathrin Vogel writes about anonymous chat, online safety, and digital connection for Chatrio."
@@ -232,7 +232,7 @@ export default function BlogPost() {
 
       <h1 style={{ marginTop: 12 }}>{post.title}</h1>
       <div className="blog-meta-row">
-        <span>By <NavLink to="/about" className="post-author-link" rel="author">Kathrin Vogel</NavLink></span>
+        <span>By <NavLink to="/author/kathrin-vogel" className="post-author-link" rel="author">Kathrin Vogel</NavLink></span>
         <span>·</span>
         <span>{post.date}</span>
         <span>·</span>
@@ -312,7 +312,7 @@ export default function BlogPost() {
       <aside className="post-author-box" aria-label="About the author">
         <div className="post-author-avatar" aria-hidden="true">K</div>
         <div>
-          <div className="post-author-name">Kathrin Vogel</div>
+          <div className="post-author-name"><NavLink to="/author/kathrin-vogel" className="post-author-link" rel="author">Kathrin Vogel</NavLink></div>
           <p className="post-author-bio">
             {"Kathrin Vogel writes and edits Chatrio's guides on anonymous chat, online safety, and digital connection. She covers how people actually meet and talk to strangers online, grounded in first-hand experience building and running Chatrio since 2025. Every article here is written and reviewed against our "}
             <NavLink to="/editorial-standards">editorial standards</NavLink>.
