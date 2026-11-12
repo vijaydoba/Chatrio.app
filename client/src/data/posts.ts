@@ -161,6 +161,16 @@ export const CATEGORY_CANONICAL_TAG: Record<string, string> = {
 
 export const POSTS: Post[] = [
   {
+    slug: "monkey-app-alternatives-2026",
+    seoTitle: "Best Monkey App Alternatives 2026 (Free, No Download)",
+    title: "Best Monkey App Alternatives in 2026 (Free, No Download)",
+    excerpt:
+      "The best Monkey app alternatives in 2026 — including free, no-download, no-sign-up options you can open in your browser in one click.",
+    thumbnail: "/images/hero-monkey-app-alternative-2026-free-no-sign-up.png",
+    date: "2026-11-12",
+    category: "Chat & Connection",
+  },
+  {
     slug: "the-truth-about-anonymous-chat-with-strangers",
     seoTitle: "What People Get Wrong About Anonymous Chat",
     title: "What Most People Get Wrong About Anonymous Chat With Strangers",
