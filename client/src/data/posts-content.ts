@@ -64,12 +64,12 @@ export const POST_CONTENT: Record<string, string> = {
 
       <h3>2. OmeTV — established and moderated</h3>
       <p>
-        One of the better-known Omegle-style sites, OmeTV offers random video chat on both web and app with active moderation. It leans video-first and shows ads, but it's a dependable, widely used option.
+        One of the better-known Omegle-style sites, <a href="https://en.wikipedia.org/wiki/OmeTV" target="_blank" rel="noopener noreferrer">OmeTV</a> offers random video chat on both web and app with active moderation. It leans video-first and shows ads, but it's a dependable, widely used option.
       </p>
 
       <h3>3. Chatroulette — the original random cam</h3>
       <p>
-        The site that started the random-webcam category is still running and works in the browser. It's video-centric with its own moderation layer; expect a rawer, less predictable experience than a polished app.
+        <a href="https://en.wikipedia.org/wiki/Chatroulette" target="_blank" rel="noopener noreferrer">Chatroulette</a>, the site that started the random-webcam category, is still running and works in the browser. It's video-centric with its own moderation layer; expect a rawer, less predictable experience than a polished app.
       </p>
 
       <h3>4. Emerald Chat — interest tags, Omegle-style</h3>
@@ -3293,7 +3293,7 @@ platform has returned.
 
 <h2>What Happened to Omegle?</h2>
 <p>
-Omegle shut down after 14 years. Founder Leif K-Brooks said the financial and psychological
+<a href="https://en.wikipedia.org/wiki/Omegle" target="_blank" rel="noopener noreferrer">Omegle</a> shut down after 14 years. Founder Leif K-Brooks said the financial and psychological
 cost of operating the platform and fighting its misuse had become unsustainable. The closure
 followed years of child-safety criticism and legal pressure, including a lawsuit alleging that
 Omegle had connected a minor with an abuser. Contemporary reports from
@@ -7798,7 +7798,7 @@ prove that.
 
       <h2 id="what-happened">What Happened to Omegle?</h2>
       <p>
-        Omegle shut down in <strong>November 2023</strong>, after 14 years online, when founder Leif K-Brooks
+        <a href="https://en.wikipedia.org/wiki/Omegle" target="_blank" rel="noopener noreferrer">Omegle</a> shut down in <strong>November 2023</strong>, after 14 years online, when founder Leif K-Brooks
         announced he could no longer sustain the platform against the cost and stress of moderating misuse. Overnight, an estimated
         tens of millions of monthly users lost the simplest way to talk to a stranger online. That demand never went away — it just
         scattered across dozens of replacements, most of which got at least one important thing wrong. (Note: as of mid-2026 the
