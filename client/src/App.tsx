@@ -43,9 +43,6 @@ const CirclesAdmin = React.lazy(() => import("./pages/CirclesAdmin"));
 const CohortRoom = React.lazy(() => import("./pages/CohortRoom"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 const Friends = React.lazy(() => import("./pages/Friends"));
-// Temporary Mantine UI preview (noindex, not in nav/sitemap). Lazy so Mantine
-// stays in its own chunk and never ships in the main bundle. Remove with the file.
-const UiPreview = React.lazy(() => import("./pages/UiPreview"));
 
 type Theme = "light" | "dark";
 
@@ -546,7 +543,6 @@ export default function App() {
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/child-safety" element={<ChildSafety />} />
-              <Route path="/ui-preview" element={<Suspense fallback={<div className="route-loading" role="status">Loading…</div>}><UiPreview /></Suspense>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           )}
