@@ -53,6 +53,16 @@ export default function About() {
         profiles, followers, or permanence.
       </p>
 
+      <h2>💡 Why We Built Chatrio</h2>
+      <p>
+        Not everyone wants to meet face-to-face. We kept noticing how many people
+        want real conversation and new connections but find meeting in person — or
+        even being on camera — draining or intimidating. So we built Chatrio for
+        them: a way to meet strangers online first, anonymously and text-first,
+        with video only if and when you choose it. No camera, no profile, no
+        pressure — just talk.
+      </p>
+
       <h2>🌟 Our Core Philosophy</h2>
       <p>
         In today's digital landscape where algorithms control our interactions,

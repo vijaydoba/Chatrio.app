@@ -14,7 +14,7 @@ export const POST_CONTENT: Record<string, string> = {
         If you're hunting for <strong>Monkey app alternatives</strong>, you probably hit one of its walls: it's a phone app you have to download, it wants you to create an account, and it's built around short, timed video calls that end before a conversation really starts. We build and run <a href="/">Chatrio</a>, a browser-based anonymous chat platform, so we spend a lot of time talking to people who just bounced off Monkey — and nearly all of them want the same thing: something they can open <em>right now</em>, without the app store and without a profile.
       </p>
       <p>
-        This is an honest rundown. We put our own platform first because we think it's the best fit for that "no download, no account" need — but the rest of the list is genuine, and every option below is a real, working product you can try today.
+        This is an honest rundown. We put our own platform first because we think it's the best fit for that "no download, no account" need — but the rest of the list is genuine, and every option below is a real, working product you can try today. We built Chatrio for people who want to meet someone new but don't want to do it face-to-face, which is why it's text-first with video only if and when you choose it — the opposite of Monkey's camera-first format.
       </p>
 
       <div class="table-of-contents">
@@ -208,7 +208,7 @@ export const POST_CONTENT: Record<string, string> = {
 
       <h2 id="what-we-saw">What Running One Actually Showed Us</h2>
       <p>
-        The clearest evidence for all of this wasn't in a study — it was in our own roadmap. We built a simple way to match two strangers and let them talk. Then we watched what people asked for next. And almost everything they wanted pulled in one direction: not <em>more anonymity</em>, but ways to come back to the same person.
+        The clearest evidence for all of this wasn't in a study — it was in our own roadmap. We built Chatrio for people who want connection but don't want to meet face-to-face: a simple, text-first way to match two strangers and let them talk, with video only if they choose it. Then we watched what people asked for next. And almost everything they wanted pulled in one direction: not <em>more anonymity</em>, but ways to come back to the same person.
       </p>
       <ul>
         <li>A way to add someone as a <strong>friend</strong> after a good conversation.</li>
