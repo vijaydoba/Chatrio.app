@@ -382,9 +382,6 @@ export default function App() {
                   </div>
                 )}
               </div>
-
-              <NavLink className="nav-link" to="/about">About</NavLink>
-              <NavLink className="nav-link" to="/contact">Contact</NavLink>
             </nav>
 
             <div className="nav-actions">
@@ -471,15 +468,6 @@ export default function App() {
               </div>
             )}
           </div>
-
-          <NavLink className="m-link" to="/about" onClick={() => setNavOpen(false)}>About</NavLink>
-          <NavLink className="m-link" to="/contact" onClick={() => setNavOpen(false)}>Contact</NavLink>
-
-          <div className="m-divider" />
-
-          <NavLink className="m-link m-link-muted" to="/privacy" onClick={() => setNavOpen(false)}>Privacy</NavLink>
-          <NavLink className="m-link m-link-muted" to="/terms" onClick={() => setNavOpen(false)}>Terms</NavLink>
-          <NavLink className="m-link m-link-muted" to="/child-safety" onClick={() => setNavOpen(false)}>Child Safety</NavLink>
         </nav>
 
         {/* Footer icon buttons */}
