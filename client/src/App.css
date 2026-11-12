@@ -2852,6 +2852,18 @@ html {
   margin: 0 0 28px;
 }
 
+/* Visible homepage publication dates (mirrors WebPage JSON-LD — GEO G-DATES) */
+.lp-updated {
+  text-align: center;
+  padding: 18px 0 40px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.lp-updated time { white-space: nowrap; }
+
 /* Circles promo */
 .lp-video-promo {
   padding: 8px 0 12px;

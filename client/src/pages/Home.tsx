@@ -16,6 +16,26 @@ function normalizeAssetPath(path?: string) {
   return `/${path}`;
 }
 
+// Single source of truth for the homepage's publication dates. Used both in the
+// WebPage JSON-LD below and rendered visibly near the footer, so Google and
+// answer engines get a freshness signal that agrees with the structured data
+// (GEO audit G-DATES: a date in JSON-LD alone only half-counts). Bump
+// DATE_MODIFIED whenever the homepage content meaningfully changes.
+const DATE_PUBLISHED = "2025-08-28";
+const DATE_MODIFIED = "2026-11-11";
+
+const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+// Format an ISO (YYYY-MM-DD) date for display without constructing a Date, so a
+// prerender/runtime time zone can never roll the day backward.
+function formatISODate(iso: string) {
+  const [y, m, d] = iso.split("-").map(Number);
+  return `${MONTHS[m - 1]} ${d}, ${y}`;
+}
+
 // Hand-picked proven earners surfaced on the homepage to pass internal-link
 // equity to our best-performing posts and give Google a fresh-content signal
 // on the highest-traffic page. Resolved from POSTS by slug so they stay in
@@ -242,8 +262,8 @@ export default function Home() {
           "url": "https://chatrio.app/",
           "name": "Chatrio — Anonymous Chat with Strangers",
           "description": "Talk to strangers online for free — anonymous chat with no sign-up or app download. Pick your interests and connect with someone new in seconds.",
-          "datePublished": "2025-08-28",
-          "dateModified": "2026-11-11",
+          "datePublished": DATE_PUBLISHED,
+          "dateModified": DATE_MODIFIED,
           "isPartOf": { "@id": "https://chatrio.app/#website" },
           "about": { "@id": "https://chatrio.app/#org" }
         })}</script>
@@ -547,6 +567,15 @@ export default function Home() {
           Open Chat
         </NavLink>
       </section>
+
+      {/* Visible publication dates — mirror the WebPage JSON-LD above so Google
+          and answer engines see a freshness signal that agrees with the
+          structured data (GEO audit: G-DATES). */}
+      <p className="lp-updated">
+        <time dateTime={DATE_PUBLISHED}>Published {formatISODate(DATE_PUBLISHED)}</time>
+        <span aria-hidden="true"> · </span>
+        <time dateTime={DATE_MODIFIED}>Last updated {formatISODate(DATE_MODIFIED)}</time>
+      </p>
 
     </div>
   );
