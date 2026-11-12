@@ -98,6 +98,14 @@
   <!-- BLOG POSTS -->
 
   <url>
+    <loc>https://chatrio.app/blog/the-truth-about-anonymous-chat-with-strangers</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://chatrio.app/images/hero-the-truth-about-anonymous-chat-with-strangers.png</image:loc></image:image>
+  </url>
+
+  <url>
     <loc>https://chatrio.app/blog/what-is-orbiting-dating-trend-explained-2026</loc>
     <lastmod>2026-08-06</lastmod>
     <changefreq>monthly</changefreq>

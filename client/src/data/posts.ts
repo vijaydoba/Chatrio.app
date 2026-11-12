@@ -161,6 +161,16 @@ export const CATEGORY_CANONICAL_TAG: Record<string, string> = {
 
 export const POSTS: Post[] = [
   {
+    slug: "the-truth-about-anonymous-chat-with-strangers",
+    seoTitle: "What People Get Wrong About Anonymous Chat",
+    title: "What Most People Get Wrong About Anonymous Chat With Strangers",
+    excerpt:
+      "Two years running an anonymous chat platform taught us the real pattern — it isn't dangerous the way you fear, or as trivial as you assume.",
+    thumbnail: "/images/hero-the-truth-about-anonymous-chat-with-strangers.png",
+    date: "2026-11-12",
+    category: "Chat & Connection",
+  },
+  {
     slug: "what-is-orbiting-dating-trend-explained-2026",
     seoTitle: "What Is Orbiting? Meaning, Signs & What to Do (2026)",
     title: "What Is Orbiting? The Dating Trend Worse Than Ghosting (2026)",
