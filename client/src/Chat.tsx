@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { io, Socket } from "socket.io-client";
+import { motion, AnimatePresence } from "motion/react";
 import DynamicIsland from "./DynamicIsland";
 import ChatrioMascot from "./components/ChatrioMascot";
 import { SOCKET_URL } from "./config";
@@ -938,8 +939,16 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
       )}
 
       {/* ── WAITING ── */}
-      {mode === "waiting" && (
-        <div className="lobby-waiting">
+      <AnimatePresence>
+        {mode === "waiting" && (
+          <motion.div
+            className="lobby-waiting"
+            key="waiting"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.96 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+          >
           <div className={`waiting-anim${matched ? " matched" : ""}`}>
             <div className="waiting-ring" />
             <div className="waiting-ring" />
@@ -976,8 +985,9 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
               <span className="wcp-cta">Start Video Chat →</span>
             </Link>
           )}
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── CONNECTED: full-screen chat ── */}
       {mode === "connected" && (

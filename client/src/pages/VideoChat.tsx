@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { createRandomVideoCall, RandomVideoCallController } from "../randomVideoCall";
+import { motion, AnimatePresence } from "motion/react";
 import { useAuth } from "../auth";
 import Avatar from "../components/Avatar";
 import "./video-chat.css";
@@ -629,8 +630,16 @@ export default function VideoChat() {
         </div>
       )}
 
-      {mode === "waiting" && (
-        <div className="vc-waiting">
+      <AnimatePresence>
+        {mode === "waiting" && (
+          <motion.div
+            className="vc-waiting"
+            key="waiting"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.96 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+          >
           <video ref={localVideoRef} className="vc-waiting-preview" autoPlay playsInline muted />
           <div className="vc-waiting-status">
             <span className="vc-spinner" />
@@ -653,8 +662,9 @@ export default function VideoChat() {
             </span>
             <span className="wcp-cta">Start Text Chat →</span>
           </Link>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {mode === "connected" && (
         <div className="video-call-overlay vc-connected">

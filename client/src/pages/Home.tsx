@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { POSTS, getSlotImage } from "../data/posts";
+import { motion, useReducedMotion } from "motion/react";
 import ChatrioMascot from "../components/ChatrioMascot";
 
 const CHAT_MODES = [
@@ -174,6 +175,25 @@ const faqs = [
   },
 ];
 
+// Decorative mascot wrapped in Motion so it springs on hover/tap — the one bit
+// of interactivity the hero/CTA logos didn't have. The outer .lp-mascot /
+// .lp-cta-logo containers keep their existing CSS entrance + float untouched;
+// this only layers a hover reaction on top, and disables it for visitors who
+// prefer reduced motion.
+function InteractiveMascot({ size, uid }: { size: number; uid: string }) {
+  const reduceMotion = useReducedMotion();
+  return (
+    <motion.div
+      style={{ display: "inline-flex", transformOrigin: "center" }}
+      whileHover={reduceMotion ? undefined : { scale: 1.1, rotate: 4 }}
+      whileTap={reduceMotion ? undefined : { scale: 0.92, rotate: -4 }}
+      transition={{ type: "spring", stiffness: 320, damping: 14 }}
+    >
+      <ChatrioMascot size={size} uid={uid} />
+    </motion.div>
+  );
+}
+
 export default function Home() {
   // Hero chat-mode toggle (Text / Video) drives the primary CTA.
   const [mode, setMode] = useState<(typeof CHAT_MODES)[number]["key"]>("text");
@@ -272,7 +292,7 @@ export default function Home() {
       {/* ── HERO ── */}
       <section className="lp-hero">
         <div className="lp-mascot lp-anim-pop" aria-hidden="true">
-          <ChatrioMascot size={112} uid="hero" />
+          <InteractiveMascot size={112} uid="hero" />
         </div>
 
         <div className="lp-live-badge lp-anim-fade-up" style={{ animationDelay: "60ms" }}>
@@ -559,7 +579,7 @@ export default function Home() {
       {/* ── FINAL CTA ── */}
       <section className="lp-final-cta lp-reveal">
         <div className="lp-cta-logo">
-          <ChatrioMascot size={72} uid="cta" />
+          <InteractiveMascot size={72} uid="cta" />
         </div>
         <h2 className="lp-cta-title">Ready to meet someone new?</h2>
         <p className="lp-cta-sub">No sign-up. No fluff. Just connect.</p>
