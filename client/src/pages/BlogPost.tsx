@@ -292,7 +292,7 @@ export default function BlogPost() {
           padding: "24px 20px",
           borderRadius: 16,
           border: "1px solid var(--border, #e2e8f0)",
-          background: "var(--surface-2, rgba(124,58,237,0.06))",
+          background: "var(--surface-2, rgba(236,72,153,0.06))",
           textAlign: "center",
         }}
       >

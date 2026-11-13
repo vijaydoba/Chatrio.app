@@ -49,7 +49,7 @@ export default function AuthorKathrinVogel() {
       <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "8px" }}>
         <div
           aria-hidden="true"
-          style={{ width: 64, height: 64, borderRadius: "50%", background: "linear-gradient(135deg,#7c3aed,#06b6d4)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, flex: "0 0 auto" }}
+          style={{ width: 64, height: 64, borderRadius: "50%", background: "linear-gradient(135deg,#ec4899,#f43f5e)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, flex: "0 0 auto" }}
         >
           K
         </div>

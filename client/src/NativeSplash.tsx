@@ -25,8 +25,8 @@ export default function NativeSplash() {
         <svg className="ns-mark" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="ns-bm" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#6d28d9" />
-              <stop offset="100%" stopColor="#06b6d4" />
+              <stop offset="0%" stopColor="#db2777" />
+              <stop offset="100%" stopColor="#f43f5e" />
             </linearGradient>
           </defs>
           <rect x="1" y="2" width="34" height="23" rx="9" fill="url(#ns-bm)" />

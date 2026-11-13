@@ -6,11 +6,11 @@ import "./avatar.css";
 // the Messages inbox, DM thread header, request cards, and the call screen.
 
 const GRADIENTS: [string, string][] = [
-  ["#7c3aed", "#c026d3"],
-  ["#0ea5e9", "#22d3ee"],
+  ["#ec4899", "#c026d3"],
+  ["#0ea5e9", "#fb7185"],
   ["#f59e0b", "#ef4444"],
-  ["#10b981", "#22d3ee"],
-  ["#6366f1", "#22d3ee"],
+  ["#10b981", "#fb7185"],
+  ["#6366f1", "#fb7185"],
   ["#ec4899", "#f59e0b"],
 ];
 

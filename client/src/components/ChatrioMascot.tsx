@@ -28,11 +28,11 @@ export default function ChatrioMascot({
     >
       <defs>
         <linearGradient id={`${uid}-g`} x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#7c3aed" />
-          <stop offset="100%" stopColor="#06b6d4" />
+          <stop offset="0%" stopColor="#ec4899" />
+          <stop offset="100%" stopColor="#f43f5e" />
         </linearGradient>
         <filter id={`${uid}-sh`} x="-30%" y="-30%" width="160%" height="160%">
-          <feDropShadow dx="0" dy="6" stdDeviation="6" floodColor="#6d28d9" floodOpacity="0.35" />
+          <feDropShadow dx="0" dy="6" stdDeviation="6" floodColor="#db2777" floodOpacity="0.35" />
         </filter>
       </defs>
       <g filter={`url(#${uid}-sh)`}>
@@ -49,7 +49,7 @@ export default function ChatrioMascot({
       <circle cx="47" cy="47" r="4.2" fill="#0b1220" />
       <circle cx="77" cy="47" r="4.2" fill="#0b1220" />
       <path d="M42 60 Q60 82 78 60 Z" fill="#fff" />
-      <path d="M54 71 Q60 82 66 71 Q66 66 60 66 Q54 66 54 71 Z" fill="#22d3ee" />
+      <path d="M54 71 Q60 82 66 71 Q66 66 60 66 Q54 66 54 71 Z" fill="#fb7185" />
     </svg>
   );
 }

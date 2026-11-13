@@ -19,7 +19,7 @@
   "start_url": "/chat",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#7c3aed",
+  "theme_color": "#ec4899",
   "background_color": "#0b0f14",
   "categories": ["social", "communication"]
 }

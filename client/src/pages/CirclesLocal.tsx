@@ -176,9 +176,9 @@ function Av({ name, variant, gender, small, dot, className = "" }: { name: strin
 // swipe card needs the color without also inheriting .cl-avatar's fixed
 // 44px circular badge size.
 const AVATAR_GRADIENTS: Record<number, string> = {
-  0: "linear-gradient(135deg, #6d28d9, #06b6d4)",
-  1: "linear-gradient(135deg, #7c3aed, #c084fc)",
-  2: "linear-gradient(135deg, #0891b2, #22d3ee)",
+  0: "linear-gradient(135deg, #db2777, #f43f5e)",
+  1: "linear-gradient(135deg, #ec4899, #c084fc)",
+  2: "linear-gradient(135deg, #0891b2, #fb7185)",
   3: "linear-gradient(135deg, #db2777, #f472b6)",
   4: "linear-gradient(135deg, #d97706, #fbbf24)",
   5: "linear-gradient(135deg, #059669, #34d399)",
@@ -1169,7 +1169,7 @@ export default function CirclesLocal() {
                     additionally wanders every ~45s (jitteredLatLng) so it never sits at one
                     stable, converge-able point. Never a precise pin. */}
                 <Circle center={[myArea.lat, myArea.lng]} radius={900}
-                  pathOptions={{ color: "#6d28d9", fillColor: "#6d28d9", fillOpacity: 0.28, weight: 2 }} />
+                  pathOptions={{ color: "#db2777", fillColor: "#db2777", fillOpacity: 0.28, weight: 2 }} />
                 <Marker position={[myArea.lat, myArea.lng]} icon={meMapIcon} />
                 {nearby.filter((u) => u.lat != null && u.lng != null).map((u) => {
                   const openChat = () => { setComposeFor(u); setOpener(""); };
@@ -1177,7 +1177,7 @@ export default function CirclesLocal() {
                   return (
                     <React.Fragment key={u.id}>
                       <Circle center={pos} radius={1100}
-                        pathOptions={{ color: "#06b6d4", fillColor: "#06b6d4", fillOpacity: 0.28, weight: 2 }}
+                        pathOptions={{ color: "#f43f5e", fillColor: "#f43f5e", fillOpacity: 0.28, weight: 2 }}
                         eventHandlers={{ click: openChat }} />
                       <AvatarMapMarker position={pos} onClick={openChat}>
                         <Av name={u.nickname} variant={u.avatar} gender={u.gender} dot={isActive(u.lastSeen)} className="cl-map-av" />
@@ -1265,7 +1265,7 @@ export default function CirclesLocal() {
               >
                 <GLBasemap />
                 <Circle center={[myArea.lat, myArea.lng]} radius={900}
-                  pathOptions={{ color: "#6d28d9", fillColor: "#6d28d9", fillOpacity: 0.28, weight: 2 }} />
+                  pathOptions={{ color: "#db2777", fillColor: "#db2777", fillOpacity: 0.28, weight: 2 }} />
                 <Marker position={[myArea.lat, myArea.lng]} icon={meMapIcon} />
               </MapContainer>
             ) : (
