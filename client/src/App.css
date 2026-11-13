@@ -497,12 +497,15 @@ img, video{ height:auto; }
   gap: 12px;
   /* 12px side margin aligns the card box exactly with the nav rows below
      (.mobile-nav padding) so the drawer has one clean left edge. */
-  margin: 0 12px 12px;
+  margin: 2px 12px 14px;
   padding: 12px 14px;
   border-radius: 14px;
   background: var(--pill-bg);
   border: 1px solid var(--border);
 }
+/* Soft brand glow makes the avatar the focal point of the card (replaces the
+   default 2px ring just for the drawer card). */
+.m-account-in .account-avatar{ box-shadow: 0 4px 16px rgba(109,40,217,0.30); }
 .m-login-btn{
   display: flex;
   align-items: center;
@@ -657,7 +660,7 @@ img, video{ height:auto; }
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 20px 20px 18px;
+  padding: 20px 20px 16px;
   background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(6,182,212,0.08));
   /* No bottom border: the gradient header should blend into the account card
      below rather than be joined to it by a hard divider line. */
@@ -684,40 +687,66 @@ img, video{ height:auto; }
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 16px 12px;
+  gap: 3px;
+  padding: 8px 12px;
 }
 
 .m-link{
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 13px 14px;
+  gap: 13px;
+  padding: 11px 12px;
   border-radius: 12px;
   text-decoration: none;
   color: var(--text);
   font-weight: 600;
   font-size: 15px;
   border: 1px solid transparent;
+  position: relative;
   transition: all 0.18s ease;
 }
+/* Leading line-icon: monochrome so it inherits the row's color token and
+   turns brand-purple on hover / active. */
+.m-link .m-ico{
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+.m-link .m-ico svg{ width: 20px; height: 20px; }
 .m-link:hover{
   background: var(--pill-bg);
-  border-color: var(--border);
+  border-color: transparent;
 }
+.m-link:hover .m-ico{ color: #7c3aed; transform: translateX(1px); }
 .m-link.active{
-  background: linear-gradient(135deg, rgba(124,58,237,0.13), rgba(6,182,212,0.08));
-  border-color: rgba(124,58,237,0.25);
+  background: linear-gradient(135deg, rgba(124,58,237,0.14), rgba(6,182,212,0.08));
+  border-color: transparent;
   color: #7c3aed;
   font-weight: 700;
 }
-/* Chat CTA row — bold colored text only when NOT active, so it never looks
-   selected while another row (e.g. Video Chat) actually is the active page.
-   .m-link.active above already gives Chat the full boxed treatment when it
-   truly is the current page. */
+.m-link.active .m-ico{ color: #7c3aed; }
+/* Active page gets a small gradient dot at the end of the row. */
+.m-link.active::after{
+  content: "";
+  margin-left: auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.12);
+}
+/* Chat CTA row — bold colored text + icon only when NOT active, so it never
+   looks selected while another row (e.g. Video Chat) actually is the active
+   page. .m-link.active above gives the active row its own boxed treatment. */
 .m-link-cta:not(.active){
   color: #7c3aed !important;
 }
+.m-link-cta:not(.active) .m-ico{ color: #7c3aed; }
 .m-link-muted{
   color: var(--muted);
   font-size: 14px;
@@ -777,11 +806,11 @@ img, video{ height:auto; }
 /* Drawer footer controls */
 .drawer-footer{
   flex-shrink: 0;
-  padding: 14px 12px 24px;
+  padding: 14px 12px 22px;
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 .drawer-icon-btn{
   flex: 1;
@@ -790,16 +819,16 @@ img, video{ height:auto; }
   justify-content: center;
   gap: 7px;
   padding: 11px 12px;
-  border-radius: 11px;
+  border-radius: 12px;
   border: 1px solid var(--border);
   background: var(--btn-bg);
   color: var(--text);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s, border-color 0.15s, transform 0.13s;
 }
-.drawer-icon-btn:hover{ background: var(--pill-bg); border-color: rgba(124,58,237,0.3); }
+.drawer-icon-btn:hover{ background: var(--pill-bg); border-color: rgba(124,58,237,0.3); transform: translateY(-1px); }
 
 /* Backdrop */
 .drawer-backdrop{
