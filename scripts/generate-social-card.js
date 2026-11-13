@@ -16,10 +16,10 @@ function mascot(uid) {
   return `<svg viewBox="0 0 120 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="${uid}-g" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#06b6d4"/>
+        <stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#f43f5e"/>
       </linearGradient>
       <filter id="${uid}-sh" x="-30%" y="-30%" width="160%" height="160%">
-        <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#6d28d9" flood-opacity="0.5"/>
+        <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#db2777" flood-opacity="0.5"/>
       </filter>
     </defs>
     <g filter="url(#${uid}-sh)">
@@ -29,7 +29,7 @@ function mascot(uid) {
     <circle cx="45" cy="46" r="9" fill="#fff"/><circle cx="75" cy="46" r="9" fill="#fff"/>
     <circle cx="47" cy="47" r="4.2" fill="#0b1220"/><circle cx="77" cy="47" r="4.2" fill="#0b1220"/>
     <path d="M42 60 Q60 82 78 60 Z" fill="#fff"/>
-    <path d="M54 71 Q60 82 66 71 Q66 66 60 66 Q54 66 54 71 Z" fill="#22d3ee"/>
+    <path d="M54 71 Q60 82 66 71 Q66 66 60 66 Q54 66 54 71 Z" fill="#fb7185"/>
   </svg>`;
 }
 
@@ -42,25 +42,25 @@ html,body{width:1200px;height:630px}
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
 }
 .glow-a{position:absolute;left:-160px;bottom:-200px;width:620px;height:620px;border-radius:50%;
-  background:radial-gradient(circle,rgba(124,58,237,.38),rgba(124,58,237,0) 68%)}
+  background:radial-gradient(circle,rgba(236,72,153,.38),rgba(236,72,153,0) 68%)}
 .glow-b{position:absolute;right:-120px;top:-160px;width:560px;height:560px;border-radius:50%;
-  background:radial-gradient(circle,rgba(6,182,212,.22),rgba(6,182,212,0) 68%)}
+  background:radial-gradient(circle,rgba(244,63,94,.22),rgba(244,63,94,0) 68%)}
 .brand{position:absolute;left:80px;top:96px;display:flex;align-items:center;gap:20px}
 .brand .mark{width:76px;height:76px}
 .brand .word{font-size:46px;font-weight:800;color:#fff;letter-spacing:-.5px}
 .headline{position:absolute;left:80px;top:212px;max-width:660px}
 .headline .l1{font-size:74px;font-weight:800;color:#fff;line-height:1.04;letter-spacing:-2px}
 .headline .l2{font-size:74px;font-weight:800;line-height:1.04;letter-spacing:-2px;margin-top:6px;
-  background:linear-gradient(120deg,#a78bfa 0%,#818cf8 45%,#22d3ee 100%);
+  background:linear-gradient(120deg,#f9a8d4 0%,#818cf8 45%,#fb7185 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
 .sub{position:absolute;left:82px;top:512px;font-size:30px;font-weight:600;color:rgba(255,255,255,.62);
   display:flex;align-items:center;gap:16px}
-.sub .dot{width:7px;height:7px;border-radius:50%;background:rgba(124,58,237,.9);display:inline-block}
+.sub .dot{width:7px;height:7px;border-radius:50%;background:rgba(236,72,153,.9);display:inline-block}
 .hero{position:absolute;right:110px;top:50%;transform:translateY(-50%);width:400px;height:400px;
   display:flex;align-items:center;justify-content:center}
-.hero .ring{position:absolute;border:2px solid rgba(124,58,237,.20);border-radius:50%}
+.hero .ring{position:absolute;border:2px solid rgba(236,72,153,.20);border-radius:50%}
 .hero .r1{width:520px;height:520px}
-.hero .r2{width:400px;height:400px;border-color:rgba(6,182,212,.16)}
+.hero .r2{width:400px;height:400px;border-color:rgba(244,63,94,.16)}
 .hero .mm{width:300px;height:300px;position:relative;z-index:2}
 </style></head><body>
 <div class="card">

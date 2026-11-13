@@ -19,12 +19,12 @@ const CONCURRENCY = 4; // parallel browser pages
 
 // ── Category → gradient colours ──────────────────────────────────────────────
 const COLORS = {
-  "Chat & Connection": { from: "#7c3aed", to: "#06b6d4", orb: "rgba(124,58,237,.22)", badge: "#a78bfa", border: "rgba(167,139,250,.3)" },
+  "Chat & Connection": { from: "#ec4899", to: "#f43f5e", orb: "rgba(236,72,153,.22)", badge: "#f9a8d4", border: "rgba(167,139,250,.3)" },
   "Love":              { from: "#e11d48", to: "#ec4899", orb: "rgba(225,29,72,.20)",   badge: "#fda4af", border: "rgba(253,164,175,.3)" },
   "Romance":           { from: "#db2777", to: "#9333ea", orb: "rgba(219,39,119,.20)",  badge: "#f9a8d4", border: "rgba(249,168,212,.3)" },
   "Dating":            { from: "#ea580c", to: "#f59e0b", orb: "rgba(234,88,12,.20)",   badge: "#fdba74", border: "rgba(253,186,116,.3)" },
-  "Relationships":     { from: "#4338ca", to: "#7c3aed", orb: "rgba(67,56,202,.22)",   badge: "#a5b4fc", border: "rgba(165,180,252,.3)" },
-  "Mental Health":     { from: "#0d9488", to: "#06b6d4", orb: "rgba(13,148,136,.22)",  badge: "#5eead4", border: "rgba(94,234,212,.3)" },
+  "Relationships":     { from: "#4338ca", to: "#ec4899", orb: "rgba(67,56,202,.22)",   badge: "#a5b4fc", border: "rgba(165,180,252,.3)" },
+  "Mental Health":     { from: "#0d9488", to: "#f43f5e", orb: "rgba(13,148,136,.22)",  badge: "#5eead4", border: "rgba(94,234,212,.3)" },
 };
 const DEFAULT_COLORS = COLORS["Chat & Connection"];
 
@@ -115,7 +115,7 @@ function bannerHtml(post, logoB64) {
 .o1{position:absolute;border-radius:50%;width:320px;height:320px;
   background:${c.orb};top:-120px;right:-80px;filter:blur(60px)}
 .o2{position:absolute;border-radius:50%;width:180px;height:180px;
-  background:rgba(6,182,212,.10);bottom:-60px;left:30px;filter:blur(55px)}
+  background:rgba(244,63,94,.10);bottom:-60px;left:30px;filter:blur(55px)}
 .gd{position:absolute;inset:0;
   background-image:linear-gradient(rgba(255,255,255,.024) 1px,transparent 1px),
                    linear-gradient(90deg,rgba(255,255,255,.024) 1px,transparent 1px);

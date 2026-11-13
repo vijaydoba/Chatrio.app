@@ -50,12 +50,12 @@ function parsePosts(src) {
 }
 
 const COLORS = {
-  "Chat & Connection": { from: "#7c3aed", to: "#06b6d4", orb: "rgba(124,58,237,.22)", badge: "#a78bfa" },
+  "Chat & Connection": { from: "#ec4899", to: "#f43f5e", orb: "rgba(236,72,153,.22)", badge: "#f9a8d4" },
   "Love":              { from: "#e11d48", to: "#ec4899", orb: "rgba(225,29,72,.20)",   badge: "#fda4af" },
   "Romance":           { from: "#db2777", to: "#9333ea", orb: "rgba(219,39,119,.20)",  badge: "#f9a8d4" },
   "Dating":            { from: "#ea580c", to: "#f59e0b", orb: "rgba(234,88,12,.20)",   badge: "#fdba74" },
-  "Relationships":     { from: "#4338ca", to: "#7c3aed", orb: "rgba(67,56,202,.22)",   badge: "#a5b4fc" },
-  "Mental Health":     { from: "#0d9488", to: "#06b6d4", orb: "rgba(13,148,136,.22)",  badge: "#5eead4" },
+  "Relationships":     { from: "#4338ca", to: "#ec4899", orb: "rgba(67,56,202,.22)",   badge: "#a5b4fc" },
+  "Mental Health":     { from: "#0d9488", to: "#f43f5e", orb: "rgba(13,148,136,.22)",  badge: "#5eead4" },
 };
 const DEFAULT_COLORS = COLORS["Chat & Connection"];
 
@@ -143,7 +143,7 @@ function bannerHtml(post, logoB64, width, height) {
 .o1{position:absolute;border-radius:50%;width:${width * 0.8}px;height:${height * 0.8}px;
   background:${c.orb};top:${-height * 0.3}px;right:${-width * 0.1}px;filter:blur(50px)}
 .o2{position:absolute;border-radius:50%;width:${width * 0.5}px;height:${height * 0.5}px;
-  background:rgba(6,182,212,.10);bottom:${-height * 0.2}px;left:${width * 0.05}px;filter:blur(45px)}
+  background:rgba(244,63,94,.10);bottom:${-height * 0.2}px;left:${width * 0.05}px;filter:blur(45px)}
 .gd{position:absolute;inset:0;
   background-image:linear-gradient(rgba(255,255,255,.024) 1px,transparent 1px),
                    linear-gradient(90deg,rgba(255,255,255,.024) 1px,transparent 1px);

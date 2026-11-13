@@ -34,12 +34,12 @@ function parsePosts(src) {
 }
 
 const COLORS = {
-  "Chat & Connection": { from: "#7c3aed", to: "#06b6d4", orb: "rgba(124,58,237,.25)", badge: "#a78bfa", accent: "#c084fc" },
+  "Chat & Connection": { from: "#ec4899", to: "#f43f5e", orb: "rgba(236,72,153,.25)", badge: "#f9a8d4", accent: "#c084fc" },
   "Love":              { from: "#e11d48", to: "#ec4899", orb: "rgba(225,29,72,.22)",   badge: "#fda4af", accent: "#fb7185" },
   "Romance":           { from: "#db2777", to: "#9333ea", orb: "rgba(219,39,119,.22)",  badge: "#f9a8d4", accent: "#e879f9" },
   "Dating":            { from: "#ea580c", to: "#f59e0b", orb: "rgba(234,88,12,.22)",   badge: "#fdba74", accent: "#fb923c" },
-  "Relationships":     { from: "#4338ca", to: "#7c3aed", orb: "rgba(67,56,202,.25)",   badge: "#a5b4fc", accent: "#818cf8" },
-  "Mental Health":     { from: "#0d9488", to: "#06b6d4", orb: "rgba(13,148,136,.25)",  badge: "#5eead4", accent: "#2dd4bf" },
+  "Relationships":     { from: "#4338ca", to: "#ec4899", orb: "rgba(67,56,202,.25)",   badge: "#a5b4fc", accent: "#818cf8" },
+  "Mental Health":     { from: "#0d9488", to: "#f43f5e", orb: "rgba(13,148,136,.25)",  badge: "#5eead4", accent: "#2dd4bf" },
 };
 const DEFAULT = COLORS["Chat & Connection"];
 
@@ -85,7 +85,7 @@ body{background:#111;display:flex;align-items:center;justify-content:center;widt
 .o1{position:absolute;border-radius:50%;width:200px;height:200px;
   background:${c.orb};top:-60px;right:-40px;filter:blur(40px)}
 .o2{position:absolute;border-radius:50%;width:110px;height:110px;
-  background:rgba(6,182,212,.09);bottom:-30px;left:10px;filter:blur(35px)}
+  background:rgba(244,63,94,.09);bottom:-30px;left:10px;filter:blur(35px)}
 /* subtle grid */
 .gd{position:absolute;inset:0;
   background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),

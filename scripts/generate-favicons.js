@@ -22,7 +22,7 @@ const mascot = `
   <circle cx="47" cy="47" r="4.2" fill="#0b1220"/>
   <circle cx="77" cy="47" r="4.2" fill="#0b1220"/>
   <path d="M42 60 Q60 82 78 60 Z" fill="#fff"/>
-  <path d="M54 71 Q60 82 66 71 Q66 66 60 66 Q54 66 54 71 Z" fill="#22d3ee"/>
+  <path d="M54 71 Q60 82 66 71 Q66 66 60 66 Q54 66 54 71 Z" fill="#fb7185"/>
 `;
 
 /** Full icon SVG at 512 design units. `radius` rounds the background corners
@@ -31,8 +31,8 @@ function iconSvg(radius) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
     <linearGradient id="ic-g" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#7c3aed"/>
-      <stop offset="100%" stop-color="#06b6d4"/>
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
     </linearGradient>
     <radialGradient id="ic-bg" cx="0.5" cy="0.44" r="0.62">
       <stop offset="0%" stop-color="#1b1436"/>
@@ -40,11 +40,11 @@ function iconSvg(radius) {
       <stop offset="100%" stop-color="#0b0f14"/>
     </radialGradient>
     <radialGradient id="ic-glow" cx="0.5" cy="0.44" r="0.5">
-      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.45"/>
-      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#ec4899" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#ec4899" stop-opacity="0"/>
     </radialGradient>
     <filter id="ic-sh" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#6d28d9" flood-opacity="0.45"/>
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#db2777" flood-opacity="0.45"/>
     </filter>
   </defs>
   <rect x="0" y="0" width="512" height="512" rx="${radius}" fill="url(#ic-bg)"/>
