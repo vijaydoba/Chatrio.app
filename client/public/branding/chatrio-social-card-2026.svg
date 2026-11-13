@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="mg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+    <linearGradient id="tg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f472b6"/>
+      <stop offset="55%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+    <radialGradient id="glowL" cx="0.12" cy="0.95" r="0.6">
+      <stop offset="0%" stop-color="#ec4899" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#ec4899" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowR" cx="0.80" cy="0.18" r="0.55">
+      <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#f43f5e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="mglow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#ec4899" stop-opacity="0.55"/>
+      <stop offset="70%" stop-color="#ec4899" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#ec4899" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="1200" height="630" fill="#0b0f14"/>
+  <rect width="1200" height="630" fill="url(#glowL)"/>
+  <rect width="1200" height="630" fill="url(#glowR)"/>
+
+  <!-- orbit rings around the big mascot -->
+  <g fill="none" stroke="#f43f5e" stroke-opacity="0.16">
+    <circle cx="930" cy="315" r="170"/>
+    <circle cx="930" cy="315" r="235"/>
+    <circle cx="930" cy="315" r="300" stroke="#ec4899" stroke-opacity="0.12"/>
+  </g>
+
+  <!-- big mascot glow + art -->
+  <circle cx="930" cy="315" r="200" fill="url(#mglow)"/>
+  <g transform="translate(786,195) scale(2.4)">
+    <path d="M60 14 C33 14 14 30 14 52 C14 68 24 81 41 87 L36 104 L58 86 C59 86 60 86 60 86 C87 86 106 70 106 52 C106 30 87 14 60 14 Z"
+          fill="url(#mg)" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+    <circle cx="45" cy="46" r="9" fill="#fff"/>
+    <circle cx="75" cy="46" r="9" fill="#fff"/>
+    <circle cx="47" cy="47" r="4.2" fill="#0b1220"/>
+    <circle cx="77" cy="47" r="4.2" fill="#0b1220"/>
+    <path d="M42 60 Q60 82 78 60 Z" fill="#fff"/>
+    <path d="M54 71 Q60 82 66 71 Q66 66 60 66 Q54 66 54 71 Z" fill="#fb7185"/>
+  </g>
+
+  <!-- small logo mascot + wordmark -->
+  <g transform="translate(88,92) scale(0.52)">
+    <path d="M60 14 C33 14 14 30 14 52 C14 68 24 81 41 87 L36 104 L58 86 C59 86 60 86 60 86 C87 86 106 70 106 52 C106 30 87 14 60 14 Z"
+          fill="url(#mg)" stroke="#fff" stroke-width="7" stroke-linejoin="round"/>
+    <circle cx="45" cy="46" r="9" fill="#fff"/>
+    <circle cx="75" cy="46" r="9" fill="#fff"/>
+    <circle cx="47" cy="47" r="4.2" fill="#0b1220"/>
+    <circle cx="77" cy="47" r="4.2" fill="#0b1220"/>
+    <path d="M42 60 Q60 82 78 60 Z" fill="#fff"/>
+    <path d="M54 71 Q60 82 66 71 Q66 66 60 66 Q54 66 54 71 Z" fill="#fb7185"/>
+  </g>
+  <text x="170" y="150" font-family="Helvetica, Arial, sans-serif" font-weight="800" font-size="46" fill="#ffffff" letter-spacing="-1">Chatrio</text>
+
+  <!-- headline -->
+  <g font-family="Helvetica, Arial, sans-serif" font-weight="800" letter-spacing="-2.5">
+    <text x="86" y="288" font-size="84" fill="#ffffff">Anonymous chat</text>
+    <text x="86" y="372" font-size="84" fill="#ffffff">with strangers.</text>
+    <text x="86" y="456" font-size="84" fill="url(#tg)">Real talk, right now.</text>
+  </g>
+
+  <!-- subtitle -->
+  <text x="88" y="548" font-family="Helvetica, Arial, sans-serif" font-weight="600" font-size="30" fill="#8b96a5">No sign-up&#160;&#160;&#8226;&#160;&#160;Free forever</text>
+</svg>
