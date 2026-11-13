@@ -376,6 +376,9 @@ img, video{ height:auto; }
   align-items: center;
   justify-content: center;
   width: 36px; height: 36px;
+  /* Never let a flex row (e.g. the mobile account card) squeeze the avatar —
+     without this it collapses to an oval while its height stays fixed. */
+  flex-shrink: 0;
   border-radius: 50%;
   font-size: 13px;
   font-weight: 800;
