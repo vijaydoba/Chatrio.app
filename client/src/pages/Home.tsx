@@ -297,7 +297,7 @@ export default function Home() {
 
         <div className="lp-live-badge lp-anim-fade-up" style={{ animationDelay: "60ms" }}>
           <span className="lp-live-dot" />
-          Live chat · No sign-up needed
+          Live chat · No sign-up to start
         </div>
 
         <h1 className="lp-headline lp-anim-fade-up" style={{ animationDelay: "140ms" }}>
