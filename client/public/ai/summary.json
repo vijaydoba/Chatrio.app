@@ -21,11 +21,6 @@
       "name": "Circles",
       "url": "https://chatrio.app/circles",
       "description": "Anonymous local/nearby chat showing approximate-area presence only, with intro-message gated 1-on-1 chats and local group rooms. No account required."
-    },
-    {
-      "name": "Blind Date",
-      "url": "https://chatrio.app/blind-date",
-      "description": "One-on-one blind-dating chat (text and video) without seeing a profile first. Requires a real Chatrio account."
     }
   ],
   "sameAs": [
@@ -34,5 +29,5 @@
     "https://discord.gg/289JDCJtRj"
   ],
   "contact": "chatrioapp@gmail.com",
-  "lastUpdated": "2026-11-03"
+  "lastUpdated": "2026-11-13"
 }
