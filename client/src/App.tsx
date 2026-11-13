@@ -273,8 +273,6 @@ export default function App() {
   }, []);
 
   const [navOpen, setNavOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown
-  const [mobBlogOpen, setMobBlogOpen] = useState(false); // State for mobile blog dropdown
 
   // ESC closes drawer
   useEffect(() => {
@@ -315,15 +313,9 @@ export default function App() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setNavOpen(false);
-    setDropdownOpen(false); // Close dropdown on route change
-    setMobBlogOpen(false);
   }, [pathname]);
 
   const BLOG_ALL = "/blog";
-  const BLOG_LOVE = "/blog/love";
-  const BLOG_ROMANCE = "/blog/romance";
-  const BLOG_DATING = "/blog/dating";
-  const BLOG_CHAT = "/blog/chat-and-connection";
 
   return (
     <div className="site">
@@ -362,27 +354,6 @@ export default function App() {
               <NavLink className="nav-link" to="/video-chat">Video Chat</NavLink>
               <NavLink className="nav-link" to="/friends">Friends</NavLink>
               <NavLink className="nav-link" to="/circles">Circles</NavLink>
-
-              <div
-                className="nav-dropdown-container"
-                onMouseEnter={() => setDropdownOpen(true)}
-                onMouseLeave={() => setDropdownOpen(false)}
-              >
-                <NavLink className="nav-link nav-link-dropdown" to={BLOG_ALL}>
-                  Blog
-                  <svg className="nav-chevron" viewBox="0 0 10 6" fill="none">
-                    <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </NavLink>
-                {dropdownOpen && (
-                  <div className="nav-dropdown-menu">
-                    <NavLink to={BLOG_LOVE} className="dropdown-item"><span className="dd-icon">💖</span>Love</NavLink>
-                    <NavLink to={BLOG_ROMANCE} className="dropdown-item"><span className="dd-icon">🌹</span>Romance</NavLink>
-                    <NavLink to={BLOG_DATING} className="dropdown-item"><span className="dd-icon">✨</span>Dating</NavLink>
-                    <NavLink to={BLOG_CHAT} className="dropdown-item"><span className="dd-icon">💬</span>Chat & Connection</NavLink>
-                  </div>
-                )}
-              </div>
             </nav>
 
             <div className="nav-actions">
@@ -447,28 +418,6 @@ export default function App() {
           <NavLink className="m-link" to="/video-chat" onClick={() => setNavOpen(false)}>Video Chat</NavLink>
           <NavLink className="m-link" to="/friends" onClick={() => setNavOpen(false)}>Friends</NavLink>
           <NavLink className="m-link" to="/circles" onClick={() => setNavOpen(false)}>Circles</NavLink>
-
-          <div className="mob-blog-group">
-            <button
-              type="button"
-              className={`mob-blog-toggle${pathname.startsWith("/blog") ? " active" : ""}`}
-              onClick={() => setMobBlogOpen((v) => !v)}
-              aria-expanded={mobBlogOpen}
-            >
-              Blog
-              <svg className={`mob-blog-chevron${mobBlogOpen ? " open" : ""}`} viewBox="0 0 10 6" fill="none">
-                <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            {mobBlogOpen && (
-              <div className="mob-sub-links">
-                <NavLink className="mob-sub-link" to={BLOG_LOVE} onClick={() => setNavOpen(false)}><span className="dd-icon">💖</span>Love</NavLink>
-                <NavLink className="mob-sub-link" to={BLOG_ROMANCE} onClick={() => setNavOpen(false)}><span className="dd-icon">🌹</span>Romance</NavLink>
-                <NavLink className="mob-sub-link" to={BLOG_DATING} onClick={() => setNavOpen(false)}><span className="dd-icon">✨</span>Dating</NavLink>
-                <NavLink className="mob-sub-link" to={BLOG_CHAT} onClick={() => setNavOpen(false)}><span className="dd-icon">💬</span>Chat & Connection</NavLink>
-              </div>
-            )}
-          </div>
         </nav>
 
         {/* Footer icon buttons */}
@@ -570,6 +519,7 @@ export default function App() {
               alignItems: "center",
             }}
           >
+            <NavLink to={BLOG_ALL} className="footer-link">Blog</NavLink>
             <NavLink to="/about" className="footer-link">About</NavLink>
             <NavLink to="/editorial-standards" className="footer-link">Editorial Standards</NavLink>
             <NavLink to="/contact" className="footer-link">Contact</NavLink>

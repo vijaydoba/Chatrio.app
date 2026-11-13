@@ -492,7 +492,9 @@ img, video{ height:auto; }
   display: flex;
   align-items: center;
   gap: 12px;
-  margin: 0 14px 10px;
+  /* 12px side margin aligns the card box exactly with the nav rows below
+     (.mobile-nav padding) so the drawer has one clean left edge. */
+  margin: 0 12px 12px;
   padding: 12px 14px;
   border-radius: 14px;
   background: var(--pill-bg);
@@ -516,7 +518,7 @@ img, video{ height:auto; }
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 4px 20px 16px;
+  padding: 4px 12px 16px;
 }
 .m-account-out .account-google{ min-height: 44px; }
 .m-account-out .account-google > div{ width: 100%; }
