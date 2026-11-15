@@ -3479,8 +3479,9 @@ lookalike site elsewhere—as evidence that the original Omegle is back.
 <h3>What do people use instead of Omegle?</h3>
 <p>
 For text-based anonymous chat, <a href="/chat">Chatrio</a> is the closest replacement for
-Omegle's text mode — no sign-up, interest matching, nothing stored. For video, the established
-options are OmeTV, Emerald Chat, and Chatroulette. See the comparison table above for how
+Omegle's text mode — no sign-up, interest matching, nothing stored. For face-to-face chat,
+Chatrio also has its own <a href="/video-chat">random video chat</a>, or you can try established
+options like OmeTV, Emerald Chat, and Chatroulette. See the comparison table above for how
 they differ.
 </p>
 
@@ -7839,7 +7840,7 @@ prove that.
       <p>
         Chatrio is the closest experience to old-Omegle that still exists: open the page, pick your interests or stay anonymous, and you're
         matched with a real person in seconds. No account, no app, no phone number — and conversations aren't stored or linked to you.
-        Interest-based matching means chats start around something you actually care about, which makes them go deeper than random pairing ever did.
+        Interest-based matching means chats start around something you actually care about, which makes them go deeper than random pairing ever did. And if you'd rather go face-to-face, Chatrio also offers <a href="/video-chat">random video chat</a> with strangers.
       </p>
 
       <div class="pros-cons">
@@ -8143,7 +8144,7 @@ prove that.
         <li><strong>Never be pressured off-platform or into "proof."</strong> Requests to move to a private app fast, turn the camera somewhere specific, or send anything to "verify" are red flags, full stop.</li>
         <li><strong>Assume anything on screen can be captured.</strong> Don't show or say anything you'd be uncomfortable with existing outside the call.</li>
       </ul>
-      <p>Used with those habits, video chat can be a genuinely good way to meet people. The technology isn't the risk — going in without boundaries is.</p>
+      <p>Used with those habits, <a href="/video-chat">video chat</a> can be a genuinely good way to meet people. The technology isn't the risk — going in without boundaries is.</p>
 
       <h2 id="faq">Frequently Asked Questions</h2>
 
@@ -9511,7 +9512,7 @@ prove that.
         <li><strong>Nervous or not camera-ready?</strong> Start in text and move to video only when you want to — there's no rule that says you have to be on camera to have a real conversation.</li>
         <li><strong>Practising social confidence?</strong> Alternate. Text builds the courage to say the thing; video builds the comfort of saying it out loud.</li>
       </ul>
-      <p>The healthiest approach treats them as tools, not teams. Plenty of the best online connections start in text and graduate to video once trust is there.</p>
+      <p>The healthiest approach treats them as tools, not teams. Plenty of the best online connections start in text and graduate to <a href="/video-chat">video chat</a> once trust is there.</p>
 
       <h2 id="how-to-choose">How to Choose Based on Your Goals</h2>
 
