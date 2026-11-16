@@ -23,7 +23,7 @@ import React, { useEffect, useRef, useState } from "react";
  * frame (tiles are portrait; clips are landscape).
  */
 
-type Feed = { name: string; flag: string; video: string; poster: string; posX: string };
+type Feed = { name: string; flag: string; video: string; poster: string; posX: string; posY?: string };
 type Pair = { interests: string; w: Feed; m: Feed };
 
 const PAIRS: Pair[] = [
@@ -34,8 +34,8 @@ const PAIRS: Pair[] = [
   },
   {
     interests: "🎵 Music · ✈️ Travel",
-    w: { name: "Priya", flag: "🇮🇳", video: "/videos/p6-w.mp4", poster: "/videos/p6-w-poster.webp", posX: "50%" },
-    m: { name: "Arjun", flag: "🇮🇳", video: "/videos/p6-m.mp4", poster: "/videos/p6-m-poster.webp", posX: "32%" },
+    w: { name: "Priya", flag: "🇮🇳", video: "/videos/p6-w.mp4", poster: "/videos/p6-w-poster.webp", posX: "50%", posY: "20%" },
+    m: { name: "Arjun", flag: "🇮🇳", video: "/videos/p6-m.mp4", poster: "/videos/p6-m-poster.webp", posX: "50%", posY: "12%" },
   },
   {
     interests: "☕ Coffee · ✈️ Travel",
@@ -90,7 +90,7 @@ function CallVideo({ feed }: { feed: Feed }) {
       playsInline
       preload="none"
       aria-hidden="true"
-      style={{ objectPosition: `${feed.posX} 28%` }}
+      style={{ objectPosition: `${feed.posX} ${feed.posY ?? "28%"}` }}
     />
   );
 }
