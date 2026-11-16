@@ -5580,34 +5580,23 @@ html.dark .tg-chat.tg-bg-dots { background-color: #1a1a2e; background-image: rad
   opacity: 0;
 }
 /* Listener dim: darkens whoever is NOT currently speaking. */
+/* Listener dim: darkens + slightly desaturates whoever is NOT speaking. */
 .lv-feed-dim {
   position: absolute;
   inset: 0;
   z-index: 3;
   pointer-events: none;
-  background: rgba(6, 9, 15, 0.46);
+  background: rgba(5, 7, 12, 0.6);
   opacity: 0;
+  transition: opacity 0.45s ease;
 }
-/* Turn-taking: the left feed speaks the first half of the 5s cycle, the right
-   feed the second half (delay = half the cycle). So one talks while the other
-   listens (dimmed), then they swap — it reads as a real back-and-forth. */
-.lv-slide .lv-feed:nth-child(1) .lv-speak-ring,
-.lv-slide .lv-feed:nth-child(1) .lv-eq { animation: lv-spk-on 5s ease-in-out infinite; }
-.lv-slide .lv-feed:nth-child(1) .lv-feed-dim { animation: lv-spk-dim 5s ease-in-out infinite; }
-.lv-slide .lv-feed:nth-child(2) .lv-speak-ring,
-.lv-slide .lv-feed:nth-child(2) .lv-eq { animation: lv-spk-on 5s ease-in-out infinite; animation-delay: -2.5s; }
-.lv-slide .lv-feed:nth-child(2) .lv-feed-dim { animation: lv-spk-dim 5s ease-in-out infinite; animation-delay: -2.5s; }
-@keyframes lv-spk-on {
-  0% { opacity: 0; }
-  5% { opacity: 1; }
-  44% { opacity: 1; }
-  49%, 100% { opacity: 0; }
-}
-@keyframes lv-spk-dim {
-  0%, 48% { opacity: 0; }
-  55%, 95% { opacity: 1; }
-  100% { opacity: 0; }
-}
+/* Turn-taking is driven by JS (.is-speaking / .is-listening on the active match's
+   feeds) — only the speaker's clip actually plays, the listener freezes + dims, so
+   you never see both talking at once. These just style the two states. */
+.lv-speak-ring, .lv-eq { transition: opacity 0.4s ease; }
+.lv-feed.is-listening .lv-feed-dim { opacity: 1; }
+.lv-feed.is-speaking .lv-speak-ring { opacity: 1; }
+.lv-feed.is-speaking .lv-eq { opacity: 1; }
 
 /* speaking equaliser bars inside the active name chip */
 .lv-eq { display: inline-flex; align-items: flex-end; gap: 1.5px; height: 9px; margin-left: 3px; opacity: 0; }

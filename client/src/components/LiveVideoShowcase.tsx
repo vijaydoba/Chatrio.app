@@ -33,6 +33,11 @@ const PAIRS: Pair[] = [
     m: { name: "Leo", flag: "🇺🇸", video: "/videos/p1-m.mp4", poster: "/videos/p1-m-poster.webp", posX: "50%" },
   },
   {
+    interests: "🎵 Music · ✈️ Travel",
+    w: { name: "Priya", flag: "🇮🇳", video: "/videos/p6-w.mp4", poster: "/videos/p6-w-poster.webp", posX: "50%" },
+    m: { name: "Arjun", flag: "🇮🇳", video: "/videos/p6-m.mp4", poster: "/videos/p6-m-poster.webp", posX: "32%" },
+  },
+  {
     interests: "☕ Coffee · ✈️ Travel",
     w: { name: "Elena", flag: "🇪🇸", video: "/videos/p2-w.mp4", poster: "/videos/p2-w-poster.webp", posX: "52%" },
     m: { name: "Lucas", flag: "🇩🇪", video: "/videos/p2-m.mp4", poster: "/videos/p2-m-poster.webp", posX: "50%" },
@@ -40,7 +45,7 @@ const PAIRS: Pair[] = [
   {
     interests: "📸 Photography · 🎬 Movies",
     w: { name: "Chloé", flag: "🇫🇷", video: "/videos/p3-w.mp4", poster: "/videos/p3-w-poster.webp", posX: "62%" },
-    m: { name: "Arjun", flag: "🇮🇳", video: "/videos/p3-m.mp4", poster: "/videos/p3-m-poster.webp", posX: "38%" },
+    m: { name: "Kofi", flag: "🇬🇭", video: "/videos/p3-m.mp4", poster: "/videos/p3-m-poster.webp", posX: "38%" },
   },
   {
     interests: "🎮 Gaming · 🎧 Music",
@@ -56,8 +61,9 @@ const PAIRS: Pair[] = [
 
 // Seed call-duration per match (implies each pair "just matched"). Fixed so the
 // prerendered HTML matches the client's first render.
-const MATCH_SECS = [134, 47, 88, 21, 63];
-const SWIPE_MS = 6500;
+const MATCH_SECS = [134, 55, 47, 88, 21, 63];
+const SWIPE_MS = 8000; // time on each match
+const SPEAK_MS = 2800; // one conversation turn (speaker swaps every SPEAK_MS)
 
 // Floating "online now" bubbles (order maps to .lv-bubble-1..7 positions).
 type Person = { id: string; name: string; flag: string };
@@ -145,6 +151,7 @@ export default function LiveVideoShowcase() {
   const [idx, setIdx] = useState(0);
   const [secs, setSecs] = useState(MATCH_SECS[0]);
   const [live, setLive] = useState(false); // becomes true after mount (client, motion ok)
+  const [speaker, setSpeaker] = useState(0); // 0 = left/woman talking, 1 = right/man talking
   const trackRef = useRef<HTMLDivElement>(null);
 
   // Go live only client-side and only when motion is welcome, so the prerendered
@@ -155,26 +162,34 @@ export default function LiveVideoShowcase() {
     setLive(true);
   }, []);
 
-  // Tick the call timer + auto-swipe through matches.
+  // Call timer + auto-swipe through matches + swap who is talking.
   useEffect(() => {
     if (!live) return;
     const tick = window.setInterval(() => setSecs((s) => s + 1), 1000);
     const swipe = window.setInterval(() => setIdx((i) => (i + 1) % PAIRS.length), SWIPE_MS);
-    return () => { window.clearInterval(tick); window.clearInterval(swipe); };
+    const talk = window.setInterval(() => setSpeaker((s) => (s === 0 ? 1 : 0)), SPEAK_MS);
+    return () => { window.clearInterval(tick); window.clearInterval(swipe); window.clearInterval(talk); };
   }, [live]);
 
-  // Reset the "matched" timer whenever the pair changes.
-  useEffect(() => { setSecs(MATCH_SECS[idx] ?? 30); }, [idx]);
+  // On a new match: reset the "matched" timer and let the woman greet first.
+  useEffect(() => { setSecs(MATCH_SECS[idx] ?? 30); setSpeaker(0); }, [idx]);
 
-  // Play only the active match's clips; pause the rest.
+  // Turn-taking: in the ACTIVE match, only the current speaker's clip plays (and
+  // is marked .is-speaking); the listener is paused + .is-listening (dimmed). Every
+  // other match is fully paused — so you never see both people talking at once.
   useEffect(() => {
     if (!live) return;
     const track = trackRef.current;
     if (!track) return;
-    const slides = Array.from(track.querySelectorAll<HTMLElement>(".lv-slide"));
-    slides.forEach((slide, i) => {
-      slide.querySelectorAll("video").forEach((v) => {
-        if (i === idx) {
+    Array.from(track.querySelectorAll<HTMLElement>(".lv-slide")).forEach((slide, i) => {
+      Array.from(slide.querySelectorAll<HTMLElement>(".lv-feed")).forEach((feed, fi) => {
+        const active = i === idx;
+        const speaking = active && fi === speaker;
+        feed.classList.toggle("is-speaking", speaking);
+        feed.classList.toggle("is-listening", active && !speaking);
+        const v = feed.querySelector("video");
+        if (!v) return;
+        if (speaking) {
           v.muted = true;
           const p = v.play();
           if (p && typeof p.catch === "function") p.catch(() => {});
@@ -183,7 +198,7 @@ export default function LiveVideoShowcase() {
         }
       });
     });
-  }, [idx, live]);
+  }, [idx, speaker, live]);
 
   const mm = Math.floor(secs / 60);
   const ss = secs % 60;
