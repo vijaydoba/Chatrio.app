@@ -5496,10 +5496,22 @@ html.dark .tg-chat.tg-bg-dots { background-color: #1a1a2e; background-image: rad
 
 .lv-feeds {
   position: relative;
-  display: flex;
-  gap: 2px;
+  overflow: hidden;
   aspect-ratio: 16 / 11;
   background: #000;
+}
+.lv-feeds-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.lv-slide {
+  position: relative;
+  flex: 0 0 100%;
+  display: flex;
+  gap: 2px;
+  height: 100%;
 }
 .lv-feed {
   position: relative;
@@ -5567,17 +5579,38 @@ html.dark .tg-chat.tg-bg-dots { background-color: #1a1a2e; background-image: rad
   border: 2.5px solid #34d399;
   opacity: 0;
 }
-.lv-speak-a { animation: lv-speak 3.4s ease-in-out infinite; }
-.lv-speak-b { animation: lv-speak 3.4s ease-in-out infinite; animation-delay: 1.7s; }
-@keyframes lv-speak {
+/* Listener dim: darkens whoever is NOT currently speaking. */
+.lv-feed-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: rgba(6, 9, 15, 0.46);
+  opacity: 0;
+}
+/* Turn-taking: the left feed speaks the first half of the 5s cycle, the right
+   feed the second half (delay = half the cycle). So one talks while the other
+   listens (dimmed), then they swap — it reads as a real back-and-forth. */
+.lv-slide .lv-feed:nth-child(1) .lv-speak-ring,
+.lv-slide .lv-feed:nth-child(1) .lv-eq { animation: lv-spk-on 5s ease-in-out infinite; }
+.lv-slide .lv-feed:nth-child(1) .lv-feed-dim { animation: lv-spk-dim 5s ease-in-out infinite; }
+.lv-slide .lv-feed:nth-child(2) .lv-speak-ring,
+.lv-slide .lv-feed:nth-child(2) .lv-eq { animation: lv-spk-on 5s ease-in-out infinite; animation-delay: -2.5s; }
+.lv-slide .lv-feed:nth-child(2) .lv-feed-dim { animation: lv-spk-dim 5s ease-in-out infinite; animation-delay: -2.5s; }
+@keyframes lv-spk-on {
   0% { opacity: 0; }
-  6% { opacity: 1; }
+  5% { opacity: 1; }
   44% { opacity: 1; }
-  50%, 100% { opacity: 0; }
+  49%, 100% { opacity: 0; }
+}
+@keyframes lv-spk-dim {
+  0%, 48% { opacity: 0; }
+  55%, 95% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 /* speaking equaliser bars inside the active name chip */
-.lv-eq { display: inline-flex; align-items: flex-end; gap: 1.5px; height: 9px; margin-left: 3px; }
+.lv-eq { display: inline-flex; align-items: flex-end; gap: 1.5px; height: 9px; margin-left: 3px; opacity: 0; }
 .lv-eq i { width: 2px; height: 3px; border-radius: 1px; background: #34d399; animation: lv-eq .9s ease-in-out infinite; }
 .lv-eq i:nth-child(2) { animation-delay: .15s; }
 .lv-eq i:nth-child(3) { animation-delay: .3s; }
@@ -5674,7 +5707,62 @@ html.dark .tg-chat.tg-bg-dots { background-color: #1a1a2e; background-image: rad
 
 @media (prefers-reduced-motion: reduce) {
   .lv-bubble { animation: none !important; }
-  .lv-eq i { animation: none !important; height: 5px; }
-  .lv-speak-ring { animation: none !important; opacity: 0; }
-  .lv-speak-a { opacity: 1; }
+  .lv-eq, .lv-eq i { animation: none !important; }
+  .lv-speak-ring, .lv-feed-dim { animation: none !important; opacity: 0; }
+  .lv-feeds-track { transition: none !important; }
+}
+
+/* ── "Liveness": slow motion on the faces so the montage reads as live video,
+      not static photos. Centre tiles get a documentary pan/zoom; bubbles get a
+      gentle breathing zoom. Auto-off for reduced-motion (no-preference guard). ── */
+@media (prefers-reduced-motion: no-preference) {
+  .lv-feed .lv-ava {
+    animation: lv-live-pan 15s ease-in-out infinite;
+    transform-origin: center 30%;
+    will-change: transform;
+  }
+  .lv-feed:nth-child(2) .lv-ava { animation-duration: 17s; animation-delay: -6s; }
+  .lv-bubble-ava .lv-ava { animation: lv-live-breathe 10s ease-in-out infinite; will-change: transform; }
+  .lv-bubble-2 .lv-bubble-ava .lv-ava,
+  .lv-bubble-4 .lv-bubble-ava .lv-ava,
+  .lv-bubble-6 .lv-bubble-ava .lv-ava { animation-duration: 12.5s; animation-delay: -4s; }
+}
+@keyframes lv-live-pan {
+  0%   { transform: scale(1.06) translate(0%, 0%); }
+  33%  { transform: scale(1.11) translate(-1.2%, -0.8%); }
+  66%  { transform: scale(1.08) translate(1%, -0.4%); }
+  100% { transform: scale(1.06) translate(0%, 0%); }
+}
+@keyframes lv-live-breathe {
+  0%, 100% { transform: scale(1.04); }
+  50%      { transform: scale(1.1); }
+}
+
+/* Centre tiles are real video (they move on their own) — no Ken Burns pan;
+   object-fit:cover already fills the tile. The AI-photo bubbles keep breathing. */
+.lv-feed video.lv-ava { animation: none; transform: none; }
+.lv-ava-video { background: #0b0f14; }
+
+/* Swipe dots for the auto-rotating matches */
+.lv-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 52px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  z-index: 6;
+  pointer-events: none;
+}
+.lv-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transition: width 0.3s ease, background 0.3s ease;
+}
+.lv-dot.is-active {
+  width: 15px;
+  background: #fff;
 }

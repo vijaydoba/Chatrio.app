@@ -3,32 +3,64 @@ import React, { useEffect, useRef, useState } from "react";
 /**
  * LiveVideoShowcase — the homepage hero's "monkey.app-style" live montage.
  *
- * A stylised but convincing preview of what a Chatrio match looks like: a
- * centre split-screen video call between two people (a girl and a boy),
- * ringed by floating "online now" avatar bubbles so the page feels busy and
- * alive — the single biggest driver of curiosity-clicks on apps like this.
+ * A stylised but convincing preview of what Chatrio looks like in use: a centre
+ * video call that AUTO-SWIPES through several girl+boy matches (so a visitor
+ * feels "lots of people are chatting right now"), ringed by floating "online
+ * now" avatar bubbles.
  *
- * The faces are PHOTOREALISTIC but AI-GENERATED (synthetic people — nobody
- * real), produced via the repo's free Pollinations pipeline and baked into
- * /public/images/people as small WebP. There are no rights/privacy issues and
- * no real user is depicted. It is deliberately a *representation* of the
- * experience, so the whole stage is aria-hidden and the names are generic; the
- * real, accessible content (the H1 and CTAs) lives beside it in Home.tsx. The
- * only JS is a cosmetic call timer that ticks up after mount — seeded to a
- * fixed value, and paused during prerender, so hydration stays clean. All
- * motion is CSS and respects prefers-reduced-motion.
+ * The centre faces are REAL people from free-license stock footage (Mixkit),
+ * looped muted; the bubbles are AI-generated synthetic faces. Both are
+ * representative, not real Chatrio users — the whole stage is aria-hidden and
+ * names are generic; the real, accessible content (H1 + CTAs) is beside it in
+ * Home.tsx. Only the active pair's clips play/download (preload="none"); each
+ * tile shows a poster frame until its clip plays (and in environments that
+ * can't decode the video, e.g. the prerenderer). Nothing moves until after
+ * mount, and all motion is disabled for prefers-reduced-motion / prerender, so
+ * hydration stays clean.
  *
- * To swap in different people: drop a square <id>.webp into
- * /public/images/people and point a cast entry's `id` at it.
+ * To change a match: drop <id>.mp4 + <id>-poster.webp in /public/videos and
+ * edit the PAIRS array. `posX` nudges the horizontal crop so the face stays in
+ * frame (tiles are portrait; clips are landscape).
  */
 
-type Person = { id: string; name: string; flag: string };
+type Feed = { name: string; flag: string; video: string; poster: string; posX: string };
+type Pair = { interests: string; w: Feed; m: Feed };
 
-// Centre call: a girl + a boy.
-const MAYA: Person = { id: "maya", name: "Maya", flag: "🇮🇳" };
-const LEO: Person = { id: "leo", name: "Leo", flag: "🇺🇸" };
+const PAIRS: Pair[] = [
+  {
+    interests: "🎮 Gaming · 🎵 Music",
+    w: { name: "Camila", flag: "🇧🇷", video: "/videos/p1-w.mp4", poster: "/videos/p1-w-poster.webp", posX: "58%" },
+    m: { name: "Leo", flag: "🇺🇸", video: "/videos/p1-m.mp4", poster: "/videos/p1-m-poster.webp", posX: "50%" },
+  },
+  {
+    interests: "☕ Coffee · ✈️ Travel",
+    w: { name: "Elena", flag: "🇪🇸", video: "/videos/p2-w.mp4", poster: "/videos/p2-w-poster.webp", posX: "52%" },
+    m: { name: "Lucas", flag: "🇩🇪", video: "/videos/p2-m.mp4", poster: "/videos/p2-m-poster.webp", posX: "50%" },
+  },
+  {
+    interests: "📸 Photography · 🎬 Movies",
+    w: { name: "Chloé", flag: "🇫🇷", video: "/videos/p3-w.mp4", poster: "/videos/p3-w-poster.webp", posX: "62%" },
+    m: { name: "Arjun", flag: "🇮🇳", video: "/videos/p3-m.mp4", poster: "/videos/p3-m-poster.webp", posX: "38%" },
+  },
+  {
+    interests: "🎮 Gaming · 🎧 Music",
+    w: { name: "Mei", flag: "🇸🇬", video: "/videos/p4-w.mp4", poster: "/videos/p4-w-poster.webp", posX: "50%" },
+    m: { name: "Mateo", flag: "🇲🇽", video: "/videos/p4-m.mp4", poster: "/videos/p4-m-poster.webp", posX: "50%" },
+  },
+  {
+    interests: "💃 Dancing · 🎵 Music",
+    w: { name: "Nina", flag: "🇨🇴", video: "/videos/p5-w.mp4", poster: "/videos/p5-w-poster.webp", posX: "55%" },
+    m: { name: "Andre", flag: "🇧🇷", video: "/videos/p5-m.mp4", poster: "/videos/p5-m-poster.webp", posX: "50%" },
+  },
+];
+
+// Seed call-duration per match (implies each pair "just matched"). Fixed so the
+// prerendered HTML matches the client's first render.
+const MATCH_SECS = [134, 47, 88, 21, 63];
+const SWIPE_MS = 6500;
 
 // Floating "online now" bubbles (order maps to .lv-bubble-1..7 positions).
+type Person = { id: string; name: string; flag: string };
 const CAST: Person[] = [
   { id: "aisha", name: "Aisha", flag: "🇳🇬" },
   { id: "kai", name: "Kai", flag: "🇰🇷" },
@@ -39,24 +71,41 @@ const CAST: Person[] = [
   { id: "yuki", name: "Yuki", flag: "🇯🇵" },
 ];
 
-// A single face, filling its tile/bubble like a webcam feed.
-function CallAvatar({ p, eager }: { p: Person; eager?: boolean }) {
+// One looping webcam clip for a call tile. Muted + loop; the carousel plays only
+// the active pair. preload="none" so off-screen matches don't download.
+function CallVideo({ feed }: { feed: Feed }) {
+  return (
+    <video
+      className="lv-ava lv-ava-video"
+      src={feed.video}
+      poster={feed.poster}
+      muted
+      loop
+      playsInline
+      preload="none"
+      aria-hidden="true"
+      style={{ objectPosition: `${feed.posX} 28%` }}
+    />
+  );
+}
+
+// An AI-photo bubble face.
+function BubbleFace({ id }: { id: string }) {
   return (
     <img
       className="lv-ava"
-      src={`/images/people/${p.id}.webp`}
+      src={`/images/people/${id}.webp`}
       alt=""
       aria-hidden="true"
       width={480}
       height={480}
-      loading={eager ? "eager" : "lazy"}
+      loading="lazy"
       decoding="async"
       draggable={false}
     />
   );
 }
 
-// Speaking indicator (animated audio bars).
 function Equalizer() {
   return (
     <span className="lv-eq" aria-hidden="true">
@@ -65,7 +114,6 @@ function Equalizer() {
   );
 }
 
-// Call controls (mic / camera / end).
 function CallControls() {
   return (
     <div className="lv-controls" aria-hidden="true">
@@ -94,30 +142,58 @@ function pad(n: number) {
 }
 
 export default function LiveVideoShowcase() {
-  // Cosmetic call timer. Seeded to a fixed value so the prerendered HTML and the
-  // first client render match (no hydration warning); only starts ticking after
-  // mount, and pauses for reduced-motion users / during prerender.
-  const SEED = 134; // 02:14
-  const [secs, setSecs] = useState(SEED);
-  const started = useRef(false);
+  const [idx, setIdx] = useState(0);
+  const [secs, setSecs] = useState(MATCH_SECS[0]);
+  const [live, setLive] = useState(false); // becomes true after mount (client, motion ok)
+  const trackRef = useRef<HTMLDivElement>(null);
 
+  // Go live only client-side and only when motion is welcome, so the prerendered
+  // HTML (poster frames, pair 1) matches the first client render.
   useEffect(() => {
-    if (started.current) return;
-    started.current = true;
     if ((window as any).__PRERENDERING__) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = window.setInterval(() => setSecs((s) => s + 1), 1000);
-    return () => window.clearInterval(id);
+    setLive(true);
   }, []);
+
+  // Tick the call timer + auto-swipe through matches.
+  useEffect(() => {
+    if (!live) return;
+    const tick = window.setInterval(() => setSecs((s) => s + 1), 1000);
+    const swipe = window.setInterval(() => setIdx((i) => (i + 1) % PAIRS.length), SWIPE_MS);
+    return () => { window.clearInterval(tick); window.clearInterval(swipe); };
+  }, [live]);
+
+  // Reset the "matched" timer whenever the pair changes.
+  useEffect(() => { setSecs(MATCH_SECS[idx] ?? 30); }, [idx]);
+
+  // Play only the active match's clips; pause the rest.
+  useEffect(() => {
+    if (!live) return;
+    const track = trackRef.current;
+    if (!track) return;
+    const slides = Array.from(track.querySelectorAll<HTMLElement>(".lv-slide"));
+    slides.forEach((slide, i) => {
+      slide.querySelectorAll("video").forEach((v) => {
+        if (i === idx) {
+          v.muted = true;
+          const p = v.play();
+          if (p && typeof p.catch === "function") p.catch(() => {});
+        } else {
+          v.pause();
+        }
+      });
+    });
+  }, [idx, live]);
 
   const mm = Math.floor(secs / 60);
   const ss = secs % 60;
+  const pair = PAIRS[idx];
 
   return (
     <div className="lv-stage" aria-hidden="true">
       <div className="lv-glow" />
 
-      {/* ── Centre: the live two-person call ── */}
+      {/* ── Centre: the live call (auto-swipes through matches) ── */}
       <div className="lv-call lp-anim-pop">
         <div className="lv-call-top">
           <span className="lv-live">
@@ -128,26 +204,42 @@ export default function LiveVideoShowcase() {
         </div>
 
         <div className="lv-feeds">
-          <div className="lv-feed">
-            <CallAvatar p={MAYA} eager />
-            <span className="lv-speak-ring lv-speak-a" />
-            <span className="lv-name">
-              <span className="lv-flag">{MAYA.flag}</span>{MAYA.name}
-              <Equalizer />
-            </span>
-          </div>
-          <div className="lv-feed">
-            <CallAvatar p={LEO} eager />
-            <span className="lv-speak-ring lv-speak-b" />
-            <span className="lv-name">
-              <span className="lv-flag">{LEO.flag}</span>{LEO.name}
-            </span>
+          <div className="lv-feeds-track" ref={trackRef} style={{ transform: `translateX(-${idx * 100}%)` }}>
+            {PAIRS.map((p, i) => (
+              <div className="lv-slide" key={i}>
+                <div className="lv-feed">
+                  <CallVideo feed={p.w} />
+                  <span className="lv-feed-dim" aria-hidden="true" />
+                  <span className="lv-speak-ring" />
+                  <span className="lv-name">
+                    <span className="lv-flag">{p.w.flag}</span>{p.w.name}
+                    <Equalizer />
+                  </span>
+                </div>
+                <div className="lv-feed">
+                  <CallVideo feed={p.m} />
+                  <span className="lv-feed-dim" aria-hidden="true" />
+                  <span className="lv-speak-ring" />
+                  <span className="lv-name">
+                    <span className="lv-flag">{p.m.flag}</span>{p.m.name}
+                    <Equalizer />
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
         <div className="lv-call-bottom">
-          <span className="lv-shared">🎮 Gaming · 🎵 Music</span>
+          <span className="lv-shared">{pair.interests}</span>
           <CallControls />
+        </div>
+
+        {/* swipe dots */}
+        <div className="lv-dots" aria-hidden="true">
+          {PAIRS.map((_, i) => (
+            <span key={i} className={`lv-dot${i === idx ? " is-active" : ""}`} />
+          ))}
         </div>
       </div>
 
@@ -155,7 +247,7 @@ export default function LiveVideoShowcase() {
       {CAST.map((p, i) => (
         <div key={p.id} className={`lv-bubble lv-bubble-${i + 1}`}>
           <span className="lv-bubble-ava">
-            <CallAvatar p={p} />
+            <BubbleFace id={p.id} />
             <span className="lv-bubble-dot" />
           </span>
           <span className="lv-bubble-name">
