@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { POSTS, getSlotImage } from "../data/posts";
 import { motion, useReducedMotion } from "motion/react";
 import ChatrioMascot from "../components/ChatrioMascot";
+import LiveVideoShowcase from "../components/LiveVideoShowcase";
 
 const CHAT_MODES = [
   { key: "text", label: "Text", to: "/chat", cta: "Start Text Chat" },
@@ -290,11 +291,8 @@ export default function Home() {
       </Helmet>
 
       {/* ── HERO ── */}
-      <section className="lp-hero">
-        <div className="lp-mascot lp-anim-pop" aria-hidden="true">
-          <InteractiveMascot size={112} uid="hero" />
-        </div>
-
+      <section className="lp-hero lp-hero--split">
+        <div className="lp-hero-head">
         <div className="lp-live-badge lp-anim-fade-up" style={{ animationDelay: "60ms" }}>
           <span className="lp-live-dot" />
           Live chat · No sign-up to start
@@ -309,7 +307,13 @@ export default function Home() {
           Talk to strangers online free with smart interest matching.
           Meet someone new in seconds — no account, no history.
         </p>
+        </div>{/* /.lp-hero-head */}
 
+        <div className="lp-hero-stage lp-anim-fade-up" style={{ animationDelay: "300ms" }}>
+          <LiveVideoShowcase />
+        </div>
+
+        <div className="lp-hero-actions">
         {/* Segmented Text / Video toggle drives the primary CTA below */}
         <div className="lp-mode-toggle lp-anim-fade-up" role="tablist" aria-label="Choose chat mode" style={{ animationDelay: "300ms" }}>
           <span className="lp-mode-thumb" data-mode={mode} aria-hidden="true" />
@@ -369,6 +373,7 @@ export default function Home() {
           <span>No message logs</span>
           <span>Free forever</span>
         </div>
+        </div>{/* /.lp-hero-actions */}
       </section>
 
       {/* ── VIDEO CHAT PROMO ── */}
