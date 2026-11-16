@@ -161,6 +161,16 @@ export const CATEGORY_CANONICAL_TAG: Record<string, string> = {
 
 export const POSTS: Post[] = [
   {
+    slug: "whisper-chat-alternatives-2026",
+    seoTitle: "Whisper Chat Alternatives 2026: Anonymous Apps That Work",
+    title: "What Happened to Whisper Chat — and the Best Anonymous Alternatives in 2026",
+    excerpt:
+      "Whisper shut down in 2025. Here's what happened to the anonymous confession app — and the best Whisper chat alternatives in 2026 for sharing and talking without an account.",
+    thumbnail: "/images/hero-whisper-chat-alternatives-2026.png",
+    date: "2026-11-16",
+    category: "Chat & Connection",
+  },
+  {
     slug: "monkey-app-alternatives-2026",
     seoTitle: "Monkey Chat Alternatives 2026: Free Video Chat, No Download",
     title: "The Best Monkey Chat Alternatives in 2026 (Free, No Download)",

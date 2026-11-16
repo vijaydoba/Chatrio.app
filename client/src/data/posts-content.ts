@@ -2,6 +2,167 @@
 // via dynamic import so the main JS bundle stays small.
 
 export const POST_CONTENT: Record<string, string> = {
+  "whisper-chat-alternatives-2026": `
+      <figure class="post-figure">
+        <img src="/images/hero-whisper-chat-alternatives-2026.png" alt="Whisper chat alternatives in 2026 — anonymous apps to share secrets and talk without an account" />
+        <figcaption>Whisper shut down in 2025. The need it filled — talking and sharing anonymously — didn't.</figcaption>
+      </figure>
+
+      <p style="font-size:13px;opacity:.7;margin:0 0 18px">Last updated: November 16, 2026</p>
+
+      <p>
+        If you're looking for <strong>Whisper chat</strong> and finding dead links, you're not imagining it: the <strong>Whisper app</strong> — the anonymous "confessions" network where people posted secrets over stock photos — is gone. It was pulled from the App Store in late 2024, left Google Play in early 2025, and was shut down for good by mid-2025. We build and run <a href="/">Chatrio</a>, a browser-based anonymous chat platform, so we hear from a steady stream of people hunting for whatever replaced it — and the honest answer is that no single app does everything Whisper did, but there are better options for each thing people actually used it for.
+      </p>
+      <p>
+        This is a straight rundown of what happened and where to go now. We put Chatrio on the list because for the biggest Whisper use case — talking to someone anonymously, without a profile — it's a genuinely good fit. But Whisper was partly a public confessions <em>feed</em>, which Chatrio is not, so we'll point you to the right tool for that too. Every option below is a real, working product in 2026.
+      </p>
+
+      <div class="infobox">
+        <h4>🤫 The short answer</h4>
+        <p>
+          Whisper was discontinued in 2025 after more than a decade online, hurt by falling usage, a serious data-exposure scandal, and app-store removals. There's no official replacement, but the closest alternatives are <a href="/">Chatrio</a> for anonymous one-to-one chat, Reddit's confession communities for posting secrets to a feed, and Yik Yak or Jodel for anonymous posts from people near you.
+        </p>
+      </div>
+
+      <div class="table-of-contents">
+        <h3>📋 Article Overview</h3>
+        <ul>
+          <li><a href="#what-happened">What happened to the Whisper app?</a></li>
+          <li><a href="#what-for">What people actually used Whisper for</a></li>
+          <li><a href="#what-matters">What makes a good Whisper alternative</a></li>
+          <li><a href="#best">The best Whisper chat alternatives in 2026</a></li>
+          <li><a href="#vs">Chatrio vs Whisper at a glance</a></li>
+          <li><a href="#start">How to start an anonymous chat in under a minute</a></li>
+          <li><a href="#faq">Frequently asked questions</a></li>
+        </ul>
+      </div>
+
+      <h2 id="what-happened">What happened to the Whisper app?</h2>
+      <p>
+        Whisper launched in 2012 and, for a while, was one of the biggest anonymous social apps around, owned later by MediaLab.AI. You typed a short confession, the app paired it with a background image, and your "whisper" joined a feed others could browse by popularity, topic, or location. Posts weren't tied to a real name or a friends list — you got a random username linked to your device, and you could reply publicly or move into a private chat.
+      </p>
+      <p>
+        Its decline came from several directions at once:
+      </p>
+      <ul>
+        <li><strong>A broken promise of anonymity.</strong> In 2020, researchers reported that years of Whisper posts — along with location and profile data — had been left sitting in an unsecured database. For an app whose entire pitch was "say it anonymously," that was hard to recover from.</li>
+        <li><strong>Falling engagement.</strong> Anonymous-confession apps tend to be faddish, and users drifted to newer platforms and to anonymous corners of Reddit and TikTok.</li>
+        <li><strong>App-store removals.</strong> Whisper disappeared from Apple's App Store in late 2024 and from Google Play in early 2025, before being discontinued entirely in 2025.</li>
+        <li><strong>It was never truly anonymous.</strong> Like most "anonymous" apps, Whisper still tracked devices and collected data to police abuse — so the privacy people assumed they had was always partial.</li>
+      </ul>
+
+      <h2 id="what-for">What people actually used Whisper for</h2>
+      <p>
+        "Whisper chat" meant different things to different people, and that matters, because the best replacement depends on which part you miss:
+      </p>
+      <ul>
+        <li><strong>Getting something off your chest.</strong> Posting a confession or secret into a feed of strangers, with no one you know watching.</li>
+        <li><strong>Talking to a stranger privately.</strong> Using the chat side to actually have a one-to-one conversation with someone anonymous.</li>
+        <li><strong>Seeing posts from people nearby.</strong> Browsing whispers filtered by location — a low-key way to feel connected to your area.</li>
+      </ul>
+      <p>
+        No single 2026 app nails all three, so the list below is organized around these needs rather than pretending one tool replaces Whisper outright.
+      </p>
+
+      <h2 id="what-matters">What makes a good Whisper alternative</h2>
+      <p>
+        Before the list, here's the checklist we'd use ourselves. A worthwhile Whisper alternative should:
+      </p>
+      <ul>
+        <li><strong>Let you stay unidentified</strong> — no real name, no public profile tied to your posts.</li>
+        <li><strong>Be genuinely active</strong> — a dead app with no one on it is worse than no app.</li>
+        <li><strong>Moderate and let you report</strong> — anonymity without moderation turns ugly fast.</li>
+        <li><strong>Be honest about privacy</strong> — assume nothing is 100% anonymous and share accordingly.</li>
+        <li><strong>Match how you want to connect</strong> — a public feed, a private 1:1 chat, and a local board are different experiences.</li>
+      </ul>
+
+      <h2 id="best">The best Whisper chat alternatives in 2026</h2>
+
+      <h3>1. Chatrio — best for talking to someone anonymously</h3>
+      <p>
+        We're biased, but this is the Whisper use case we're built for: having an actual conversation without handing over your identity. <a href="/">Chatrio</a> runs in your browser — no app, no account — and matches you with a stranger for <a href="/chat">anonymous text chat</a> or <a href="/video-chat">video chat</a> in seconds. Nothing is tied to a real name, and there's no stored history. And if the part of Whisper you liked was seeing people <em>near you</em>, <a href="/circles">Circles</a> is Chatrio's anonymous local chat — the closest thing on this list to Whisper's location feed. What Chatrio isn't is a public confessions board, so if that's what you're after, keep reading.
+      </p>
+
+      <h3>2. Reddit — best for posting a confession to a feed</h3>
+      <p>
+        If what you miss is dropping a secret into a stream of strangers, Reddit's confession communities (subreddits like r/confession and r/offmychest) are the natural home. You can post from a throwaway account, get real replies, and the moderation and reach are far better than a fading app. It isn't location-based, but for "get it off my chest and hear from people," it's the strongest option.
+      </p>
+
+      <h3>3. Yik Yak — best for anonymous posts from people nearby</h3>
+      <p>
+        <a href="https://en.wikipedia.org/wiki/Yik_Yak" target="_blank" rel="noopener noreferrer">Yik Yak</a> is the closest thing to Whisper's location angle: an anonymous local feed where you see and upvote posts from people within a few miles. It skews younger and campus-heavy. We go deeper on it — and on privacy-safer local options — in our <a href="/blog/best-yik-yak-alternatives-anonymous-local-chat-2026">guide to Yik Yak alternatives</a>.
+      </p>
+
+      <h3>4. Jodel — a local community feed, big in Europe</h3>
+      <p>
+        Jodel is a Yik Yak-style anonymous feed organized around your location, with a strong following in Germany and other parts of Europe. If you want the "what's everyone near me thinking" feel of location-based whispers, it's worth a look.
+      </p>
+
+      <h3>5. Tellonym — anonymous questions and messages</h3>
+      <p>
+        If the appeal was receiving honest, anonymous messages, Tellonym lets people send you questions and comments without revealing who they are. It's a different shape from Whisper's feed, but it scratches the "anonymous honesty" itch.
+      </p>
+
+      <div class="infobox">
+        <h4>🔑 The short version</h4>
+        <p>
+          Want to <em>talk</em> anonymously? <a href="/">Chatrio</a>. Want to <em>post</em> a confession and get replies? Reddit. Want anonymous posts from people <em>nearby</em>? Yik Yak or Jodel. There's also Whisper Social, an independent app built to revive the original — newer and much smaller, so set expectations accordingly.
+        </p>
+      </div>
+
+      <h2 id="vs">Chatrio vs Whisper at a glance</h2>
+      <table>
+        <thead>
+          <tr><th>&nbsp;</th><th>Chatrio</th><th>Whisper</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Status in 2026</td><td>Live</td><td>Discontinued (2025)</td></tr>
+          <tr><td>How you connect</td><td>1:1 chat — text or video</td><td>Public confession feed + DMs</td></tr>
+          <tr><td>Download required</td><td>No — runs in the browser</td><td>Was app-only</td></tr>
+          <tr><td>Account / sign-up</td><td>No</td><td>Device-linked username</td></tr>
+          <tr><td>Real name or profile</td><td>None</td><td>None (but device-tracked)</td></tr>
+          <tr><td>People nearby</td><td>Yes — via Circles</td><td>Yes — location feed</td></tr>
+          <tr><td>Stored history</td><td>None</td><td>Account/device-based</td></tr>
+        </tbody>
+      </table>
+      <p>
+        The honest summary: Chatrio replaces the "talk to a stranger anonymously" and "see people nearby" parts of Whisper, but not the public-confessions-feed part. If you want both, pair Chatrio with a confession subreddit.
+      </p>
+
+      <h2 id="start">How to start an anonymous chat in under a minute</h2>
+      <ul>
+        <li><strong>Open <a href="/">chatrio.app</a></strong> in any browser — phone or desktop. Nothing to install.</li>
+        <li><strong>Choose text or video,</strong> and add a nickname and a couple of interests if you want better matches (or stay "Stranger").</li>
+        <li><strong>Hit start.</strong> You're talking to someone new in seconds, and one tap skips to the next — with no profile and no saved history.</li>
+      </ul>
+
+      <h2 id="faq">Frequently asked questions</h2>
+
+      <h3>What happened to the Whisper app?</h3>
+      <p>Whisper was discontinued in 2025. It was removed from Apple's App Store in late 2024 and from Google Play in early 2025, following years of declining use and a 2020 incident in which years of users' supposedly anonymous posts and location data were left exposed. There is no official replacement.</p>
+
+      <h3>Is Whisper chat still available?</h3>
+      <p>No. The original Whisper app is no longer operational or downloadable from the main app stores. A separate, independent app called Whisper Social has launched to revive the concept, but it is not the original and is much smaller.</p>
+
+      <h3>Is there an app like Whisper for anonymous chat?</h3>
+      <p>Yes. For the "talk to a stranger anonymously" side of Whisper, <a href="/">Chatrio</a> works in your browser with no account and no stored history — including <a href="/circles">Circles</a> for anonymous chat with people near you. For posting confessions to a public feed, Reddit's confession communities are the strongest option.</p>
+
+      <h3>What's the best anonymous Whisper alternative?</h3>
+      <p>It depends what you used Whisper for. To chat privately and anonymously, Chatrio. To post a secret and get replies, Reddit. To read anonymous posts from people nearby, Yik Yak or Jodel. Our <a href="/blog/best-free-anonymous-chat-websites-usa-2026">roundup of free anonymous chat sites</a> compares more options.</p>
+
+      <h3>Were Whisper and its alternatives actually anonymous?</h3>
+      <p>Not completely. Whisper still tracked devices and collected data to fight abuse, and its 2020 data exposure showed how fragile that "anonymity" was. Treat every anonymous app the same way: don't share identifying details, assume posts could resurface, and stick to platforms with real moderation. Our guide to <a href="/blog/is-anonymous-chat-safe-guide-2026">whether anonymous chat is safe</a> covers the habits that keep you protected.</p>
+
+      <div class="post-related">
+        <h3>Related Reading</h3>
+        <ul>
+          <li><a href="/blog/best-yik-yak-alternatives-anonymous-local-chat-2026">Best Yik Yak Alternatives for Anonymous Local Chat</a></li>
+          <li><a href="/blog/best-free-anonymous-chat-websites-usa-2026">Best Free Anonymous Chat Websites (2026)</a></li>
+          <li><a href="/blog/is-anonymous-chat-safe-guide-2026">Is Anonymous Chat Safe? A Practical Guide</a></li>
+          <li><a href="/chat">Start an anonymous chat on Chatrio →</a></li>
+        </ul>
+      </div>
+    `,
   "monkey-app-alternatives-2026": `
       <figure class="post-figure">
         <img src="/images/hero-monkey-app-alternative-2026-free-no-sign-up.png" alt="Best Monkey app alternatives in 2026 — free, no-download random video chat in the browser" />
