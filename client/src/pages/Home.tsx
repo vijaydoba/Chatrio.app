@@ -7,8 +7,8 @@ import ChatrioMascot from "../components/ChatrioMascot";
 import LiveVideoShowcase from "../components/LiveVideoShowcase";
 
 const CHAT_MODES = [
-  { key: "text", label: "Text", to: "/chat", cta: "Start Text Chat" },
-  { key: "video", label: "Video", to: "/video-chat", cta: "Start Video Chat" },
+  { key: "text", label: "Text", to: "/chat", cta: "Start Text Chat", note: "100% free — no sign-up and no Gmail needed. Just pick a name and go." },
+  { key: "video", label: "Video", to: "/video-chat", cta: "Start Video Chat", note: "Free — just one quick sign-in (email code or Google) to get matched." },
 ] as const;
 
 function normalizeAssetPath(path?: string) {
@@ -350,6 +350,13 @@ export default function Home() {
             </svg>
           </NavLink>
         </div>
+
+        <p className="lp-mode-note lp-anim-fade-up" style={{ animationDelay: "400ms" }}>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          {activeMode.note}
+        </p>
 
         <div className="lp-hero-links lp-anim-fade-up" style={{ animationDelay: "420ms" }}>
           <NavLink to="/circles" className="lp-hero-link">

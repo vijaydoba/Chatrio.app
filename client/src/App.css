@@ -5755,3 +5755,16 @@ html.dark .tg-chat.tg-bg-dots { background-color: #1a1a2e; background-image: rad
   width: 15px;
   background: #fff;
 }
+
+/* Reassurance line under the hero CTA — changes with the Text/Video toggle so
+   users immediately see text chat needs no sign-up/Gmail (video = quick sign-in). */
+.lp-mode-note {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--muted);
+  margin: -12px 0 2px;
+  max-width: 440px;
+  line-height: 1.5;
+}
+.lp-mode-note svg { color: #16a34a; vertical-align: -2px; margin-right: 6px; }
+.dark .lp-mode-note svg { color: #34d399; }
