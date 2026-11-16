@@ -162,10 +162,10 @@ export const CATEGORY_CANONICAL_TAG: Record<string, string> = {
 export const POSTS: Post[] = [
   {
     slug: "monkey-app-alternatives-2026",
-    seoTitle: "Best Monkey App Alternatives 2026 (Free, No Download)",
-    title: "Best Monkey App Alternatives in 2026 (Free, No Download)",
+    seoTitle: "Monkey Chat Alternatives 2026: Free Video Chat, No Download",
+    title: "The Best Monkey Chat Alternatives in 2026 (Free, No Download)",
     excerpt:
-      "The best Monkey app alternatives in 2026 — including free, no-download, no-sign-up options you can open in your browser in one click.",
+      "The best Monkey chat alternatives in 2026 — free Monkey video chat replacements with no download and no sign-up, open in your browser in one click.",
     thumbnail: "/images/hero-monkey-app-alternative-2026-free-no-sign-up.png",
     date: "2026-11-12",
     category: "Chat & Connection",

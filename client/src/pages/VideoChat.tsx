@@ -34,7 +34,7 @@ type ChatMessage = {
 type FriendStatus = "idle" | "sent" | "accepted";
 
 const VC_URL = "https://chatrio.app/video-chat";
-const VC_TITLE = "Random Video Chat – Free Omegle Alternative | Chatrio";
+const VC_TITLE = "Random Video Chat – Free Omegle & Monkey Alternative | Chatrio";
 const VC_DESCRIPTION =
   "A free Omegle alternative for random video chat with strangers — no download, runs in your browser. Sign in with a code or Google and get matched instantly.";
 const VC_OG_TITLE = "Random Video Chat – Chatrio";
@@ -88,7 +88,8 @@ function VideoChatHead() {
           { "@type": "Question", "name": "Why do I need to sign in?", "acceptedAnswer": { "@type": "Answer", "text": "A quick sign-in — an emailed code or Google, with no password — keeps the community accountable, reduces bots and throwaway accounts, and lets you add friends and reconnect with people you enjoyed talking to. It's free and takes a few seconds." } },
           { "@type": "Question", "name": "Can I video chat without turning on my camera?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. If you'd rather not be on camera, use Chatrio Text Chat instead — it matches you with a stranger for a typed conversation, with no camera or microphone needed." } },
           { "@type": "Question", "name": "Is random video chat safe?", "acceptedAnswer": { "@type": "Answer", "text": "Chatrio is for adults 18 and over. Your camera and microphone are only active during a call, you can skip anyone instantly, and you should never share personal or financial details with a stranger. See our Child Safety policy for how we handle abuse and underage use." } },
-          { "@type": "Question", "name": "How does matching work?", "acceptedAnswer": { "@type": "Answer", "text": "Matching is random and instant — tap Start Video Chat and you're connected with another available person right away, with no invite or scheduling step. If you don't click, skip and you'll meet someone new in seconds." } }
+          { "@type": "Question", "name": "How does matching work?", "acceptedAnswer": { "@type": "Answer", "text": "Matching is random and instant — tap Start Video Chat and you're connected with another available person right away, with no invite or scheduling step. If you don't click, skip and you'll meet someone new in seconds." } },
+          { "@type": "Question", "name": "Is Chatrio a good Monkey video chat alternative?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. If you liked Monkey's random video chat but not the app download or the account, Chatrio gives you the same instant, face-to-face matching right in your browser — free, nothing to install, and you can skip to the next person in one tap." } }
         ]
       })}</script>
     </Helmet>
@@ -142,7 +143,8 @@ function VideoChatSEO() {
 
       <h2 className="vc-seo-h2">Chatrio vs Omegle and Monkey</h2>
       <p className="vc-seo-compare-lead">
-        Omegle shut down in 2023, and most replacements are phone apps you have to install.
+        Omegle shut down in 2023, and most replacements — Monkey included — are phone apps you
+        have to install. If you want a Monkey video chat alternative that skips the app store,
         Chatrio runs in any browser and does both text and video, so you can start a
         conversation in a tab without downloading anything.
       </p>
