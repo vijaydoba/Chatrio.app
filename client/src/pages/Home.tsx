@@ -303,10 +303,6 @@ export default function Home() {
           <span className="lp-gradient-text">Real talk, right now.</span>
         </h1>
 
-        <p className="lp-sub lp-anim-fade-up" style={{ animationDelay: "220ms" }}>
-          Talk to strangers online free with smart interest matching.
-          Meet someone new in seconds — private, with no history.
-        </p>
         </div>{/* /.lp-hero-head */}
 
         <div className="lp-hero-stage lp-anim-fade-up" style={{ animationDelay: "300ms" }}>
