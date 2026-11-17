@@ -305,7 +305,7 @@ export default function Home() {
 
         <p className="lp-sub lp-anim-fade-up" style={{ animationDelay: "220ms" }}>
           Talk to strangers online free with smart interest matching.
-          Meet someone new in seconds — no account, no history.
+          Meet someone new in seconds — private, with no history.
         </p>
         </div>{/* /.lp-hero-head */}
 
@@ -376,7 +376,7 @@ export default function Home() {
         </div>
 
         <div className="lp-trust-row lp-anim-fade-up" style={{ animationDelay: "480ms" }}>
-          <span>No account</span>
+          <span>No sign-up for text</span>
           <span>No message logs</span>
           <span>Free forever</span>
         </div>
