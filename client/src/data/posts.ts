@@ -161,6 +161,16 @@ export const CATEGORY_CANONICAL_TAG: Record<string, string> = {
 
 export const POSTS: Post[] = [
   {
+    slug: "best-places-to-chat-online-2026",
+    seoTitle: "Best Places to Chat Online in 2026 (Free & Anonymous)",
+    title: "The Best Places to Chat Online in 2026 — Free, Anonymous, No Sign-Up",
+    excerpt:
+      "Looking for a good place to chat online? These are the best places to chat with strangers, friends, or people nearby in 2026 — free, anonymous, and no sign-up required.",
+    thumbnail: "/images/hero-best-places-to-chat-online-2026.png",
+    date: "2026-11-18",
+    category: "Chat & Connection",
+  },
+  {
     slug: "whisper-chat-alternatives-2026",
     seoTitle: "Whisper Chat Alternatives 2026: Anonymous Apps That Work",
     title: "What Happened to Whisper Chat — and the Best Anonymous Alternatives in 2026",
