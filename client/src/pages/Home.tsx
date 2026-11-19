@@ -47,13 +47,19 @@ const FEATURED_BLOG_SLUGS = [
   // already rank ~#80 in Google but currently receive almost no internal equity
   // (DataForSEO shows page_rank 0 on them — homepage links are the fix).
   "why-omegle-shut-down-and-what-to-use-instead",
+  // Winnable low-KD targets (OpenSEO diagnosis 2026-11). These posts shipped in
+  // the Nov-16 keyword refresh but had zero inbound internal links, so homepage
+  // equity never reached them — surfacing them here is the fix. They target the
+  // highest-value realistically-winnable terms: monkey chat (40.5k/KD10),
+  // whisper chat (8.1k/KD4), and place to chat (3.6k/KD0).
+  "monkey-app-alternatives-2026",
+  "whisper-chat-alternatives-2026",
+  "best-places-to-chat-online-2026",
+  // Pillar hub + proven money/geo posts.
+  "omegle-alternatives-2026-free-anonymous-chat",
   "dating-chat-slang-glossary-2026",
   "online-friendships-are-real-friendships-heres-the-proof",
-  // Pillar + proven geo posts.
-  "omegle-alternatives-2026-free-anonymous-chat",
-  "random-chat-apps-for-india-best-options",
   "best-anonymous-chat-app-india",
-  "best-anonymous-chat-latin-america",
 ];
 
 const featuredPosts = FEATURED_BLOG_SLUGS
@@ -467,7 +473,8 @@ export default function Home() {
             live video with one tap, or use Circles to meet people near you.
           </p>
           <p>
-            Built as a modern Omegle alternative, Chatrio runs entirely in your browser
+            Built as a{" "}
+            <NavLink to="/blog/omegle-alternatives-2026-free-anonymous-chat">modern Omegle alternative</NavLink>, Chatrio runs entirely in your browser
             on phone or desktop. There are no accounts, no profiles, and no conversation
             history — messages are delivered in real time and never stored on Chatrio's
             servers. Pick a nickname (or stay as Stranger), choose your interests, and
