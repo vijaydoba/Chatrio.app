@@ -157,6 +157,10 @@ const faqs = [
     a: "Yes. Chatrio lets you talk to strangers online free — no sign-up, no app, and no payment. Just set a nickname, pick your interests, and hit New Chat to connect with someone new instantly.",
   },
   {
+    q: "Is Chatrio a free online chat website?",
+    a: "Yes. Chatrio is a free online chat website that runs in any browser — no registration, no app, and no account. Open the site and chat with strangers online in seconds, by text or video, with nothing stored.",
+  },
+  {
     q: "Is Chatrio a good Omegle alternative?",
     a: "Chatrio launched as a modern alternative to Omegle, with a cleaner mobile-first interface, interest-based matching, photo sharing, and a stronger commitment to privacy.",
   },
@@ -466,8 +470,8 @@ export default function Home() {
         <div className="lp-narrative-inner">
           <h2>What is Chatrio?</h2>
           <p>
-            Chatrio is a free, anonymous chat app for talking to strangers online — no
-            sign-up, no download, and no message logs. It pairs you with someone who
+            Chatrio is a free, anonymous chat site for talking to strangers online — no
+            sign-up or registration, no download, and no message logs. It pairs you with someone who
             shares at least one of your interests, so every conversation starts with
             common ground instead of an awkward opener. You can chat by text, switch to
             live video with one tap, or use Circles to meet people near you.
