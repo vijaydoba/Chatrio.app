@@ -8,13 +8,17 @@ import React, { useEffect, useState } from "react";
 // overnight, busier in the evening) and drifts with a gentle random walk. It
 // never claims an exact real number.
 //
-// IMPORTANT: the first render must be byte-identical on the prerender capture
-// and the client's first hydration, or React throws #418 on these prerendered
-// pages (see deploy-hydration-418 history). Two rules enforce that:
-//   1. start from a fixed seed — no Date/Math.random at initial render time;
-//   2. format digits with a hand-rolled separator, never toLocaleString, whose
+// IMPORTANT: the static HTML captured by the prerenderer must be byte-identical
+// to the client's first hydration render, or React throws #418 on these
+// prerendered pages (see deploy-hydration-418 history). The prerenderer
+// snapshots the DOM *after* effects run, so three rules enforce that:
+//   1. the drift effect short-circuits while window.__PRERENDERING__ is set, so
+//      the snapshot keeps the fixed seed instead of a drifted value (same guard
+//      LiveVideoShowcase uses) — this is the one that actually prevents #418;
+//   2. start from a fixed seed — no Date/Math.random at initial render time;
+//   3. format digits with a hand-rolled separator, never toLocaleString, whose
 //      output can differ between the Node prerender and a browser locale.
-// The time-of-day base and drift only start inside useEffect, after hydration.
+// On a real client __PRERENDERING__ is never set, so the drift runs normally.
 const ONLINE_SEED = 1200;
 
 // Deterministic thousands separator (always a comma) — safe across environments.
@@ -26,6 +30,11 @@ export function useOnlineCount() {
   const [count, setCount] = useState(ONLINE_SEED);
 
   useEffect(() => {
+    // Leave the count at the fixed seed during the prerender snapshot so the
+    // captured HTML matches the client's first hydration render (otherwise a
+    // drifted number bakes into the static HTML → recoverable React #418).
+    if (typeof window !== "undefined" && (window as any).__PRERENDERING__) return;
+
     // Smooth daily curve: trough ~8am, peak ~8pm. Range ≈ 480–1,980.
     const baseFor = (date: Date) => {
       const hour = date.getHours() + date.getMinutes() / 60;
