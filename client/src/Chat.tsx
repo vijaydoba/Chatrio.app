@@ -809,19 +809,31 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
       ) : (
         /* ── LOBBY TOPBAR ── */
         <div className="lobby-topbar">
-          {theme === "dark" ? (
-            <DynamicIsland
-              state={matched ? "matched" : mode === "waiting" ? "searching" : "idle"}
-              onlineLabel={onlineLabel(online)}
-              waitingCount={waitingCount}
-              partnerName={partnerName}
-            />
-          ) : (
-            <div className="lobby-status">
-              <span className="lobby-live-dot" />
-              <span className="lobby-online-text">{onlineLabel(online)}</span>
-            </div>
-          )}
+          {/* Idle "Several online" tag removed per request — only show the live
+              status pill while searching or at the moment of a match. The lobby's
+              "online now" badge already conveys presence, so the idle state keeps
+              the topbar clean. */}
+          {mode === "waiting" || matched ? (
+            theme === "dark" ? (
+              <DynamicIsland
+                state={matched ? "matched" : "searching"}
+                onlineLabel={onlineLabel(online)}
+                waitingCount={waitingCount}
+                partnerName={partnerName}
+              />
+            ) : (
+              <div className="lobby-status">
+                <span className="lobby-live-dot" />
+                <span className="lobby-online-text">
+                  {matched
+                    ? `Connected · ${partnerName}`
+                    : waitingCount > 1
+                    ? `Finding someone · ${waitingCount} waiting`
+                    : "Finding someone…"}
+                </span>
+              </div>
+            )
+          ) : null}
           <div className="lobby-topbar-actions">
             <button className="lobby-icon-btn" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">
               {theme === "dark"
