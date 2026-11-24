@@ -6,6 +6,7 @@ import { createRandomVideoCall, RandomVideoCallController } from "../randomVideo
 import { motion, AnimatePresence } from "motion/react";
 import { useAuth } from "../auth";
 import Avatar from "../components/Avatar";
+import { OnlineNowBadge } from "../components/OnlineCount";
 import "./video-chat.css";
 
 /* Call-control icons — line icons matching the lobby/send icons already in use,
@@ -574,6 +575,7 @@ export default function VideoChat() {
           </div>
           <h1 className="vc-lobby-title">Random Video Chat</h1>
           <p className="vc-lobby-sub">Instant · Face to face · Add friends</p>
+          <div className="vc-lobby-online"><OnlineNowBadge /></div>
           <button
             className="vc-start-btn"
             onClick={() => navigate("/login", { state: { from: "/video-chat" } })}
@@ -608,6 +610,7 @@ export default function VideoChat() {
           <p className="vc-lobby-sub">
             {reconnectTargetRef.current ? "Reconnect · Instant · Face to face" : "Instant · Face to face · Add friends"}
           </p>
+          <div className="vc-lobby-online"><OnlineNowBadge /></div>
           {permState === "denied" ? (
             <div className="vc-lobby-denied">
               <strong>Camera &amp; mic are blocked</strong>

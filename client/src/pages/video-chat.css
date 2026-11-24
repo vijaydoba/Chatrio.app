@@ -39,8 +39,13 @@
 }
 .vc-lobby-sub {
   color: var(--muted, rgba(120,130,150,0.9));
-  margin: 0 0 28px;
+  margin: 0 0 12px;
   font-size: 14px;
+}
+/* Wrapper spacing for the shared "online now" pill between the sub and the
+   Start button (the pill style itself lives in App.css). */
+.vc-lobby-online {
+  margin: 0 0 26px;
 }
 .vc-lobby-error {
   background: rgba(239,68,68,0.12);

@@ -5,6 +5,7 @@ import { POSTS, getSlotImage } from "../data/posts";
 import { motion, useReducedMotion } from "motion/react";
 import ChatrioMascot from "../components/ChatrioMascot";
 import LiveVideoShowcase from "../components/LiveVideoShowcase";
+import { useOnlineCount, formatCount } from "../components/OnlineCount";
 
 const CHAT_MODES = [
   { key: "text", label: "Text", to: "/chat", cta: "Start Text Chat", note: "100% free — no sign-up and no Gmail needed. Just pick a name and go." },
@@ -210,6 +211,9 @@ export default function Home() {
   const [mode, setMode] = useState<(typeof CHAT_MODES)[number]["key"]>("text");
   const activeMode = CHAT_MODES.find((m) => m.key === mode) ?? CHAT_MODES[0];
 
+  // Illustrative live "online now" count for the hero badge (see useOnlineCount).
+  const onlineNow = useOnlineCount();
+
   // Reveal sections as they scroll into view (the hero animates on load instead).
   useEffect(() => {
     const els = Array.from(document.querySelectorAll<HTMLElement>(".lp-reveal"));
@@ -305,7 +309,7 @@ export default function Home() {
         <div className="lp-hero-head">
         <div className="lp-live-badge lp-anim-fade-up" style={{ animationDelay: "60ms" }}>
           <span className="lp-live-dot" />
-          Live chat · No sign-up to start
+          <span className="lp-online-count" aria-live="polite">{formatCount(onlineNow)}</span>&nbsp;online now · No sign-up to start
         </div>
 
         <h1 className="lp-headline lp-anim-fade-up" style={{ animationDelay: "140ms" }}>

@@ -5,6 +5,7 @@ import { io, Socket } from "socket.io-client";
 import { motion, AnimatePresence } from "motion/react";
 import DynamicIsland from "./DynamicIsland";
 import ChatrioMascot from "./components/ChatrioMascot";
+import { OnlineNowBadge } from "./components/OnlineCount";
 import { SOCKET_URL } from "./config";
 import { useKeyboardViewport } from "./useKeyboardViewport";
 import { createVideoCall, VideoCallController, VideoState } from "./videoChat";
@@ -848,6 +849,7 @@ export default function Chat({ theme, setTheme, soundOn, setSoundOn }: ChatProps
             </div>
             <h2 className="lobby-title">Meet someone new</h2>
             <p className="lobby-sub">Anonymous · Instant · Real</p>
+            <div className="lobby-online"><OnlineNowBadge /></div>
           </div>
 
           <div className="lobby-card">

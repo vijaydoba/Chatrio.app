@@ -2445,6 +2445,48 @@ html {
   animation: lp-pulse 1.6s ease-in-out infinite;
 }
 
+/* Tabular figures keep the live "online now" count a fixed width so the badge
+   doesn't jitter as the number drifts. */
+.lp-online-count {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+}
+
+/* Shared "online now" pill (OnlineNowBadge) — used on the Chat and Video Chat
+   lobbies. Global here in App.css (loaded app-wide) so it reaches video-chat.css
+   pages too. Mirrors the homepage live-badge look. */
+.online-now-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(251,113,133,.10);
+  border: 1px solid rgba(251,113,133,.28);
+  color: rgba(251,113,133,.95);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.online-now-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f43f5e;
+  animation: lp-pulse 1.6s ease-in-out infinite;
+}
+.online-now-count {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+}
+
+/* Center the badge under the text-chat lobby subtitle. */
+.lobby-online {
+  display: flex;
+  justify-content: center;
+  margin: 12px 0 2px;
+}
+
 @keyframes lp-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50%       { opacity: .55; transform: scale(0.8); }
