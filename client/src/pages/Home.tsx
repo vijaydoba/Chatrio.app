@@ -477,8 +477,10 @@ export default function Home() {
             Chatrio is a free, anonymous chat site for talking to strangers online — no
             sign-up or registration, no download, and no message logs. It pairs you with someone who
             shares at least one of your interests, so every conversation starts with
-            common ground instead of an awkward opener. You can chat by text, switch to
-            live video with one tap, or use Circles to meet people near you.
+            common ground instead of an awkward opener. You can{" "}
+            <NavLink to="/chat">chat by text</NavLink>, switch to{" "}
+            <NavLink to="/video-chat">live video</NavLink> with one tap, or use{" "}
+            <NavLink to="/circles">Circles</NavLink> to meet people near you.
           </p>
           <p>
             Built as a{" "}

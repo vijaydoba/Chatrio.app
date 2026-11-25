@@ -767,7 +767,7 @@ export const POST_CONTENT: Record<string, string> = {
     <p>Completely. Nearly everyone is nervous on their first few calls, including the person on the other end. It fades fast once you've done it a handful of times.</p>
 
     <h3>What if I say something awkward?</h3>
-    <p>You will, and it won't matter. On random video chat there's no history and no audience — if a call goes sideways, the next one is a fresh start with someone who never saw it.</p>
+    <p>You will, and it won't matter. On <a href="/video-chat">random video chat</a> there's no history and no audience — if a call goes sideways, the next one is a fresh start with someone who never saw it.</p>
 
     <h3>Do I have to show my face the whole time?</h3>
     <p>No. You can turn your camera off and stay on audio whenever you like. If you'd rather not be on camera at all, <a href="/chat">text chat</a> matches you for a typed conversation instead.</p>
@@ -13706,7 +13706,7 @@ prove that.
       <p>
         Chatrio is a browser-based chat platform built around the opposite idea: <strong>no account, no profile, and no photo required at all.</strong>
         You open the page, optionally add interests, and you're matched with a real person in seconds. Conversation starts as text so there's
-        no pressure to turn a camera on with someone you just met — though you can escalate to a live video call from inside the chat whenever
+        no pressure to turn a camera on with someone you just met — though you can escalate to a <a href="/video-chat">live video call</a> from inside the chat whenever
         both people want to (see our <a href="/blog/random-video-chat-guide">guide to video calling in chat</a>). Nothing is tied to an
         identity, and conversations aren't stored.
       </p>
